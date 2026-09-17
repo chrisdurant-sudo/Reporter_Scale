@@ -94,6 +94,17 @@ describe("V2 synthetic records and repository", () => {
     const historicalEligibility = { ...structuredClone(DEMO_SNAPSHOT_V2), demandRequests: DEMO_SNAPSHOT_V2.demandRequests.map((request) => request.id === "req-lax-history-001" ? { ...request, requiredCapabilityCodes: ["missing-capability" as never] } : request) };
     expect(validateDemoSnapshot(historicalEligibility).ok).toBe(false);
 
+    const credential = { id: "credential-test" as never, reporterId: "person-lax-001" as never, label: "sample-cert", issuerLabel: "Fictional issuer", jurisdictionScope: "CA", verificationStatus: "verified" as const, verifiedAt: "2026-02-01T00:00:00Z" as never, validFrom: "2026-02-01T00:00:00Z" as never, validUntil: "2026-03-01T00:00:00Z" as never, recordedAt: "2026-02-01T00:00:00Z" as never, evidenceRef: { kind: "reporter", id: "person-lax-001" }, provenance: "synthetic-demo" as const };
+    const credentialSnapshot = (requirement: Record<string, unknown>, replacement = credential) => ({ ...structuredClone(DEMO_SNAPSHOT_V2), credentialRecords: [replacement], demandRequests: DEMO_SNAPSHOT_V2.demandRequests.map((request) => request.id === "req-lax-101" ? { ...request, sampleCredentialRequirements: [requirement] } : request) });
+    const validRequirement = { requirementCode: "sample-cert", label: "Sample certificate", jurisdictionScope: "CA", samplePolicyNote: "Fictional test requirement." };
+    expect(validateDemoSnapshot(credentialSnapshot({ ...validRequirement, requirementCode: "wrong-code" })).ok).toBe(false);
+    expect(validateDemoSnapshot(credentialSnapshot({ ...validRequirement, jurisdictionScope: "NY" })).ok).toBe(false);
+    expect(validateDemoSnapshot(credentialSnapshot(validRequirement, { ...credential, validUntil: "2026-02-23T19:00:00Z" as never })).ok).toBe(false);
+    const wrongServiceMarket = { ...structuredClone(DEMO_SNAPSHOT_V2), reporters: DEMO_SNAPSHOT_V2.reporters.map((reporter) => reporter.id === "person-lax-001" ? { ...reporter, preferences: { ...reporter.preferences, serviceMarkets: reporter.preferences.serviceMarkets.map((preference) => preference.marketId === "LAX" ? { ...preference, status: "needs-confirmation" as const } : preference) } } : reporter) };
+    expect(validateDemoSnapshot(wrongServiceMarket).ok).toBe(false);
+    const wrongAttendance = { ...structuredClone(DEMO_SNAPSHOT_V2), reporters: DEMO_SNAPSHOT_V2.reporters.map((reporter) => reporter.id === "person-lax-001" ? { ...reporter, preferences: { ...reporter.preferences, attendanceModes: [] } } : reporter) };
+    expect(validateDemoSnapshot(wrongAttendance).ok).toBe(false);
+
     const futureRecordedReadiness = { ...structuredClone(DEMO_SNAPSHOT_V2), readinessEvents: DEMO_SNAPSHOT_V2.readinessEvents.map((event, index) => index === 0 ? { ...event, recordedAt: "2026-03-01T00:00:00Z" as never } : event) };
     expect(validateDemoSnapshot(futureRecordedReadiness).ok).toBe(false);
 
