@@ -1,6 +1,6 @@
 # P1.5 V2 role and lane routing gate
 
-Status: **ROUTING_BLOCKED**
+Status: **ROUTING_VERIFIED_WITH_TIER_OBSERVABILITY_LIMITATION**
 
 Reviewed source-contract authority: `19f7df98000e346a5b4ff32e00b699276c3f62fb`
 
@@ -14,19 +14,26 @@ The project configuration and lane registry now express the requested V2 role ma
 sequencing, seven-thread ceiling, `fork_turns="none"` policy, and Standard/default service tier. The
 old V1 writer roles and registry are inactive.
 
-The authorized `data` probe successfully identified itself as the named `data` role, received the V2
-data write boundary, ran read-only, and showed no inherited coordinator conversation. However, the
-runtime surfaces available to this coordinator and child did **not** expose the child's actual model,
-reasoning effort, or service tier. The current coordinator session also retained the role catalog it
-loaded before the configuration edit: it still advertised the old V1 role names and did not advertise
-the new domain roles.
+The fresh coordinator session loaded the active V2 catalog with `experience`, `data`, `capacity`,
+`recruiting`, `network`, `team`, `programs`, `quality`, and `reviewer`. The retired V1 writer roles
+`logic`, `markets`, `reporters`, and `improvements` were absent as active implementation authorities.
+The runtime catalog exposed the `data` role's fixed `gpt-5.6-luna` model and medium reasoning effort.
 
-Configuration intent is not proof of runtime routing. Because the requested Luna/medium/default
-runtime cannot be verified, P1.5 is blocked and no implementation fan-out is authorized.
+Exactly one fresh-session `data` probe identified itself as the named `data` role, received the V2
+Data lane write boundary, ran read-only, and received no coordinator conversation history under
+`fork_turns="none"`. The spawn result, live-agent listing, and child-visible runtime metadata did not
+expose a resolved child service-tier field.
+
+That missing field is accepted as a runtime-observability limitation rather than a routing blocker.
+The root configuration and all nine active role layers explicitly request `service_tier = "default"`;
+no active project configuration enables Fast, Priority, Ultrafast, or a Fast-mode override;
+`AGENTS.md` requires Standard/no-Fast processing; and workers may not change their own model,
+reasoning effort, or service tier. Configured `default`/Standard is therefore the strongest available
+tier evidence. It is **not** direct runtime verification and must not be represented as such.
 
 ## Final role mapping
 
-| Role | Model | Reasoning | Service tier | Schedule |
+| Role | Model | Reasoning | Requested service tier | Schedule |
 |---|---|---|---|---|
 | `experience` | `gpt-5.6-terra` | medium | `default` | Initial implementation wave |
 | `data` | `gpt-5.6-luna` | medium | `default` | Initial implementation wave |
@@ -40,7 +47,8 @@ runtime cannot be verified, P1.5 is blocked and no implementation fan-out is aut
 
 The project config intentionally contains no top-level `model` or `model_reasoning_effort`; the
 coordinator remains selected interactively. It keeps top-level `service_tier = "default"` and every
-role layer also sets `service_tier = "default"`. Fast, Priority, and Ultrafast are not enabled.
+role layer also sets `service_tier = "default"`. Fast, Priority, and Ultrafast are not enabled. The
+table records the requested tier, not a directly observed resolved child tier.
 
 The configuration structure follows the official OpenAI Codex configuration reference: named roles
 use `agents.<name>.config_file`, role layers use `developer_instructions`, and the active concurrency
@@ -142,12 +150,12 @@ and V2 path/stop instructions.
 - The V1 `AGENT_ROUTING.md`, `LANES.md`, `CODEX_START.md`, `BUILD_PLAN.md`, all V1 task briefs, and
   `FIRSTPROMPTi.txt` carry explicit inactive/legacy warnings.
 - The sole routing registry is `docs/reporter-growth/v2/lanes.v2.json`. It is active as routing
-  authority but records `fanout_authorized: false` and `implementation_active: false` while this
-  runtime-verification blocker remains.
+  authority. Its phase-activation flags were not changed during this routing-verification-only turn;
+  implementation was not launched.
 - V1 application source was not removed or modified. Legacy Improvements retirement remains a future
   coordinator-owned integration action.
 
-## Routing probe
+## Fresh-session routing probe
 
 Exact dispatch characteristics:
 
@@ -159,32 +167,43 @@ Exact dispatch characteristics:
 
 Observed:
 
-1. The worker reported runtime role identity `data` and canonical task name
+1. The fresh runtime's callable role catalog contained all nine active V2 roles and no retired V1
+   writer role. This verified that the committed catalog had been reloaded.
+2. The runtime role metadata fixed `data` to `gpt-5.6-luna` with medium reasoning; the probe did not
+   inherit the coordinator's Sol/extra-high settings.
+3. The worker reported runtime role identity `data` and canonical task name
    `/root/p1_5_data_routing_probe`.
-2. It received the correct V2 data boundary: `src/data/` only, with features, domain/shared logic,
+4. It received the correct V2 Data boundary: `src/data/` only, with features, domain/shared logic,
    contracts, integration, tooling/dependencies, `.codex/`, instructions, and other lanes forbidden.
-3. It reported only the scoped probe prompt and repository instructions, with no apparent inherited
-   implementation conversation context. This is consistent with `fork_turns="none"`.
-4. It made no file changes. Its `git status --short` matched the coordinator's routing/doc edits.
-5. The spawn result and live agent listing exposed task identity/status but no model, reasoning, or
-   service-tier fields.
-6. The worker likewise reported that its actual model, reasoning effort, and service tier were not
-   exposed. It could read `gpt-5.6-luna`, `medium`, and `default` from configuration, but correctly did
-   not claim those configured values as runtime proof.
-7. The current coordinator session's available role catalog still reflects its pre-edit load: the old
-   V1 roles remain advertised and the new capacity/recruiting/network/team/programs roles are not yet
-   available in this session.
+5. It reported only the scoped probe prompt and repository instructions and explicitly reported that
+   it received no coordinator conversation history, confirming `fork_turns="none"`.
+6. It made no file changes. The repository remained clean after the probe.
+7. The spawn result and live-agent listing exposed task identity/status. The loaded role catalog
+   exposed the `data` model and reasoning setting. None of those runtime surfaces exposed the resolved
+   child service tier, and the child likewise reported that service-tier metadata was unavailable.
+8. The root config and each of the nine active role layers request `service_tier = "default"`. A
+   repository-wide active-configuration search found no Fast, Priority, Ultrafast, or enabled
+   Fast-mode override.
 
 No second probe and no implementation worker was launched.
 
-## Routing limitation and smallest unblock
+## Tier observability limitation
 
-The blocker is observability/reload, not TOML syntax or a missing role definition. A fresh coordinator
-session must load the committed project configuration and show the new V2 role catalog. In that fresh
-session, run exactly one read-only `data` probe with `agent_type="data"` and `fork_turns="none"`.
-Proceed only if session/UI metadata actually confirms `gpt-5.6-luna`, medium reasoning, and
-Standard/default service tier. If those fields remain unavailable, keep routing blocked; do not infer
-them from TOML and do not launch the seven workers.
+This runtime does not expose a resolved child service-tier field through the spawn result, live-agent
+listing, or child-visible session metadata. The following controls make configured
+`default`/Standard the strongest available and accepted evidence:
+
+1. Root `.codex/config.toml` requests `service_tier = "default"`.
+2. Every active implementation, quality, and reviewer role layer requests
+   `service_tier = "default"`.
+3. No active project configuration contains `service_tier = "fast"`,
+   `service_tier = "priority"`, `service_tier = "ultrafast"`, or an enabled Fast-mode override.
+4. `AGENTS.md` explicitly requires Standard processing and prohibits Fast, Priority, and Ultrafast.
+5. Workers are prohibited from raising or substituting their model, reasoning effort, or service tier.
+
+This acceptance does not convert configured tier intent into direct runtime observation. The
+service-tier observability limitation must remain visible in future routing and implementation
+evidence until the runtime exposes a resolved tier field.
 
 ## Verification performed
 
@@ -196,23 +215,26 @@ them from TOML and do not launch the seven workers.
 | `jq empty docs/reporter-growth/lanes.json docs/reporter-growth/v2/lanes.v2.json` | Exit 0. |
 | `git diff --check` | Exit 0 at the pre-report validation point. |
 | Legacy-role declaration search in `.codex/config.toml` | No `logic`, `markets`, `reporters`, or `improvements` role declaration remained. |
-| Read-only `data` role spawn with `fork_turns="none"` | Role/instructions verified; actual model/reasoning/service tier not exposed. |
-| Live agent listing | Probe identity/status exposed; model/reasoning/service tier absent. |
+| Fresh loaded runtime role catalog | All nine V2 roles present; retired V1 writer roles absent; `data` fixed to `gpt-5.6-luna` with medium reasoning. |
+| Read-only `data` role spawn with `fork_turns="none"` | Role, scope, and no-history fork verified; no product or configuration changes. |
+| Spawn result and live-agent listing | Probe identity/status exposed; resolved child service tier not exposed. |
+| Active tier-control audit | Root plus all nine roles request `default`; no Fast/Priority/Ultrafast or enabled Fast-mode override found. |
 
 Application typecheck, tests, build, and browser checks were not rerun because P1.5 changed no product
 source, package, or toolchain file. No runtime/browser functionality is claimed.
 
 ## Git status
 
-At probe time, `git status --short` showed only the routing/configuration/documentation changes listed
-in this report; no `src/`, package, lockfile, or generated application path was modified. Final status
-after the routing report commit: clean; `git status --short` returned no output.
+The fresh-session probe began and ended with a clean repository. This acceptance update changes only
+this routing report; no `src/`, package, lockfile, configuration, or generated application path was
+modified.
 
 ## Exact next implementation gate
 
-The next implementation gate remains **P2 — Records and Calculations**, but it is not authorized.
-Before any P2 dispatch, a fresh-session P1.5 re-verification must end `ROUTING_VERIFIED`, followed by
-explicit user authorization naming the integration base. Until then, `fanout_authorized` and
-`implementation_active` remain false.
+The next implementation phase is **P2 — Records and Calculations**. This
+`ROUTING_VERIFIED_WITH_TIER_OBSERVABILITY_LIMITATION` result is sufficient to clear the P1.5 routing
+gate for that phase. No P2 worker was launched in this routing-verification turn. A later P2 dispatch
+must still follow the authorized phase packet, name and verify its integration base, and preserve the
+tier-observability limitation in its evidence.
 
-**ROUTING_BLOCKED**
+**ROUTING_VERIFIED_WITH_TIER_OBSERVABILITY_LIMITATION**
