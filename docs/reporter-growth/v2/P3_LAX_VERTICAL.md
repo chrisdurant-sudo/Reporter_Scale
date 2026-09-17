@@ -1,6 +1,6 @@
 # P3 LAX vertical integration
 
-Status: **P3_ACTIVE_SERIAL_BASELINE**
+Status: **P3_COMPLETE_READY_FOR_SEPARATELY_AUTHORIZED_QUALITY**
 
 Authorized integration baseline: `97f3ed4606f62dddcf86d5ad261b77dcf1f17ed5`
 
@@ -10,9 +10,9 @@ Final integrated P2 source: `2844a4bb578515d1c9a5f14357cae0c66be67763`
 
 Routing status retained: **ROUTING_VERIFIED_WITH_TIER_OBSERVABILITY_LIMITATION**
 
-P3 is explicitly authorized for the LAX vertical only. Quality and Reviewer remain unlaunched. This
-document begins as the serial integration contract and will be updated with exact implementation,
-commit, changed-file, verification, browser-smoke, and unresolved-issue evidence at closeout.
+P3 was explicitly authorized for the LAX vertical only and is now complete and inactive. Quality
+and Reviewer remain unlaunched and require a separate user gate. This document is the serial
+integration contract and exact closeout record.
 
 ## Exact P3 scope
 
@@ -115,6 +115,85 @@ narrow viewport if the environment supports it. Any browser check that cannot ru
 
 ## Closeout evidence
 
-Pending implementation. P3 may be marked inactive and ready for separately authorized Quality only
-after the live vertical and all required checks pass on an exact committed candidate, with the main
-working tree clean.
+### Integrated commits
+
+- Serial compiling P3 baseline: `6e2f6d2390a1a394d1826710612189d8a5bee257`
+  (`activate P3 LAX vertical integration`).
+- Capacity candidate: `fb2a47174e38929c27d8991cfb7e9b52ca41a4e0` from the isolated
+  `codex/p3-capacity-goal` worktree. It was integrated on `main` as
+  `f424037818728b3c74aa3848b4fb34bf153124f8`; both patches have stable patch ID
+  `f4e768ebf6d61a18343580b244b72064a011b9dd`.
+- Coordinator live integration: `3c37fefa2c7b8c9e7a4dd5a0013e2251cd53a66d`
+  (`build P3 live LAX vertical`).
+
+The Capacity worker was dispatched only after the serial baseline exposed one concrete lane defect:
+the baseline LAX market had no saved goal, but the Markets screen hid goal actions when the goal was
+absent. The worker changed only `src/features/markets/` and `src/logic/capacity/index.test.ts`, made
+the unsaved state actionable, and added focused regression coverage. Its isolated worktree had no
+installed `node_modules`, so the worker could only run diff checks there; the coordinator reviewed
+the exact candidate, verified the patch identity, integrated it, and ran all checks below.
+
+### Live vertical delivered
+
+- `src/integration/App.tsx` now selects the V2 composition in `V2App.tsx`; legacy V1 source remains
+  present and was not destructively removed.
+- Markets, Recruiting, Reporters, Team, and Programs share persistent market, capability, and
+  attendance filters, default to LAX, and consume prepared V2 views from the canonical repository.
+- The fixed scenario feed advances only through its seven dated checkpoints. Goal preview/save,
+  availability, re-engagement, team, program-decision, process-draft, and partner-task actions write
+  canonical synthetic records without manufacturing readiness, coverage, acceptance, delivery,
+  rollout, or job outcomes.
+- Shared EvidenceBundle presentation exposes the metric version, as-of time, snapshot revision,
+  exact source records, limitations, and a navigation target. `Open the work` carries that exact
+  evidence context and its record filters to the destination workspace.
+- Deterministic reset restores the seed, fixed clock, LAX filters, active workspace, saved goal and
+  decision state, and scenario replay state.
+
+The implementation changed only coordinator-owned integration/root-tooling paths plus the reviewed
+Capacity repair and its tests. No dependency, lockfile, deployment, connector, API, production
+backend, or external-write change was made.
+
+### Verification results
+
+All required P3 commands passed on the integrated implementation:
+
+- `npm run typecheck -- --pretty false` — exit 0.
+- `npm run lint -- --quiet` — exit 0.
+- `npm test -- --run` — 21 files passed, 100 tests passed.
+- Focused integrated suite for `App.test.tsx`, `MarketsV2Screen.test.tsx`, and capacity logic —
+  3 files passed, 16 tests passed.
+- `npm run build` — exit 0; 72 modules transformed and the production bundle emitted.
+- `git diff --check` — exit 0.
+
+The default source/unit configuration now covers `src/**/*.{test,spec}.{ts,tsx}`. The untouched V1
+cross-feature suite remains in Quality-owned `tests/acceptance/` behind its explicit
+`npm run test:acceptance` configuration; it targets the retired three-tab composition and is not
+claimed as a P3 pass. Updating or replacing that independent suite is work for a separately
+authorized Quality phase, not coordinator-owned P3 production repair.
+
+### Local browser smoke
+
+The local Vite application was exercised in the Codex in-app browser at
+`http://127.0.0.1:4173/`:
+
+- all five workspace headings rendered and navigation succeeded;
+- changing the market to SFO persisted across Recruiting, Reporters, Team, and Programs;
+- Tab moved focus from Markets to Recruiting, and Enter activated Recruiting;
+- at a 390 × 844 viewport, the document width remained 390 pixels with no page-level horizontal
+  overflow; workspace navigation remains horizontally reachable within its responsive control;
+- the browser console reported no warnings or errors; and
+- the temporary viewport override was reset and the local server was stopped.
+
+This coordinator smoke is supporting P3 evidence, not independent Quality/browser acceptance.
+
+### Remaining gates and limitations
+
+- Quality and Reviewer were not launched. Independent V2 acceptance/browser ownership remains a
+  separately authorized next phase.
+- The configured worker service tier is still not exposed in resolved child-session metadata;
+  configured `service_tier = "default"` and the Standard processing policy remain the strongest
+  available routing evidence.
+- P3 remains deliberately LAX-deep; equal-depth flows for the other four markets, real systems,
+  real messages, persistence migration, deployment, and production claims remain out of scope.
+
+P3 is inactive and ready for a separately authorized Quality phase.
