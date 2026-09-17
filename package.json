@@ -10,7 +10,7 @@
     "lint": "eslint . --max-warnings=0",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:acceptance": "vitest run tests/acceptance",
+    "test:acceptance": "vitest run --config vite.acceptance.config.ts",
     "test:e2e": "npm run build && playwright test",
     "check": "npm run lint && npm run typecheck && npm run test && npm run build"
   },
