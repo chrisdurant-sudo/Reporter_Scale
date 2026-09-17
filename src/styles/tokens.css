@@ -236,3 +236,47 @@ textarea {
   outline-color: var(--color-accent);
   outline-offset: 2px;
 }
+
+/* V2 foundations are isolated from the preserved V1 shell until integration selects them. */
+.v2-shell { width: min(100%, calc(var(--content-max) + 3rem)); margin: 0 auto; padding: var(--space-6); }
+.v2-shell__header { display: flex; justify-content: space-between; align-items: start; gap: var(--space-4); }
+.v2-shell__header h1 { max-width: 34rem; }
+.v2-shell__eyebrow, .v2-shell__date { margin: 0; color: var(--color-muted); font-size: .875rem; }
+.v2-shell__eyebrow { font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.v2-shell__date { text-align: right; }
+.v2-shell__tabs { display: flex; gap: var(--space-1); overflow-x: auto; margin: var(--space-6) 0 var(--space-3); border-bottom: 1px solid var(--color-border); }
+.v2-shell__tabs button { flex: 0 0 auto; border: 0; border-bottom: 3px solid transparent; padding: var(--space-3) var(--space-4); background: transparent; color: var(--color-muted); font-weight: 700; }
+.v2-shell__tabs button.is-active { color: var(--color-accent); border-bottom-color: var(--color-accent); }
+.v2-filter-bar { display: flex; flex-wrap: wrap; align-items: end; gap: var(--space-4); padding: var(--space-3) 0 var(--space-6); }
+.v2-filter-bar > label, .v2-filter-bar fieldset { display: grid; gap: var(--space-1); margin: 0; border: 0; padding: 0; font-size: .875rem; font-weight: 700; }
+.v2-filter-bar fieldset { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.v2-filter-bar fieldset legend { width: 100%; padding: 0; }
+.v2-filter-bar fieldset label { display: flex; gap: var(--space-1); align-items: center; font-weight: 500; }
+.v2-filter-bar select { min-height: 2.5rem; min-width: 10rem; border: 1px solid var(--color-border); background: var(--color-surface); padding: 0 var(--space-2); }
+.v2-shell__feedback { margin-bottom: var(--space-4); }
+.v2-shell__content { min-width: 0; }
+.v2-shell__footer { margin-top: var(--space-8); padding-top: var(--space-4); border-top: 1px solid var(--color-border); color: var(--color-muted); font-size: .8125rem; line-height: 1.5; }
+.v2-evidence { display: grid; gap: var(--space-3); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); background: var(--color-surface); }
+.v2-evidence__finding { margin: 0; line-height: 1.5; }
+.v2-evidence button { justify-self: start; min-height: 2.375rem; border: 1px solid var(--color-accent); border-radius: var(--radius-sm); padding: var(--space-2) var(--space-3); background: var(--color-surface); color: var(--color-accent); font-weight: 700; }
+.v2-evidence__details { display: grid; gap: var(--space-3); }
+.v2-evidence__details p, .v2-evidence__details ul { margin: 0; line-height: 1.5; }
+.v2-table-wrap { overflow-x: auto; border: 1px solid var(--color-border); border-radius: var(--radius-sm); }
+.v2-table-wrap table { width: 100%; min-width: 38rem; border-collapse: collapse; text-align: left; }
+.v2-table-wrap caption { padding: var(--space-3); text-align: left; font-weight: 700; }
+.v2-table-wrap th, .v2-table-wrap td { padding: var(--space-2) var(--space-3); border-top: 1px solid var(--color-border); vertical-align: top; font-size: .875rem; line-height: 1.4; }
+.v2-table-wrap th { color: var(--color-muted); }
+.v2-metric-signal { display: grid; gap: var(--space-1); min-width: 0; padding: var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-surface); }
+.v2-metric-signal p, .v2-metric-signal small { margin: 0; color: var(--color-muted); }
+.v2-metric-signal strong { font-size: 1.5rem; }
+.v2-metric-signal span { color: var(--color-warning); font-weight: 700; }
+.v2-state { display: grid; gap: var(--space-2); margin: 0; padding: var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-surface); line-height: 1.5; }
+.v2-state--error { border-color: #d8a3a3; color: var(--color-danger); }
+
+@media (max-width: 640px) {
+  .v2-shell { padding: var(--space-4); }
+  .v2-shell__header { display: grid; }
+  .v2-shell__date { text-align: left; }
+  .v2-filter-bar { display: grid; align-items: stretch; }
+  .v2-filter-bar select { width: 100%; }
+}
