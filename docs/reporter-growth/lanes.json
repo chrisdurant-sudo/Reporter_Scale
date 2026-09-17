@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "packet_kind": "planning_only",
+  "max_concurrent_lane_workers": 7,
+  "max_concurrent_read_only_reviewers": 1,
+  "max_concurrent_spawned_agents_excluding_coordinator": 8,
+  "workers_may_spawn": false,
+  "start_after": "SETUP_FROZEN",
+  "coordinator_owned": [
+    "AGENTS.md",
+    "docs/reporter-growth/",
+    "src/contracts/",
+    "src/integration/",
+    "src/main.tsx",
+    "package.json",
+    "all lockfiles",
+    "all root configuration",
+    "scripts/",
+    "public/",
+    "index.html",
+    ".codex/"
+  ],
+  "all_unassigned_paths_default_owner": "coordinator",
+  "instruction_files_always_coordinator_owned": [
+    "**/AGENTS.md",
+    "**/AGENTS.override.md"
+  ],
+  "lanes": [
+    {
+      "id": "experience",
+      "name": "Shared interface",
+      "allowed_directory_prefixes": [
+        "src/ui/",
+        "src/shell/",
+        "src/styles/"
+      ],
+      "task": "docs/reporter-growth/tasks/experience.md",
+      "acceptance_ids": [
+        "UI-01",
+        "UI-02",
+        "UI-03"
+      ]
+    },
+    {
+      "id": "data",
+      "name": "Demo data",
+      "allowed_directory_prefixes": [
+        "src/data/"
+      ],
+      "task": "docs/reporter-growth/tasks/data.md",
+      "acceptance_ids": [
+        "DATA-01",
+        "DATA-02"
+      ]
+    },
+    {
+      "id": "logic",
+      "name": "Rules and calculations",
+      "allowed_directory_prefixes": [
+        "src/logic/"
+      ],
+      "task": "docs/reporter-growth/tasks/logic.md",
+      "acceptance_ids": [
+        "RULE-01",
+        "RULE-02",
+        "RULE-03",
+        "RULE-04"
+      ]
+    },
+    {
+      "id": "markets",
+      "name": "Markets screen",
+      "allowed_directory_prefixes": [
+        "src/features/markets/"
+      ],
+      "task": "docs/reporter-growth/tasks/markets.md",
+      "acceptance_ids": [
+        "MKT-01",
+        "MKT-02"
+      ]
+    },
+    {
+      "id": "reporters",
+      "name": "Reporters screen",
+      "allowed_directory_prefixes": [
+        "src/features/reporters/"
+      ],
+      "task": "docs/reporter-growth/tasks/reporters.md",
+      "acceptance_ids": [
+        "REP-01",
+        "REP-02",
+        "REP-03"
+      ]
+    },
+    {
+      "id": "improvements",
+      "name": "Improvements screen",
+      "allowed_directory_prefixes": [
+        "src/features/improvements/"
+      ],
+      "task": "docs/reporter-growth/tasks/improvements.md",
+      "acceptance_ids": [
+        "IMP-01",
+        "IMP-02"
+      ]
+    },
+    {
+      "id": "quality",
+      "name": "Independent checks",
+      "allowed_directory_prefixes": [
+        "tests/acceptance/",
+        "tests/e2e/"
+      ],
+      "task": "docs/reporter-growth/tasks/quality.md",
+      "acceptance_ids": [
+        "INT-01",
+        "INT-02",
+        "SAFE-01"
+      ]
+    }
+  ],
+  "note": "These are project ceilings, not Codex account limits. This JSON is a registry, not an executable dispatcher or enforcement mechanism."
+}

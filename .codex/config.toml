@@ -1,0 +1,43 @@
+# Reporter Growth — project-scoped Codex subagent routing.
+# Intentionally does NOT set the coordinator model; choose the coordinator in Codex.
+# These defaults prevent ordinary children from intentionally being configured as Sol/High.
+# Always use Standard processing, never Fast mode.
+service_tier = "default"
+
+[agents]
+enabled = true
+default_subagent_model = "gpt-5.6-terra"
+default_subagent_reasoning_effort = "medium"
+default_service_tier = "default"
+
+[agents.experience]
+description = "Shared interface lane: shell, shared UI, responsive behavior, styling, and market-selector presentation."
+config_file = "./agents/experience.toml"
+
+[agents.data]
+description = "Demo data lane: fictional records, scenario anchors, local adapter, loading, saving, and reset."
+config_file = "./agents/data.toml"
+
+[agents.logic]
+description = "Rules lane: canonical metrics, planning calculations, view models, validation, and simulated transitions."
+config_file = "./agents/logic.toml"
+
+[agents.markets]
+description = "Markets feature lane: five-market comparison and selected-market growth plan."
+config_file = "./agents/markets.toml"
+
+[agents.reporters]
+description = "Reporters feature lane: stages, work list, details, screening, follow-up, and team section."
+config_file = "./agents/reporters.toml"
+
+[agents.improvements]
+description = "Improvements feature lane: tests of changes, decisions, process drafts, partner work, and weekly review."
+config_file = "./agents/improvements.toml"
+
+[agents.quality]
+description = "Independent quality lane: cross-feature acceptance and browser tests only; no production-code repairs."
+config_file = "./agents/quality.toml"
+
+[agents.reviewer]
+description = "Read-only final reviewer for a fixed integrated commit."
+config_file = "./agents/reviewer.toml"
