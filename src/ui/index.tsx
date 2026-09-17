@@ -1,8 +1,14 @@
+import { useEffect, useRef } from "react";
 import type { ButtonProps, DetailPanelProps, EmptyStateProps, NoticeProps } from "../contracts";
 
-export function Button({ variant = "primary", busy = false, children, disabled, ...props }: ButtonProps) {
+export function Button({ variant = "primary", busy = false, children, disabled, className, ...props }: ButtonProps) {
   return (
-    <button {...props} className={`ui-button ui-button--${variant}`} disabled={disabled || busy}>
+    <button
+      {...props}
+      aria-busy={busy || undefined}
+      className={["ui-button", `ui-button--${variant}`, className].filter(Boolean).join(" ")}
+      disabled={disabled || busy}
+    >
       {busy ? "Working…" : children}
     </button>
   );
@@ -27,13 +33,53 @@ export function EmptyState({ title, description, action }: EmptyStateProps) {
   );
 }
 
-export function DetailPanel({ open, title, closeLabel = "Close details", onClose, children, testId }: DetailPanelProps) {
+export function DetailPanel({
+  open,
+  title,
+  closeLabel = "Close details",
+  onClose,
+  returnFocusRef,
+  children,
+  testId,
+}: DetailPanelProps) {
+  const panelRef = useRef<HTMLElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const wasOpenRef = useRef(false);
+
+  useEffect(() => {
+    if (!open) {
+      if (wasOpenRef.current) returnFocusRef?.current?.focus();
+      wasOpenRef.current = false;
+      return;
+    }
+
+    wasOpenRef.current = true;
+    closeButtonRef.current?.focus();
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClose();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [onClose, open, returnFocusRef]);
+
   if (!open) return null;
   return (
-    <aside aria-label={title} className="ui-detail-panel" data-testid={testId}>
+    <aside
+      aria-label={title}
+      aria-modal="true"
+      className="ui-detail-panel"
+      data-testid={testId}
+      ref={panelRef}
+      role="dialog"
+      tabIndex={-1}
+    >
       <header>
         <h2>{title}</h2>
-        <button type="button" onClick={onClose} aria-label={closeLabel}>
+        <button ref={closeButtonRef} type="button" onClick={onClose} aria-label={closeLabel}>
           Close
         </button>
       </header>
