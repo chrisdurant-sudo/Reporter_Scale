@@ -1,11 +1,38 @@
-import type { MarketsScreenProps } from "../../contracts";
+import { useState } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+import type { ActionResult, MarketAssumptions, MarketPlanInput, MarketsScreenProps } from "../../contracts";
 import { TEST_ANCHORS } from "../../contracts";
+import { Button, EmptyState, Notice } from "../../ui";
+import "./markets.css";
 
-export function MarketsScreen({ view }: MarketsScreenProps) {
-  return (
-    <section data-testid={TEST_ANCHORS.marketsScreen}>
-      <h2>Markets</h2>
-      <p>{view.statusMessage}</p>
-    </section>
-  );
+interface PlanDraft { goal: string; screeningPassRate: string; onboardingStartRate: string; firstJobWithin14DaysRate: string; leadTimeDays: string; }
+function draftFromPlan(goal: number, assumptions: MarketAssumptions): PlanDraft {
+  return { goal: String(goal), screeningPassRate: String(assumptions.screeningPassRate), onboardingStartRate: String(assumptions.onboardingStartRate), firstJobWithin14DaysRate: String(assumptions.firstJobWithin14DaysRate), leadTimeDays: String(assumptions.leadTimeDays) };
+}
+function inputFromDraft(plan: NonNullable<MarketsScreenProps["view"]["selectedPlan"]>, draft: PlanDraft): MarketPlanInput {
+  return { marketId: plan.marketId, goal: Number(draft.goal), assumptions: { screeningPassRate: Number(draft.screeningPassRate), onboardingStartRate: Number(draft.onboardingStartRate), firstJobWithin14DaysRate: Number(draft.firstJobWithin14DaysRate), leadTimeDays: Number(draft.leadTimeDays) }, planningWindow: { startAt: plan.planningStartAt, endAt: plan.planningEndAt } };
+}
+function outcomeMessage(result: ActionResult): string { return result.ok ? result.message : result.errors.map((error) => error.message).join(" ") || result.message; }
+function formatDate(value: string): string { return new Intl.DateTimeFormat("en-US", { dateStyle: "medium", timeZone: "UTC" }).format(new Date(value)); }
+
+export function MarketsScreen({ view, actions }: MarketsScreenProps) {
+  const plan = view.selectedPlan;
+  const [draft, setDraft] = useState<PlanDraft | null>(() => plan ? draftFromPlan(plan.goal, plan.assumptions) : null);
+  const [previousPlan, setPreviousPlan] = useState(plan);
+  const [preview, setPreview] = useState<ReturnType<MarketsScreenProps["actions"]["onPreviewPlan"]> | null>(null);
+  const [saveResult, setSaveResult] = useState<ActionResult | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  if (plan !== previousPlan) { setPreviousPlan(plan); setDraft(plan ? draftFromPlan(plan.goal, plan.assumptions) : null); setPreview(null); setSaveResult(null); }
+  function updateDraft(event: ChangeEvent<HTMLInputElement>) { const { name, value } = event.target; setDraft((current) => current ? { ...current, [name]: value } : current); setPreview(null); setSaveResult(null); }
+  function previewPlan(event: FormEvent<HTMLFormElement>) { event.preventDefault(); if (!plan || !draft) return; setPreview(actions.onPreviewPlan(inputFromDraft(plan, draft))); setSaveResult(null); }
+  async function savePlan() { if (!plan || !draft) return; setIsSaving(true); const result = await actions.onSavePlan(inputFromDraft(plan, draft)); setIsSaving(false); setSaveResult(result); }
+  function cancelPlan() { if (plan) setDraft(draftFromPlan(plan.goal, plan.assumptions)); setPreview(null); setSaveResult(null); actions.onCancelPlan(); }
+  return <section className="markets-screen" data-testid={TEST_ANCHORS.marketsScreen} aria-labelledby="markets-heading">
+    <header className="markets-screen__header"><div><p className="markets-screen__eyebrow">Planning view</p><h2 id="markets-heading">Where we need more reporters</h2><p>First jobs completed are actual outcomes. Goals and assumptions below are a separate hypothetical planning scenario.</p></div><p className="markets-screen__status" role="status">{view.statusMessage}</p></header>
+    {view.status === "loading" ? <Notice tone="info">Loading the five-market comparison…</Notice> : null}
+    {view.status === "error" ? <Notice tone="danger">{view.statusMessage}</Notice> : null}
+    {view.status === "empty" ? <EmptyState title="No market records yet" description="Market planning will appear when the demo records are ready." /> : null}
+    {view.rows.length > 0 ? <div className="markets-table-wrap"><table className="markets-table"><caption>Five-market first-job progress and next recruiting action</caption><thead><tr><th scope="col">Market</th><th scope="col">First job completed</th><th scope="col">Goal</th><th scope="col">Remaining gap</th><th scope="col">Observed issue</th><th scope="col">Next action</th></tr></thead><tbody>{view.rows.map((row) => <tr key={row.marketId} aria-current={view.selectedMarket === row.marketId ? "true" : undefined}><th scope="row"><button type="button" className="markets-table__market" onClick={() => actions.onSelectMarket(row.marketId)}><span>{row.code}</span>{row.name}</button><small>{row.periodLabel}</small></th><td><strong>{row.firstJobsCompleted}</strong><div className="markets-progress" aria-label={`${row.progressPercent}% of first-job goal complete`}><span style={{ width: `${Math.min(100, Math.max(0, row.progressPercent))}%` }} /></div><small>{row.progressPercent}% of goal</small></td><td>{row.goal}</td><td>{row.remaining}</td><td><p>{row.observedIssue}</p>{row.supportingRecords.length > 0 ? <details><summary>Supporting records ({row.supportingRecords.length})</summary><ul>{row.supportingRecords.map((record) => <li key={record.id}>{record.label} <time dateTime={record.occurredAt}>{formatDate(record.occurredAt)}</time></li>)}</ul></details> : <small>No supporting record is available yet.</small>}</td><td><p>{row.nextAction}</p><Button variant="quiet" onClick={() => actions.onOpenReporterWork(row.marketId)}>Open reporter work</Button></td></tr>)}</tbody></table></div> : null}
+    {plan && draft ? <section className="market-plan" aria-labelledby="market-plan-heading"><header><p className="markets-screen__eyebrow">Selected market plan</p><h3 id="market-plan-heading">{plan.marketName}</h3><p>{plan.actualFirstJobsCompleted} first jobs completed in this plan period. {plan.populationNote}</p></header><form onSubmit={previewPlan}><fieldset><legend>Editable planning assumptions</legend><label>First-job goal<input name="goal" type="number" min="0" step="1" value={draft.goal} onChange={updateDraft} /></label><label>Screening pass rate<input name="screeningPassRate" type="number" min="0" max="1" step="0.01" value={draft.screeningPassRate} onChange={updateDraft} /></label><label>Onboarding start rate<input name="onboardingStartRate" type="number" min="0" max="1" step="0.01" value={draft.onboardingStartRate} onChange={updateDraft} /></label><label>First job within 14 days rate<input name="firstJobWithin14DaysRate" type="number" min="0" max="1" step="0.01" value={draft.firstJobWithin14DaysRate} onChange={updateDraft} /></label><label>Lead time (days)<input name="leadTimeDays" type="number" min="0" step="1" value={draft.leadTimeDays} onChange={updateDraft} /></label></fieldset><p className="market-plan__window">Planning window: {formatDate(plan.planningStartAt)}–{formatDate(plan.planningEndAt)}</p><div className="market-plan__actions"><Button type="submit">Preview plan</Button><Button type="button" variant="secondary" onClick={() => void savePlan()} busy={isSaving}>Save plan</Button><Button type="button" variant="quiet" onClick={cancelPlan} disabled={isSaving}>Cancel</Button></div></form>{preview ? preview.ok ? <Notice tone="info" title="Hypothetical plan preview"><div className="market-plan__preview"><span>{preview.value.requiredScreeningStarts} screening starts</span><span>{preview.value.requiredOnboardingStarts} onboarding starts</span><span>{preview.value.requiredReadyReporters} ready reporters</span><span>Earliest first job: {formatDate(preview.value.earliestExpectedFirstJobAt)}</span></div><p>{preview.value.limitation}</p><p>{plan.leadTimeNote}</p><p>Saving this plan does not change completed first jobs or create reporter records.</p></Notice> : <Notice tone="danger" title="Plan needs attention">{outcomeMessage(preview)}</Notice> : null}{saveResult ? <Notice tone={saveResult.ok ? "success" : "danger"} title={saveResult.ok ? "Plan saved" : "Plan was not saved"}>{outcomeMessage(saveResult)}</Notice> : null}</section> : <Notice tone="neutral">Choose a market from the comparison to edit its hypothetical growth plan.</Notice>}
+  </section>;
 }
