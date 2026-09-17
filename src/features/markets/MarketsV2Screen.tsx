@@ -74,13 +74,13 @@ export function MarketsV2Screen({ view, onSelectMarket, onOpenEvidence, onPrevie
       </table>
     </section>
 
-    {view.growthGoal ? <section aria-label="Growth goal">
+    <section aria-label="Growth goal">
       <h2>Growth goal</h2>
-      <p>{view.growthGoal.actual} of {view.growthGoal.target} first-time readiness additions. Baseline: {view.growthGoal.baselineAsOfAt}; deadline: {view.growthGoal.deadline}.</p>
-      <p>Changing a goal cannot change readiness, coverage, or job outcomes.</p>
+      {view.growthGoal ? <p>{view.growthGoal.actual} of {view.growthGoal.target} first-time readiness additions. Baseline: {view.growthGoal.baselineAsOfAt}; deadline: {view.growthGoal.deadline}.</p> : <p>No growth-goal revision is saved for this market yet. Preview or save the dated goal revision to record the plan.</p>}
+      <p>Changing or saving a goal cannot change readiness, coverage, or job outcomes.</p>
       <button type="button" onClick={onPreviewGoal}>Preview goal revision</button>
       <button type="button" onClick={onSaveGoal}>Save goal revision</button>
-    </section> : null}
+    </section>
 
     <section aria-label="Original plan results">
       <h2>Original-plan results</h2>

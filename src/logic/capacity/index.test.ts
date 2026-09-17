@@ -58,6 +58,12 @@ function base(): DemoSnapshotV2 {
 }
 
 describe("capacity markets calculations", () => {
+  it("keeps the baseline growth goal absent until a revision is saved", () => {
+    const view = prepareMarketsWorkspace(base(), context());
+
+    expect(view.growthGoal).toBeNull();
+  });
+
   it("derives an exclusive request partition and exposes shared-candidate contention", () => {
     const view = prepareMarketsWorkspace(base(), context());
     expect(view.coverage).toMatchObject({ requested: 5, confirmed: 1, possible: 2, noVerifiedReadyMatch: 1, requirementsUnknown: 1 });
