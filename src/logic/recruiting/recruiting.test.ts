@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { DemoSnapshotV2, UtcTimestamp } from "../../contracts/v2";
-import { globallyEarliestCompletedOutcomes, onboardingOutcomes, projectCurrentCases, sourceOutcomes } from "./recruiting";
+import { validateEvidenceBundle } from "../shared/evidence";
+import { globallyEarliestCompletedOutcomes, onboardingOutcomes, prepareRecruitingWorkspace, projectCurrentCases, sourceOutcomes } from "./recruiting";
 
 const utc = (value: string) => value as UtcTimestamp;
 const asOf = utc("2026-03-20T00:00:00Z");
@@ -11,7 +12,7 @@ function snapshot(overrides: Record<string, unknown> = {}): DemoSnapshotV2 {
     reporters: [{ id: "reporter-a", fictionalName: "Avery", recruitingMarketId: "LAX", serviceMarketIds: [], createdAt: utc("2026-01-01T00:00:00Z"), recordedAt: utc("2026-01-01T00:00:00Z"), preferences: { attendanceModes: [], supportedProceedingTypes: [], supportedCapabilityCodes: [], serviceMarkets: [], notes: "" }, provenance: "synthetic-demo" }],
     acquisitionCases: [{ id: "case-a", reporterId: "reporter-a", ownerMarketId: "LAX", primarySourceId: "source-a", openedAt: utc("2026-02-01T00:00:00Z"), recordedAt: utc("2026-02-01T00:00:00Z"), purpose: "first-time", originProgramId: null, provenance: "synthetic-demo" }],
     lifecycleEvents: [{ id: "event-onboard", acquisitionCaseId: "case-a", reporterId: "reporter-a", eventType: "onboarding-started", occurredAt: utc("2026-02-10T00:00:00Z"), recordedAt: utc("2026-02-10T00:00:00Z"), actorId: "actor", reasonCode: "", reasonText: "", marketAtEntry: "LAX", linkedWorkItemId: null, provenance: "synthetic-demo" }],
-    credentialRecords: [], capabilityVerifications: [], screeningReviews: [], onboardingSteps: [], readinessEvents: [], availabilityWindows: [], demandRequests: [], assignmentEvents: [],
+    credentialRecords: [], capabilityVerifications: [], screeningReviews: [], onboardingSteps: [], readinessEvents: [], availabilityWindows: [], demandRequests: [], assignmentEvents: [{ id: "assignment-1", requestId: "request-1", reporterId: "reporter-a", state: "accepted", occurredAt: utc("2026-02-12T00:00:00Z"), recordedAt: utc("2026-02-12T00:00:00Z"), actorId: "actor", source: "synthetic-seed", reason: "accepted", provenance: "synthetic-demo" }],
     jobOutcomes: [], teamMembers: [], workItems: [], teamTargets: [], workQualityChecks: [], coachingActions: [], sources: [{ id: "source-a", label: "Referral", kind: "referral", description: "", provenance: "synthetic-demo" }], sourceSpend: [], programs: [], programEnrollments: [], programNotes: [], programDecisions: [], goalRevisions: [], workaroundExamples: [], processVersions: [], commandRecords: [], ...overrides,
   } as unknown as DemoSnapshotV2;
 }
@@ -29,7 +30,15 @@ describe("recruiting calculations", () => {
 
   it("attributes only one first job globally even when later work is in another market", () => {
     const jobs = [{ id: "job-later", requestId: "request-lax", reporterId: "reporter-a", acceptedAssignmentEventId: "assignment-lax", outcome: "completed", startedAt: null, completedAt: utc("2026-02-20T00:00:00Z"), deliveryAt: null, recordedAt: utc("2026-02-20T00:00:00Z"), provenance: "synthetic-demo" }, { id: "job-first", requestId: "request-sfo", reporterId: "reporter-a", acceptedAssignmentEventId: "assignment-sfo", outcome: "completed", startedAt: null, completedAt: utc("2026-02-15T00:00:00Z"), deliveryAt: null, recordedAt: utc("2026-02-15T00:00:00Z"), provenance: "synthetic-demo" }];
-    expect(globallyEarliestCompletedOutcomes(snapshot({ jobOutcomes: jobs }), asOf).get("reporter-a" as never)?.id).toBe("job-first");
+    const assignments = [{ id: "assignment-lax", requestId: "request-lax", reporterId: "reporter-a", state: "accepted", occurredAt: utc("2026-02-12T00:00:00Z"), recordedAt: utc("2026-02-12T00:00:00Z"), actorId: "actor", source: "synthetic-seed", reason: "", provenance: "synthetic-demo" }, { id: "assignment-sfo", requestId: "request-sfo", reporterId: "reporter-a", state: "accepted", occurredAt: utc("2026-02-12T00:00:00Z"), recordedAt: utc("2026-02-12T00:00:00Z"), actorId: "actor", source: "synthetic-seed", reason: "", provenance: "synthetic-demo" }];
+    expect(globallyEarliestCompletedOutcomes(snapshot({ jobOutcomes: jobs, assignmentEvents: assignments }), asOf).get("reporter-a" as never)?.id).toBe("job-first");
+  });
+
+  it("excludes orphaned, mismatched, and nonaccepted completed outcomes", () => {
+    const outcome = { id: "job", requestId: "request-1", reporterId: "reporter-a", acceptedAssignmentEventId: "missing", outcome: "completed", startedAt: null, completedAt: utc("2026-02-15T00:00:00Z"), deliveryAt: null, recordedAt: utc("2026-02-15T00:00:00Z"), provenance: "synthetic-demo" };
+    expect(globallyEarliestCompletedOutcomes(snapshot({ jobOutcomes: [outcome] }), asOf).size).toBe(0);
+    expect(globallyEarliestCompletedOutcomes(snapshot({ jobOutcomes: [{ ...outcome, acceptedAssignmentEventId: "assignment-1", requestId: "other-request" }] }), asOf).size).toBe(0);
+    expect(globallyEarliestCompletedOutcomes(snapshot({ jobOutcomes: [{ ...outcome, acceptedAssignmentEventId: "assignment-1" }], assignmentEvents: [{ id: "assignment-1", requestId: "request-1", reporterId: "reporter-a", state: "offered", occurredAt: utc("2026-02-12T00:00:00Z"), recordedAt: utc("2026-02-12T00:00:00Z"), actorId: "actor", source: "synthetic-seed", reason: "", provenance: "synthetic-demo" }] }), asOf).size).toBe(0);
   });
 
   it("does not put a completed case in the action queue unless concrete open work exists", () => {
@@ -42,5 +51,14 @@ describe("recruiting calculations", () => {
   it("never turns positive recorded spend with zero first jobs into a zero cost rate", () => {
     const outcomes = sourceOutcomes(snapshot({ sourceSpend: [{ id: "spend", sourceId: "source-a", programId: null, cohortRef: null, attributableWindow: null, amountMinor: 5000, currency: "USD", occurredAt: utc("2026-02-12T00:00:00Z"), allocationNote: "direct", provenance: "synthetic-demo" }] }), asOf, window);
     expect(outcomes[0]?.spend.display).toBe("No first jobs yet; 5000 minor USD spent");
+  });
+
+  it("uses only declared cohort/window spend once and emits valid unavailable zero-denominator evidence", () => {
+    const spend = { id: "included", sourceId: "source-a", programId: null, cohortRef: `${window.startAt}/${window.endAt}`, attributableWindow: window, amountMinor: 5000, currency: "USD", occurredAt: utc("2026-02-12T00:00:00Z"), allocationNote: "direct", provenance: "synthetic-demo" };
+    const outcomes = sourceOutcomes(snapshot({ sourceSpend: [spend, { ...spend, id: "outside", amountMinor: 9000, attributableWindow: { ...window, endAt: utc("2026-03-02T00:00:00Z") } }, { ...spend, id: "other-cohort", amountMinor: 7000, cohortRef: "another-cohort" }] }), asOf, window);
+    expect(outcomes[0]?.spend).toMatchObject({ status: "recorded", amountMinor: 5000 });
+    const empty = prepareRecruitingWorkspace(snapshot({ lifecycleEvents: [] }), { workspace: "recruiting", evaluation: { asOfAt: asOf, snapshotRevision: 7, reportingTimeZone: "America/Los_Angeles" }, filters: { selectedMarket: "ALL", marketBasis: "recruiting-market-at-entry", marketIds: [], reporterIds: [], acquisitionCaseIds: [], requestIds: [], workItemIds: [], programIds: [], programEnrollmentIds: [], sourceIds: [], jobOutcomeIds: [], capabilityCodes: [], attendanceModes: [], recordRefs: [], window } } as never);
+    expect(empty.evidence.filter((item) => item.metric.id === "M07" || item.metric.id === "M08").map((item) => item.computation.status)).toEqual(["unavailable", "unavailable"]);
+    expect(empty.evidence.flatMap(validateEvidenceBundle)).toEqual([]);
   });
 });
