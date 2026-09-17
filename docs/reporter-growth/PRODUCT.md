@@ -1,5 +1,9 @@
 # Product scope
 
+> **Version 1 legacy product scope.** The three-screen constraint below describes the
+> existing v1 application. The separately authorized v2 planning direction is governed by
+> `docs/reporter-growth/v2/START_HERE.md` and does not authorize implementation by itself.
+
 ## Goal
 Create an independent application sample for a Steno provider-operations job application.
 Show how an operator sets reporter-growth goals, runs recruiting work, and turns a tested improvement into a repeatable process.

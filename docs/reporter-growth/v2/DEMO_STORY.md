@@ -16,9 +16,9 @@ The ten main request IDs are `req-lax-101` through `req-lax-110`. The baseline h
 
 ### The two growth cases
 
-**Avery Cole (`person-lax-009`)** is already in onboarding. Availability for request 109 is recorded, but a required sample capability/verification check remains unresolved. Avery is not yet usable supply. Assign the missing review to the screening owner and track the handoff to onboarding.
+**Avery Cole (`person-lax-009`)** is already in onboarding. Availability for request 109 was recorded on February 15 at 17:00Z, but a required sample capability/verification check remains unresolved. Avery is not yet usable supply. Assign the missing review to the screening owner and track the handoff to onboarding.
 
-**Rowan Ellis (`person-lax-010`)** enters through a targeted referral after the baseline. Rowan's response, screening, onboarding, and readiness occur at separate dates. The baseline must not leak Rowan's future record or result into counts. The future feed may contain the events, but it is not current operational evidence.
+**Rowan Ellis (`person-lax-010`)** enters through a targeted referral after the baseline. Rowan's response, screening, onboarding, explicit availability for request 110, and readiness occur as separate evidence. Availability is recorded on February 22 at 17:00Z, before readiness; neither fact appears at the baseline. The future feed may contain the events, but it is not current operational evidence.
 
 Neither person's qualification, readiness, acceptance, or completion is created by saving a follow-up task.
 

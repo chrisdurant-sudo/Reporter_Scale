@@ -1,5 +1,9 @@
 # Parallel build plan
 
+> **Version 1 legacy build plan.** It documents the implemented three-tab application and
+> remains historical context. It is not the v2 implementation plan and does not authorize
+> source changes during the v2 foundation review.
+
 ## 0. SETUP — coordinator, serial
 Inspect actual repository structure, instructions, dirty files, installed tools, and Codex's available delegation controls.
 Preserve user work. Do not overwrite package files, AGENTS instructions, or existing application code just to fit the plan.
