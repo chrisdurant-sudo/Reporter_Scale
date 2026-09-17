@@ -116,6 +116,12 @@ describe("V2 synthetic records and repository", () => {
     expect(validateDemoSnapshot(supersededCapability).ok).toBe(false);
     const canceledRequest = { ...structuredClone(DEMO_SNAPSHOT_V2), demandRequests: DEMO_SNAPSHOT_V2.demandRequests.map((request) => request.id === "req-lax-101" ? { ...request, status: "canceled" as const } : request) };
     expect(validateDemoSnapshot(canceledRequest).ok).toBe(false);
+    const blankRequirementsVersion = { ...structuredClone(DEMO_SNAPSHOT_V2), demandRequests: DEMO_SNAPSHOT_V2.demandRequests.map((request) => request.id === "req-lax-101" ? { ...request, requirementsVersion: " " } : request) };
+    expect(validateDemoSnapshot(blankRequirementsVersion).ok).toBe(false);
+    const blankProceeding = { ...structuredClone(DEMO_SNAPSHOT_V2), demandRequests: DEMO_SNAPSHOT_V2.demandRequests.map((request) => request.id === "req-lax-101" ? { ...request, proceedingType: " " as never } : request) };
+    expect(validateDemoSnapshot(blankProceeding).ok).toBe(false);
+    const noRequirements = { ...structuredClone(DEMO_SNAPSHOT_V2), demandRequests: DEMO_SNAPSHOT_V2.demandRequests.map((request) => request.id === "req-lax-101" ? { ...request, requiredCapabilityCodes: [], sampleCredentialRequirements: [] } : request) };
+    expect(validateDemoSnapshot(noRequirements).ok).toBe(false);
     const unknownRequirements = { ...structuredClone(DEMO_SNAPSHOT_V2), demandRequests: DEMO_SNAPSHOT_V2.demandRequests.map((request) => request.id === "req-lax-101" ? { ...request, sampleCredentialRequirements: [{ ...validRequirement, requirementCode: "" }] } : request) };
     expect(validateDemoSnapshot(unknownRequirements).ok).toBe(false);
 
