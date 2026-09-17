@@ -74,7 +74,8 @@ describe("prepareProgramsView", () => {
 
   it("attributes exact source spend once, never treats missing spend as free, and preserves historic goal revisions", () => {
     const snapshot = fixture();
-    const withSpend = { ...snapshot, sourceSpend: [{ id: "spend-1" as never, sourceId: "source-referral" as never, programId, cohortRef: "earlier", attributableWindow: null, amountMinor: 1200 as never, currency: "USD" as never, occurredAt: stamp as never, allocationNote: "Fixture", provenance: "synthetic-demo" as const }] } as DemoSnapshotV2;
+    const planWindow = snapshot.programs[0]!.measurementPlan.entryWindow;
+    const withSpend = { ...snapshot, sourceSpend: [{ id: "spend-1" as never, sourceId: "source-referral" as never, programId, cohortRef: "earlier", attributableWindow: planWindow, amountMinor: 1200 as never, currency: "USD" as never, occurredAt: stamp as never, allocationNote: "Fixture", provenance: "synthetic-demo" as const }] } as DemoSnapshotV2;
     expect(calculateSourceContribution(withSpend, withSpend.programs[0]!, "earlier", context("ALL"))[0]).toMatchObject({ attributableSpendMinor: 1200, timelyFirstJobs: 6, spendPerFirstJobMinor: 200, status: "available" });
     expect(calculateSourceContribution(snapshot, snapshot.programs[0]!, "earlier", context("ALL"))[0]?.reason).toBe("Spend not recorded.");
     const noJobs = { ...withSpend, jobOutcomes: [] } as DemoSnapshotV2;
@@ -82,6 +83,24 @@ describe("prepareProgramsView", () => {
     const revision2 = { ...snapshot.goalRevisions[0]!, id: "goal-revision-2" as never, version: 2, target: 0.7, supersedesRevisionId: snapshot.goalRevisions[0]!.id };
     const projection = projectGoalIntegrity({ ...snapshot, goalRevisions: [...snapshot.goalRevisions, revision2] }, "goal-1");
     expect(projection.revisions.map((revision) => [revision.version, revision.target, revision.metricVersion])).toEqual([[1, 0.5, "v1"], [2, 0.7, "v1"]]);
+  });
+
+  it("accepts only completed jobs tied to a matching accepted assignment and only attributable known spend", () => {
+    const snapshot = fixture();
+    const valid = snapshot.jobOutcomes[0]!;
+    const invalidJobs = [
+      { ...valid, id: "orphan-job" as never, acceptedAssignmentEventId: "missing-assignment" as never },
+      { ...valid, id: "wrong-reporter-job" as never, reporterId: "other-person" as never },
+      { ...valid, id: "wrong-request-job" as never, requestId: "other-request" as never },
+    ];
+    const nonAccepted = { ...snapshot.assignmentEvents[0]!, id: "offered-assignment" as never, state: "offered" as const };
+    invalidJobs.push({ ...valid, id: "nonaccepted-job" as never, acceptedAssignmentEventId: nonAccepted.id });
+    const invalidSnapshot = { ...snapshot, assignmentEvents: [...snapshot.assignmentEvents, nonAccepted], jobOutcomes: [...snapshot.jobOutcomes.filter((job) => job.id !== valid.id), ...invalidJobs] } as DemoSnapshotV2;
+    expect(prepareProgramsView(invalidSnapshot, context("ALL")).resultsByProgram.get(programId)!.find((item) => item.groupId === "earlier")!.timelyFirstJobs).toBe(5);
+    const planWindow = snapshot.programs[0]!.measurementPlan.entryWindow;
+    const spend = (id: string, amountMinor: number, extras: object = {}) => ({ id: id as never, sourceId: "source-referral" as never, programId, cohortRef: "earlier", attributableWindow: planWindow, amountMinor: amountMinor as never, currency: "USD" as never, occurredAt: stamp as never, allocationNote: "Fixture", provenance: "synthetic-demo" as const, ...extras });
+    const sourceSnapshot = { ...snapshot, sourceSpend: [spend("included", 1200), spend("future", 500, { occurredAt: "2026-03-01T00:00:00.000Z" as never }), spend("other-group", 700, { cohortRef: "pilot" }), spend("outside-window", 900, { attributableWindow: { startAt: "2025-12-01T00:00:00.000Z" as never, endAt: "2025-12-02T00:00:00.000Z" as never, boundary: "[start,end)" as const } })] } as DemoSnapshotV2;
+    expect(calculateSourceContribution(sourceSnapshot, sourceSnapshot.programs[0]!, "earlier", context("ALL"))[0]?.attributableSpendMinor).toBe(1200);
   });
 
   it("creates a versioned draft and requires review before a limited pilot without enrolling anyone", () => {

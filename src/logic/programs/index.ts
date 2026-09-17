@@ -1,5 +1,6 @@
 import type {
   DemoSnapshotV2,
+  DateWindow,
   EvidenceBundle,
   Program,
   ProgramDecision,
@@ -97,10 +98,11 @@ function filterEnrollments(snapshot: DemoSnapshotV2, program: Program, context: 
 }
 
 function firstCompletedJobs(snapshot: DemoSnapshotV2, asOfAt: string) {
-  const accepted = new Set(snapshot.assignmentEvents.filter((event) => event.state === "accepted" && knownAt(event.recordedAt, asOfAt)).map((event) => event.id));
+  const accepted = new Map(snapshot.assignmentEvents.filter((event) => event.state === "accepted" && knownAt(event.recordedAt, asOfAt) && event.occurredAt <= asOfAt).map((event) => [event.id, event]));
   const first = new Map<string, (typeof snapshot.jobOutcomes)[number]>();
   for (const job of snapshot.jobOutcomes) {
-    if (job.outcome !== "completed" || !job.completedAt || !knownAt(job.recordedAt, asOfAt) || !accepted.has(job.acceptedAssignmentEventId)) continue;
+    const assignment = accepted.get(job.acceptedAssignmentEventId);
+    if (job.outcome !== "completed" || !job.completedAt || !knownAt(job.recordedAt, asOfAt) || !assignment || assignment.reporterId !== job.reporterId || assignment.requestId !== job.requestId) continue;
     const existing = first.get(job.reporterId);
     if (!existing || (existing.completedAt && job.completedAt < existing.completedAt)) first.set(job.reporterId, job);
   }
@@ -184,7 +186,9 @@ export function calculateSourceContribution(snapshot: DemoSnapshotV2, program: P
   return sourceIds.map((sourceId) => {
     const sourceEnrollments = enrollments.filter((item) => item.sourceAtEntry === sourceId);
     const timely = sourceEnrollments.filter((item) => timelyIds.has(item.id)).length;
-    const spends = snapshot.sourceSpend.filter((spend) => spend.sourceId === sourceId && spend.programId === program.id && (spend.cohortRef === null || spend.cohortRef === groupId));
+    const planWindow = program.measurementPlan.entryWindow;
+    const coversPlan = (window: DateWindow | null) => window !== null && window.startAt <= planWindow.startAt && window.endAt >= planWindow.endAt;
+    const spends = snapshot.sourceSpend.filter((spend) => spend.sourceId === sourceId && spend.programId === program.id && spend.cohortRef === groupId && spend.occurredAt <= context.evaluation.asOfAt && coversPlan(spend.attributableWindow));
     if (!spends.length) return { sourceId, sourceLabel: sourceId ? sources.get(sourceId) ?? "Unknown source" : "Unknown source", attributableSpendMinor: null, timelyFirstJobs: timely, spendPerFirstJobMinor: null, status: "unavailable", reason: "Spend not recorded." };
     const amount = spends.reduce((sum, spend) => sum + spend.amountMinor, 0);
     if (!timely) return { sourceId, sourceLabel: sourceId ? sources.get(sourceId) ?? "Unknown source" : "Unknown source", attributableSpendMinor: amount, timelyFirstJobs: 0, spendPerFirstJobMinor: null, status: "unavailable", reason: `No first jobs yet; ${amount} minor units spent.` };
