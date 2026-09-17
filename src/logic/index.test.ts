@@ -95,6 +95,20 @@ describe("Reporter Growth rules", () => {
     expect(engine.previewMarketPlan(snapshot(), { ...input, goal: 2.5 })).toMatchObject({ ok: false });
   });
 
+  it("previews an underway planning period from the current demo date", () => {
+    const engine = createRulesEngine();
+    const input = {
+      marketId: "LAX" as const,
+      goal: 3,
+      assumptions: { screeningPassRate: 0.5, onboardingStartRate: 0.5, firstJobWithin14DaysRate: 0.5, leadTimeDays: 7 },
+      planningWindow: { startAt: "2026-01-01T00:00:00.000Z", endAt: "2026-03-31T23:59:59.000Z" },
+    };
+    expect(engine.previewMarketPlan(snapshot(), input)).toMatchObject({
+      ok: true,
+      value: { earliestExpectedFirstJobAt: "2026-02-23T17:00:00.000Z" },
+    });
+  });
+
   it("requires reasoned verified screening and keeps duplicate follow-up clicks from creating outcomes", () => {
     const engine = createRulesEngine();
     const incomplete = engine.saveScreening(snapshot(), {

@@ -75,13 +75,14 @@ function preview(snapshot: DemoSnapshot, input: MarketPlanInput): ActionResult<M
   const start = date(input.planningWindow.startAt); const end = date(input.planningWindow.endAt);
   if (!start || !end || start >= end) errors.push(err("INVALID_WINDOW", "Planning start must be before planning end.", "planningWindow"));
   else {
-    if (start < currentAt(snapshot)) errors.push(err("PAST_WINDOW", "Planning must start on or after the current demo date.", "planningWindow.startAt"));
-    if (start.getTime() + input.assumptions.leadTimeDays * DAY > end.getTime()) errors.push(err("INFEASIBLE_WINDOW", "The planning window ends before the assumed lead time.", "planningWindow.endAt"));
+    const effectiveStart = new Date(Math.max(start.getTime(), currentAt(snapshot).getTime()));
+    if (effectiveStart.getTime() + input.assumptions.leadTimeDays * DAY > end.getTime()) errors.push(err("INFEASIBLE_WINDOW", "The planning window ends before the assumed lead time.", "planningWindow.endAt"));
   }
   if (errors.length) return fail("The plan needs correction before it can be previewed.", errors);
   const ready = Math.ceil(input.goal / input.assumptions.firstJobWithin14DaysRate);
   const onboarding = Math.ceil(ready / input.assumptions.onboardingStartRate);
-  return ok({ marketId: input.marketId, goal: input.goal, requiredReadyReporters: ready, requiredOnboardingStarts: onboarding, requiredScreeningStarts: Math.ceil(onboarding / input.assumptions.screeningPassRate), earliestExpectedFirstJobAt: new Date(start!.getTime() + input.assumptions.leadTimeDays * DAY).toISOString(), limitation: "Fresh-recruiting scenario only; it does not credit the existing pipeline." }, "Plan preview is ready. It is a synthetic planning scenario, not an actual outcome.");
+  const effectiveStart = new Date(Math.max(start!.getTime(), currentAt(snapshot).getTime()));
+  return ok({ marketId: input.marketId, goal: input.goal, requiredReadyReporters: ready, requiredOnboardingStarts: onboarding, requiredScreeningStarts: Math.ceil(onboarding / input.assumptions.screeningPassRate), earliestExpectedFirstJobAt: new Date(effectiveStart.getTime() + input.assumptions.leadTimeDays * DAY).toISOString(), limitation: "Fresh-recruiting scenario only; it does not credit the existing pipeline." }, "Plan preview is ready. It is a synthetic planning scenario, not an actual outcome.");
 }
 function repeated(snapshot: DemoSnapshot, context: CommandContext, kind: string): ActionResult<DemoSnapshot> | null {
   const id = context.commandId;

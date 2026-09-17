@@ -52,5 +52,5 @@ function ImprovementCard({ card, decisionDraft, processForm, teamMembers, busy, 
 }
 
 function WeeklyReview({ review }: { review: ImprovementsScreenProps["view"]["weeklyReview"] }) {
-  return <section className="weekly-review" aria-labelledby="weekly-review-heading"><p className="improvements-screen__eyebrow">Record-backed review</p><h3 id="weekly-review-heading">Weekly review · {review.windowLabel}</h3><p>{review.summary}</p><dl>{review.evidence.map((item) => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd><small>Records: {item.sourceRecordIds.join(", ")}</small></div>)}</dl><h4>Next actions</h4><ul>{review.nextActions.map((action) => <li key={action}>{action}</li>)}</ul></section>;
+  return <section className="weekly-review" aria-labelledby="weekly-review-heading"><p className="improvements-screen__eyebrow">Record-backed review</p><h3 id="weekly-review-heading">Weekly review · {review.windowLabel}</h3><p>{review.summary}</p><dl>{review.evidence.map((item) => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd><small>Records: {item.sourceRecordIds.join(", ")}</small></div>)}</dl><h4>Next actions</h4><ul>{review.nextActions.map((action, index) => <li key={`${action}-${index}`}>{action}</li>)}</ul></section>;
 }

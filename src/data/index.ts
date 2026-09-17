@@ -1,7 +1,7 @@
 import type { ActionError, ActionResult, DemoRepository, DemoSnapshot, Job, LifecycleEvent, Market, MarketId, Reporter, ScreeningReview, TeamMember } from "../contracts";
 import { FIXED_AS_OF_AT, SCENARIO_IDS } from "../contracts";
 const AS_OF = FIXED_AS_OF_AT;
-const PERIOD = { startAt: "2026-01-01T00:00:00.000Z", endAt: AS_OF };
+const PERIOD = { startAt: "2026-01-01T00:00:00.000Z", endAt: "2026-03-31T23:59:59.000Z" };
 const MARKET_IDS: MarketId[] = ["LAX", "SFO", "DFW", "ORD", "ATL"];
 const INFO: Record<MarketId, { name: string; issue: string; next: string; lead: number }> = { LAX: { name: "Los Angeles", issue: "Evening availability is thin", next: "Clarify evening blocks during screening", lead: 12 }, SFO: { name: "San Francisco", issue: "Transit radius narrows the pool", next: "Offer neighborhood-specific onboarding times", lead: 14 }, DFW: { name: "Dallas–Fort Worth", issue: "New leads need more context", next: "Add a short role preview to outreach", lead: 10 }, ORD: { name: "Chicago", issue: "Winter schedule changes create pauses", next: "Confirm winter availability before onboarding", lead: 16 }, ATL: { name: "Atlanta", issue: "Weekend interest is underrepresented", next: "Test a weekend information session", lead: 11 } };
 const TEAM: TeamMember[] = [{ id: "team-maya", name: "Maya Chen", role: "Recruiting lead" }, { id: "team-jordan", name: "Jordan Brooks", role: "Reporter support" }, { id: "team-ravi", name: "Ravi Patel", role: "Onboarding coach" }];
