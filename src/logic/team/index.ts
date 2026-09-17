@@ -66,10 +66,11 @@ function qualityEvidence(id: string, metric: MetricDefinitionRef, context: Works
 }
 function targetFor(member: TeamMember, targets: readonly TeamTarget[], snapshot: DemoSnapshotV2, window: WorkspaceFilterPayload["window"]) {
   if (!window) return null;
-  return targets.find((target) => {
+  const eligible = targets.filter((target) => {
     const definition = snapshot.metricDefinitions.find((candidate) => candidate.id === target.metric.id && candidate.version === target.metric.version);
-    return target.role === member.focusRole && (target.teamMemberId === member.id || target.teamMemberId === null) && definition?.unit === "tasks" && target.reportingWindow.startAt === window.startAt && target.reportingWindow.endAt === window.endAt;
-  }) ?? null;
+    return target.role === member.focusRole && definition?.unit === "tasks" && target.reportingWindow.startAt === window.startAt && target.reportingWindow.endAt === window.endAt;
+  });
+  return eligible.find((target) => target.teamMemberId === member.id) ?? eligible.find((target) => target.teamMemberId === null) ?? null;
 }
 function itemView(work: WorkItem, snapshot: DemoSnapshotV2, context: WorkspaceQueryContext<typeof TEAM_WORKSPACE>): TeamWorkItemView {
   const status = statusAt(work, context.evaluation.asOfAt) as OpenStatus;
@@ -84,7 +85,7 @@ export function prepareTeamView(snapshot: DemoSnapshotV2, context: WorkspaceQuer
     const assigned = open.filter((work) => ownerAt(work, asOf) === member.id);
     const credited = snapshot.workItems.filter((work) => { const event = completion(work); return event !== null && event.actorId === member.actorId && beforeOrAt(event.occurredAt, asOf) && inWindow(event.occurredAt, context.filters.window); });
     const latestChecks = new Map<string, { work: WorkItem; passed: boolean; checkedAt: string }>();
-    snapshot.workQualityChecks.filter((check) => check.checkedBy === member.id && beforeOrAt(check.checkedAt, asOf)).forEach((check) => { const work = snapshot.workItems.find((item) => item.id === check.workItemId); const prior = work ? latestChecks.get(work.id) : undefined; if (work && (!prior || stamp(prior.checkedAt) < stamp(check.checkedAt))) latestChecks.set(work.id, { work, passed: check.outcome === "passed" && check.requiredCheckResults.every((result) => result.passed), checkedAt: check.checkedAt }); });
+    snapshot.workQualityChecks.filter((check) => check.checkedBy === member.id && beforeOrAt(check.checkedAt, asOf) && (context.filters.window === null || inWindow(check.checkedAt, context.filters.window))).forEach((check) => { const work = snapshot.workItems.find((item) => item.id === check.workItemId); const prior = work ? latestChecks.get(work.id) : undefined; if (work && (!prior || stamp(prior.checkedAt) < stamp(check.checkedAt))) latestChecks.set(work.id, { work, passed: check.outcome === "passed" && check.requiredCheckResults.every((result) => result.passed), checkedAt: check.checkedAt }); });
     const samples = [...latestChecks.values()]; const target = targetFor(member, snapshot.teamTargets, snapshot, context.filters.window);
     evidence.push(countEvidence(`team-open-${member.id}`, metric, context, assigned, "Open workload is distinct canonical work currently assigned at the selected as-of time."));
     evidence.push(countEvidence(`team-completed-${member.id}`, metric, context, credited, "Completion credit stays with the recorded completion actor after reassignment."));

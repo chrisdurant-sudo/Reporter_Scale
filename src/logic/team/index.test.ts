@@ -44,4 +44,16 @@ describe("prepareTeamView", () => {
     expect(snapshot.assignmentEvents).toEqual([]);
     expect(snapshot.jobOutcomes).toEqual([]);
   });
+  it("excludes inspections outside the reporting window", () => {
+    const withEarlierCheck = { ...snapshot, workQualityChecks: [...snapshot.workQualityChecks, { ...snapshot.workQualityChecks[0]!, id: "quality-old" as never, workItemId: "open-overdue" as never, checkedAt: "2026-02-28T23:59:59.000Z" as never }] } as DemoSnapshotV2;
+    const jun = prepareTeamView(withEarlierCheck, context, metric).members.find((member) => member.id === memberA)!;
+    expect(jun.quality.inspectedCount).toBe(1);
+    expect(jun.quality.sample.map((sample) => sample.workItemId)).not.toContain("open-overdue");
+  });
+  it("prefers an explicit member target over a role target regardless of target order", () => {
+    const memberTarget = { ...snapshot.teamTargets[0]!, id: "target-member" as never, teamMemberId: memberA, target: 5 };
+    const withBothTargets = { ...snapshot, teamTargets: [snapshot.teamTargets[0]!, memberTarget] } as DemoSnapshotV2;
+    const jun = prepareTeamView(withBothTargets, context, metric).members.find((member) => member.id === memberA)!;
+    expect(jun.completed.target).toBe(5);
+  });
 });
