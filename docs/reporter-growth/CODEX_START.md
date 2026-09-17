@@ -12,7 +12,11 @@ choose compatible dependencies once; create the minimal compiling foundation, ex
 public exports, typed temporary boundary stubs, test commands and real lockfile. Commit a verified base.
 Freeze the contracts, write scopes and acceptance anchors before launching parallel writers.
 
+All lane and reviewer spawns must use the named agent role with
+`fork_turns="none"` or a bounded positive value. Never use
+`fork_turns="all"`.
 Before full fan-out, perform the model-routing probe in AGENT_ROUTING.md: spawn one tiny `data`-role probe and verify, where the runtime exposes it, that the child is actually using the configured Luna/medium policy. If it inherits the coordinator configuration, the requested model is unavailable, or routing cannot be verified, do not blindly launch the full swarm. Report and correct the routing path first. Do not let workers independently raise their model/reasoning tier.
+
 
 Then use the maximum useful number of ready independent lanes permitted by the plan AND this runtime.
 There are seven lanes and matching Codex roles: experience, data, logic, markets, reporters, improvements, quality.

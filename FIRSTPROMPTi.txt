@@ -1,0 +1,181 @@
+You are the lead coordinator for this repository.
+
+Your objective is to take the Reporter Growth project from the current planning-only repository to a polished, working MVP as efficiently as possible, using parallel subagents wherever the work can be safely separated.
+
+Start by reading, in this order:
+
+AGENTS.md
+docs/reporter-growth/CODEX_START.md
+docs/reporter-growth/PRODUCT.md
+docs/reporter-growth/DESIGN.md
+docs/reporter-growth/CONTRACTS.md
+docs/reporter-growth/LANES.md
+docs/reporter-growth/BUILD_PLAN.md
+docs/reporter-growth/ACCEPTANCE.md
+docs/reporter-growth/AGENT_ROUTING.md
+docs/reporter-growth/lanes.json
+All files under docs/reporter-growth/tasks/
+
+Treat those files as the product and implementation contract.
+
+Before implementation:
+
+Inspect the repository and current Git state.
+Verify that .codex/config.toml and the role configs under .codex/agents/ are present and usable.
+Preserve Standard/slow processing. Do not enable Fast, Priority, or Ultrafast processing.
+Do not upgrade subagents to more expensive models or reasoning levels unless the documented escalation path requires it.
+Keep this coordinator on the current high-capability model for architecture, coordination, integration, and difficult decisions.
+Use cheaper configured subagents for bounded work.
+Do not collapse clearly separated lanes back into the coordinator unless necessary.
+
+Then execute the build plan.
+
+Phase 1 — Foundation
+
+Complete the minimum serial setup required before parallel work can begin:
+
+Initialize the React + TypeScript + Vite application and required tooling.
+Establish the agreed folder structure and shared contracts.
+Establish navigation and the application shell only to the extent needed for parallel feature development.
+Establish linting, type checking, tests, and basic build validation.
+Do not prematurely implement feature-lane work during foundation setup.
+Keep shared interfaces small and stable.
+
+Once the foundation compiles, freeze the shared contracts unless an integration issue later requires a coordinator-owned change.
+
+Phase 2 — Verify subagent routing
+
+Before launching the full parallel build:
+
+Launch one low-cost data subagent as a probe.
+Verify that it receives the configured model and reasoning level rather than inheriting the coordinator's model or Extra High reasoning.
+Verify that it remains on Standard processing.
+If routing is incorrect, stop before launching additional workers, diagnose the configuration, and fix or report the issue.
+Do not accidentally launch a swarm of high-cost coordinator-equivalent workers.
+Phase 3 — Parallel implementation
+
+Once routing is verified, launch as many ready, non-overlapping implementation lanes concurrently as the runtime safely permits.
+
+Use the lane ownership defined in the repo. The intended lanes are:
+
+experience
+data
+logic
+markets
+reporters
+improvements
+quality
+
+Respect each lane's exclusive write scope.
+
+Prefer parallel execution when dependencies permit it. Do not serialize independent work unnecessarily.
+
+Each worker must:
+
+Read its task brief and the relevant shared contracts before editing.
+Stay inside its assigned write scope.
+Avoid changing shared contracts, dependency configuration, application-wide wiring, or another lane's files.
+Implement working code rather than placeholders.
+Run the checks relevant to its lane before reporting completion.
+Report changed files, tests run, unresolved issues, and the commit SHA or equivalent integration point.
+Escalate ambiguous architecture or cross-lane issues back to the coordinator instead of independently broadening scope.
+Phase 4 — Integration
+
+You own integration.
+
+As workers finish:
+
+Review their outputs before integration.
+Integrate completed work sequentially and deliberately.
+Resolve cross-lane issues centrally rather than allowing workers to edit each other's domains.
+Run type checking, linting, unit tests, and the production build after meaningful integration points.
+Preserve the product's concise language and low-clutter design.
+Reject unnecessary abstractions, speculative infrastructure, fake integrations, decorative dashboard elements, and scope expansion.
+
+If a shared contract must change, make the change centrally, document the reason, and inform affected lanes before additional work proceeds.
+
+Phase 5 — Product validation
+
+After the lanes are integrated, validate the actual MVP against ACCEPTANCE.md.
+
+Specifically verify:
+
+All Markets / LAX / SFO / DFW / ORD / ATL filtering works consistently across applicable screens.
+Market selection persists across navigation.
+Markets clearly communicates growth goals, progress, remaining need, main issue, and next action.
+Reporters clearly communicates where each reporter is in the recruiting process and what action is needed.
+Screening, onboarding, and first-job completion remain distinct concepts.
+Improvements supports a complete change → result → decision → saved-process workflow.
+Goal changes do not rewrite actual results.
+Outreach or task completion cannot falsely create a completed first job.
+Synthetic data and independent-demo status are clearly disclosed.
+The UI remains concise, intuitive, sleek, and actionable at a glance.
+Visible language avoids unnecessary jargon.
+Detail is progressively disclosed rather than permanently cluttering primary screens.
+Empty states, loading states, reset behavior, and major interactions work.
+The application behaves sensibly at desktop and narrower widths.
+
+Run browser-level validation of the primary workflows, not just unit tests.
+
+Phase 6 — Independent review
+
+Once you have an integrated candidate:
+
+Launch the configured reviewer or quality agent against the assembled MVP.
+Have it review against the product requirements and acceptance criteria rather than redesigning the application.
+Fix material issues.
+Re-run the full validation suite after fixes.
+
+Do not let the reviewer independently expand scope.
+
+Decision policy
+
+Optimize for a strong MVP, not maximum feature count.
+
+When choosing between:
+
+more features vs. clearer execution → choose clearer execution;
+abstraction vs. simple maintainable code → choose simple maintainable code;
+additional dashboard information vs. faster comprehension → choose faster comprehension;
+simulated integration vs. pretending an unknown Steno API exists → use the explicit demo boundary;
+a clever automation vs. preserving human operational judgment → preserve human judgment.
+
+Do not invent Steno internal systems, performance data, API contracts, or operating policies.
+
+Use the repo's synthetic scenarios and clearly identify proposed definitions where required.
+
+Cost and reasoning policy
+
+Use the configured model and reasoning level for each lane.
+
+Do not increase a worker's model or reasoning effort simply because the task becomes inconvenient.
+
+Escalation should move upward only when needed:
+
+configured lane worker;
+stronger bounded worker if the first attempt genuinely fails;
+coordinator for cross-domain or architectural decisions;
+expensive high-reasoning work only for genuinely difficult unresolved problems.
+
+Keep the coordinator focused on architecture, orchestration, conflict resolution, integration, and final quality rather than doing all implementation itself.
+
+Working style
+
+You are authorized to execute the plan without stopping for routine confirmation.
+
+Do not ask me to manually perform implementation steps that you can perform yourself.
+
+Ask me only if there is a genuine product decision that cannot be resolved from the repository, a destructive action outside the agreed project scope, or an external credential/access requirement.
+
+Otherwise, make the best supported decision and continue.
+
+Keep a concise progress record as you work:
+
+current phase;
+active lanes;
+completed lanes;
+blocked lanes;
+integration status;
+validation status.
+
+Begin by reading the repository instructions and assessing readiness. Then proceed through foundation setup, routing verification, maximum safe parallel fan-out, integration, and MVP validation.

@@ -1,0 +1,957 @@
+{
+  "kind": "fixture_specification_not_application_data",
+  "version": 1,
+  "status": "proposed_contract_for_foundation_review",
+  "disclosure": "All records, targets and results are fictional. This is not a complete DemoSnapshot and must not be imported into the application as calculated results.",
+  "baseAsOfAt": "2026-02-16T17:00:00Z",
+  "marketIds": [
+    "LAX",
+    "SFO",
+    "DFW",
+    "ORD",
+    "ATL"
+  ],
+  "mainRequestWindow": {
+    "startAt": "2026-02-23T08:00:00Z",
+    "endAt": "2026-03-02T08:00:00Z",
+    "interval": "[start,end)"
+  },
+  "goal": {
+    "id": "goal-lax-realtime-ready",
+    "metricId": "M04",
+    "baselineAsOfAt": "2026-02-16T17:00:00Z",
+    "baselineValue": 0,
+    "target": 2,
+    "deadline": "2026-02-23T17:00:00Z",
+    "marketId": "LAX",
+    "requiredCapabilityCode": "realtime-transcription",
+    "meaning": "first-time realtime-ready additions; not an automatic hiring requirement or coverage guarantee"
+  },
+  "mainRequests": [
+    {
+      "id": "req-lax-101",
+      "marketId": "LAX",
+      "recordedAt": "2026-02-12T17:00:00Z",
+      "startAt": "2026-02-23T18:00:00Z",
+      "endAt": "2026-02-23T21:00:00Z",
+      "timeZone": "America/Los_Angeles",
+      "reporterSlots": 1,
+      "proceedingType": "deposition",
+      "attendanceMode": "remote",
+      "requiredCapabilityCodes": [
+        "realtime-transcription"
+      ],
+      "sampleRequirementPolicyId": "sample-realtime-policy-v1",
+      "expectedBaselineCategory": "confirmed",
+      "baselineAcceptedReporterId": "person-lax-001",
+      "baselineReadyCandidateIds": [],
+      "laterScenarioReporterId": "person-lax-001",
+      "expectedCompletedAt": "2026-02-23T21:00:00Z"
+    },
+    {
+      "id": "req-lax-102",
+      "marketId": "LAX",
+      "recordedAt": "2026-02-12T17:00:00Z",
+      "startAt": "2026-02-23T22:00:00Z",
+      "endAt": "2026-02-24T01:00:00Z",
+      "timeZone": "America/Los_Angeles",
+      "reporterSlots": 1,
+      "proceedingType": "deposition",
+      "attendanceMode": "remote",
+      "requiredCapabilityCodes": [
+        "realtime-transcription"
+      ],
+      "sampleRequirementPolicyId": "sample-realtime-policy-v1",
+      "expectedBaselineCategory": "confirmed",
+      "baselineAcceptedReporterId": "person-lax-002",
+      "baselineReadyCandidateIds": [],
+      "laterScenarioReporterId": "person-lax-002",
+      "expectedCompletedAt": "2026-02-24T01:00:00Z"
+    },
+    {
+      "id": "req-lax-103",
+      "marketId": "LAX",
+      "recordedAt": "2026-02-12T17:00:00Z",
+      "startAt": "2026-02-24T18:00:00Z",
+      "endAt": "2026-02-24T21:00:00Z",
+      "timeZone": "America/Los_Angeles",
+      "reporterSlots": 1,
+      "proceedingType": "deposition",
+      "attendanceMode": "remote",
+      "requiredCapabilityCodes": [
+        "realtime-transcription"
+      ],
+      "sampleRequirementPolicyId": "sample-realtime-policy-v1",
+      "expectedBaselineCategory": "confirmed",
+      "baselineAcceptedReporterId": "person-lax-003",
+      "baselineReadyCandidateIds": [],
+      "laterScenarioReporterId": "person-lax-003",
+      "expectedCompletedAt": "2026-02-24T21:00:00Z"
+    },
+    {
+      "id": "req-lax-104",
+      "marketId": "LAX",
+      "recordedAt": "2026-02-12T17:00:00Z",
+      "startAt": "2026-02-24T22:00:00Z",
+      "endAt": "2026-02-25T01:00:00Z",
+      "timeZone": "America/Los_Angeles",
+      "reporterSlots": 1,
+      "proceedingType": "deposition",
+      "attendanceMode": "remote",
+      "requiredCapabilityCodes": [
+        "realtime-transcription"
+      ],
+      "sampleRequirementPolicyId": "sample-realtime-policy-v1",
+      "expectedBaselineCategory": "confirmed",
+      "baselineAcceptedReporterId": "person-lax-004",
+      "baselineReadyCandidateIds": [],
+      "laterScenarioReporterId": "person-lax-004",
+      "expectedCompletedAt": "2026-02-25T01:00:00Z"
+    },
+    {
+      "id": "req-lax-105",
+      "marketId": "LAX",
+      "recordedAt": "2026-02-12T17:00:00Z",
+      "startAt": "2026-02-25T18:00:00Z",
+      "endAt": "2026-02-25T21:00:00Z",
+      "timeZone": "America/Los_Angeles",
+      "reporterSlots": 1,
+      "proceedingType": "deposition",
+      "attendanceMode": "remote",
+      "requiredCapabilityCodes": [
+        "realtime-transcription"
+      ],
+      "sampleRequirementPolicyId": "sample-realtime-policy-v1",
+      "expectedBaselineCategory": "confirmed",
+      "baselineAcceptedReporterId": "person-lax-005",
+      "baselineReadyCandidateIds": [],
+      "laterScenarioReporterId": "person-lax-005",
+      "expectedCompletedAt": "2026-02-25T21:00:00Z"
+    },
+    {
+      "id": "req-lax-106",
+      "marketId": "LAX",
+      "recordedAt": "2026-02-12T17:00:00Z",
+      "startAt": "2026-02-25T22:00:00Z",
+      "endAt": "2026-02-26T01:00:00Z",
+      "timeZone": "America/Los_Angeles",
+      "reporterSlots": 1,
+      "proceedingType": "deposition",
+      "attendanceMode": "remote",
+      "requiredCapabilityCodes": [
+        "realtime-transcription"
+      ],
+      "sampleRequirementPolicyId": "sample-realtime-policy-v1",
+      "expectedBaselineCategory": "confirmed",
+      "baselineAcceptedReporterId": "person-lax-006",
+      "baselineReadyCandidateIds": [],
+      "laterScenarioReporterId": "person-lax-006",
+      "expectedCompletedAt": "2026-02-26T01:00:00Z"
+    },
+    {
+      "id": "req-lax-107",
+      "marketId": "LAX",
+      "recordedAt": "2026-02-12T17:00:00Z",
+      "startAt": "2026-02-26T18:00:00Z",
+      "endAt": "2026-02-26T21:00:00Z",
+      "timeZone": "America/Los_Angeles",
+      "reporterSlots": 1,
+      "proceedingType": "deposition",
+      "attendanceMode": "remote",
+      "requiredCapabilityCodes": [
+        "realtime-transcription"
+      ],
+      "sampleRequirementPolicyId": "sample-realtime-policy-v1",
+      "expectedBaselineCategory": "possible-match",
+      "baselineAcceptedReporterId": null,
+      "baselineReadyCandidateIds": [
+        "person-lax-007"
+      ],
+      "laterScenarioReporterId": "person-lax-007",
+      "expectedCompletedAt": "2026-02-26T21:00:00Z"
+    },
+    {
+      "id": "req-lax-108",
+      "marketId": "LAX",
+      "recordedAt": "2026-02-12T17:00:00Z",
+      "startAt": "2026-02-26T22:00:00Z",
+      "endAt": "2026-02-27T01:00:00Z",
+      "timeZone": "America/Los_Angeles",
+      "reporterSlots": 1,
+      "proceedingType": "deposition",
+      "attendanceMode": "remote",
+      "requiredCapabilityCodes": [
+        "realtime-transcription"
+      ],
+      "sampleRequirementPolicyId": "sample-realtime-policy-v1",
+      "expectedBaselineCategory": "possible-match",
+      "baselineAcceptedReporterId": null,
+      "baselineReadyCandidateIds": [
+        "person-lax-008"
+      ],
+      "laterScenarioReporterId": "person-lax-008",
+      "expectedCompletedAt": "2026-02-27T01:00:00Z"
+    },
+    {
+      "id": "req-lax-109",
+      "marketId": "LAX",
+      "recordedAt": "2026-02-12T17:00:00Z",
+      "startAt": "2026-02-27T18:00:00Z",
+      "endAt": "2026-02-27T21:00:00Z",
+      "timeZone": "America/Los_Angeles",
+      "reporterSlots": 1,
+      "proceedingType": "deposition",
+      "attendanceMode": "remote",
+      "requiredCapabilityCodes": [
+        "realtime-transcription"
+      ],
+      "sampleRequirementPolicyId": "sample-realtime-policy-v1",
+      "expectedBaselineCategory": "no-verified-ready-match",
+      "baselineAcceptedReporterId": null,
+      "baselineReadyCandidateIds": [],
+      "laterScenarioReporterId": "person-lax-009",
+      "expectedCompletedAt": "2026-02-27T21:00:00Z"
+    },
+    {
+      "id": "req-lax-110",
+      "marketId": "LAX",
+      "recordedAt": "2026-02-12T17:00:00Z",
+      "startAt": "2026-02-27T22:00:00Z",
+      "endAt": "2026-02-28T01:00:00Z",
+      "timeZone": "America/Los_Angeles",
+      "reporterSlots": 1,
+      "proceedingType": "deposition",
+      "attendanceMode": "remote",
+      "requiredCapabilityCodes": [
+        "realtime-transcription"
+      ],
+      "sampleRequirementPolicyId": "sample-realtime-policy-v1",
+      "expectedBaselineCategory": "no-verified-ready-match",
+      "baselineAcceptedReporterId": null,
+      "baselineReadyCandidateIds": [],
+      "laterScenarioReporterId": "person-lax-010",
+      "expectedCompletedAt": "2026-02-28T01:00:00Z"
+    }
+  ],
+  "mainPeople": [
+    {
+      "id": "person-lax-009",
+      "fictionalName": "Avery Cole",
+      "recordedAt": "2026-02-01T17:00:00Z",
+      "caseId": "case-lax-009",
+      "onboardingStartedAt": "2026-02-10T17:00:00Z",
+      "baselineStage": "onboarding",
+      "baselineMissingRequiredEvidence": "sample-realtime-verification",
+      "availabilityForRequest": "req-lax-109",
+      "readyAt": "2026-02-20T17:00:00Z",
+      "acceptedAt": "2026-02-23T17:30:00Z",
+      "firstJobCompletedAt": "2026-02-27T21:00:00Z",
+      "expectedWithin14Days": false
+    },
+    {
+      "id": "person-lax-010",
+      "fictionalName": "Rowan Ellis",
+      "recordedAt": "2026-02-17T17:00:00Z",
+      "caseId": "case-lax-010",
+      "primarySourceId": "source-targeted-referrals",
+      "programId": "program-lax-realtime-referrals",
+      "onboardingStartedAt": "2026-02-19T17:00:00Z",
+      "baselineStage": null,
+      "mustNotAppearAtBaseline": true,
+      "readyAt": "2026-02-23T16:00:00Z",
+      "acceptedAt": "2026-02-23T17:35:00Z",
+      "firstJobCompletedAt": "2026-02-28T01:00:00Z",
+      "expectedWithin14Days": true
+    }
+  ],
+  "existingPossibleMatches": [
+    {
+      "requestId": "req-lax-107",
+      "reporterId": "person-lax-007",
+      "requiredAvailableFrom": "2026-02-26T18:00:00Z",
+      "requiredAvailableUntil": "2026-02-26T21:00:00Z",
+      "simulatedAcceptedAt": "2026-02-18T17:00:00Z"
+    },
+    {
+      "requestId": "req-lax-108",
+      "reporterId": "person-lax-008",
+      "requiredAvailableFrom": "2026-02-26T22:00:00Z",
+      "requiredAvailableUntil": "2026-02-27T01:00:00Z",
+      "simulatedAcceptedAt": "2026-02-18T17:05:00Z"
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "baseline",
+      "asOfAt": "2026-02-16T17:00:00Z",
+      "expected": {
+        "requested": 10,
+        "confirmed": 6,
+        "possible": 2,
+        "noReadyMatch": 2,
+        "newRealtimeReady": 0,
+        "mainPairFirstJobs": 0
+      }
+    },
+    {
+      "id": "plan-saved",
+      "asOfAt": "2026-02-16T17:10:00Z",
+      "expected": {
+        "requested": 10,
+        "confirmed": 6,
+        "possible": 2,
+        "noReadyMatch": 2,
+        "newRealtimeReady": 0,
+        "mainPairFirstJobs": 0
+      }
+    },
+    {
+      "id": "existing-acceptances",
+      "asOfAt": "2026-02-18T17:10:00Z",
+      "expected": {
+        "requested": 10,
+        "confirmed": 8,
+        "possible": 0,
+        "noReadyMatch": 2,
+        "newRealtimeReady": 0,
+        "mainPairFirstJobs": 0
+      }
+    },
+    {
+      "id": "two-new-ready",
+      "asOfAt": "2026-02-23T17:00:00Z",
+      "expected": {
+        "requested": 10,
+        "confirmed": 8,
+        "possible": 2,
+        "noReadyMatch": 0,
+        "newRealtimeReady": 2,
+        "mainPairFirstJobs": 0
+      }
+    },
+    {
+      "id": "new-acceptances",
+      "asOfAt": "2026-02-23T17:45:00Z",
+      "expected": {
+        "requested": 10,
+        "confirmed": 10,
+        "possible": 0,
+        "noReadyMatch": 0,
+        "newRealtimeReady": 2,
+        "mainPairFirstJobs": 0
+      }
+    },
+    {
+      "id": "original-plan-delivered",
+      "asOfAt": "2026-02-28T02:00:00Z",
+      "expected": {
+        "originalPlanRequests": 10,
+        "originalPlanCompletedRequests": 10,
+        "newRealtimeReady": 2,
+        "mainPairFirstJobs": 2,
+        "upcomingRequestsFromOriginalSet": 0
+      }
+    },
+    {
+      "id": "pair-cohort-mature",
+      "asOfAt": "2026-03-09T17:00:00Z",
+      "expected": {
+        "mainPairMatureOnboardingEntrants": 2,
+        "mainPairTimelyFirstJobs": 1,
+        "mainPairCompletedToDate": 2
+      }
+    }
+  ],
+  "programs": [
+    {
+      "id": "program-readiness-checklist",
+      "marketIds": [
+        "LAX",
+        "SFO"
+      ],
+      "origin": "fictional shared-spreadsheet workaround",
+      "measurementMetricId": "M08",
+      "pilotTargetRate": 0.5,
+      "expectedEarlierRate": 0.3,
+      "expectedPilotRate": 0.55,
+      "expectedBaselineStatus": "reviewing",
+      "expectedDecisionOption": "expand",
+      "causalImpactEstablished": false,
+      "groups": [
+        {
+          "id": "earlier",
+          "expectedMatureEntrants": 20,
+          "expectedTimelyFirstJobs": 6,
+          "members": [
+            {
+              "id": "enrollment-checklist-earlier-lax-01",
+              "reporterId": "person-checklist-earlier-lax-01",
+              "groupId": "earlier",
+              "marketAtEntry": "LAX",
+              "onboardingStartedAt": "2026-01-05T17:00:00Z",
+              "observationEndsAt": "2026-01-19T17:00:00Z",
+              "expectedFirstJobWithin14Days": true,
+              "requiredTimelyJobId": "job-checklist-earlier-lax-01",
+              "requiredTimelyJobCompletedAt": "2026-01-12T21:00:00Z",
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-earlier-lax-02",
+              "reporterId": "person-checklist-earlier-lax-02",
+              "groupId": "earlier",
+              "marketAtEntry": "LAX",
+              "onboardingStartedAt": "2026-01-06T17:00:00Z",
+              "observationEndsAt": "2026-01-20T17:00:00Z",
+              "expectedFirstJobWithin14Days": true,
+              "requiredTimelyJobId": "job-checklist-earlier-lax-02",
+              "requiredTimelyJobCompletedAt": "2026-01-13T21:00:00Z",
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-earlier-lax-03",
+              "reporterId": "person-checklist-earlier-lax-03",
+              "groupId": "earlier",
+              "marketAtEntry": "LAX",
+              "onboardingStartedAt": "2026-01-07T17:00:00Z",
+              "observationEndsAt": "2026-01-21T17:00:00Z",
+              "expectedFirstJobWithin14Days": true,
+              "requiredTimelyJobId": "job-checklist-earlier-lax-03",
+              "requiredTimelyJobCompletedAt": "2026-01-14T21:00:00Z",
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-earlier-lax-04",
+              "reporterId": "person-checklist-earlier-lax-04",
+              "groupId": "earlier",
+              "marketAtEntry": "LAX",
+              "onboardingStartedAt": "2026-01-08T17:00:00Z",
+              "observationEndsAt": "2026-01-22T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-earlier-lax-05",
+              "reporterId": "person-checklist-earlier-lax-05",
+              "groupId": "earlier",
+              "marketAtEntry": "LAX",
+              "onboardingStartedAt": "2026-01-09T17:00:00Z",
+              "observationEndsAt": "2026-01-23T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-earlier-lax-06",
+              "reporterId": "person-checklist-earlier-lax-06",
+              "groupId": "earlier",
+              "marketAtEntry": "LAX",
+              "onboardingStartedAt": "2026-01-05T17:00:00Z",
+              "observationEndsAt": "2026-01-19T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-earlier-lax-07",
+              "reporterId": "person-checklist-earlier-lax-07",
+              "groupId": "earlier",
+              "marketAtEntry": "LAX",
+              "onboardingStartedAt": "2026-01-06T17:00:00Z",
+              "observationEndsAt": "2026-01-20T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-earlier-lax-08",
+              "reporterId": "person-checklist-earlier-lax-08",
+              "groupId": "earlier",
+              "marketAtEntry": "LAX",
+              "onboardingStartedAt": "2026-01-07T17:00:00Z",
+              "observationEndsAt": "2026-01-21T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-earlier-lax-09",
+              "reporterId": "person-checklist-earlier-lax-09",
+              "groupId": "earlier",
+              "marketAtEntry": "LAX",
+              "onboardingStartedAt": "2026-01-08T17:00:00Z",
+              "observationEndsAt": "2026-01-22T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-earlier-lax-10",
+              "reporterId": "person-checklist-earlier-lax-10",
+              "groupId": "earlier",
+              "marketAtEntry": "LAX",
+              "onboardingStartedAt": "2026-01-09T17:00:00Z",
+              "observationEndsAt": "2026-01-23T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-earlier-sfo-01",
+              "reporterId": "person-checklist-earlier-sfo-01",
+              "groupId": "earlier",
+              "marketAtEntry": "SFO",
+              "onboardingStartedAt": "2026-01-05T17:00:00Z",
+              "observationEndsAt": "2026-01-19T17:00:00Z",
+              "expectedFirstJobWithin14Days": true,
+              "requiredTimelyJobId": "job-checklist-earlier-sfo-01",
+              "requiredTimelyJobCompletedAt": "2026-01-12T21:00:00Z",
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-earlier-sfo-02",
+              "reporterId": "person-checklist-earlier-sfo-02",
+              "groupId": "earlier",
+              "marketAtEntry": "SFO",
+              "onboardingStartedAt": "2026-01-06T17:00:00Z",
+              "observationEndsAt": "2026-01-20T17:00:00Z",
+              "expectedFirstJobWithin14Days": true,
+              "requiredTimelyJobId": "job-checklist-earlier-sfo-02",
+              "requiredTimelyJobCompletedAt": "2026-01-13T21:00:00Z",
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-earlier-sfo-03",
+              "reporterId": "person-checklist-earlier-sfo-03",
+              "groupId": "earlier",
+              "marketAtEntry": "SFO",
+              "onboardingStartedAt": "2026-01-07T17:00:00Z",
+              "observationEndsAt": "2026-01-21T17:00:00Z",
+              "expectedFirstJobWithin14Days": true,
+              "requiredTimelyJobId": "job-checklist-earlier-sfo-03",
+              "requiredTimelyJobCompletedAt": "2026-01-14T21:00:00Z",
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-earlier-sfo-04",
+              "reporterId": "person-checklist-earlier-sfo-04",
+              "groupId": "earlier",
+              "marketAtEntry": "SFO",
+              "onboardingStartedAt": "2026-01-08T17:00:00Z",
+              "observationEndsAt": "2026-01-22T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-earlier-sfo-05",
+              "reporterId": "person-checklist-earlier-sfo-05",
+              "groupId": "earlier",
+              "marketAtEntry": "SFO",
+              "onboardingStartedAt": "2026-01-09T17:00:00Z",
+              "observationEndsAt": "2026-01-23T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-earlier-sfo-06",
+              "reporterId": "person-checklist-earlier-sfo-06",
+              "groupId": "earlier",
+              "marketAtEntry": "SFO",
+              "onboardingStartedAt": "2026-01-05T17:00:00Z",
+              "observationEndsAt": "2026-01-19T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-earlier-sfo-07",
+              "reporterId": "person-checklist-earlier-sfo-07",
+              "groupId": "earlier",
+              "marketAtEntry": "SFO",
+              "onboardingStartedAt": "2026-01-06T17:00:00Z",
+              "observationEndsAt": "2026-01-20T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-earlier-sfo-08",
+              "reporterId": "person-checklist-earlier-sfo-08",
+              "groupId": "earlier",
+              "marketAtEntry": "SFO",
+              "onboardingStartedAt": "2026-01-07T17:00:00Z",
+              "observationEndsAt": "2026-01-21T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-earlier-sfo-09",
+              "reporterId": "person-checklist-earlier-sfo-09",
+              "groupId": "earlier",
+              "marketAtEntry": "SFO",
+              "onboardingStartedAt": "2026-01-08T17:00:00Z",
+              "observationEndsAt": "2026-01-22T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-earlier-sfo-10",
+              "reporterId": "person-checklist-earlier-sfo-10",
+              "groupId": "earlier",
+              "marketAtEntry": "SFO",
+              "onboardingStartedAt": "2026-01-09T17:00:00Z",
+              "observationEndsAt": "2026-01-23T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            }
+          ]
+        },
+        {
+          "id": "pilot",
+          "expectedMatureEntrants": 20,
+          "expectedTimelyFirstJobs": 11,
+          "members": [
+            {
+              "id": "enrollment-checklist-pilot-lax-01",
+              "reporterId": "person-checklist-pilot-lax-01",
+              "groupId": "pilot",
+              "marketAtEntry": "LAX",
+              "onboardingStartedAt": "2026-01-19T17:00:00Z",
+              "observationEndsAt": "2026-02-02T17:00:00Z",
+              "expectedFirstJobWithin14Days": true,
+              "requiredTimelyJobId": "job-checklist-pilot-lax-01",
+              "requiredTimelyJobCompletedAt": "2026-01-26T21:00:00Z",
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-pilot-lax-02",
+              "reporterId": "person-checklist-pilot-lax-02",
+              "groupId": "pilot",
+              "marketAtEntry": "LAX",
+              "onboardingStartedAt": "2026-01-20T17:00:00Z",
+              "observationEndsAt": "2026-02-03T17:00:00Z",
+              "expectedFirstJobWithin14Days": true,
+              "requiredTimelyJobId": "job-checklist-pilot-lax-02",
+              "requiredTimelyJobCompletedAt": "2026-01-27T21:00:00Z",
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-pilot-lax-03",
+              "reporterId": "person-checklist-pilot-lax-03",
+              "groupId": "pilot",
+              "marketAtEntry": "LAX",
+              "onboardingStartedAt": "2026-01-21T17:00:00Z",
+              "observationEndsAt": "2026-02-04T17:00:00Z",
+              "expectedFirstJobWithin14Days": true,
+              "requiredTimelyJobId": "job-checklist-pilot-lax-03",
+              "requiredTimelyJobCompletedAt": "2026-01-28T21:00:00Z",
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-pilot-lax-04",
+              "reporterId": "person-checklist-pilot-lax-04",
+              "groupId": "pilot",
+              "marketAtEntry": "LAX",
+              "onboardingStartedAt": "2026-01-22T17:00:00Z",
+              "observationEndsAt": "2026-02-05T17:00:00Z",
+              "expectedFirstJobWithin14Days": true,
+              "requiredTimelyJobId": "job-checklist-pilot-lax-04",
+              "requiredTimelyJobCompletedAt": "2026-01-29T21:00:00Z",
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-pilot-lax-05",
+              "reporterId": "person-checklist-pilot-lax-05",
+              "groupId": "pilot",
+              "marketAtEntry": "LAX",
+              "onboardingStartedAt": "2026-01-23T17:00:00Z",
+              "observationEndsAt": "2026-02-06T17:00:00Z",
+              "expectedFirstJobWithin14Days": true,
+              "requiredTimelyJobId": "job-checklist-pilot-lax-05",
+              "requiredTimelyJobCompletedAt": "2026-01-30T21:00:00Z",
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-pilot-lax-06",
+              "reporterId": "person-checklist-pilot-lax-06",
+              "groupId": "pilot",
+              "marketAtEntry": "LAX",
+              "onboardingStartedAt": "2026-01-19T17:00:00Z",
+              "observationEndsAt": "2026-02-02T17:00:00Z",
+              "expectedFirstJobWithin14Days": true,
+              "requiredTimelyJobId": "job-checklist-pilot-lax-06",
+              "requiredTimelyJobCompletedAt": "2026-01-26T21:00:00Z",
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-pilot-lax-07",
+              "reporterId": "person-checklist-pilot-lax-07",
+              "groupId": "pilot",
+              "marketAtEntry": "LAX",
+              "onboardingStartedAt": "2026-01-20T17:00:00Z",
+              "observationEndsAt": "2026-02-03T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-pilot-lax-08",
+              "reporterId": "person-checklist-pilot-lax-08",
+              "groupId": "pilot",
+              "marketAtEntry": "LAX",
+              "onboardingStartedAt": "2026-01-21T17:00:00Z",
+              "observationEndsAt": "2026-02-04T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-pilot-lax-09",
+              "reporterId": "person-checklist-pilot-lax-09",
+              "groupId": "pilot",
+              "marketAtEntry": "LAX",
+              "onboardingStartedAt": "2026-01-22T17:00:00Z",
+              "observationEndsAt": "2026-02-05T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-pilot-lax-10",
+              "reporterId": "person-checklist-pilot-lax-10",
+              "groupId": "pilot",
+              "marketAtEntry": "LAX",
+              "onboardingStartedAt": "2026-01-23T17:00:00Z",
+              "observationEndsAt": "2026-02-06T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-pilot-sfo-01",
+              "reporterId": "person-checklist-pilot-sfo-01",
+              "groupId": "pilot",
+              "marketAtEntry": "SFO",
+              "onboardingStartedAt": "2026-01-19T17:00:00Z",
+              "observationEndsAt": "2026-02-02T17:00:00Z",
+              "expectedFirstJobWithin14Days": true,
+              "requiredTimelyJobId": "job-checklist-pilot-sfo-01",
+              "requiredTimelyJobCompletedAt": "2026-01-26T21:00:00Z",
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-pilot-sfo-02",
+              "reporterId": "person-checklist-pilot-sfo-02",
+              "groupId": "pilot",
+              "marketAtEntry": "SFO",
+              "onboardingStartedAt": "2026-01-20T17:00:00Z",
+              "observationEndsAt": "2026-02-03T17:00:00Z",
+              "expectedFirstJobWithin14Days": true,
+              "requiredTimelyJobId": "job-checklist-pilot-sfo-02",
+              "requiredTimelyJobCompletedAt": "2026-01-27T21:00:00Z",
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-pilot-sfo-03",
+              "reporterId": "person-checklist-pilot-sfo-03",
+              "groupId": "pilot",
+              "marketAtEntry": "SFO",
+              "onboardingStartedAt": "2026-01-21T17:00:00Z",
+              "observationEndsAt": "2026-02-04T17:00:00Z",
+              "expectedFirstJobWithin14Days": true,
+              "requiredTimelyJobId": "job-checklist-pilot-sfo-03",
+              "requiredTimelyJobCompletedAt": "2026-01-28T21:00:00Z",
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-pilot-sfo-04",
+              "reporterId": "person-checklist-pilot-sfo-04",
+              "groupId": "pilot",
+              "marketAtEntry": "SFO",
+              "onboardingStartedAt": "2026-01-22T17:00:00Z",
+              "observationEndsAt": "2026-02-05T17:00:00Z",
+              "expectedFirstJobWithin14Days": true,
+              "requiredTimelyJobId": "job-checklist-pilot-sfo-04",
+              "requiredTimelyJobCompletedAt": "2026-01-29T21:00:00Z",
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-pilot-sfo-05",
+              "reporterId": "person-checklist-pilot-sfo-05",
+              "groupId": "pilot",
+              "marketAtEntry": "SFO",
+              "onboardingStartedAt": "2026-01-23T17:00:00Z",
+              "observationEndsAt": "2026-02-06T17:00:00Z",
+              "expectedFirstJobWithin14Days": true,
+              "requiredTimelyJobId": "job-checklist-pilot-sfo-05",
+              "requiredTimelyJobCompletedAt": "2026-01-30T21:00:00Z",
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-pilot-sfo-06",
+              "reporterId": "person-checklist-pilot-sfo-06",
+              "groupId": "pilot",
+              "marketAtEntry": "SFO",
+              "onboardingStartedAt": "2026-01-19T17:00:00Z",
+              "observationEndsAt": "2026-02-02T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-pilot-sfo-07",
+              "reporterId": "person-checklist-pilot-sfo-07",
+              "groupId": "pilot",
+              "marketAtEntry": "SFO",
+              "onboardingStartedAt": "2026-01-20T17:00:00Z",
+              "observationEndsAt": "2026-02-03T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-pilot-sfo-08",
+              "reporterId": "person-checklist-pilot-sfo-08",
+              "groupId": "pilot",
+              "marketAtEntry": "SFO",
+              "onboardingStartedAt": "2026-01-21T17:00:00Z",
+              "observationEndsAt": "2026-02-04T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-pilot-sfo-09",
+              "reporterId": "person-checklist-pilot-sfo-09",
+              "groupId": "pilot",
+              "marketAtEntry": "SFO",
+              "onboardingStartedAt": "2026-01-22T17:00:00Z",
+              "observationEndsAt": "2026-02-05T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            },
+            {
+              "id": "enrollment-checklist-pilot-sfo-10",
+              "reporterId": "person-checklist-pilot-sfo-10",
+              "groupId": "pilot",
+              "marketAtEntry": "SFO",
+              "onboardingStartedAt": "2026-01-23T17:00:00Z",
+              "observationEndsAt": "2026-02-06T17:00:00Z",
+              "expectedFirstJobWithin14Days": false,
+              "requiredTimelyJobId": null,
+              "requiredTimelyJobCompletedAt": null,
+              "requiredBaselineCapability": "standard-transcription",
+              "mustNotBecomeIncidentalMainRealtimeCandidate": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "program-lax-realtime-referrals",
+      "marketIds": [
+        "LAX"
+      ],
+      "expectedBaselineStatus": "trying",
+      "measurement": "qualified candidates and first jobs for the declared source cohort",
+      "requiresExplicitMemberRecords": true,
+      "immatureParticipantsRemainVisible": true
+    },
+    {
+      "id": "program-dfw-broad-outreach",
+      "marketIds": [
+        "DFW"
+      ],
+      "expectedBaselineStatus": "closed",
+      "expectedDecision": "stop",
+      "requiresExplicitMemberRecords": true,
+      "requiresRecordedPredeclaredTargetAndCompletedWindow": true,
+      "fixtureAuthorMustSetAndReconcileExactCounts": true
+    }
+  ],
+  "mustNotBeUsedAsRuntimeValues": [
+    "expected",
+    "expectedBaselineCategory",
+    "expectedEarlierRate",
+    "expectedPilotRate",
+    "expectedMatureEntrants",
+    "expectedTimelyFirstJobs"
+  ],
+  "fixtureRequirements": [
+    "People 001-008 are already verified and ready before baseline; their specific availability supports their main requests.",
+    "Readiness criteria and request requirements are sample rules, not legal certification policy.",
+    "Full lifecycle, verification, availability, assignment and completed-job records must be generated separately to produce these expected values.",
+    "There are no incidental ready matches to main requests 109/110 at baseline.",
+    "Program sample members are distinct from main people and do not incidentally satisfy the narrow realtime/time request filter.",
+    "Accepted assignments 101-106 are known before baseline and are valid for their entire scheduled intervals.",
+    "Plan, follow-up, outreach-preview and process-draft actions cannot manufacture external response or completion events.",
+    "At the final delivery checkpoint requests are reviewed as the original plan, not mislabeled as future work."
+  ]
+}

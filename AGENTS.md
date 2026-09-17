@@ -21,6 +21,9 @@ The path registry is `docs/reporter-growth/lanes.json`. Reading other lanes for 
 - Complete the serial setup and freeze a compiling baseline before starting parallel implementation.
 - At most seven lane workers and one optional read-only reviewer concurrently; obey lower actual runtime limits. Workers do not spawn children.
 - Use the named Codex roles in `.codex/config.toml` and `AGENT_ROUTING.md`; workers do not raise their own model/reasoning tier.
+- Every `spawn_agent` call must specify `fork_turns="none"` or a bounded positive number. Never use `fork_turns="all"` because full-history forks inherit the coordinator model and reasoning effort instead of the named role configuration.
+- Prefer `fork_turns="none"` for lane workers. Include all required context, paths, commit hashes, and acceptance criteria in the worker message.
+- After spawning the routing probe, verify its actual session metadata before spawning any implementation workers.
 - One worker, one assigned lane, one verified Git worktree and branch. A separate chat is not a separate checkout.
 - Coordinator alone owns shared contracts, dependencies, configuration, integration, governance, and merges.
 - Feature screens consume prepared data and callbacks. They do not import sibling features, storage, or canonical calculations.

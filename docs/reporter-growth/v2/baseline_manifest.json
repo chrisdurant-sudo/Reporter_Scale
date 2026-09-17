@@ -1,0 +1,104 @@
+{
+  "reviewed_archive": "STENO_REVIEW.zip",
+  "archive_sha256": "ed78c5e19bc17c9c8291962e52de4354edc8d966286ac306ba49804fb564d093",
+  "evidence_type": "static source inspection; supplied PDF views; not a live repository or runtime test",
+  "selected_files": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "e6a9cd89e04bdf498205b56d34af439470164fd2467d137dbfb2023dbba93c45",
+      "bytes": 2685
+    },
+    {
+      "path": "README.md",
+      "sha256": "10fa54d74dea3562ca8cf7eeb8cb3be11b6d929bf365fd77b1d0432937fed92e",
+      "bytes": 2347
+    },
+    {
+      "path": "package.json",
+      "sha256": "ff6bf90f640e4f3ad2613bc83c682effeb44d83d188b21f97869639464e5a946",
+      "bytes": 1200
+    },
+    {
+      "path": "docs/reporter-growth/PRODUCT.md",
+      "sha256": "d7b17888973fb9a19fea8f24f6bbb86b29fc855c0bb7801394100c4a55140dc1",
+      "bytes": 3528
+    },
+    {
+      "path": "docs/reporter-growth/LANES.md",
+      "sha256": "feeec8bbd28d50db646c2084ff7f43d9efc033bc61e9fc4ceeb1c7270e3a1bf3",
+      "bytes": 4136
+    },
+    {
+      "path": "docs/reporter-growth/lanes.json",
+      "sha256": "d76916efb70ae874954f4a20c71f7b9033a5607f9ca250567a92e1df155b4ea9",
+      "bytes": 2910
+    },
+    {
+      "path": "src/contracts/models.ts",
+      "sha256": "e1e436825947b104ff3c9503e71dd7dd8d62460581f8ec28e4077a31bfe9d94d",
+      "bytes": 4830
+    },
+    {
+      "path": "src/contracts/commands.ts",
+      "sha256": "489c9cc37002ae20ccb2571f58850f6677e0fc0cd0c9a1e100b45a113551281a",
+      "bytes": 2326
+    },
+    {
+      "path": "src/contracts/views.ts",
+      "sha256": "9b4df3daee9c5989a18e0b06cc08940eab94b50c359faeb1daa88cac80a8ae44",
+      "bytes": 5868
+    },
+    {
+      "path": "src/contracts/rules.ts",
+      "sha256": "d676da81c3e8efccc5b0b3f275f0ef9bb85105dfc5aa0f9127e7f0170901ad78",
+      "bytes": 2506
+    },
+    {
+      "path": "src/contracts/repository.ts",
+      "sha256": "37a8b7df3af51384121a386524b10a743ea0a13f85100c11f3e132c6e8f1aacc",
+      "bytes": 464
+    },
+    {
+      "path": "src/contracts/scenario.ts",
+      "sha256": "c51544a828c32677a13bf193036ae5697add95f108ceb1799b91f0e10db4fdc8",
+      "bytes": 619
+    },
+    {
+      "path": "src/data/index.ts",
+      "sha256": "4b0afd7c7747efcf33ed4e63af405920a4b5bbfcb331b10ede521b9e50d8c651",
+      "bytes": 11710
+    },
+    {
+      "path": "src/logic/index.ts",
+      "sha256": "e4038e73255ef64dc80f6ea197a6675eb6e5ccdb8dfb9221620134ee1541806b",
+      "bytes": 35752
+    },
+    {
+      "path": "src/integration/App.tsx",
+      "sha256": "40649933d5e6317fb790d400f9d73beaa6994b9a4a3c939814a523409cd1e0e0",
+      "bytes": 11008
+    },
+    {
+      "path": "src/features/markets/index.tsx",
+      "sha256": "cd0c26f6ba59664d1a5bc906dee88e14e51061960024def01289e531961837e1",
+      "bytes": 8175
+    },
+    {
+      "path": "src/features/reporters/index.tsx",
+      "sha256": "c9c72807fcb6639ce28427585047bbac18486f92fa374a446e5795ca8e118468",
+      "bytes": 13509
+    },
+    {
+      "path": "src/features/improvements/index.tsx",
+      "sha256": "cf6450e8a606348736c4f1e4b3880ae85343b6bfceb3428f7b94e4855c673fda",
+      "bytes": 9809
+    }
+  ],
+  "source_boundaries": [
+    "The user-supplied JD excerpt and latest approved product direction are the business basis.",
+    "All scenario counts and dates in v2 are proposed synthetic examples, not facts recovered from the existing dataset.",
+    "The supplied PDFs are print views and do not prove live browser behavior.",
+    "No current Codex schema or model availability is asserted; .codex is not modified.",
+    "Current local files may differ; compare before editing."
+  ]
+}

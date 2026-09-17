@@ -21,7 +21,9 @@ No subagent role is intentionally configured to use GPT-5.6 Sol. The coordinator
 ## Startup verification gate
 Do **not** immediately fan out all workers. After `SETUP_FROZEN`:
 
-1. Spawn exactly one `data` worker on a tiny read-only/no-op probe task first.
+1. Spawn exactly one `data` worker on a tiny read-only/no-op probe.
+   Use `agent_type="data"` and `fork_turns="none"`. Never use
+   `fork_turns="all"` for a role-routed worker.
 2. Verify from the Codex UI/session metadata, if exposed, that the child is actually running the configured model and reasoning effort (`gpt-5.6-luna`, `medium`).
 3. If routing is correct, close the probe and begin normal fan-out using the named lane roles.
 4. If the child inherits the coordinator model/effort, the role model is unavailable, or the client does not expose enough evidence to verify routing, **do not launch the full swarm blindly**. Report the observed behavior and either fix the local Codex configuration/version or use explicit per-spawn model controls supported by that runtime.
