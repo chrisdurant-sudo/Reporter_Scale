@@ -1,0 +1,7 @@
+.programs { display: grid; gap: 1rem; }
+.programs__table-wrap { overflow-x: auto; }
+.programs table { width: 100%; border-collapse: collapse; }
+.programs th, .programs td { padding: .55rem; text-align: left; border-bottom: 1px solid #d8dce5; vertical-align: top; }
+.programs__detail { padding: 1rem; border: 1px solid #d8dce5; border-radius: .5rem; }
+.programs__actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+.programs button, .programs select { font: inherit; }
