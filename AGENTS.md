@@ -1,10 +1,10 @@
 # Reporter Growth
 
-> **Current phase:** Reporter Growth v2 foundation review, governed by
-> `docs/reporter-growth/v2/START_HERE.md`. The existing three-tab application and
-> `docs/reporter-growth/CODEX_START.md` build entry point are version 1. This phase is
-> documentation-only; do not run the legacy build prompt. Future source implementation
-> requires explicit authorization and a frozen v2 lane registry.
+> **Current phase:** Reporter Growth v2 P1 source-contract freeze, based on the approved
+> `docs/reporter-growth/v2/FOUNDATION_REVIEW.md`. The existing three-tab application and
+> `docs/reporter-growth/CODEX_START.md` build entry point are version 1. P1 may add only the
+> shared v2 contracts, coordinator-owned compatibility/invariant seams, focused contract
+> tests, and its freeze report. Do not launch implementation lanes or begin feature work.
 
 The independent synthetic-data application currently in `src/` implements the version 1
 scope defined in `docs/reporter-growth/PRODUCT.md`. The original v1 repository packet began

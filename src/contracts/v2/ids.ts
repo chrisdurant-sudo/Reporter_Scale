@@ -1,0 +1,38 @@
+declare const v2IdBrand: unique symbol;
+
+export type V2Id<Name extends string> = string & { readonly [v2IdBrand]: Name };
+
+export type ActorId = V2Id<"ActorId">;
+export type AssignmentEventId = V2Id<"AssignmentEventId">;
+export type AvailabilityWindowId = V2Id<"AvailabilityWindowId">;
+export type CapabilityVerificationId = V2Id<"CapabilityVerificationId">;
+export type CoachingActionId = V2Id<"CoachingActionId">;
+export type CommandId = V2Id<"CommandId">;
+export type CredentialRecordId = V2Id<"CredentialRecordId">;
+export type EvidenceBundleId = V2Id<"EvidenceBundleId">;
+export type GoalId = V2Id<"GoalId">;
+export type GoalRevisionId = V2Id<"GoalRevisionId">;
+export type JobOutcomeId = V2Id<"JobOutcomeId">;
+export type LifecycleEventId = V2Id<"LifecycleEventId">;
+export type AcquisitionCaseId = V2Id<"AcquisitionCaseId">;
+export type MetricDefinitionId = V2Id<"MetricDefinitionId">;
+export type OnboardingStepId = V2Id<"OnboardingStepId">;
+export type ProcessVersionId = V2Id<"ProcessVersionId">;
+export type ProgramDecisionId = V2Id<"ProgramDecisionId">;
+export type ProgramEnrollmentId = V2Id<"ProgramEnrollmentId">;
+export type ProgramId = V2Id<"ProgramId">;
+export type ProgramNoteId = V2Id<"ProgramNoteId">;
+export type ReadinessEventId = V2Id<"ReadinessEventId">;
+export type ReporterId = V2Id<"ReporterId">;
+export type RequestId = V2Id<"RequestId">;
+export type ScenarioCheckpointId = V2Id<"ScenarioCheckpointId">;
+export type ScenarioEventId = V2Id<"ScenarioEventId">;
+export type ScenarioFeedId = V2Id<"ScenarioFeedId">;
+export type ScreeningReviewId = V2Id<"ScreeningReviewId">;
+export type SourceId = V2Id<"SourceId">;
+export type SourceSpendId = V2Id<"SourceSpendId">;
+export type TeamMemberId = V2Id<"TeamMemberId">;
+export type TeamTargetId = V2Id<"TeamTargetId">;
+export type WorkItemId = V2Id<"WorkItemId">;
+export type WorkQualityCheckId = V2Id<"WorkQualityCheckId">;
+export type WorkaroundExampleId = V2Id<"WorkaroundExampleId">;
