@@ -104,6 +104,20 @@ describe("V2 synthetic records and repository", () => {
     expect(validateDemoSnapshot(wrongServiceMarket).ok).toBe(false);
     const wrongAttendance = { ...structuredClone(DEMO_SNAPSHOT_V2), reporters: DEMO_SNAPSHOT_V2.reporters.map((reporter) => reporter.id === "person-lax-001" ? { ...reporter, preferences: { ...reporter.preferences, attendanceModes: [] } } : reporter) };
     expect(validateDemoSnapshot(wrongAttendance).ok).toBe(false);
+    const missingServiceScope = { ...structuredClone(DEMO_SNAPSHOT_V2), reporters: DEMO_SNAPSHOT_V2.reporters.map((reporter) => reporter.id === "person-lax-001" ? { ...reporter, serviceMarketIds: [] } : reporter) };
+    expect(validateDemoSnapshot(missingServiceScope).ok).toBe(false);
+    const unsupportedProceeding = { ...structuredClone(DEMO_SNAPSHOT_V2), reporters: DEMO_SNAPSHOT_V2.reporters.map((reporter) => reporter.id === "person-lax-001" ? { ...reporter, preferences: { ...reporter.preferences, supportedProceedingTypes: [] } } : reporter) };
+    expect(validateDemoSnapshot(unsupportedProceeding).ok).toBe(false);
+    const closedAtAcceptance = { ...structuredClone(DEMO_SNAPSHOT_V2), lifecycleEvents: [...DEMO_SNAPSHOT_V2.lifecycleEvents, { ...DEMO_SNAPSHOT_V2.lifecycleEvents.find((event) => event.reporterId === "person-lax-001")!, id: "closed-test" as never, eventType: "closed" as const, occurredAt: "2026-02-13T17:00:00Z" as never, recordedAt: "2026-02-13T17:00:00Z" as never }] };
+    expect(validateDemoSnapshot(closedAtAcceptance).ok).toBe(false);
+    const explicitUnavailable = { ...structuredClone(DEMO_SNAPSHOT_V2), availabilityWindows: [...DEMO_SNAPSHOT_V2.availabilityWindows, { ...DEMO_SNAPSHOT_V2.availabilityWindows[0]!, id: "unavailable-test" as never, status: "unavailable" as const }] };
+    expect(validateDemoSnapshot(explicitUnavailable).ok).toBe(false);
+    const supersededCapability = { ...structuredClone(DEMO_SNAPSHOT_V2), capabilityVerifications: [...DEMO_SNAPSHOT_V2.capabilityVerifications, { ...DEMO_SNAPSHOT_V2.capabilityVerifications[0]!, id: "superseding-capability" as never, status: "not-demonstrated" as const, recordedAt: "2026-02-12T18:00:00Z" as never }] };
+    expect(validateDemoSnapshot(supersededCapability).ok).toBe(false);
+    const canceledRequest = { ...structuredClone(DEMO_SNAPSHOT_V2), demandRequests: DEMO_SNAPSHOT_V2.demandRequests.map((request) => request.id === "req-lax-101" ? { ...request, status: "canceled" as const } : request) };
+    expect(validateDemoSnapshot(canceledRequest).ok).toBe(false);
+    const unknownRequirements = { ...structuredClone(DEMO_SNAPSHOT_V2), demandRequests: DEMO_SNAPSHOT_V2.demandRequests.map((request) => request.id === "req-lax-101" ? { ...request, sampleCredentialRequirements: [{ ...validRequirement, requirementCode: "" }] } : request) };
+    expect(validateDemoSnapshot(unknownRequirements).ok).toBe(false);
 
     const futureRecordedReadiness = { ...structuredClone(DEMO_SNAPSHOT_V2), readinessEvents: DEMO_SNAPSHOT_V2.readinessEvents.map((event, index) => index === 0 ? { ...event, recordedAt: "2026-03-01T00:00:00Z" as never } : event) };
     expect(validateDemoSnapshot(futureRecordedReadiness).ok).toBe(false);
