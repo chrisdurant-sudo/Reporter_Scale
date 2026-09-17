@@ -1,5 +1,7 @@
 # Rules and calculations — logic
 
+> **V1 legacy task — INACTIVE.** The `logic` writer role is retired; V2 domain logic has separate owners.
+
 ## Claim
 Write only: `src/logic/`.
 Acceptance: RULE-01, RULE-02, RULE-03, RULE-04. Shared instruction files are never lane-owned.

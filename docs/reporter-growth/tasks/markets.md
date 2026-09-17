@@ -1,5 +1,7 @@
 # Markets screen — markets
 
+> **V1 legacy task — INACTIVE.** The `markets` role is retired; use the V2 `capacity` brief.
+
 ## Claim
 Write only: `src/features/markets/`.
 Acceptance: MKT-01, MKT-02. Shared instruction files are never lane-owned.

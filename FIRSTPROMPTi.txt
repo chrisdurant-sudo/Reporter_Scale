@@ -1,3 +1,6 @@
+VERSION 1 LEGACY LAUNCH PROMPT — INACTIVE.
+Do not execute this prompt for Reporter Growth V2. Use AGENTS.md and docs/reporter-growth/v2/lanes.v2.json; a separate explicit implementation gate is required.
+
 You are the lead coordinator for this repository.
 
 Your objective is to take the Reporter Growth project from the current planning-only repository to a polished, working MVP as efficiently as possible, using parallel subagents wherever the work can be safely separated.

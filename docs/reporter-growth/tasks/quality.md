@@ -1,5 +1,7 @@
 # Independent checks — quality
 
+> **V1 legacy task — INACTIVE.** Do not dispatch. Use `../v2/tasks/quality.md` after a V2 integrated candidate exists.
+
 ## Claim
 Write only: `tests/acceptance/`, `tests/e2e/`.
 Acceptance: INT-01, INT-02, SAFE-01. Shared instruction files are never lane-owned.

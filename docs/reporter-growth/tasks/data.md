@@ -1,5 +1,7 @@
 # Demo data — data
 
+> **V1 legacy task — INACTIVE.** Do not dispatch. Use `../v2/tasks/data.md`.
+
 ## Claim
 Write only: `src/data/`.
 Acceptance: DATA-01, DATA-02. Shared instruction files are never lane-owned.

@@ -1,5 +1,7 @@
 # Reporters screen — reporters
 
+> **V1 legacy task — INACTIVE.** The combined `reporters` role is retired; use the V2 `recruiting`, `network`, and `team` briefs.
+
 ## Claim
 Write only: `src/features/reporters/`.
 Acceptance: REP-01, REP-02, REP-03. Shared instruction files are never lane-owned.

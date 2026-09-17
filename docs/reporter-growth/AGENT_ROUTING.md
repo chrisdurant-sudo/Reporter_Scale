@@ -1,5 +1,10 @@
 # Codex agent routing
 
+> **Version 1 legacy routing — INACTIVE.** Do not dispatch these roles. The sole active routing
+> authority is `docs/reporter-growth/v2/lanes.v2.json` with briefs under
+> `docs/reporter-growth/v2/tasks/`. The old `logic`, `markets`, `reporters`, and `improvements`
+> meanings are retired and are not declared in `.codex/config.toml`.
+
 This file controls the intended **cost/capability policy** for parallel implementation. Lane scope and write ownership remain authoritative in `LANES.md`, `lanes.json`, and the lane task files.
 
 ## Principle

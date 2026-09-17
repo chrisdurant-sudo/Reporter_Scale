@@ -1,8 +1,8 @@
 # Parallel build plan
 
-> **Version 1 legacy build plan.** It documents the implemented three-tab application and
-> remains historical context. It is not the v2 implementation plan and does not authorize
-> source changes during the v2 foundation review.
+> **Version 1 legacy build plan — INACTIVE.** It documents the implemented three-tab application
+> and remains historical context. It is not the V2 implementation plan, its roles must not be
+> dispatched, and it does not authorize source changes.
 
 ## 0. SETUP — coordinator, serial
 Inspect actual repository structure, instructions, dirty files, installed tools, and Codex's available delegation controls.

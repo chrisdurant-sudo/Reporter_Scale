@@ -1,5 +1,7 @@
 # Shared interface — experience
 
+> **V1 legacy task — INACTIVE.** Do not dispatch. Use `../v2/tasks/experience.md`.
+
 ## Claim
 Write only: `src/ui/`, `src/shell/`, `src/styles/`.
 Acceptance: UI-01, UI-02, UI-03. Shared instruction files are never lane-owned.

@@ -1,5 +1,9 @@
 # Lane ownership
 
+> **Version 1 legacy registry narrative — INACTIVE.** It is retained only as history for the
+> implemented three-tab application. Do not dispatch these lanes. Use
+> `docs/reporter-growth/v2/LANES.md` and `lanes.v2.json` for any separately authorized V2 work.
+
 A lane is one bounded assignment with exclusive write ownership. All paths below are planned paths Codex will create.
 They are not included as source files in this packet. `lanes.json` is the authoritative path registry.
 

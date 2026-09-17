@@ -1,6 +1,9 @@
 {
   "schema_version": 1,
   "packet_kind": "planning_only",
+  "active": false,
+  "status": "inactive_v1_history",
+  "superseded_by": "docs/reporter-growth/v2/lanes.v2.json",
   "max_concurrent_lane_workers": 7,
   "max_concurrent_read_only_reviewers": 1,
   "max_concurrent_spawned_agents_excluding_coordinator": 8,

@@ -1,6 +1,11 @@
-# Future implementation lanes
+# V2 lane ownership and sequencing
 
-This is a future allocation, not permission to start workers during the foundation-review phase. [lanes.v2.json](lanes.v2.json) is the machine-readable registry.
+This is the active V2 routing authority together with [lanes.v2.json](lanes.v2.json). It defines
+roles and ownership but does **not** authorize implementation by itself. P2 requires a separate
+explicit user gate after `ROUTING_VERIFIED`. The V1 registry and task files are inactive history.
+The first P1.5 probe verified the `data` role identity and instructions but could not observe its
+actual model, reasoning effort, or service tier. No implementation dispatch is authorized until a
+fresh session reloads the role catalog and completes that verification.
 
 ## Ownership pattern
 
@@ -20,6 +25,24 @@ A feature receives prepared values and callbacks from integration. Even when its
 | quality | `tests/acceptance/`, `tests/e2e/` | Independent cross-domain reconciliation and browser acceptance; no production repairs |
 
 Co-locate unit tests within the owner's directory. Quality does not own every test. The coordinator alone edits shared contracts, integration, shared calculation primitives, root tooling/dependencies, source entry/barrel files, docs, migration adapters, and legacy `src/features/improvements/` until retired.
+
+## Runtime roles
+
+| Role | Model | Reasoning | Schedule |
+|---|---|---|---|
+| experience | GPT-5.6 Terra | medium | Initial seven-worker implementation wave |
+| data | GPT-5.6 Luna | medium | Initial seven-worker implementation wave |
+| capacity | GPT-5.6 Terra | high | Initial seven-worker implementation wave |
+| recruiting | GPT-5.6 Terra | medium | Initial seven-worker implementation wave |
+| network | GPT-5.6 Terra | medium | Initial seven-worker implementation wave |
+| team | GPT-5.6 Terra | medium | Initial seven-worker implementation wave |
+| programs | GPT-5.6 Terra | medium | Initial seven-worker implementation wave |
+| quality | GPT-5.6 Luna | medium | Only after one integrated candidate exists |
+| reviewer | GPT-5.6 Terra | high | Read-only, only after Quality on a fixed candidate |
+
+All roles use `service_tier = "default"`. The coordinator is selected interactively and is not
+pinned by project configuration. Every routed spawn uses `fork_turns="none"`; no inherited parent
+history may replace the configured child role.
 
 ## Shared interfaces to freeze before work splits
 
@@ -41,15 +64,26 @@ Example: an “Assign follow-up” button in Recruiting calls the shared task ac
 
 ## Prerequisites and scheduling
 
-P0 is documentation-only. In the later authorized build, all lanes require a real CONTRACTS_FROZEN commit. Domain work can start with controlled local test fixtures after that gate; it need not wait for the full data seed or shared UI polish. Do not embed fake headline totals in a page to avoid the data dependency.
+The frozen source authority is commit `19f7df98000e346a5b4ff32e00b699276c3f62fb`.
+No lane starts until a later prompt explicitly authorizes P2 and supplies the exact integration base.
+Domain work can then start with controlled local fixtures; it need not wait for the full data seed or
+shared UI polish. No page may embed scenario expected values to avoid a data dependency.
 
-At most seven lane writers and one separate optional read-only reviewer concurrently. There are eight lane definitions, so dispatch ready work into available slots. Quality can write tests against frozen contracts before all features finish, but can only pass integrated checks against a real assembled candidate.
+The initial wave is exactly seven implementation roles: experience, data, capacity, recruiting,
+network, team, and programs. The project/runtime ceiling remains seven spawned-agent threads,
+excluding the coordinator; use fewer if the runtime or work readiness requires it. Quality is not in
+that wave. It runs after the coordinator has assembled one integrated candidate. Reviewer runs
+read-only after Quality against a fixed commit. Do not increase the project ceiling to overlap these
+phases.
 
-Role/model choice is independent of lane ownership. Use the locally verified cost policy and compatible named roles. Do not infer a new model ID from a lane name; do not change TOML as part of this packet. Legacy role prompts may contain v1-only scopes and need a separate approved reconciliation before fan-out.
+Role/model choice is fixed by `.codex/config.toml` and the role layers in `.codex/agents/`. Workers
+do not substitute a model, raise reasoning, change service tier, or edit routing configuration.
 
 ## Worker handoff
 
-One worker, one lane, one isolated verified worktree/branch. A separate chat alone is not isolation. No worker spawns more workers or changes its own cost/routing settings.
+One worker, one lane, one isolated verified worktree/branch. A separate chat alone is not isolation.
+Every spawn uses the exact named role with `fork_turns="none"`. No worker spawns more workers or
+changes its own cost/routing settings.
 
 Handoff contains lane ID, baseline SHA, candidate SHA, changed paths, actual checks/exit statuses, evidence/acceptance IDs covered, and unresolved issues. Stop edits at handoff. Coordinator reviews and integrates exact commits sequentially; worker does not self-merge or self-approve.
 
@@ -59,4 +93,6 @@ A contract-change request names the missing field/action, producer and consumers
 
 Path ownership in JSON is an agreement, not a sandbox. During the later build, check candidate diffs against the allowlist before integration; reject out-of-scope changes and fix them in the owning lane. Respect runtime sandbox/approval limits. Do not claim the registry itself prevents writes.
 
-Do not run v1 and v2 registries concurrently: the old all-of-`src/logic/` lane would overlap the new domains. The coordinator must explicitly mark it inactive when the new source-contract baseline is authorized.
+The V1 registry is explicitly inactive. The old all-of-`src/logic/` `logic` writer and the old
+`markets`, `reporters`, and `improvements` writer meanings are retired. Their source remains intact;
+only routing authority changed.

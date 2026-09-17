@@ -1,25 +1,40 @@
 {
   "schema_version": 2,
-  "packet_kind": "planning_only",
-  "active_during_current_phase": false,
-  "current_phase": "P0_documentation_review",
+  "packet_kind": "routing_registry",
+  "routing_active": true,
+  "fanout_authorized": false,
+  "implementation_active": false,
+  "current_phase": "P1_5_runtime_verification_blocked",
+  "routing_verification_status": "blocked_runtime_metadata_unavailable",
+  "source_contract_commit": "19f7df98000e346a5b4ff32e00b699276c3f62fb",
   "implementation_requires": [
-    "explicit_user_authorization",
+    "explicit_P2_user_authorization",
     "FOUNDATION_REVIEWED",
     "CONTRACTS_FROZEN",
-    "compatible_runtime_role_mapping_verified"
+    "ROUTING_VERIFIED"
+  ],
+  "initial_implementation_roles": [
+    "experience",
+    "data",
+    "capacity",
+    "recruiting",
+    "network",
+    "team",
+    "programs"
+  ],
+  "post_integration_sequence": [
+    "quality",
+    "reviewer"
   ],
   "max_concurrent_lane_workers": 7,
-  "max_concurrent_read_only_reviewers": 1,
-  "max_concurrent_spawned_agents_excluding_coordinator": 8,
-  "p0_max_read_only_helpers": 2,
-  "p0_implementation_workers": 0,
+  "max_concurrent_spawned_agents_excluding_coordinator": 7,
   "workers_may_spawn": false,
   "all_unassigned_paths_default_owner": "coordinator",
   "coordinator_owned": [
     "AGENTS.md",
     "README.md",
     "docs/reporter-growth/",
+    ".codex/",
     "src/contracts/",
     "src/integration/",
     "src/logic/shared/",
@@ -34,41 +49,45 @@
     "public/",
     "scripts/"
   ],
-  "configuration_read_only_for_this_packet": [
-    ".codex/",
-    "all user/global Codex config"
-  ],
   "instruction_files_always_coordinator_owned": [
     "**/AGENTS.md",
     "**/AGENTS.override.md"
   ],
   "legacy_registry": "docs/reporter-growth/lanes.json",
-  "legacy_registry_must_be_inactive_before_v2_writers": true,
+  "legacy_registry_active": false,
   "lanes": [
     {
       "id": "experience",
+      "runtime_role": "experience",
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "medium",
+      "service_tier": "default",
+      "start_phase": "initial_implementation_wave",
       "allowed_directory_prefixes": [
         "src/ui/",
         "src/shell/",
         "src/styles/"
       ],
-      "brief": "LANES.md",
+      "task": "docs/reporter-growth/v2/tasks/experience.md",
       "acceptance_ids": [
         "U01",
         "U02",
         "U03",
         "U04",
         "U05"
-      ],
-      "runtime_role": null,
-      "runtime_role_note": "Resolve against actual local roles before future fan-out; do not guess model/config keys or inherit incompatible v1 task scopes."
+      ]
     },
     {
       "id": "data",
+      "runtime_role": "data",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "medium",
+      "service_tier": "default",
+      "start_phase": "initial_implementation_wave",
       "allowed_directory_prefixes": [
         "src/data/"
       ],
-      "brief": "LANES.md",
+      "task": "docs/reporter-growth/v2/tasks/data.md",
       "acceptance_ids": [
         "D01",
         "D02",
@@ -76,17 +95,20 @@
         "D04",
         "D05",
         "D06"
-      ],
-      "runtime_role": null,
-      "runtime_role_note": "Resolve against actual local roles before future fan-out; do not guess model/config keys or inherit incompatible v1 task scopes."
+      ]
     },
     {
       "id": "capacity",
+      "runtime_role": "capacity",
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "high",
+      "service_tier": "default",
+      "start_phase": "initial_implementation_wave",
       "allowed_directory_prefixes": [
         "src/logic/capacity/",
         "src/features/markets/"
       ],
-      "brief": "LANES.md",
+      "task": "docs/reporter-growth/v2/tasks/capacity.md",
       "acceptance_ids": [
         "S01",
         "S02",
@@ -98,17 +120,20 @@
         "M02",
         "M07",
         "M09"
-      ],
-      "runtime_role": null,
-      "runtime_role_note": "Resolve against actual local roles before future fan-out; do not guess model/config keys or inherit incompatible v1 task scopes."
+      ]
     },
     {
       "id": "recruiting",
+      "runtime_role": "recruiting",
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "medium",
+      "service_tier": "default",
+      "start_phase": "initial_implementation_wave",
       "allowed_directory_prefixes": [
         "src/logic/recruiting/",
         "src/features/recruiting/"
       ],
-      "brief": "LANES.md",
+      "task": "docs/reporter-growth/v2/tasks/recruiting.md",
       "acceptance_ids": [
         "S07",
         "M03",
@@ -117,49 +142,58 @@
         "M06",
         "W01",
         "W02"
-      ],
-      "runtime_role": null,
-      "runtime_role_note": "Resolve against actual local roles before future fan-out; do not guess model/config keys or inherit incompatible v1 task scopes."
+      ]
     },
     {
       "id": "network",
+      "runtime_role": "network",
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "medium",
+      "service_tier": "default",
+      "start_phase": "initial_implementation_wave",
       "allowed_directory_prefixes": [
         "src/logic/network/",
         "src/features/reporters/"
       ],
-      "brief": "LANES.md",
+      "task": "docs/reporter-growth/v2/tasks/network.md",
       "acceptance_ids": [
         "D04",
         "D05",
         "M03",
         "M08",
         "W01"
-      ],
-      "runtime_role": null,
-      "runtime_role_note": "Resolve against actual local roles before future fan-out; do not guess model/config keys or inherit incompatible v1 task scopes."
+      ]
     },
     {
       "id": "team",
+      "runtime_role": "team",
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "medium",
+      "service_tier": "default",
+      "start_phase": "initial_implementation_wave",
       "allowed_directory_prefixes": [
         "src/logic/team/",
         "src/features/team/"
       ],
-      "brief": "LANES.md",
+      "task": "docs/reporter-growth/v2/tasks/team.md",
       "acceptance_ids": [
         "W02",
         "W03",
         "W04"
-      ],
-      "runtime_role": null,
-      "runtime_role_note": "Resolve against actual local roles before future fan-out; do not guess model/config keys or inherit incompatible v1 task scopes."
+      ]
     },
     {
       "id": "programs",
+      "runtime_role": "programs",
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "medium",
+      "service_tier": "default",
+      "start_phase": "initial_implementation_wave",
       "allowed_directory_prefixes": [
         "src/logic/programs/",
         "src/features/programs/"
       ],
-      "brief": "LANES.md",
+      "task": "docs/reporter-growth/v2/tasks/programs.md",
       "acceptance_ids": [
         "W05",
         "W06",
@@ -167,17 +201,20 @@
         "W08",
         "M02",
         "M07"
-      ],
-      "runtime_role": null,
-      "runtime_role_note": "Resolve against actual local roles before future fan-out; do not guess model/config keys or inherit incompatible v1 task scopes."
+      ]
     },
     {
       "id": "quality",
+      "runtime_role": "quality",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "medium",
+      "service_tier": "default",
+      "start_phase": "after_integrated_candidate",
       "allowed_directory_prefixes": [
         "tests/acceptance/",
         "tests/e2e/"
       ],
-      "brief": "LANES.md",
+      "task": "docs/reporter-growth/v2/tasks/quality.md",
       "acceptance_ids": [
         "S01",
         "S02",
@@ -189,10 +226,19 @@
         "S08",
         "M02",
         "U06"
-      ],
-      "runtime_role": null,
-      "runtime_role_note": "Resolve against actual local roles before future fan-out; do not guess model/config keys or inherit incompatible v1 task scopes."
+      ]
     }
   ],
-  "note": "Exclusive write registry, not executable orchestration or sandbox enforcement. Preserve existing economics and Standard/no-Fast policy. Role configuration changes require a separate approved reconciliation."
+  "reviewer": {
+    "id": "reviewer",
+    "runtime_role": "reviewer",
+    "model": "gpt-5.6-terra",
+    "reasoning_effort": "high",
+    "service_tier": "default",
+    "start_phase": "after_quality",
+    "read_only": true,
+    "allowed_directory_prefixes": [],
+    "task": "docs/reporter-growth/v2/tasks/reviewer.md"
+  },
+  "note": "This is the sole active routing registry, not an executable dispatcher or sandbox. P2 still requires explicit authorization. All routed spawns use fork_turns=none."
 }

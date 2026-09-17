@@ -1,7 +1,6 @@
-# Reporter Growth — project-scoped Codex subagent routing.
-# Intentionally does NOT set the coordinator model; choose the coordinator in Codex.
-# These defaults prevent ordinary children from intentionally being configured as Sol/High.
-# Always use Standard processing, never Fast mode.
+# Reporter Growth v2 — project-scoped Codex subagent routing.
+# Intentionally does NOT set the coordinator model; choose the coordinator interactively.
+# All child roles remain on Standard/default processing. Never use Fast, Priority, or Ultrafast.
 service_tier = "default"
 
 [agents]
@@ -10,35 +9,38 @@ max_concurrent_threads_per_session = 7
 default_subagent_model = "gpt-5.6-terra"
 default_subagent_reasoning_effort = "medium"
 
-
 [agents.experience]
-description = "Shared interface lane: shell, shared UI, responsive behavior, styling, and market-selector presentation."
+description = "V2 shared interface lane: five-workspace shell, shared evidence UI, responsive behavior, styles, and persistent filters."
 config_file = "./agents/experience.toml"
 
 [agents.data]
-description = "Demo data lane: fictional records, scenario anchors, local adapter, loading, saving, and reset."
+description = "V2 synthetic-record lane: complete fictional histories, scenario feed, validation, repository, and reset."
 config_file = "./agents/data.toml"
 
-[agents.logic]
-description = "Rules lane: canonical metrics, planning calculations, view models, validation, and simulated transitions."
-config_file = "./agents/logic.toml"
+[agents.capacity]
+description = "V2 capacity lane: request-slot demand, coverage, matching contention, acceptance validation, goals, and Markets workspace."
+config_file = "./agents/capacity.toml"
 
-[agents.markets]
-description = "Markets feature lane: five-market comparison and selected-market growth plan."
-config_file = "./agents/markets.toml"
+[agents.recruiting]
+description = "V2 recruiting lane: acquisition lifecycle, source cohorts, screening, onboarding, readiness, and Recruiting workspace."
+config_file = "./agents/recruiting.toml"
 
-[agents.reporters]
-description = "Reporters feature lane: stages, work list, details, screening, follow-up, and team section."
-config_file = "./agents/reporters.toml"
+[agents.network]
+description = "V2 network lane: ready reporter network, verified capabilities, explicit availability, recent work, and Reporters workspace."
+config_file = "./agents/network.toml"
 
-[agents.improvements]
-description = "Improvements feature lane: tests of changes, decisions, process drafts, partner work, and weekly review."
-config_file = "./agents/improvements.toml"
+[agents.team]
+description = "V2 team lane: canonical work, role targets, inspected quality, coaching, reassignment, and Team workspace."
+config_file = "./agents/team.toml"
+
+[agents.programs]
+description = "V2 programs lane: explicit enrollments, results, decisions, process versions, partner work, and Programs workspace."
+config_file = "./agents/programs.toml"
 
 [agents.quality]
-description = "Independent quality lane: cross-feature acceptance and browser tests only; no production-code repairs."
+description = "V2 independent quality lane after integration: cross-workspace acceptance and browser tests only; no production repairs."
 config_file = "./agents/quality.toml"
 
 [agents.reviewer]
-description = "Read-only final reviewer for a fixed integrated commit."
+description = "Read-only V2 final reviewer for a fixed integrated commit after Quality."
 config_file = "./agents/reviewer.toml"

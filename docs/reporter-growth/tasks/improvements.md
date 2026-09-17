@@ -1,5 +1,7 @@
 # Improvements screen — improvements
 
+> **V1 legacy task — INACTIVE.** The `improvements` role is retired; use the V2 `programs` brief. Legacy source retirement remains coordinator-owned.
+
 ## Claim
 Write only: `src/features/improvements/`.
 Acceptance: IMP-01, IMP-02. Shared instruction files are never lane-owned.

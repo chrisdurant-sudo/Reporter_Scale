@@ -1,10 +1,12 @@
 # Reporter Growth
 
-> **Current phase:** Reporter Growth v2 P1 source-contract freeze, based on the approved
-> `docs/reporter-growth/v2/FOUNDATION_REVIEW.md`. The existing three-tab application and
-> `docs/reporter-growth/CODEX_START.md` build entry point are version 1. P1 may add only the
-> shared v2 contracts, coordinator-owned compatibility/invariant seams, focused contract
-> tests, and its freeze report. Do not launch implementation lanes or begin feature work.
+> **Current phase:** Reporter Growth v2 P1.5 role-and-lane routing gate, based on the approved
+> source freeze in `docs/reporter-growth/v2/P1_SOURCE_CONTRACT.md`. This phase may change only
+> project routing configuration, routing/instruction documents, and a read-only role probe.
+> Do not launch implementation lanes, change product source, or begin P2 feature work.
+> The P1.5 probe did not expose actual child model/reasoning/service-tier metadata, and this
+> coordinator session still advertises the pre-edit role catalog. Routing is blocked until a fresh
+> session loads the V2 roles and exposes enough metadata to verify Luna/medium/default for `data`.
 
 The independent synthetic-data application currently in `src/` implements the version 1
 scope defined in `docs/reporter-growth/PRODUCT.md`. The original v1 repository packet began
@@ -21,18 +23,28 @@ application until an authorized v2 migration has a working replacement path.
 That gives you configuration + agent instruction, which is what I'd want.
 
 ## Read before starting
-For future implementation, first use the packet for the explicitly authorized phase. The
-references below are retained as the version 1 build record and do not authorize a v2 build.
-Coordinator: `docs/reporter-growth/CODEX_START.md`, `BUILD_PLAN.md`, `LANES.md`, `AGENT_ROUTING.md`, `CONTRACTS.md`, and `ACCEPTANCE.md` in the same directory.
-Worker: your one task file under `docs/reporter-growth/tasks/`, the frozen source contracts, and relevant product/design requirements.
-The path registry is `docs/reporter-growth/lanes.json`. Reading other lanes for context is allowed; editing them is not.
+For v2 work, read the packet for the explicitly authorized phase, then
+`docs/reporter-growth/v2/FOUNDATION_REVIEW.md`, `P1_SOURCE_CONTRACT.md`, `LANES.md`,
+`lanes.v2.json`, and the relevant v2 product/data/metrics/screen/acceptance contracts.
+Workers read exactly one brief under `docs/reporter-growth/v2/tasks/` plus the frozen source
+contracts. `docs/reporter-growth/v2/lanes.v2.json` is the sole active routing registry.
+The v1 files under `docs/reporter-growth/` and `docs/reporter-growth/tasks/` are historical and
+inactive; they do not authorize dispatch or source work.
 
 ## Rules
 - Complete the serial setup and freeze a compiling baseline before starting parallel implementation.
-- At most seven lane workers and one optional read-only reviewer concurrently; obey lower actual runtime limits. Workers do not spawn children.
-- Use the named Codex roles in `.codex/config.toml` and `AGENT_ROUTING.md`; workers do not raise their own model/reasoning tier.
-- Every `spawn_agent` call must specify `fork_turns="none"` or a bounded positive number. Never use `fork_turns="all"` because full-history forks inherit the coordinator model and reasoning effort instead of the named role configuration.
-- Prefer `fork_turns="none"` for lane workers. Include all required context, paths, commit hashes, and acceptance criteria in the worker message.
+- The initial implementation wave, only after explicit P2 authorization, is exactly seven roles:
+  `experience`, `data`, `capacity`, `recruiting`, `network`, `team`, and `programs`.
+  `quality` runs after an integrated candidate; `reviewer` runs read-only after Quality.
+- At most seven spawned-agent threads may be open concurrently, excluding the coordinator. Obey
+  any lower runtime limit. Workers do not spawn children.
+- Use the named V2 roles in `.codex/config.toml` and the active v2 registry; workers never raise
+  or substitute their own model, reasoning level, or service tier.
+- Every `spawn_agent` call for a routed role must specify `fork_turns="none"`. Never use
+  `fork_turns="all"` or a bounded history fork for a V2 lane because inherited coordinator context
+  must not replace the configured child model/instructions.
+- Include required context, absolute worktree, base commit, allowed paths, task brief, frozen
+  contract commit, acceptance IDs, and handoff requirements in every implementation dispatch.
 - After spawning the routing probe, verify its actual session metadata before spawning any implementation workers.
 - One worker, one assigned lane, one verified Git worktree and branch. A separate chat is not a separate checkout.
 - Coordinator alone owns shared contracts, dependencies, configuration, integration, governance, and merges.

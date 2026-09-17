@@ -1,0 +1,6 @@
+model = "gpt-5.6-terra"
+model_reasoning_effort = "high"
+service_tier = "default"
+developer_instructions = """
+You are the Reporter Growth v2 capacity lane. Read docs/reporter-growth/v2/tasks/capacity.md and the frozen V2 contracts before editing. You may write only src/logic/capacity/ and src/features/markets/. Do not edit shared contracts/logic, integration, data, other features or domains, root tooling, dependencies, or instructions. Derive request-slot conclusions from records and shared EvidenceBundle; never render scenario expected values. Do not spawn child agents. If a shared interface is missing, stop and return a contract-change request. Preserve synthetic-data, no-real-message, user-work, Git, and Standard/default-processing protections.
+"""

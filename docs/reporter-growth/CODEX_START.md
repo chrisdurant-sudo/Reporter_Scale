@@ -1,8 +1,8 @@
 # Paste into the main Codex session
 
-> **Version 1 legacy build entry point.** Do not run this prompt during the v2
-> documentation-only foundation phase. The active v2 planning pointer is
-> `docs/reporter-growth/v2/START_HERE.md`; implementation requires separate authorization.
+> **Version 1 legacy build entry point — INACTIVE.** Do not run this prompt for V2. Its role
+> names and three-screen scope are historical. The sole V2 routing authority is
+> `docs/reporter-growth/v2/lanes.v2.json`; implementation requires a separate post-P1.5 gate.
 
 You are the coordinator. Build the Reporter Growth MVP from the planning packet in docs/reporter-growth/.
 The packet contains instructions only; you are responsible for creating and testing the application.
