@@ -83,6 +83,7 @@ describe("prepareProgramsView", () => {
     const revision2 = { ...snapshot.goalRevisions[0]!, id: "goal-revision-2" as never, version: 2, target: 0.7, supersedesRevisionId: snapshot.goalRevisions[0]!.id };
     const projection = projectGoalIntegrity({ ...snapshot, goalRevisions: [...snapshot.goalRevisions, revision2] }, "goal-1");
     expect(projection.revisions.map((revision) => [revision.version, revision.target, revision.metricVersion])).toEqual([[1, 0.5, "v1"], [2, 0.7, "v1"]]);
+    expect(projectGoalIntegrity({ ...snapshot, goalRevisions: [...snapshot.goalRevisions, { ...revision2, savedAt: "2026-03-01T00:00:00.000Z" as never }] }, "goal-1", stamp).revisions.map((revision) => revision.version)).toEqual([1]);
   });
 
   it("accepts only completed jobs tied to a matching accepted assignment and only attributable known spend", () => {
@@ -113,6 +114,15 @@ describe("prepareProgramsView", () => {
     const expandedPlan = { ...snapshot.programs[0]!, measurementPlan: { ...snapshot.programs[0]!.measurementPlan, entryWindow: { ...snapshot.programs[0]!.measurementPlan.entryWindow, endAt: "2026-04-01T00:00:00.000Z" as never } } };
     const futureSnapshot = { ...snapshot, programs: [expandedPlan], programEnrollments: [...snapshot.programEnrollments, futureEnrollment] } as DemoSnapshotV2;
     expect(prepareProgramsView(futureSnapshot, context("ALL")).resultsByProgram.get(programId)!.map((group) => group.groupId)).not.toContain("future");
+  });
+
+  it("does not leak future program decisions or target revisions into a historical prepared view", () => {
+    const snapshot = fixture();
+    const futureGoal = { ...snapshot.goalRevisions[0]!, id: "future-goal" as never, version: 2, target: 0.9, savedAt: "2026-03-01T00:00:00.000Z" as never, supersedesRevisionId: snapshot.goalRevisions[0]!.id };
+    const futureDecision = { id: "future-decision" as never, programId, decision: "expand" as const, rationale: "Future rollout proposal", decidedBy: "actor-1" as never, decidedAt: "2026-03-01T00:00:00.000Z" as never, evidenceSnapshotId: "evidence-1" as never, nextReviewAt: null, provenance: "synthetic-demo" as const };
+    const view = prepareProgramsView({ ...snapshot, goalRevisions: [...snapshot.goalRevisions, futureGoal], programDecisions: [futureDecision] } as DemoSnapshotV2, context("ALL"));
+    expect(view.rows[0]!.target).toBe(0.5);
+    expect(view.rows[0]!.latestDecision).toBeNull();
   });
 
   it("creates a versioned draft and requires review before a limited pilot without enrolling anyone", () => {

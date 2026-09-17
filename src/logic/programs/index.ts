@@ -197,8 +197,8 @@ export function calculateSourceContribution(snapshot: DemoSnapshotV2, program: P
   });
 }
 
-export function projectGoalIntegrity(snapshot: DemoSnapshotV2, goalId: string): GoalIntegrityProjection {
-  return { goalId, revisions: snapshot.goalRevisions.filter((revision) => revision.goalId === goalId).sort((a, b) => a.version - b.version).map((revision) => ({ version: revision.version, metricId: revision.metric.id, metricVersion: revision.metric.version, target: revision.target, deadline: revision.deadline, baselineAsOfAt: revision.baselineAsOfAt, scope: JSON.stringify(revision.scope), baselineEvidenceSnapshotId: revision.baselineEvidenceSnapshotId })) };
+export function projectGoalIntegrity(snapshot: DemoSnapshotV2, goalId: string, asOfAt?: string): GoalIntegrityProjection {
+  return { goalId, revisions: snapshot.goalRevisions.filter((revision) => revision.goalId === goalId && (asOfAt === undefined || revision.savedAt <= asOfAt)).sort((a, b) => a.version - b.version).map((revision) => ({ version: revision.version, metricId: revision.metric.id, metricVersion: revision.metric.version, target: revision.target, deadline: revision.deadline, baselineAsOfAt: revision.baselineAsOfAt, scope: JSON.stringify(revision.scope), baselineEvidenceSnapshotId: revision.baselineEvidenceSnapshotId })) };
 }
 
 export function prepareProgramsView(snapshot: DemoSnapshotV2, context: WorkspaceQueryContext<typeof PROGRAMS_WORKSPACE>): PreparedProgramsView {
@@ -209,8 +209,8 @@ export function prepareProgramsView(snapshot: DemoSnapshotV2, context: Workspace
     for (const enrollment of filterEnrollments(snapshot, program, context)) groups.set(enrollment.groupId, [...(groups.get(enrollment.groupId) ?? []), enrollment]);
     const results = [...groups.entries()].sort(([left], [right]) => left.localeCompare(right)).map(([groupId, enrollments]) => groupEvidence(snapshot, program, groupId, enrollments, context));
     resultsByProgram.set(program.id, results);
-    const decisions = snapshot.programDecisions.filter((decision) => decision.programId === program.id).sort((left, right) => right.decidedAt.localeCompare(left.decidedAt));
-    return { id: program.id, title: program.title, marketLabel: program.marketIds.join(", "), stage: program.stage, ownerId: program.ownerId, target: program.targetRef ? snapshot.goalRevisions.filter((goal) => goal.goalId === program.targetRef).sort((a, b) => b.version - a.version)[0]?.target ?? null : null, result: results.at(-1) ?? null, reviewAt: program.reviewAt, nextStep: decisions[0]?.rationale ?? "Review participant evidence before deciding.", latestDecision: decisions[0] ?? null };
+    const decisions = snapshot.programDecisions.filter((decision) => decision.programId === program.id && decision.decidedAt <= context.evaluation.asOfAt).sort((left, right) => right.decidedAt.localeCompare(left.decidedAt));
+    return { id: program.id, title: program.title, marketLabel: program.marketIds.join(", "), stage: program.stage, ownerId: program.ownerId, target: program.targetRef ? snapshot.goalRevisions.filter((goal) => goal.goalId === program.targetRef && goal.savedAt <= context.evaluation.asOfAt).sort((a, b) => b.version - a.version)[0]?.target ?? null : null, result: results.at(-1) ?? null, reviewAt: program.reviewAt, nextStep: decisions[0]?.rationale ?? "Review participant evidence before deciding.", latestDecision: decisions[0] ?? null };
   });
   return { workspace: PROGRAMS_WORKSPACE, evaluation: context.evaluation, appliedFilters: context.filters, evidence: [...resultsByProgram.values()].flatMap((groups) => groups.map((group) => group.evidence)), rows, resultsByProgram };
 }
