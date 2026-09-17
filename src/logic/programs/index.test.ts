@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { DemoSnapshotV2, WorkspaceQueryContext } from "../../contracts/v2";
-import { advanceLimitedPilotProcess, buildProcessDraft, calculateSourceContribution, prepareProgramsView, projectGoalIntegrity, PROGRAMS_WORKSPACE } from "./index";
+import { advanceLimitedPilotProcess, buildProcessDraft, calculateSourceContribution, prepareProgramsView, prepareWeeklyProgramsReview, projectGoalIntegrity, PROGRAMS_WORKSPACE } from "./index";
 
 const stamp = "2026-02-16T17:00:00.000Z";
 const programId = "program-readiness-checklist" as never;
@@ -123,6 +123,23 @@ describe("prepareProgramsView", () => {
     const view = prepareProgramsView({ ...snapshot, goalRevisions: [...snapshot.goalRevisions, futureGoal], programDecisions: [futureDecision] } as DemoSnapshotV2, context("ALL"));
     expect(view.rows[0]!.target).toBe(0.5);
     expect(view.rows[0]!.latestDecision).toBeNull();
+  });
+
+  it("prepares a partial weekly review from canonical work and dated decisions with exact evidence", () => {
+    const snapshot = fixture();
+    const work = { id: "program-work" as never, kind: "partner-task" as const, primaryEntityRef: { kind: "program" as const, id: programId }, relatedRequestIds: [], programId, createdAt: "2026-01-10T00:00:00.000Z" as never, ownerHistory: [], dueAt: null, statusHistory: [{ status: "open" as const, occurredAt: "2026-01-10T00:00:00.000Z" as never, actorId: "actor-1" as never, reason: "Fixture" }], blockerCode: "unknown-information", completionEvidenceRefs: [], provenance: "synthetic-demo" as const };
+    const decision = { id: "weekly-decision" as never, programId, decision: "change" as const, rationale: "Review unknown information", decidedBy: "actor-1" as never, decidedAt: "2026-01-11T00:00:00.000Z" as never, evidenceSnapshotId: "evidence-1" as never, nextReviewAt: null, provenance: "synthetic-demo" as const };
+    const base = context("ALL");
+    const weeklyContext = { ...base, evaluation: { ...base.evaluation, asOfAt: "2026-01-12T00:00:00.000Z" as never }, filters: { ...base.filters, window: { startAt: "2026-01-10T00:00:00.000Z" as never, endAt: "2026-01-17T00:00:00.000Z" as never, boundary: "[start,end)" as const } } };
+    const review = prepareWeeklyProgramsReview({ ...snapshot, workItems: [work], programDecisions: [decision] } as DemoSnapshotV2, weeklyContext);
+    expect(review.isPartial).toBe(true);
+    expect(review.stillOpenWork.map((item) => item.id)).toEqual(["program-work"]);
+    expect(review.unknownWork.map((item) => item.id)).toEqual(["program-work"]);
+    expect(review.decisions.map((item) => item.id)).toEqual(["weekly-decision"]);
+    expect(review.evidence.find((item) => item.id.includes("weekly-open"))?.contributingRecords.map((record) => record.id)).toEqual(["program-work"]);
+    expect(review.evidence.find((item) => item.id.includes("weekly-decisions"))?.contributingRecords.map((record) => record.id)).toEqual(["weekly-decision"]);
+    const changedGoal = { ...snapshot.goalRevisions[0]!, id: "new-goal" as never, version: 2, target: 0.9, savedAt: "2026-01-13T00:00:00.000Z", supersedesRevisionId: snapshot.goalRevisions[0]!.id };
+    expect(prepareWeeklyProgramsReview({ ...snapshot, workItems: [work], goalRevisions: [...snapshot.goalRevisions, changedGoal] } as DemoSnapshotV2, weeklyContext).actualResults.map((item) => [item.groupId, item.timelyFirstJobs])).toEqual(review.actualResults.map((item) => [item.groupId, item.timelyFirstJobs]));
   });
 
   it("creates a versioned draft and requires review before a limited pilot without enrolling anyone", () => {

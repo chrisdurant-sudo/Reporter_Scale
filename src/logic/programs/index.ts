@@ -2,6 +2,7 @@ import type {
   DemoSnapshotV2,
   DateWindow,
   EvidenceBundle,
+  MetricDefinitionRef,
   Program,
   ProgramDecision,
   ProgramEnrollment,
@@ -40,6 +41,17 @@ export interface SourceContribution {
 export interface GoalIntegrityProjection {
   readonly goalId: string;
   readonly revisions: readonly { readonly version: number; readonly metricId: string; readonly metricVersion: string; readonly target: number; readonly deadline: string; readonly baselineAsOfAt: string; readonly scope: string; readonly baselineEvidenceSnapshotId: string }[];
+}
+
+export interface WeeklyProgramsReview {
+  readonly reportingWindow: DateWindow;
+  readonly asOfAt: string;
+  readonly isPartial: boolean;
+  readonly actualResults: readonly ProgramResultGroup[];
+  readonly stillOpenWork: readonly { readonly id: string; readonly programId: string; readonly status: string }[];
+  readonly unknownWork: readonly { readonly id: string; readonly programId: string; readonly blockerCode: string }[];
+  readonly decisions: readonly ProgramDecision[];
+  readonly evidence: readonly EvidenceBundle[];
 }
 
 export interface PreparedProgramRow {
@@ -199,6 +211,40 @@ export function calculateSourceContribution(snapshot: DemoSnapshotV2, program: P
 
 export function projectGoalIntegrity(snapshot: DemoSnapshotV2, goalId: string, asOfAt?: string): GoalIntegrityProjection {
   return { goalId, revisions: snapshot.goalRevisions.filter((revision) => revision.goalId === goalId && (asOfAt === undefined || revision.savedAt <= asOfAt)).sort((a, b) => a.version - b.version).map((revision) => ({ version: revision.version, metricId: revision.metric.id, metricVersion: revision.metric.version, target: revision.target, deadline: revision.deadline, baselineAsOfAt: revision.baselineAsOfAt, scope: JSON.stringify(revision.scope), baselineEvidenceSnapshotId: revision.baselineEvidenceSnapshotId })) };
+}
+
+function countEvidence(
+  context: WorkspaceQueryContext<typeof PROGRAMS_WORKSPACE>,
+  metric: MetricDefinitionRef,
+  id: string,
+  description: string,
+  records: readonly ResolvedRecordReference[],
+): EvidenceBundle {
+  const refs = records.map((record) => pointer(record.kind, record.id));
+  const filters = { ...context.filters, recordRefs: refs, programIds: [...new Set(records.flatMap((record) => record.joinPath.filter((path) => path.kind === "program").map((path) => path.id as ProgramId)))] };
+  return { id: id as EvidenceBundle["id"], metric, asOfAt: context.evaluation.asOfAt, snapshotRevision: context.evaluation.snapshotRevision, unit: "tasks", scope: { workspace: PROGRAMS_WORKSPACE, marketBasis: "program-market-at-entry", selectedMarket: context.filters.selectedMarket, populationDescription: description }, filters, reportingWindow: context.filters.window, computation: { status: "available", value: records.length, numerator: null, denominator: null }, contributingRecords: records, numeratorMembers: [], denominatorMembers: [], exclusions: [], unknownCount: 0, limitations: [], explanation: `${records.length} ${description.toLowerCase()}.`, navigationTarget: { workspace: PROGRAMS_WORKSPACE, intent: "work-list", filters, evidenceContext: { asOfAt: context.evaluation.asOfAt, snapshotRevision: context.evaluation.snapshotRevision, metric } } };
+}
+
+export function prepareWeeklyProgramsReview(snapshot: DemoSnapshotV2, context: WorkspaceQueryContext<typeof PROGRAMS_WORKSPACE>): WeeklyProgramsReview {
+  if (!context.filters.window) throw new Error("Weekly Programs review requires an explicit half-open reporting window.");
+  const view = prepareProgramsView(snapshot, context);
+  const programs = new Set(view.rows.map((row) => row.id));
+  const programMetric = view.rows[0] ? snapshot.programs.find((program) => program.id === view.rows[0]!.id)!.primaryMetric : ({ id: "metric-m13" as never, version: "v1" as never });
+  const statusAt = (work: DemoSnapshotV2["workItems"][number]) => work.statusHistory.filter((change) => change.occurredAt <= context.evaluation.asOfAt).sort((left, right) => right.occurredAt.localeCompare(left.occurredAt))[0]?.status ?? "open";
+  const currentWork = snapshot.workItems.filter((work) => work.programId !== null && programs.has(work.programId) && work.createdAt <= context.evaluation.asOfAt).map((work) => ({ work, status: statusAt(work) }));
+  const open = currentWork.filter((item) => item.status === "open" || item.status === "in-progress" || item.status === "blocked");
+  const unknown = open.filter((item) => item.work.blockerCode?.includes("unknown"));
+  const decisions = snapshot.programDecisions.filter((decision) => programs.has(decision.programId) && decision.decidedAt <= context.evaluation.asOfAt && inWindow(decision.decidedAt, context.filters.window!.startAt, context.filters.window!.endAt));
+  const workRecords = open.map(({ work }) => ({ ...pointer("work-item", work.id), label: `Open ${work.kind} work ${work.id}`, occurredAt: work.createdAt, joinPath: [pointer("program", work.programId!)] }));
+  const unknownRecords = unknown.map(({ work }) => ({ ...pointer("work-item", work.id), label: `Unknown information in ${work.id}`, occurredAt: work.createdAt, joinPath: [pointer("program", work.programId!)] }));
+  const decisionRecords = decisions.map((decision) => ({ ...pointer("program-decision", decision.id), label: `${decision.decision} decision`, occurredAt: decision.decidedAt, joinPath: [pointer("program", decision.programId)] }));
+  const evidence = [
+    ...view.evidence,
+    countEvidence(context, programMetric, `evidence-weekly-open-${context.evaluation.snapshotRevision}`, "still-open canonical work items", workRecords),
+    countEvidence(context, programMetric, `evidence-weekly-unknown-${context.evaluation.snapshotRevision}`, "work items with unknown information", unknownRecords),
+    countEvidence(context, programMetric, `evidence-weekly-decisions-${context.evaluation.snapshotRevision}`, "explicit program decisions", decisionRecords),
+  ];
+  return { reportingWindow: context.filters.window, asOfAt: context.evaluation.asOfAt, isPartial: context.evaluation.asOfAt < context.filters.window.endAt, actualResults: [...view.resultsByProgram.values()].flat(), stillOpenWork: open.map(({ work, status }) => ({ id: work.id, programId: work.programId!, status })), unknownWork: unknown.map(({ work }) => ({ id: work.id, programId: work.programId!, blockerCode: work.blockerCode! })), decisions, evidence };
 }
 
 export function prepareProgramsView(snapshot: DemoSnapshotV2, context: WorkspaceQueryContext<typeof PROGRAMS_WORKSPACE>): PreparedProgramsView {
