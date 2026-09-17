@@ -76,8 +76,26 @@ describe("V2 synthetic records and repository", () => {
     const invalidReadiness = { ...structuredClone(DEMO_SNAPSHOT_V2), readinessEvents: [{ ...DEMO_SNAPSHOT_V2.readinessEvents[0]!, checkedStepIds: [DEMO_SNAPSHOT_V2.onboardingSteps.find((step) => step.state !== "completed")!.id] }] };
     expect(validateDemoSnapshot(invalidReadiness).ok).toBe(false);
 
+    const omittedRequiredStep = { ...structuredClone(DEMO_SNAPSHOT_V2), readinessEvents: [{ ...DEMO_SNAPSHOT_V2.readinessEvents[0]!, checkedStepIds: [] }] };
+    expect(validateDemoSnapshot(omittedRequiredStep).ok).toBe(false);
+
+    const unverifiedCapability = { ...structuredClone(DEMO_SNAPSHOT_V2), capabilityVerifications: DEMO_SNAPSHOT_V2.capabilityVerifications.map((capability, index) => index === 0 ? { ...capability, status: "not-demonstrated" as const } : capability) };
+    expect(validateDemoSnapshot(unverifiedCapability).ok).toBe(false);
+
+    const futureReadinessEvidence = { ...structuredClone(DEMO_SNAPSHOT_V2), capabilityVerifications: DEMO_SNAPSHOT_V2.capabilityVerifications.map((capability, index) => index === 0 ? { ...capability, recordedAt: "2026-03-01T00:00:00Z" as never } : capability) };
+    expect(validateDemoSnapshot(futureReadinessEvidence).ok).toBe(false);
+
     const invalidAcceptance = { ...structuredClone(DEMO_SNAPSHOT_V2), demandRequests: DEMO_SNAPSHOT_V2.demandRequests.map((request) => request.id === "req-lax-101" ? { ...request, requiredCapabilityCodes: ["missing-capability" as never] } : request) };
     expect(validateDemoSnapshot(invalidAcceptance).ok).toBe(false);
+
+    const missingAvailability = { ...structuredClone(DEMO_SNAPSHOT_V2), availabilityWindows: DEMO_SNAPSHOT_V2.availabilityWindows.filter((window) => window.reporterId !== "person-lax-001") };
+    expect(validateDemoSnapshot(missingAvailability).ok).toBe(false);
+
+    const historicalEligibility = { ...structuredClone(DEMO_SNAPSHOT_V2), demandRequests: DEMO_SNAPSHOT_V2.demandRequests.map((request) => request.id === "req-lax-history-001" ? { ...request, requiredCapabilityCodes: ["missing-capability" as never] } : request) };
+    expect(validateDemoSnapshot(historicalEligibility).ok).toBe(false);
+
+    const futureRecordedReadiness = { ...structuredClone(DEMO_SNAPSHOT_V2), readinessEvents: DEMO_SNAPSHOT_V2.readinessEvents.map((event, index) => index === 0 ? { ...event, recordedAt: "2026-03-01T00:00:00Z" as never } : event) };
+    expect(validateDemoSnapshot(futureRecordedReadiness).ok).toBe(false);
 
     const invalidCompletion = { ...structuredClone(DEMO_SNAPSHOT_V2), jobOutcomes: [{ ...DEMO_SNAPSHOT_V2.jobOutcomes[0]!, completedAt: DEMO_SNAPSHOT_V2.assignmentEvents.find((event) => event.id === DEMO_SNAPSHOT_V2.jobOutcomes[0]!.acceptedAssignmentEventId)!.occurredAt }] };
     expect(validateDemoSnapshot(invalidCompletion).ok).toBe(false);
