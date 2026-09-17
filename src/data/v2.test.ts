@@ -72,6 +72,18 @@ describe("V2 synthetic records and repository", () => {
 
     const invalidWindow = { ...structuredClone(DEMO_SNAPSHOT_V2), availabilityWindows: [{ ...DEMO_SNAPSHOT_V2.availabilityWindows[0]!, endAt: DEMO_SNAPSHOT_V2.availabilityWindows[0]!.startAt }] };
     expect(validateDemoSnapshot(invalidWindow).ok).toBe(false);
+
+    const invalidReadiness = { ...structuredClone(DEMO_SNAPSHOT_V2), readinessEvents: [{ ...DEMO_SNAPSHOT_V2.readinessEvents[0]!, checkedStepIds: [DEMO_SNAPSHOT_V2.onboardingSteps.find((step) => step.state !== "completed")!.id] }] };
+    expect(validateDemoSnapshot(invalidReadiness).ok).toBe(false);
+
+    const invalidAcceptance = { ...structuredClone(DEMO_SNAPSHOT_V2), demandRequests: DEMO_SNAPSHOT_V2.demandRequests.map((request) => request.id === "req-lax-101" ? { ...request, requiredCapabilityCodes: ["missing-capability" as never] } : request) };
+    expect(validateDemoSnapshot(invalidAcceptance).ok).toBe(false);
+
+    const invalidCompletion = { ...structuredClone(DEMO_SNAPSHOT_V2), jobOutcomes: [{ ...DEMO_SNAPSHOT_V2.jobOutcomes[0]!, completedAt: DEMO_SNAPSHOT_V2.assignmentEvents.find((event) => event.id === DEMO_SNAPSHOT_V2.jobOutcomes[0]!.acceptedAssignmentEventId)!.occurredAt }] };
+    expect(validateDemoSnapshot(invalidCompletion).ok).toBe(false);
+
+    const invalidTimeZone = { ...structuredClone(DEMO_SNAPSHOT_V2), demandRequests: [{ ...DEMO_SNAPSHOT_V2.demandRequests[0]!, timeZone: "America/New_York" as never }] };
+    expect(validateDemoSnapshot(invalidTimeZone).ok).toBe(false);
   });
 
   it("D06 applies cumulative checkpoints once and keeps dependent records ordered", () => {
@@ -89,6 +101,7 @@ describe("V2 synthetic records and repository", () => {
     expect(replayed.appliedScenarioEventIds).toEqual(delivered.appliedScenarioEventIds);
     expect(replayed.revision).toBe(delivered.revision);
     expect(SCENARIO_CONTRACT.feed.events.map((event) => event.sequence)).toEqual(SCENARIO_CONTRACT.feed.events.map((_, index) => index + 1));
+    for (const checkpoint of SCENARIO_CONTRACT.checkpoints) expect(validateDemoSnapshot(applyScenarioCheckpoint(DEMO_SNAPSHOT_V2, checkpoint.id)).ok).toBe(true);
   });
 
   it("D06 repository isolates mutations, rejects stale saves, and resets all state", async () => {
