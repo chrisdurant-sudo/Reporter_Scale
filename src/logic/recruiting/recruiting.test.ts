@@ -61,4 +61,29 @@ describe("recruiting calculations", () => {
     expect(empty.evidence.filter((item) => item.metric.id === "M07" || item.metric.id === "M08").map((item) => item.computation.status)).toEqual(["unavailable", "unavailable"]);
     expect(empty.evidence.flatMap(validateEvidenceBundle)).toEqual([]);
   });
+
+  it("excludes future acquisition cases and chooses timestamp-latest histories, not array-last histories", () => {
+    const future = { ...snapshot().acquisitionCases[0]!, id: "case-future", openedAt: utc("2026-04-01T00:00:00Z"), recordedAt: utc("2026-04-01T00:00:00Z") };
+    expect(projectCurrentCases(snapshot({ acquisitionCases: [...snapshot().acquisitionCases, future] }), asOf).map((item) => item.acquisitionCaseId)).toEqual(["case-a"]);
+    expect(sourceOutcomes(snapshot({ acquisitionCases: [...snapshot().acquisitionCases, future] }), asOf, { ...window, endAt: utc("2026-05-01T00:00:00Z") })[0]?.caseIds).toEqual(["case-a"]);
+    const work = { id: "work", kind: "screen", primaryEntityRef: { kind: "acquisition-case", id: "case-a" }, relatedRequestIds: [], programId: null, createdAt: utc("2026-02-01T00:00:00Z"), ownerHistory: [{ ownerId: "early-owner", occurredAt: utc("2026-02-10T00:00:00Z"), actorId: "actor", reason: "early" }, { ownerId: "late-owner", occurredAt: utc("2026-02-20T00:00:00Z"), actorId: "actor", reason: "late" }], dueAt: null, statusHistory: [{ status: "completed", occurredAt: utc("2026-02-25T00:00:00Z"), actorId: "actor", reason: "complete" }, { status: "open", occurredAt: utc("2026-02-15T00:00:00Z"), actorId: "actor", reason: "open" }], blockerCode: null, completionEvidenceRefs: [], provenance: "synthetic-demo" };
+    expect(projectCurrentCases(snapshot({ workItems: [work] }), asOf)[0]?.openActions).toEqual([]);
+    expect(projectCurrentCases(snapshot({ workItems: [{ ...work, statusHistory: [work.statusHistory[0]!, { ...work.statusHistory[1]!, occurredAt: utc("2026-02-26T00:00:00Z") }] }] }), asOf)[0]?.openActions[0]?.assignedTo).toBe("late-owner");
+  });
+
+  it("suppresses stale screening/onboarding actions after closure unless canonical work remains open", () => {
+    const closed = { id: "closed", acquisitionCaseId: "case-a", reporterId: "reporter-a", eventType: "closed", occurredAt: utc("2026-02-20T00:00:00Z"), recordedAt: utc("2026-02-20T00:00:00Z"), actorId: "actor", reasonCode: "withdrawn", reasonText: "Withdrawn", marketAtEntry: "LAX", linkedWorkItemId: null, provenance: "synthetic-demo" };
+    const step = { id: "step", acquisitionCaseId: "case-a", stepDefinitionId: "orientation", required: true, state: "blocked", assignedTo: null, dueAt: null, completedAt: null, completedBy: null, evidenceRef: null, blockerCode: "missing", recordedAt: utc("2026-02-10T00:00:00Z"), provenance: "synthetic-demo" };
+    const base = snapshot({ lifecycleEvents: [...snapshot().lifecycleEvents, closed], onboardingSteps: [step] });
+    expect(projectCurrentCases(base, asOf)[0]?.openActions).toEqual([]);
+    const open = { id: "work", kind: "re-engage", primaryEntityRef: { kind: "acquisition-case", id: "case-a" }, relatedRequestIds: [], programId: null, createdAt: utc("2026-02-20T00:00:00Z"), ownerHistory: [], dueAt: null, statusHistory: [{ status: "open", occurredAt: utc("2026-02-20T00:00:00Z"), actorId: "actor", reason: "explicit re-engagement" }], blockerCode: null, completionEvidenceRefs: [], provenance: "synthetic-demo" };
+    expect(projectCurrentCases(snapshot({ ...base, workItems: [open] }), asOf)[0]?.openActions.map((item) => item.kind)).toEqual(["work-item"]);
+  });
+
+  it("keeps late first jobs out of M09's fully observed cohort horizon", () => {
+    const job = { id: "late", requestId: "request-1", reporterId: "reporter-a", acceptedAssignmentEventId: "assignment-1", outcome: "completed", startedAt: null, completedAt: utc("2026-03-04T00:00:00Z"), deliveryAt: null, recordedAt: utc("2026-03-04T00:00:00Z"), provenance: "synthetic-demo" };
+    const outcomes = sourceOutcomes(snapshot({ jobOutcomes: [job], sourceSpend: [{ id: "spend", sourceId: "source-a", programId: null, cohortRef: null, attributableWindow: null, amountMinor: 5000, currency: "USD", occurredAt: utc("2026-02-12T00:00:00Z"), allocationNote: "direct", provenance: "synthetic-demo" }] }), asOf, window);
+    expect(outcomes[0]?.firstJobCaseIds).toEqual([]);
+    expect(outcomes[0]?.spend.display).toBe("No first jobs yet; 5000 minor USD spent");
+  });
 });
