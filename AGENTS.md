@@ -1,12 +1,13 @@
 # Reporter Growth
 
-> **Current phase:** Reporter Growth v2 P2 closeout complete — Records, Domain Calculations, and
-> Shared Evidence Foundations, based on source freeze `19f7df98000e346a5b4ff32e00b699276c3f62fb`,
-> the approved `ROUTING_VERIFIED_WITH_TIER_OBSERVABILITY_LIMITATION` P1.5 gate, and final integrated
-> source commit `2844a4bb578515d1c9a5f14357cae0c66be67763`. P2 implementation is inactive. P3 has
-> not started and is not authorized; Quality and Reviewer have not been launched. No further lane
-> fan-out, product implementation, deployment, dependency change, or cross-lane contract edit is
-> authorized without a separate user gate.
+> **Current phase:** Reporter Growth v2 P3 — LAX Vertical Integration is explicitly authorized and
+> active from integration baseline `97f3ed4606f62dddcf86d5ad261b77dcf1f17ed5`, using source freeze
+> `19f7df98000e346a5b4ff32e00b699276c3f62fb`, the approved
+> `ROUTING_VERIFIED_WITH_TIER_OBSERVABILITY_LIMITATION` P1.5 gate, and final integrated P2 source
+> commit `2844a4bb578515d1c9a5f14357cae0c66be67763`. P2 is complete and inactive. P3 is limited to
+> the live LAX vertical described in `docs/reporter-growth/v2/P3_LAX_VERTICAL.md`. Quality and
+> Reviewer have not been launched. P4, deployment, dependency changes, external writes, and
+> unrelated product work remain unauthorized.
 
 The independent synthetic-data application currently in `src/` implements the version 1
 scope defined in `docs/reporter-growth/PRODUCT.md`. The original v1 repository packet began

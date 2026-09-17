@@ -3,12 +3,12 @@
   "packet_kind": "routing_registry",
   "routing_active": true,
   "fanout_authorized": false,
-  "implementation_active": false,
-  "current_phase": "P2_complete_awaiting_separate_P3_authorization",
+  "implementation_active": true,
+  "current_phase": "P3_LAX_vertical_integration_active",
   "routing_verification_status": "verified_with_tier_observability_limitation",
   "source_contract_commit": "19f7df98000e346a5b4ff32e00b699276c3f62fb",
   "implementation_requires": [
-    "explicit_P2_user_authorization",
+    "explicit_P3_LAX_vertical_user_authorization",
     "FOUNDATION_REVIEWED",
     "CONTRACTS_FROZEN",
     "ROUTING_VERIFIED_WITH_TIER_OBSERVABILITY_LIMITATION"
@@ -240,5 +240,5 @@
     "allowed_directory_prefixes": [],
     "task": "docs/reporter-growth/v2/tasks/reviewer.md"
   },
-  "note": "This remains the sole routing registry, not an executable dispatcher or sandbox. P2 is complete and inactive. P3 is unstarted and unauthorized; Quality and Reviewer have not been launched. Any future routed spawn requires a separate user gate and must use fork_turns=none. The resolved child service tier remains unobservable, so configured default/Standard is the accepted strongest available evidence."
+  "note": "This remains the sole routing registry, not an executable dispatcher or sandbox. P2 is complete and inactive. P3 LAX Vertical Integration is active and coordinator-led; only a concrete repair inside one lane's exclusive paths may be routed, using the configured role, an isolated verified worktree, and fork_turns=none. Quality and Reviewer have not been launched. The resolved child service tier remains unobservable, so configured default/Standard is the accepted strongest available evidence."
 }
