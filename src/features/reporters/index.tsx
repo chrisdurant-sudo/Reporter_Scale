@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { ActionResult, OutreachPreview, ReporterDetailView, ReporterRowView, ReportersScreenProps, SaveCoachingInput, SaveScreeningInput, ScreeningCheckStatus, ScreeningOutcome, UpdateFollowUpInput } from "../../contracts";
 import { TEST_ANCHORS } from "../../contracts";
 import { Button, DetailPanel, EmptyState, Notice } from "../../ui";
@@ -52,8 +52,7 @@ export function ReportersScreen({ view, actions, initialReporterId = null }: Rep
   const [search, setSearch] = useState(""); const [selectedId, setSelectedId] = useState<string | null>(initialReporterId); const focusRef = useRef<HTMLButtonElement>(null); const [coachingMember, setCoachingMember] = useState<string | null>(null); const [coachingReporter, setCoachingReporter] = useState(""); const [coachingFeedback, setCoachingFeedback] = useState<Feedback | null>(null); const [coachingBusy, setCoachingBusy] = useState(false);
   const rows = useMemo(() => matchingRows(view.reporters, search), [search, view.reporters]);
   const detail = rows.some((row) => row.id === selectedId) ? view.reporterDetails.find((item) => item.id === selectedId) ?? null : null;
-  useEffect(() => { const close = (event: KeyboardEvent) => { if (event.key === "Escape") setSelectedId(null); }; window.addEventListener("keydown", close); return () => window.removeEventListener("keydown", close); }, []);
-  function close() { setSelectedId(null); window.setTimeout(() => focusRef.current?.focus(), 0); }
+  function close() { const opener = focusRef.current; setSelectedId(null); window.setTimeout(() => opener?.focus(), 0); }
   function updateSearch(value: string) { if (selectedId && !matchingRows(view.reporters, value).some((row) => row.id === selectedId)) setSelectedId(null); setSearch(value); }
   async function saveCoaching(event: React.FormEvent<HTMLFormElement>) { event.preventDefault(); const form = new FormData(event.currentTarget); const input: SaveCoachingInput = { teamMemberId: String(form.get("teamMemberId") ?? ""), reporterId: coachingReporter || null, note: String(form.get("note") ?? ""), nextAction: String(form.get("nextAction") ?? ""), dueAt: `${String(form.get("dueAt") ?? "")}T17:00:00.000Z` }; setCoachingBusy(true); const result = await actions.onSaveCoaching(input); setCoachingFeedback(feedbackFor(result)); setCoachingBusy(false); }
   if (view.status === "loading") return <section className="reporters" data-testid={TEST_ANCHORS.reportersScreen}><h2>Reporters</h2><p>{view.statusMessage}</p></section>;

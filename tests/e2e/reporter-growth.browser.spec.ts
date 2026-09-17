@@ -37,15 +37,25 @@ test.describe("Reporter Growth browser acceptance", () => {
   test("global market filter persists between tabs and the LAX flow exposes stable anchors", async ({ page }) => {
     await page.goto("/");
     const laxButton = page.getByRole("button", { name: "LAX", exact: true });
-    await expect(laxButton).toHaveAttribute("aria-pressed", "false");
-    await laxButton.click();
-    await expect(laxButton).toHaveAttribute("aria-pressed", "true");
+    const selector = page.getByTestId("market-selector");
+    const isCompact = (page.viewportSize()?.width ?? 1280) <= 640;
+    if (isCompact) {
+      await expect(selector).toHaveValue("ALL");
+      await selector.selectOption("LAX");
+      await expect(selector).toHaveValue("LAX");
+    } else {
+      await expect(laxButton).toHaveAttribute("aria-pressed", "false");
+      await laxButton.click();
+      await expect(laxButton).toHaveAttribute("aria-pressed", "true");
+    }
 
     await page.getByRole("button", { name: "Reporters" }).click();
-    await expect(laxButton).toHaveAttribute("aria-pressed", "true");
+    if (isCompact) await expect(selector).toHaveValue("LAX");
+    else await expect(laxButton).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByTestId("reporters-screen")).toBeVisible();
     await page.getByRole("button", { name: "Improvements" }).click();
-    await expect(laxButton).toHaveAttribute("aria-pressed", "true");
+    if (isCompact) await expect(selector).toHaveValue("LAX");
+    else await expect(laxButton).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByTestId("improvements-screen")).toBeVisible();
   });
 

@@ -36,6 +36,19 @@ describe("ReportersScreen", () => {
     expect(props.actions.onPreviewOutreach).toHaveBeenCalledWith("r-1");
   });
 
+  it("returns focus to the reporter row after Escape closes the integrated detail panel", async () => {
+    const user = userEvent.setup();
+    render(<ReportersScreen {...props} />);
+    const opener = screen.getByTestId("reporter-row-r-1");
+    await user.click(opener);
+    expect(screen.getByTestId("reporter-detail")).toBeInTheDocument();
+
+    fireEvent.keyDown(document, { key: "Escape" });
+
+    expect(screen.queryByTestId("reporter-detail")).not.toBeInTheDocument();
+    await waitFor(() => expect(opener).toHaveFocus());
+  });
+
   it("uses the first team member for an unsaved follow-up and marks rejected saves as dangerous", async () => {
     const user = userEvent.setup();
     const update = vi.fn(async () => success);
