@@ -53,4 +53,7 @@ inactive; they do not authorize dispatch or source work.
 - Reviewers inspect fixed commits without changing source. Coordinator integrates sequentially and verifies the final assembled commit.
 - Version 1 scope (legacy): keep Markets / Reporters / Improvements, one five-market selector, simple labels, synthetic data, and no real messages or API connections. The authorized v2 plan supersedes only the three-tab scope; its safety boundaries remain in force.
 - Preserve user work and stricter existing instructions. No blanket staging, destructive cleanup, force push, deployment, sandbox weakening, or unauthorized external writes.
+- Within the explicitly authorized project scope, proceed with all nondestructive reads, edits,
+  checks, worktree/branch operations, commits, and integration without asking for permission. Ask only
+  before a destructive edit; this rule does not expand scope or override a missing external authority.
 - Do not claim installation, testing, subagent execution, or MVP completion without actual evidence.

@@ -13,6 +13,7 @@ import type { RecordPointer } from "./references";
 
 export interface TeamMember {
   readonly id: TeamMemberId;
+  readonly actorId: ActorId;
   readonly fictionalName: string;
   readonly focusRole: string;
   readonly activeFrom: UtcTimestamp;
