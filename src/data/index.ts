@@ -35,3 +35,14 @@ export function validateDemoSnapshot(value: unknown): ActionResult<DemoSnapshot>
 }
 export function createDemoRepository(): DemoRepository { const seed = makeSnapshot(); let current = clone(seed); return { load: async () => ({ ok: true, value: clone(current), message: "Demo data loaded.", revision: current.revision }), save: async (next, expectedRevision) => { if (expectedRevision !== current.revision) return failure("STALE_REVISION", "Save rejected because the demo snapshot is out of date.", current.revision); const checked = validateDemoSnapshot(next); if (!checked.ok) return checked; current = clone({ ...checked.value, revision: current.revision + 1 }); return { ok: true, value: clone(current), message: "Demo data saved.", revision: current.revision }; }, reset: async () => { current = clone(seed); return { ok: true, value: clone(current), message: "Demo data reset.", revision: current.revision }; } }; }
 export const DEMO_SNAPSHOT = makeSnapshot();
+
+export {
+  DEMO_SNAPSHOT_V2,
+  SCENARIO_CONTRACT,
+  V2_MAIN_REQUEST_WINDOW,
+  V2_RECORD_COUNTS,
+  applyScenarioCheckpoint,
+  applyScenarioEvent,
+  createDemoRepositoryV2,
+  validateDemoSnapshot as validateDemoSnapshotV2,
+} from "./v2";
