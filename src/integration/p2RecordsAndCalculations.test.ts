@@ -100,6 +100,7 @@ describe("P2 source → calculation → EvidenceBundle reconciliation", () => {
     const programFilters = { ...filters("ALL", "program-market-at-entry", [], teamWindow), programIds: ["program-dfw-broad-outreach" as never] };
     const weekly = prepareWeeklyProgramsReview(DEMO_SNAPSHOT_V2, context("programs", "2026-01-16T00:00:00Z", programFilters));
     expect(weekly.isPartial).toBe(true);
+    expect(weekly.evidence.filter((item) => item.id.includes("evidence-weekly-")).every((item) => item.metric.id === "M13" && item.metric.version === "v2-frozen-1")).toBe(true);
     expect(weekly.evidence.flatMap(validateEvidenceBundle)).toEqual([]);
   });
 });

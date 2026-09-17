@@ -229,7 +229,9 @@ export function prepareWeeklyProgramsReview(snapshot: DemoSnapshotV2, context: W
   if (!context.filters.window) throw new Error("Weekly Programs review requires an explicit half-open reporting window.");
   const view = prepareProgramsView(snapshot, context);
   const programs = new Set(view.rows.map((row) => row.id));
-  const programMetric = view.rows[0] ? snapshot.programs.find((program) => program.id === view.rows[0]!.id)!.primaryMetric : ({ id: "metric-m13" as never, version: "v1" as never });
+  const weeklyDefinition = snapshot.metricDefinitions.find((definition) => String(definition.id) === "M13");
+  if (!weeklyDefinition) throw new Error("Weekly Programs review requires the frozen M13 metric definition.");
+  const weeklyMetric: MetricDefinitionRef = { id: weeklyDefinition.id, version: weeklyDefinition.version };
   const statusAt = (work: DemoSnapshotV2["workItems"][number]) => work.statusHistory.filter((change) => change.occurredAt <= context.evaluation.asOfAt).sort((left, right) => right.occurredAt.localeCompare(left.occurredAt))[0]?.status ?? "open";
   const currentWork = snapshot.workItems.filter((work) => work.programId !== null && programs.has(work.programId) && work.createdAt <= context.evaluation.asOfAt).map((work) => ({ work, status: statusAt(work) }));
   const open = currentWork.filter((item) => item.status === "open" || item.status === "in-progress" || item.status === "blocked");
@@ -240,9 +242,9 @@ export function prepareWeeklyProgramsReview(snapshot: DemoSnapshotV2, context: W
   const decisionRecords = decisions.map((decision) => ({ ...pointer("program-decision", decision.id), label: `${decision.decision} decision`, occurredAt: decision.decidedAt, joinPath: [pointer("program", decision.programId)] }));
   const evidence = [
     ...view.evidence,
-    countEvidence(context, programMetric, `evidence-weekly-open-${context.evaluation.snapshotRevision}`, "still-open canonical work items", workRecords),
-    countEvidence(context, programMetric, `evidence-weekly-unknown-${context.evaluation.snapshotRevision}`, "work items with unknown information", unknownRecords),
-    countEvidence(context, programMetric, `evidence-weekly-decisions-${context.evaluation.snapshotRevision}`, "explicit program decisions", decisionRecords),
+    countEvidence(context, weeklyMetric, `evidence-weekly-open-${context.evaluation.snapshotRevision}`, "still-open canonical work items", workRecords),
+    countEvidence(context, weeklyMetric, `evidence-weekly-unknown-${context.evaluation.snapshotRevision}`, "work items with unknown information", unknownRecords),
+    countEvidence(context, weeklyMetric, `evidence-weekly-decisions-${context.evaluation.snapshotRevision}`, "explicit program decisions", decisionRecords),
   ];
   return { reportingWindow: context.filters.window, asOfAt: context.evaluation.asOfAt, isPartial: context.evaluation.asOfAt < context.filters.window.endAt, actualResults: [...view.resultsByProgram.values()].flat(), stillOpenWork: open.map(({ work, status }) => ({ id: work.id, programId: work.programId!, status })), unknownWork: unknown.map(({ work }) => ({ id: work.id, programId: work.programId!, blockerCode: work.blockerCode! })), decisions, evidence };
 }
