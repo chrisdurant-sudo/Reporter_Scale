@@ -34,6 +34,9 @@ describe("prepareTeamView", () => {
     expect(view.members.find((member) => member.id === memberA)?.completed.completed).toBe(1);
     expect(view.members.find((member) => member.id === memberB)?.completed.completed).toBe(0);
     expect(view.members.find((member) => member.id === memberB)?.totalOpenWorkload).toBe(1);
+    expect(view.members.find((member) => member.id === memberA)?.cycleTime.completedSamples).toEqual([expect.objectContaining({ workItemId: "completed-once", elapsedHours: 72 })]);
+    expect(view.members.find((member) => member.id === memberB)?.cycleTime.completedSamples).toEqual([]);
+    expect(view.members.find((member) => member.id === memberB)?.cycleTime.waitingSamples).toEqual([expect.objectContaining({ workItemId: "open-overdue", ageHours: 216 })]);
   });
   it("shows inspected samples and explicit coaching without fabricating readiness, assignments, or outcomes", () => {
     const view = prepareTeamView(snapshot, context, metric);
