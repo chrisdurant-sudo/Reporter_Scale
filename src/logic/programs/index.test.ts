@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { DemoSnapshotV2, WorkspaceQueryContext } from "../../contracts/v2";
-import { advanceLimitedPilotProcess, buildProcessDraft, prepareProgramsView, PROGRAMS_WORKSPACE } from "./index";
+import { advanceLimitedPilotProcess, buildProcessDraft, calculateSourceContribution, prepareProgramsView, projectGoalIntegrity, PROGRAMS_WORKSPACE } from "./index";
 
 const stamp = "2026-02-16T17:00:00.000Z";
 const programId = "program-readiness-checklist" as never;
@@ -53,7 +53,35 @@ describe("prepareProgramsView", () => {
     const view = prepareProgramsView(fixture(), context("LAX"));
     const altered = { ...view.appliedFilters, selectedMarket: "DFW" as const, marketIds: ["DFW" as const] };
     const zero = prepareProgramsView(fixture(), { ...context("LAX"), filters: altered });
-    expect(zero.rows[0]!.result).toBeNull();
+    expect(zero.rows[0]!.result?.evidence.computation).toMatchObject({ status: "unavailable", reason: "No participants in this market." });
+    expect(zero.resultsByProgram.get(programId)!.every((result) => result.label && result.entrants === 0)).toBe(true);
+  });
+
+  it("excludes immature members, including just-before-boundary members, and includes the exact follow-up boundary", () => {
+    const snapshot = fixture();
+    const first = snapshot.programEnrollments[0]!;
+    const second = snapshot.programEnrollments[1]!;
+    const near = { ...first, id: "observing-near" as never, reporterId: "observing-near" as never, enteredAt: "2026-01-01T00:00:00.001Z" as never };
+    const exact = { ...second, id: "mature-exact" as never, reporterId: "mature-exact" as never, enteredAt: "2026-01-01T00:00:00.000Z" as never };
+    const amended = { ...snapshot, programEnrollments: [...snapshot.programEnrollments, near, exact] };
+    const baseContext = context("ALL");
+    const view = prepareProgramsView(amended, { ...baseContext, evaluation: { ...baseContext.evaluation, asOfAt: "2026-01-15T00:00:00.000Z" as never } });
+    const earlier = view.resultsByProgram.get(programId)!.find((item) => item.groupId === "earlier")!;
+    expect(earlier.stillObservingEntrants).toBe(1);
+    expect(earlier.matureEntrants).toBe(21);
+    expect(earlier.evidence.limitations.join(" ")).toMatch(/still observing/i);
+  });
+
+  it("attributes exact source spend once, never treats missing spend as free, and preserves historic goal revisions", () => {
+    const snapshot = fixture();
+    const withSpend = { ...snapshot, sourceSpend: [{ id: "spend-1" as never, sourceId: "source-referral" as never, programId, cohortRef: "earlier", attributableWindow: null, amountMinor: 1200 as never, currency: "USD" as never, occurredAt: stamp as never, allocationNote: "Fixture", provenance: "synthetic-demo" as const }] } as DemoSnapshotV2;
+    expect(calculateSourceContribution(withSpend, withSpend.programs[0]!, "earlier", context("ALL"))[0]).toMatchObject({ attributableSpendMinor: 1200, timelyFirstJobs: 6, spendPerFirstJobMinor: 200, status: "available" });
+    expect(calculateSourceContribution(snapshot, snapshot.programs[0]!, "earlier", context("ALL"))[0]?.reason).toBe("Spend not recorded.");
+    const noJobs = { ...withSpend, jobOutcomes: [] } as DemoSnapshotV2;
+    expect(calculateSourceContribution(noJobs, noJobs.programs[0]!, "earlier", context("ALL"))[0]).toMatchObject({ attributableSpendMinor: 1200, timelyFirstJobs: 0, spendPerFirstJobMinor: null, status: "unavailable" });
+    const revision2 = { ...snapshot.goalRevisions[0]!, id: "goal-revision-2" as never, version: 2, target: 0.7, supersedesRevisionId: snapshot.goalRevisions[0]!.id };
+    const projection = projectGoalIntegrity({ ...snapshot, goalRevisions: [...snapshot.goalRevisions, revision2] }, "goal-1");
+    expect(projection.revisions.map((revision) => [revision.version, revision.target, revision.metricVersion])).toEqual([[1, 0.5, "v1"], [2, 0.7, "v1"]]);
   });
 
   it("creates a versioned draft and requires review before a limited pilot without enrolling anyone", () => {

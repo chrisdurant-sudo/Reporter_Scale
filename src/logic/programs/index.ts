@@ -19,9 +19,26 @@ export interface ProgramResultGroup {
   readonly groupId: string;
   readonly label: string;
   readonly entrants: number;
+  readonly matureEntrants: number;
+  readonly stillObservingEntrants: number;
   readonly timelyFirstJobs: number;
   readonly result: number | null;
   readonly evidence: EvidenceBundle;
+}
+
+export interface SourceContribution {
+  readonly sourceId: string | null;
+  readonly sourceLabel: string;
+  readonly attributableSpendMinor: number | null;
+  readonly timelyFirstJobs: number;
+  readonly spendPerFirstJobMinor: number | null;
+  readonly status: "available" | "unavailable";
+  readonly reason: string | null;
+}
+
+export interface GoalIntegrityProjection {
+  readonly goalId: string;
+  readonly revisions: readonly { readonly version: number; readonly metricId: string; readonly metricVersion: string; readonly target: number; readonly deadline: string; readonly baselineAsOfAt: string; readonly scope: string; readonly baselineEvidenceSnapshotId: string }[];
 }
 
 export interface PreparedProgramRow {
@@ -68,6 +85,7 @@ export function advanceLimitedPilotProcess(
 const pointer = (kind: RecordPointer["kind"], id: string): RecordPointer => ({ kind, id });
 const inWindow = (value: string, start: string, end: string) => value >= start && value < end;
 const knownAt = (recordedAt: string, asOfAt: string) => recordedAt <= asOfAt;
+const followUpDeadline = (enteredAt: string, days: number) => new Date(new Date(enteredAt).getTime() + days * 86_400_000).toISOString();
 
 function filterEnrollments(snapshot: DemoSnapshotV2, program: Program, context: WorkspaceQueryContext<typeof PROGRAMS_WORKSPACE>) {
   const selected = context.filters.selectedMarket;
@@ -122,42 +140,67 @@ function groupEvidence(
   context: WorkspaceQueryContext<typeof PROGRAMS_WORKSPACE>,
 ): ProgramResultGroup {
   const firstJobs = firstCompletedJobs(snapshot, context.evaluation.asOfAt);
-  const timely = new Set(enrollments.filter((enrollment) => {
+  const mature = enrollments.filter((enrollment) => context.evaluation.asOfAt >= followUpDeadline(enrollment.enteredAt, program.measurementPlan.followUpDays));
+  const observing = enrollments.filter((enrollment) => !mature.includes(enrollment));
+  const timely = new Set(mature.filter((enrollment) => {
     const job = firstJobs.get(enrollment.reporterId);
     if (!job?.completedAt) return false;
-    const deadline = new Date(new Date(enrollment.enteredAt).getTime() + program.measurementPlan.followUpDays * 86_400_000).toISOString();
+    const deadline = followUpDeadline(enrollment.enteredAt, program.measurementPlan.followUpDays);
     return job.completedAt >= enrollment.enteredAt && job.completedAt <= deadline;
   }).map((enrollment) => enrollment.id));
-  const denominatorMembers = enrollments.map((entry) => pointer("program-enrollment", entry.id));
-  const numeratorMembers = enrollments.filter((entry) => timely.has(entry.id)).map((entry) => pointer("program-enrollment", entry.id));
-  const scopedFilters = { ...context.filters, programIds: [program.id], programEnrollmentIds: enrollments.map((entry) => entry.id), recordRefs: denominatorMembers };
+  const denominatorMembers = mature.map((entry) => pointer("program-enrollment", entry.id));
+  const numeratorMembers = mature.filter((entry) => timely.has(entry.id)).map((entry) => pointer("program-enrollment", entry.id));
+  const scopedFilters = { ...context.filters, programIds: [program.id], programEnrollmentIds: enrollments.map((entry) => entry.id), recordRefs: enrollments.map((entry) => pointer("program-enrollment", entry.id)) };
   const empty = enrollments.length === 0;
+  const noMature = mature.length === 0;
   const evidence: EvidenceBundle = {
     id: `evidence-program-${program.id}-${groupId}-${context.evaluation.snapshotRevision}` as EvidenceBundle["id"],
     metric: program.measurementPlan.metric,
     asOfAt: context.evaluation.asOfAt,
     snapshotRevision: context.evaluation.snapshotRevision,
     unit: "ratio",
-    scope: { workspace: PROGRAMS_WORKSPACE, marketBasis: "program-market-at-entry", selectedMarket: context.filters.selectedMarket, populationDescription: empty ? "No participants in this market." : `Explicit frozen ${groupId} enrollments with the same ${program.measurementPlan.followUpDays}-day horizon.` },
+    scope: { workspace: PROGRAMS_WORKSPACE, marketBasis: "program-market-at-entry", selectedMarket: context.filters.selectedMarket, populationDescription: empty ? "No participants in this market." : `Explicit frozen ${groupId} enrollments; ${mature.length} fully observed on the same ${program.measurementPlan.followUpDays}-day horizon and ${observing.length} still observing.` },
     filters: scopedFilters,
     reportingWindow: program.measurementPlan.entryWindow,
-    computation: empty ? { status: "unavailable", value: null, numerator: null, denominator: null, reason: "No participants in this market." } : { status: "available", value: timely.size / enrollments.length, numerator: timely.size, denominator: enrollments.length },
+    computation: empty ? { status: "unavailable", value: null, numerator: null, denominator: null, reason: "No participants in this market." } : noMature ? { status: "unavailable", value: null, numerator: null, denominator: null, reason: "Participants are still being observed; no final outcome denominator is mature." } : { status: "available", value: timely.size / mature.length, numerator: timely.size, denominator: mature.length },
     contributingRecords: referencesFor(snapshot, enrollments, timely, context.evaluation.asOfAt),
     numeratorMembers,
     denominatorMembers,
     exclusions: [],
     unknownCount: 0,
-    limitations: [...program.limitations, "Observed participant outcomes describe this synthetic sample; they do not establish causality."],
-    explanation: empty ? "No participants in this market; this is unavailable rather than a 0% failure." : `${timely.size} of ${enrollments.length} explicitly enrolled participants had a first completed job within the declared follow-up horizon.`,
+    limitations: [...program.limitations, ...(observing.length ? [`${observing.length} participant(s) are still observing and excluded from the finalized denominator.`] : []), "Observed participant outcomes describe this synthetic sample; they do not establish causality."],
+    explanation: empty ? "No participants in this market; this is unavailable rather than a 0% failure." : noMature ? "Participants are still being observed; no final result is available yet." : `${timely.size} of ${mature.length} fully observed participants had a first completed job within the declared follow-up horizon.${observing.length ? ` ${observing.length} are still observing.` : ""}`,
     navigationTarget: { workspace: PROGRAMS_WORKSPACE, intent: "evidence-list", filters: scopedFilters, evidenceContext: { asOfAt: context.evaluation.asOfAt, snapshotRevision: context.evaluation.snapshotRevision, metric: program.measurementPlan.metric } },
   };
-  return { groupId, label: groupId, entrants: enrollments.length, timelyFirstJobs: timely.size, result: empty ? null : timely.size / enrollments.length, evidence };
+  return { groupId, label: groupId, entrants: enrollments.length, matureEntrants: mature.length, stillObservingEntrants: observing.length, timelyFirstJobs: timely.size, result: empty || noMature ? null : timely.size / mature.length, evidence };
+}
+
+export function calculateSourceContribution(snapshot: DemoSnapshotV2, program: Program, groupId: string, context: WorkspaceQueryContext<typeof PROGRAMS_WORKSPACE>): readonly SourceContribution[] {
+  const enrollments = filterEnrollments(snapshot, program, context).filter((item) => item.groupId === groupId);
+  const result = groupEvidence(snapshot, program, groupId, enrollments, context);
+  const timelyIds = new Set(result.evidence.numeratorMembers.map((item) => item.id));
+  const sources = new Map(snapshot.sources.map((item) => [item.id, item.label]));
+  const sourceIds = [...new Set(enrollments.map((item) => item.sourceAtEntry))];
+  return sourceIds.map((sourceId) => {
+    const sourceEnrollments = enrollments.filter((item) => item.sourceAtEntry === sourceId);
+    const timely = sourceEnrollments.filter((item) => timelyIds.has(item.id)).length;
+    const spends = snapshot.sourceSpend.filter((spend) => spend.sourceId === sourceId && spend.programId === program.id && (spend.cohortRef === null || spend.cohortRef === groupId));
+    if (!spends.length) return { sourceId, sourceLabel: sourceId ? sources.get(sourceId) ?? "Unknown source" : "Unknown source", attributableSpendMinor: null, timelyFirstJobs: timely, spendPerFirstJobMinor: null, status: "unavailable", reason: "Spend not recorded." };
+    const amount = spends.reduce((sum, spend) => sum + spend.amountMinor, 0);
+    if (!timely) return { sourceId, sourceLabel: sourceId ? sources.get(sourceId) ?? "Unknown source" : "Unknown source", attributableSpendMinor: amount, timelyFirstJobs: 0, spendPerFirstJobMinor: null, status: "unavailable", reason: `No first jobs yet; ${amount} minor units spent.` };
+    return { sourceId, sourceLabel: sourceId ? sources.get(sourceId) ?? "Unknown source" : "Unknown source", attributableSpendMinor: amount, timelyFirstJobs: timely, spendPerFirstJobMinor: amount / timely, status: "available", reason: null };
+  });
+}
+
+export function projectGoalIntegrity(snapshot: DemoSnapshotV2, goalId: string): GoalIntegrityProjection {
+  return { goalId, revisions: snapshot.goalRevisions.filter((revision) => revision.goalId === goalId).sort((a, b) => a.version - b.version).map((revision) => ({ version: revision.version, metricId: revision.metric.id, metricVersion: revision.metric.version, target: revision.target, deadline: revision.deadline, baselineAsOfAt: revision.baselineAsOfAt, scope: JSON.stringify(revision.scope), baselineEvidenceSnapshotId: revision.baselineEvidenceSnapshotId })) };
 }
 
 export function prepareProgramsView(snapshot: DemoSnapshotV2, context: WorkspaceQueryContext<typeof PROGRAMS_WORKSPACE>): PreparedProgramsView {
   const resultsByProgram = new Map<ProgramId, readonly ProgramResultGroup[]>();
   const rows = snapshot.programs.filter((program) => context.filters.programIds.length === 0 || context.filters.programIds.includes(program.id)).map((program) => {
     const groups = new Map<string, ProgramEnrollment[]>();
+    for (const enrollment of snapshot.programEnrollments) if (enrollment.programId === program.id && inWindow(enrollment.enteredAt, program.measurementPlan.entryWindow.startAt, program.measurementPlan.entryWindow.endAt)) groups.set(enrollment.groupId, []);
     for (const enrollment of filterEnrollments(snapshot, program, context)) groups.set(enrollment.groupId, [...(groups.get(enrollment.groupId) ?? []), enrollment]);
     const results = [...groups.entries()].sort(([left], [right]) => left.localeCompare(right)).map(([groupId, enrollments]) => groupEvidence(snapshot, program, groupId, enrollments, context));
     resultsByProgram.set(program.id, results);
