@@ -1,12 +1,10 @@
 # Reporter Growth
 
-> **Current phase:** Reporter Growth v2 P1.5 role-and-lane routing gate, based on the approved
-> source freeze in `docs/reporter-growth/v2/P1_SOURCE_CONTRACT.md`. This phase may change only
-> project routing configuration, routing/instruction documents, and a read-only role probe.
-> Do not launch implementation lanes, change product source, or begin P2 feature work.
-> The P1.5 probe did not expose actual child model/reasoning/service-tier metadata, and this
-> coordinator session still advertises the pre-edit role catalog. Routing is blocked until a fresh
-> session loads the V2 roles and exposes enough metadata to verify Luna/medium/default for `data`.
+> **Current phase:** Reporter Growth v2 P2 — Records, Domain Calculations, and Shared Evidence
+> Foundations, based on source freeze `19f7df98000e346a5b4ff32e00b699276c3f62fb` and the approved
+> `ROUTING_VERIFIED_WITH_TIER_OBSERVABILITY_LIMITATION` P1.5 gate. P2 authorizes exactly the seven
+> initial implementation roles and their exclusive paths. It does not authorize Quality, Reviewer,
+> the full P3 LAX vertical, deployment, dependency changes, or cross-lane contract edits.
 
 The independent synthetic-data application currently in `src/` implements the version 1
 scope defined in `docs/reporter-growth/PRODUCT.md`. The original v1 repository packet began

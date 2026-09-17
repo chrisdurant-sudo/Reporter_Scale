@@ -2,16 +2,16 @@
   "schema_version": 2,
   "packet_kind": "routing_registry",
   "routing_active": true,
-  "fanout_authorized": false,
-  "implementation_active": false,
-  "current_phase": "P1_5_runtime_verification_blocked",
-  "routing_verification_status": "blocked_runtime_metadata_unavailable",
+  "fanout_authorized": true,
+  "implementation_active": true,
+  "current_phase": "P2_records_and_calculations",
+  "routing_verification_status": "verified_with_tier_observability_limitation",
   "source_contract_commit": "19f7df98000e346a5b4ff32e00b699276c3f62fb",
   "implementation_requires": [
     "explicit_P2_user_authorization",
     "FOUNDATION_REVIEWED",
     "CONTRACTS_FROZEN",
-    "ROUTING_VERIFIED"
+    "ROUTING_VERIFIED_WITH_TIER_OBSERVABILITY_LIMITATION"
   ],
   "initial_implementation_roles": [
     "experience",
@@ -240,5 +240,5 @@
     "allowed_directory_prefixes": [],
     "task": "docs/reporter-growth/v2/tasks/reviewer.md"
   },
-  "note": "This is the sole active routing registry, not an executable dispatcher or sandbox. P2 still requires explicit authorization. All routed spawns use fork_turns=none."
+  "note": "This is the sole active routing registry, not an executable dispatcher or sandbox. P2 is explicitly authorized. All routed spawns use fork_turns=none; the resolved child service tier remains unobservable, so configured default/Standard is the accepted strongest available evidence."
 }
