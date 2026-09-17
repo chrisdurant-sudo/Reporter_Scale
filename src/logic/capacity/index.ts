@@ -100,8 +100,19 @@ function reservations(snapshot: DemoSnapshotV2, assignments: readonly Assignment
   }
   return result;
 }
+function latestCapabilityStatus(snapshot: DemoSnapshotV2, reporterId: ReporterId, capability: string, asOf: UtcTimestamp) {
+  return snapshot.capabilityVerifications
+    .filter((item) => item.reporterId === reporterId && String(item.capabilityCode) === capability && before(item.recordedAt, asOf))
+    .sort((left, right) => (right.recordedAt + String(right.id)).localeCompare(left.recordedAt + String(left.id)))[0] ?? null;
+}
+function latestLifecycleState(snapshot: DemoSnapshotV2, reporterId: ReporterId, asOf: UtcTimestamp) {
+  return snapshot.lifecycleEvents
+    .filter((item) => item.reporterId === reporterId && before(item.recordedAt, asOf) && before(item.occurredAt, asOf))
+    .sort((left, right) => (right.occurredAt + right.recordedAt + String(right.id)).localeCompare(left.occurredAt + left.recordedAt + String(left.id)))[0]?.eventType ?? null;
+}
 function candidate(snapshot: DemoSnapshotV2, request: DemandRequest, reporter: Reporter, asOf: UtcTimestamp, reserved: Map<ReporterId, readonly DemandRequest[]>, self: RequestId | null): CandidateCheck {
   const failures: string[] = [], unknowns: string[] = [];
+  if (latestLifecycleState(snapshot, reporter.id, asOf) === "closed") failures.push("Reporter has a closed lifecycle state.");
   if (!reporter.serviceMarketIds.includes(request.marketId)) failures.push("Reporter does not serve this demand market.");
   const scope = reporter.preferences.serviceMarkets.find((item) => item.marketId === request.marketId);
   if (scope?.status === "does-not-serve") failures.push("Reporter has recorded that this market is not served.");
@@ -109,9 +120,9 @@ function candidate(snapshot: DemoSnapshotV2, request: DemandRequest, reporter: R
   if (!reporter.preferences.attendanceModes.includes(request.attendanceMode)) failures.push("Attendance mode is not supported in recorded preferences.");
   if (!reporter.preferences.supportedProceedingTypes.includes(request.proceedingType)) failures.push("Proceeding type is not supported in recorded preferences.");
   for (const capability of request.requiredCapabilityCodes) {
-    const rows = snapshot.capabilityVerifications.filter((item) => item.reporterId === reporter.id && item.capabilityCode === capability && before(item.recordedAt, asOf));
-    if (rows.some((item) => item.status === "verified")) continue;
-    if (rows.some((item) => item.status === "not-demonstrated")) failures.push("Required capability " + capability + " is not demonstrated.");
+    const latest = latestCapabilityStatus(snapshot, reporter.id, String(capability), asOf);
+    if (latest?.status === "verified") continue;
+    if (latest?.status === "not-demonstrated") failures.push("Required capability " + capability + " is not demonstrated.");
     else unknowns.push("Required capability " + capability + " is not verified.");
   }
   for (const requirement of request.sampleCredentialRequirements) {
@@ -223,16 +234,26 @@ function goal(snapshot: DemoSnapshotV2, context: Context): GrowthGoalView | null
   };
   return { goalRevisionId: String(saved.id), goalId: String(saved.goalId), target: saved.target, baselineAsOfAt: saved.baselineAsOfAt, deadline: saved.deadline, actual: rows.length, metric: ref, evidence };
 }
+function isValidCompletedOutcome(snapshot: DemoSnapshotV2, outcome: DemoSnapshotV2["jobOutcomes"][number], asOf: UtcTimestamp): boolean {
+  if (outcome.outcome !== "completed" || outcome.completedAt === null || !before(outcome.recordedAt, asOf) || !before(outcome.completedAt, asOf)) return false;
+  const request = snapshot.demandRequests.find((item) => item.id === outcome.requestId);
+  if (!request || Date.parse(outcome.completedAt) < Date.parse(request.endAt)) return false;
+  return snapshot.assignmentEvents.some((item) =>
+    item.id === outcome.acceptedAssignmentEventId &&
+    item.state === "accepted" &&
+    item.requestId === outcome.requestId &&
+    item.reporterId === outcome.reporterId &&
+    before(item.recordedAt, asOf) &&
+    before(item.occurredAt, asOf),
+  );
+}
 function originalPlan(snapshot: DemoSnapshotV2, context: Context): OriginalPlanResults {
   const ids = context.filters.requestIds;
   if (!ids.length) return { status: "unavailable", requestIds: [], completedRequests: null, firstJobs: null, evidence: [], limitation: "Original-plan results require an explicit frozen request ID set." };
   const requests = snapshot.demandRequests.filter((item) => ids.includes(item.id) && before(item.recordedAt, context.evaluation.asOfAt));
-  const done = snapshot.jobOutcomes.filter((outcome) => {
-    const request = requests.find((item) => item.id === outcome.requestId), assignment = snapshot.assignmentEvents.find((item) => item.id === outcome.acceptedAssignmentEventId && item.state === "accepted" && item.reporterId === outcome.reporterId && item.requestId === outcome.requestId);
-    return Boolean(request && assignment && outcome.outcome === "completed" && outcome.completedAt && before(outcome.recordedAt, context.evaluation.asOfAt) && before(outcome.completedAt, context.evaluation.asOfAt) && Date.parse(outcome.completedAt) >= Date.parse(request.endAt));
-  });
+  const done = snapshot.jobOutcomes.filter((outcome) => requests.some((request) => request.id === outcome.requestId) && isValidCompletedOutcome(snapshot, outcome, context.evaluation.asOfAt));
   const earliest = new Map<ReporterId, typeof done[number]>();
-  for (const item of snapshot.jobOutcomes.filter((outcome) => outcome.outcome === "completed" && outcome.completedAt && before(outcome.recordedAt, context.evaluation.asOfAt) && before(outcome.completedAt, context.evaluation.asOfAt))) { const existing = earliest.get(item.reporterId); if (!existing || Date.parse(item.completedAt!) < Date.parse(existing.completedAt!)) earliest.set(item.reporterId, item); }
+  for (const item of snapshot.jobOutcomes.filter((outcome) => isValidCompletedOutcome(snapshot, outcome, context.evaluation.asOfAt))) { const existing = earliest.get(item.reporterId); if (!existing || Date.parse(item.completedAt!) < Date.parse(existing.completedAt!)) earliest.set(item.reporterId, item); }
   const first = done.filter((item) => earliest.get(item.reporterId)?.id === item.id), ref = definition(snapshot, "M05");
   if (!ref) return { status: "unavailable", requestIds: ids, completedRequests: null, firstJobs: null, evidence: [], limitation: "M05 metric definition is not available in the snapshot." };
   const filters = { ...filtersWithRequests(context.filters, ids), marketBasis: "job-market" as const };

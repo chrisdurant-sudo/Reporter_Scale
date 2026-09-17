@@ -92,6 +92,36 @@ describe("capacity markets calculations", () => {
     expect(view.originalPlan.evidence.every((evidence) => validateEvidenceBundle(evidence).length === 0)).toBe(true);
   });
 
+  it("rejects orphaned, mismatched, nonaccepted, and future assignment outcomes from frozen and global first-job results", () => {
+    const snapshot = base();
+    const valid = { id: id("job-valid"), requestId: id("req-confirmed"), reporterId: id("Ari Confirmed"), acceptedAssignmentEventId: id("assign-1"), outcome: "completed" as const, startedAt: utc("2026-02-20T10:00:00Z"), completedAt: utc("2026-02-20T12:00:00Z"), deliveryAt: null, recordedAt: utc("2026-02-20T12:00:00Z"), provenance: "demo-simulation" as const };
+    const mismatch = { ...snapshot.assignmentEvents[0]!, id: id("assign-mismatch"), requestId: id("req-possible-a") };
+    const offered = { ...snapshot.assignmentEvents[0]!, id: id("assign-offered"), state: "offered" as const };
+    const future = { ...snapshot.assignmentEvents[0]!, id: id("assign-future"), occurredAt: utc("2026-02-26T00:00:00Z"), recordedAt: utc("2026-02-26T00:00:00Z") };
+    const priorRequest = request("req-prior", "2026-02-18T10:00:00Z", "2026-02-18T12:00:00Z");
+    const priorInvalid = { ...valid, id: id("job-prior-invalid"), requestId: priorRequest.id, acceptedAssignmentEventId: id("missing-prior"), completedAt: utc("2026-02-18T12:00:00Z"), recordedAt: utc("2026-02-18T12:00:00Z") };
+    const invalid = [
+      { ...valid, id: id("job-orphan"), acceptedAssignmentEventId: id("missing") },
+      { ...valid, id: id("job-mismatch"), acceptedAssignmentEventId: mismatch.id },
+      { ...valid, id: id("job-offered"), acceptedAssignmentEventId: offered.id },
+      { ...valid, id: id("job-future"), acceptedAssignmentEventId: future.id },
+      priorInvalid,
+    ];
+    const view = prepareMarketsWorkspace({ ...snapshot, demandRequests: [...snapshot.demandRequests, priorRequest], assignmentEvents: [...snapshot.assignmentEvents, mismatch, offered, future], jobOutcomes: [valid, ...invalid] }, context(["req-confirmed"], "2026-02-25T00:00:00Z"));
+    expect(view.originalPlan).toMatchObject({ completedRequests: 1, firstJobs: 1 });
+  });
+
+  it("uses the latest known capability status and excludes a reporter whose latest lifecycle state is closed", () => {
+    const snapshot = base();
+    const needsInformation = { ...snapshot.capabilityVerifications.find((item) => String(item.reporterId) === "Bea Shared")!, id: id("cap-bea-later"), status: "needs-information" as const, recordedAt: utc("2026-02-09T00:00:00Z") };
+    const capabilityChanged = prepareMarketsWorkspace({ ...snapshot, capabilityVerifications: [...snapshot.capabilityVerifications, needsInformation] }, context());
+    expect(capabilityChanged.coverage).toMatchObject({ possible: 0, noVerifiedReadyMatch: 3 });
+    const closed = { id: id("life-closed"), acquisitionCaseId: id("case-Ari Confirmed"), reporterId: id("Ari Confirmed"), eventType: "closed" as const, occurredAt: utc("2026-02-09T00:00:00Z"), recordedAt: utc("2026-02-09T00:00:00Z"), actorId: id("team-1"), reasonCode: "synthetic-closed", reasonText: "Synthetic closed status.", marketAtEntry: "LAX" as const, linkedWorkItemId: null, provenance: "synthetic-demo" as const };
+    const closedView = prepareMarketsWorkspace({ ...snapshot, lifecycleEvents: [closed] }, context());
+    expect(closedView.coverage.confirmed).toBe(0);
+    expect(closedView.requests.find((item) => String(item.request.id) === "req-confirmed")).toMatchObject({ status: "no-verified-ready-match" });
+  });
+
   it("derives readiness additions from the saved goal scope without letting a goal edit alter coverage", () => {
     const snapshot = base();
     const readiness = snapshot.readinessEvents.map((item) => String(item.reporterId) === "Bea Shared" ? { ...item, occurredAt: utc("2026-02-06T00:00:00Z"), recordedAt: utc("2026-02-06T00:00:00Z") } : item);
