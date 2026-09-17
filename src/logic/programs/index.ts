@@ -93,6 +93,7 @@ function filterEnrollments(snapshot: DemoSnapshotV2, program: Program, context: 
   return snapshot.programEnrollments.filter((enrollment) =>
     enrollment.programId === program.id &&
     inWindow(enrollment.enteredAt, program.measurementPlan.entryWindow.startAt, program.measurementPlan.entryWindow.endAt) &&
+    enrollment.enteredAt <= context.evaluation.asOfAt &&
     (selected === "ALL" || enrollment.marketAtEntry === selected),
   );
 }
@@ -102,7 +103,7 @@ function firstCompletedJobs(snapshot: DemoSnapshotV2, asOfAt: string) {
   const first = new Map<string, (typeof snapshot.jobOutcomes)[number]>();
   for (const job of snapshot.jobOutcomes) {
     const assignment = accepted.get(job.acceptedAssignmentEventId);
-    if (job.outcome !== "completed" || !job.completedAt || !knownAt(job.recordedAt, asOfAt) || !assignment || assignment.reporterId !== job.reporterId || assignment.requestId !== job.requestId) continue;
+    if (job.outcome !== "completed" || !job.completedAt || job.completedAt > asOfAt || !knownAt(job.recordedAt, asOfAt) || !assignment || assignment.reporterId !== job.reporterId || assignment.requestId !== job.requestId) continue;
     const existing = first.get(job.reporterId);
     if (!existing || (existing.completedAt && job.completedAt < existing.completedAt)) first.set(job.reporterId, job);
   }
@@ -204,7 +205,7 @@ export function prepareProgramsView(snapshot: DemoSnapshotV2, context: Workspace
   const resultsByProgram = new Map<ProgramId, readonly ProgramResultGroup[]>();
   const rows = snapshot.programs.filter((program) => context.filters.programIds.length === 0 || context.filters.programIds.includes(program.id)).map((program) => {
     const groups = new Map<string, ProgramEnrollment[]>();
-    for (const enrollment of snapshot.programEnrollments) if (enrollment.programId === program.id && inWindow(enrollment.enteredAt, program.measurementPlan.entryWindow.startAt, program.measurementPlan.entryWindow.endAt)) groups.set(enrollment.groupId, []);
+    for (const enrollment of snapshot.programEnrollments) if (enrollment.programId === program.id && enrollment.enteredAt <= context.evaluation.asOfAt && inWindow(enrollment.enteredAt, program.measurementPlan.entryWindow.startAt, program.measurementPlan.entryWindow.endAt)) groups.set(enrollment.groupId, []);
     for (const enrollment of filterEnrollments(snapshot, program, context)) groups.set(enrollment.groupId, [...(groups.get(enrollment.groupId) ?? []), enrollment]);
     const results = [...groups.entries()].sort(([left], [right]) => left.localeCompare(right)).map(([groupId, enrollments]) => groupEvidence(snapshot, program, groupId, enrollments, context));
     resultsByProgram.set(program.id, results);

@@ -103,6 +103,18 @@ describe("prepareProgramsView", () => {
     expect(calculateSourceContribution(sourceSnapshot, sourceSnapshot.programs[0]!, "earlier", context("ALL"))[0]?.attributableSpendMinor).toBe(1200);
   });
 
+  it("does not expose early-recorded future completion or future enrollment at the selected as-of", () => {
+    const snapshot = fixture();
+    const valid = snapshot.jobOutcomes[0]!;
+    const futureCompletion = { ...valid, completedAt: "2026-03-01T00:00:00.000Z" as never, recordedAt: stamp as never };
+    const withoutValid = { ...snapshot, jobOutcomes: [...snapshot.jobOutcomes.filter((job) => job.id !== valid.id), futureCompletion] } as DemoSnapshotV2;
+    expect(prepareProgramsView(withoutValid, context("ALL")).resultsByProgram.get(programId)!.find((item) => item.groupId === "earlier")!.timelyFirstJobs).toBe(5);
+    const futureEnrollment = { ...snapshot.programEnrollments[0]!, id: "future-enrollment" as never, reporterId: "future-person" as never, groupId: "future", enteredAt: "2026-03-01T00:00:00.000Z" as never };
+    const expandedPlan = { ...snapshot.programs[0]!, measurementPlan: { ...snapshot.programs[0]!.measurementPlan, entryWindow: { ...snapshot.programs[0]!.measurementPlan.entryWindow, endAt: "2026-04-01T00:00:00.000Z" as never } } };
+    const futureSnapshot = { ...snapshot, programs: [expandedPlan], programEnrollments: [...snapshot.programEnrollments, futureEnrollment] } as DemoSnapshotV2;
+    expect(prepareProgramsView(futureSnapshot, context("ALL")).resultsByProgram.get(programId)!.map((group) => group.groupId)).not.toContain("future");
+  });
+
   it("creates a versioned draft and requires review before a limited pilot without enrolling anyone", () => {
     const snapshot = fixture();
     const draft = buildProcessDraft(snapshot, { id: "process-1" as never, programId, trigger: "Missing checklist evidence", ownerId: "team-1" as never, requiredSteps: [], exceptions: [], evidenceSnapshotId: "evidence-1" as never, nextReviewAt: stamp as never, definitionVersion: "v1" as never, provenance: "synthetic-demo", actorId: "actor-1", occurredAt: stamp, rationale: "Draft only" });
