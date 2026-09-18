@@ -1,6 +1,6 @@
 import type {
-  AssignmentEvent, DemandRequest, DemoSnapshotV2, EvidenceBundle, MetricDefinitionRef,
-  Reporter, ReporterId, RequestId, ResolvedRecordReference, UtcTimestamp,
+  AssignmentEvent, AvailabilityWindowId, DemandRequest, DemoSnapshotV2, EvidenceBundle, MarketId,
+  MetricDefinitionRef, ReadinessEventId, Reporter, ReporterId, RequestId, ResolvedRecordReference, UtcTimestamp,
   WorkspaceFilterPayload, WorkspaceLogicPort, WorkspaceQueryContext,
 } from "../../contracts/v2";
 
@@ -41,6 +41,33 @@ export interface MarketSummaryRow {
   readonly marketId: string; readonly marketName: string; readonly coverage: CoverageSummary;
   readonly issue: string; readonly nextAction: string; readonly evidence: readonly EvidenceBundle[];
 }
+/**
+ * A source-backed instant in the Overview supply-and-demand series. Historical points use facts that
+ * occurred on or before the evaluation as-of time. Forecast points are not extrapolations: they
+ * contain only future request and availability facts already recorded by that same as-of time.
+ */
+export interface SupplyDemandSeriesPoint {
+  readonly at: UtcTimestamp;
+  readonly phase: "historical" | "forecast";
+  readonly isProjection: boolean;
+  readonly availableSupply: number;
+  readonly demand: number;
+  readonly neededSupply: number;
+  /** Distinct ready reporters with an explicit, current availability window in the selected market scope. */
+  readonly reporterIds: readonly ReporterId[];
+  /** Scheduled, non-canceled request slots active at this instant in the selected demand scope. */
+  readonly demandRequestIds: readonly RequestId[];
+  /** Source records establishing the ready and explicitly available supply values. */
+  readonly readinessEventIds: readonly ReadinessEventId[];
+  readonly availabilityWindowIds: readonly AvailabilityWindowId[];
+}
+export interface SupplyDemandSeries {
+  /** The selected evaluation as-of time; points after it are known-schedule projections. */
+  readonly forecastBoundaryAt: UtcTimestamp;
+  readonly hasForecast: boolean;
+  readonly points: readonly SupplyDemandSeriesPoint[];
+  readonly limitations: readonly string[];
+}
 export interface PreparedMarketsView {
   readonly workspace: typeof CAPACITY_WORKSPACE;
   readonly evaluation: WorkspaceQueryContext<typeof CAPACITY_WORKSPACE>["evaluation"];
@@ -48,6 +75,8 @@ export interface PreparedMarketsView {
   readonly coverage: CoverageSummary; readonly requests: readonly RequestCapacityAssessment[];
   readonly requirementBreakdown: readonly RequirementBreakdownRow[]; readonly marketRows: readonly MarketSummaryRow[];
   readonly growthGoal: GrowthGoalView | null; readonly originalPlan: OriginalPlanResults;
+  /** Always supplied by prepareMarketsWorkspace; optional only for legacy hand-built view fixtures. */
+  readonly supplyDemandSeries?: SupplyDemandSeries;
   readonly limitations: readonly string[];
 }
 interface CandidateCheck { readonly failures: readonly string[]; readonly unknowns: readonly string[]; }
@@ -59,6 +88,15 @@ const overlap = (as: string, ae: string, bs: string, be: string) => Date.parse(a
 const requestRef = (id: RequestId) => ({ kind: "demand-request" as const, id: String(id) });
 const reporterRef = (id: ReporterId) => ({ kind: "reporter" as const, id: String(id) });
 const isVisible = (reporter: Reporter, asOf: UtcTimestamp) => before(reporter.createdAt, asOf) && before(reporter.recordedAt, asOf);
+const activeAt = (startAt: string, endAt: string, at: string) => Date.parse(startAt) <= Date.parse(at) && Date.parse(at) < Date.parse(endAt);
+
+function scopedMarketIds(snapshot: DemoSnapshotV2, filters: WorkspaceFilterPayload): readonly MarketId[] {
+  const selected = filters.selectedMarket === "ALL" ? null : filters.selectedMarket;
+  const explicit = new Set(filters.marketIds);
+  return snapshot.markets
+    .map((market) => market.id)
+    .filter((marketId) => (selected === null || marketId === selected) && (!explicit.size || explicit.has(marketId)));
+}
 
 function scoped(snapshot: DemoSnapshotV2, filters: WorkspaceFilterPayload, asOf: UtcTimestamp, plan: boolean) {
   const selected = new Set(filters.selectedMarket === "ALL" ? snapshot.markets.map((market) => market.id) : [filters.selectedMarket]);
@@ -265,6 +303,91 @@ function originalPlan(snapshot: DemoSnapshotV2, context: Context): OriginalPlanR
   });
   return { status: "available", requestIds: ids, completedRequests: done.length, firstJobs: first.length, evidence: [bundle("completed", done, "original-plan requests completed"), bundle("first-jobs", first, "first jobs completed")], limitation: null };
 }
+function supplyDemandSeries(snapshot: DemoSnapshotV2, context: Context): SupplyDemandSeries {
+  const asOf = context.evaluation.asOfAt;
+  const marketIds = new Set(scopedMarketIds(snapshot, context.filters));
+  const requests = scoped(snapshot, context.filters, asOf, true).filter((item) => item.status !== "canceled");
+  const reporters = snapshot.reporters.filter((reporter) =>
+    reporter.serviceMarketIds.some((marketId) => marketIds.has(marketId)) && before(reporter.recordedAt, asOf),
+  );
+  const reporterIds = new Set(reporters.map((reporter) => reporter.id));
+  const readiness = snapshot.readinessEvents.filter((item) =>
+    reporterIds.has(item.reporterId) && before(item.recordedAt, asOf) && before(item.occurredAt, asOf),
+  );
+  const availability = snapshot.availabilityWindows.filter((item) =>
+    reporterIds.has(item.reporterId) &&
+    before(item.recordedAt, asOf) &&
+    item.serviceMarketIds.some((marketId) => marketIds.has(marketId)),
+  );
+  const acceptedReservations = reservations(snapshot, latestAssignments(snapshot, asOf));
+  const pointTimes = new Set<string>([asOf]);
+  for (const request of requests) {
+    pointTimes.add(request.startAt);
+    pointTimes.add(request.endAt);
+  }
+  for (const event of readiness) pointTimes.add(event.occurredAt);
+  for (const window of availability) {
+    pointTimes.add(window.startAt);
+    pointTimes.add(window.endAt);
+  }
+  const points = [...pointTimes]
+    .sort((left, right) => Date.parse(left) - Date.parse(right) || left.localeCompare(right))
+    .map((time) => {
+      const demandRequestIds = requests
+        .filter((request) => before(request.createdAt, time) && before(request.recordedAt, asOf) && before(request.recordedAt, time) && activeAt(request.startAt, request.endAt, time))
+        .map((request) => request.id)
+        .sort((left, right) => String(left).localeCompare(String(right)));
+      const supply = reporters
+        .filter((reporter) => {
+          if (!before(reporter.createdAt, time) || !before(reporter.recordedAt, time)) return false;
+          if (!readiness.some((event) => event.reporterId === reporter.id && before(event.occurredAt, time) && before(event.recordedAt, time))) return false;
+          if (latestLifecycleState(snapshot, reporter.id, time as UtcTimestamp) === "closed") return false;
+          const windows = availability.filter((window) =>
+            window.reporterId === reporter.id &&
+            before(window.recordedAt, time) &&
+            activeAt(window.startAt, window.endAt, time) &&
+            window.serviceMarketIds.some((marketId) => marketIds.has(marketId) && reporter.serviceMarketIds.includes(marketId)),
+          );
+          if (windows.some((window) => window.status === "unavailable")) return false;
+          if (!windows.some((window) => window.status === "available" && (window.confirmationExpiresAt === null || Date.parse(window.confirmationExpiresAt) > Date.parse(asOf)))) return false;
+          return !(acceptedReservations.get(reporter.id) ?? []).some((request) => activeAt(request.startAt, request.endAt, time));
+        })
+        .map((reporter) => reporter.id)
+        .sort((left, right) => String(left).localeCompare(String(right)));
+      const supplyIds = new Set(supply);
+      const readinessEventIds = readiness
+        .filter((event) => supplyIds.has(event.reporterId) && before(event.occurredAt, time) && before(event.recordedAt, time))
+        .map((event) => event.id)
+        .sort((left, right) => String(left).localeCompare(String(right)));
+      const availabilityWindowIds = availability
+        .filter((window) => supplyIds.has(window.reporterId) && window.status === "available" && before(window.recordedAt, time) && activeAt(window.startAt, window.endAt, time))
+        .map((window) => window.id)
+        .sort((left, right) => String(left).localeCompare(String(right)));
+      const phase: SupplyDemandSeriesPoint["phase"] = Date.parse(time) > Date.parse(asOf) ? "forecast" : "historical";
+      return {
+        at: time as UtcTimestamp,
+        phase,
+        isProjection: phase === "forecast",
+        availableSupply: supply.length,
+        demand: demandRequestIds.length,
+        neededSupply: Math.max(demandRequestIds.length - supply.length, 0),
+        reporterIds: supply,
+        demandRequestIds,
+        readinessEventIds,
+        availabilityWindowIds,
+      };
+    });
+  return {
+    forecastBoundaryAt: asOf,
+    hasForecast: points.some((point) => point.isProjection),
+    points,
+    limitations: [
+      "Supply counts distinct reporters with recorded readiness and explicit current availability in the selected market scope; it does not assert request-specific qualification.",
+      "Forecast points are known schedules and availability windows recorded by the selected as-of time, not a predictive staffing model.",
+      "Needed supply is the non-negative difference between active scheduled request slots and distinct available supply at each source timestamp; possible matches are not added as capacity.",
+    ],
+  };
+}
 export function prepareMarketsWorkspace(snapshot: DemoSnapshotV2, context: Context): PreparedMarketsView {
   const live = scoped(snapshot, context.filters, context.evaluation.asOfAt, false).filter((item) => item.status === "open"), requests = assessments(snapshot, live, context.evaluation.asOfAt), coverage = summary(requests);
   const m01 = countEvidence(snapshot, "M01", definition(snapshot, "M01"), context, live, String(coverage.requested) + " distinct non-canceled request slots are upcoming in the selected schedule scope.");
@@ -278,6 +401,6 @@ export function prepareMarketsWorkspace(snapshot: DemoSnapshotV2, context: Conte
   });
   const limitations: string[] = [];
   if (!snapshot.metricDefinitions.some((item) => ["M01", "M02", "M03"].includes(String(item.id)))) limitations.push("Some capacity metric definitions are absent from the snapshot; their evidence is unavailable.");
-  return { workspace: CAPACITY_WORKSPACE, evaluation: context.evaluation, appliedFilters: context.filters, evidence: [m01, m02, ...m03, ...(goalValue ? [goalValue.evidence] : []), ...plan.evidence].filter((item): item is EvidenceBundle => item !== null), coverage, requests, requirementBreakdown: requirements(requests), marketRows, growthGoal: goalValue, originalPlan: plan, limitations };
+  return { workspace: CAPACITY_WORKSPACE, evaluation: context.evaluation, appliedFilters: context.filters, evidence: [m01, m02, ...m03, ...(goalValue ? [goalValue.evidence] : []), ...plan.evidence].filter((item): item is EvidenceBundle => item !== null), coverage, requests, requirementBreakdown: requirements(requests), marketRows, growthGoal: goalValue, originalPlan: plan, supplyDemandSeries: supplyDemandSeries(snapshot, context), limitations };
 }
 export const capacityLogic: CapacityLogicPort = { workspace: CAPACITY_WORKSPACE, prepare: prepareMarketsWorkspace };

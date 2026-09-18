@@ -140,4 +140,63 @@ describe("capacity markets calculations", () => {
     expect(revised.coverage).toEqual(first.coverage);
     expect(first.growthGoal && validateEvidenceBundle(first.growthGoal.evidence)).toEqual([]);
   });
+
+  it("prepares chronological source-backed supply, demand, and needed-supply points with an explicit forecast boundary", () => {
+    const snapshot = base();
+    const historicalRequest = request("req-history", "2026-02-06T10:00:00Z", "2026-02-08T12:00:00Z");
+    const historicalAvailability = {
+      ...snapshot.availabilityWindows[0]!, id: id("avail-history"), startAt: utc("2026-02-05T00:00:00Z"), endAt: utc("2026-02-08T12:00:00Z"),
+    };
+    const view = prepareMarketsWorkspace({
+      ...snapshot,
+      demandRequests: [...snapshot.demandRequests, historicalRequest],
+      availabilityWindows: [...snapshot.availabilityWindows, historicalAvailability],
+    }, context());
+    const series = view.supplyDemandSeries!;
+    const history = series.points.find((point) => point.at === utc("2026-02-06T10:00:00Z"));
+    const forecast = series.points.find((point) => point.at === utc("2026-02-20T10:00:00Z"));
+    const boundary = series.points.find((point) => point.at === utc(asOf));
+
+    expect(history).toMatchObject({
+      phase: "historical", isProjection: false, availableSupply: 1, demand: 1, neededSupply: 0,
+      reporterIds: [id("Ari Confirmed")], demandRequestIds: [id("req-history")],
+      readinessEventIds: [id("ready-Ari Confirmed")], availabilityWindowIds: [id("avail-history")],
+    });
+    expect(boundary).toMatchObject({ phase: "historical", isProjection: false });
+    expect(forecast).toMatchObject({
+      phase: "forecast", isProjection: true, availableSupply: 0, demand: 1, neededSupply: 1,
+      demandRequestIds: [id("req-confirmed")],
+    });
+    expect(series).toMatchObject({ forecastBoundaryAt: utc(asOf), hasForecast: true });
+    expect(series.points.map((point) => Date.parse(point.at))).toEqual([...series.points.map((point) => Date.parse(point.at))].sort((left, right) => left - right));
+    expect(series.points.every((point) => point.isProjection === (Date.parse(point.at) > Date.parse(asOf)))).toBe(true);
+  });
+
+  it("scopes the series to the selected demand market and is deterministic across source collection order", () => {
+    const snapshot = base();
+    const dana = { ...reporter("Dana DFW"), recruitingMarketId: "DFW" as never, serviceMarketIds: ["DFW"] as never, preferences: { ...reporter("Dana DFW").preferences, serviceMarkets: [{ marketId: "DFW", status: "serves" }] as never } };
+    const dfwRequest = { ...request("req-dfw", "2026-02-20T10:00:00Z", "2026-02-20T12:00:00Z"), marketId: "DFW" as never };
+    const dfwReadiness = { ...snapshot.readinessEvents[0]!, id: id("ready-dana"), reporterId: dana.id, acquisitionCaseId: id("case-dana") };
+    const dfwAvailability = { ...snapshot.availabilityWindows[0]!, id: id("avail-dana"), reporterId: dana.id, serviceMarketIds: ["DFW"] as never };
+    const expanded = {
+      ...snapshot,
+      markets: [...snapshot.markets, { id: "DFW", code: "DFW", name: "Dallas-Fort Worth", timeZone: "America/Chicago" as never, provenance: "synthetic-demo" as const }],
+      reporters: [...snapshot.reporters, dana],
+      readinessEvents: [...snapshot.readinessEvents, dfwReadiness],
+      availabilityWindows: [...snapshot.availabilityWindows, dfwAvailability],
+      demandRequests: [...snapshot.demandRequests, dfwRequest],
+    } as DemoSnapshotV2;
+    const dfwContext: WorkspaceQueryContext<"markets"> = { ...context(), filters: { ...filters(), selectedMarket: "DFW" as never } };
+    const first = prepareMarketsWorkspace(expanded, dfwContext).supplyDemandSeries!;
+    const reversed = prepareMarketsWorkspace({
+      ...expanded,
+      markets: [...expanded.markets].reverse(), reporters: [...expanded.reporters].reverse(), readinessEvents: [...expanded.readinessEvents].reverse(),
+      availabilityWindows: [...expanded.availabilityWindows].reverse(), demandRequests: [...expanded.demandRequests].reverse(),
+    }, dfwContext).supplyDemandSeries!;
+    const dfwForecast = first.points.find((point) => point.at === utc("2026-02-20T10:00:00Z"));
+
+    expect(dfwForecast).toMatchObject({ availableSupply: 1, demand: 1, neededSupply: 0, reporterIds: [id("Dana DFW")], demandRequestIds: [id("req-dfw")] });
+    expect(first.points.every((point) => point.demandRequestIds.every((requestId) => requestId === id("req-dfw")))).toBe(true);
+    expect(reversed).toEqual(first);
+  });
 });
