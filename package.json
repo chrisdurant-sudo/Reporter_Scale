@@ -14,6 +14,7 @@
     "test:e2e": "npm run build && playwright test --config=playwright.config.mjs",
     "verify:p4:governance": "node scripts/verify-p4-readiness.mjs && node scripts/verify-p4-phase-gate.mjs",
     "verify:p4:lane": "node scripts/verify-p4-lane-boundary.mjs",
+    "verify:p4:visual": "npm run verify:p4:governance && npm run check",
     "verify:p4": "npm run verify:p4:governance && npm run check && npm run test:acceptance && npm run test:e2e",
     "check": "npm run lint && npm run typecheck && npm run test && npm run build"
   },

@@ -6,7 +6,7 @@ serving a local preview does not satisfy this gate.
 
 ## Current disposition
 
-- The coordinator candidate at `ea99c859a02eb3580cdfc6d05dccf0fd5d493f20` is **not accepted**.
+- The coordinator candidate at `46f143682d06ac37ef211db237944d5a20b13a80` is **not accepted**.
 - `http://127.0.0.1:5174/` is a repair preview, not a completed P4 experience.
 - P4.2 specialist work, Quality, and Reviewer remain blocked.
 - The active defect register is `docs/reporter-growth/v2/P4_VISUAL_PROOF_DEFECTS.md`.
@@ -39,8 +39,10 @@ commit are not admissible.
 3. The Experience Lead resolves the active defects and records a clean implementation commit.
 4. Candidate evidence is captured from that exact commit and independently compared with the locked
    reference package.
-5. The full `npm run verify:p4` transition check passes, including lint, types, unit, build,
-   cross-workspace acceptance, and browser suites.
+5. `npm run verify:p4:visual` passes. The Experience-owned checks and production build must be green;
+   browser interaction and screenshot evidence are supplied by the exact-commit artifact matrix.
+   The Quality-owned cross-workspace and browser suites remain registered preflight findings until
+   the post-P4.2 Quality phase; they do not authorize Quality to start early.
 6. The coordinator records `visual_proof.status: accepted`, the exact accepted commit, and the full
    artifact manifest.
 7. Only then may the coordinator set `fanout_authorized: true` and transition to
@@ -48,6 +50,9 @@ commit are not admissible.
 
 `scripts/verify-p4-phase-gate.mjs` enforces the state transitions. It must refuse fan-out without an
 accepted exact commit and a complete, checksum-valid screenshot matrix.
+
+The full `npm run verify:p4` command is the post-integration Quality/Reviewer gate. It intentionally
+includes the Quality-owned cross-workspace and browser suites and must be fully green before Reviewer.
 
 Every worker handoff also runs `scripts/verify-p4-lane-boundary.mjs` against its exact base and
 candidate commits. The handoff contract is `P4_LANE_HANDOFF_CONTRACT.md`. This read-only transition

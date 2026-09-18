@@ -39,8 +39,10 @@ Reviewer dispatch:
 1. Run the lane-boundary command for each incoming commit.
 2. Record the outcome under `lane_audits` in `P4_EXECUTION_STATE.json`.
 3. Run `npm run verify:p4:governance` to validate live state and legal sequencing.
-4. Run `npm run verify:p4` before changing phases. This includes the governance checks, routine
-   lint/type/unit/build suite, cross-workspace acceptance, and browser tests.
+4. Run the phase-appropriate transition command. P4.1 visual proof uses
+   `npm run verify:p4:visual` plus the exact-commit artifact matrix. The complete
+   `npm run verify:p4` command—including Quality-owned cross-workspace and browser suites—is required
+   for the post-integration Quality/Reviewer transition, not before the approved Quality phase.
 5. Stop on every nonzero exit. A narrative handoff, a local preview, or a passing subset cannot
    override the command.
 

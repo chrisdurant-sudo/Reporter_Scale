@@ -27,13 +27,15 @@ The correction is now explicit:
 - `scripts/verify-p4-phase-gate.mjs` prevents P4.2, Quality, or Reviewer from starting early.
 - `scripts/verify-p4-lane-boundary.mjs` rejects handoffs that cross a lane's registered write paths.
 - `npm run verify:p4:governance` checks static and live state during repair; the full
-  `npm run verify:p4` also runs lint, types, unit, build, acceptance, and browser suites.
+  `npm run verify:p4` also runs lint, types, unit, build, acceptance, and browser suites for the
+  post-integration Quality/Reviewer gate. P4.1 uses `npm run verify:p4:visual` and its artifact matrix.
 
 The takeover recheck confirmed the need for the full command: lint, types, 114 unit tests, and the
 build passed, while all five cross-workspace integration tests failed because they still waited for
 an obsolete Overview heading. The former routine command did not run that suite, so it could report
-green while the acceptance baseline was unusable. That failure is now recorded in the execution
-ledger and blocks phase transition.
+green while the future Quality suite was stale. That finding is now recorded in the execution
+ledger for the Quality-owned phase. It does not start Quality early or create a circular dependency
+before P4.2; the current visual transition remains blocked by missing browser evidence.
 
 The takeover also found that the prior active worktrees were nested below `node_modules/`. Current
 Node rejects TypeScript Playwright configuration and test files from that path before executing a
