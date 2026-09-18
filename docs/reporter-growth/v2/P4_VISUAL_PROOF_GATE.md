@@ -19,9 +19,9 @@ The Experience Lead must capture the exact candidate commit against the referenc
 1. Overview at 1440×900, 1024×768, 768×1024, and 390×844.
 2. Funnel People/SLA at all four required viewports.
 3. Funnel Bottlenecks at all four required viewports.
-4. Funnel SLA editor with a selected reporter and visible draft controls.
+4. Funnel SLA editor with the applicable market/default values and visible edit controls.
 5. A short interaction record proving market selection, time range, tab selection, status filters,
-   bottleneck mode, and SLA draft/apply/reset behavior.
+   bottleneck mode, and immediate SLA edit/recompute behavior without changing lifecycle facts.
 6. The exact Git commit, viewport, route, selected state, and SHA-256 checksum for every image.
 7. A comparison result for each applicable XR01–XR11 requirement and every defect in the active
    defect register.
