@@ -71,7 +71,7 @@ interface ActionFeedback {
 }
 
 const INITIAL_FILTERS: V2GlobalFilters = {
-  selectedMarket: "LAX",
+  selectedMarket: "ALL",
   capabilityCodes: [],
   attendanceModes: [],
 };
@@ -176,7 +176,7 @@ export function V2App() {
     notes: [],
   });
   const [feedback, setFeedback] = useState<ActionFeedback>({
-    changed: "Loaded the fixed LAX baseline.",
+    changed: "Loaded the all-market baseline; the fixed LAX scenario remains available.",
     notChanged: "No scenario event or operational outcome has been applied.",
   });
   const [busy, setBusy] = useState(false);

@@ -31,8 +31,9 @@ describe("P4 integrated V2 experience", () => {
   it("renders all five workspaces, keeps the market across navigation, and retains the synthetic disclosure", async () => {
     const user = await renderApp();
 
+    expect(marketButton("All")).toHaveAttribute("aria-pressed", "true");
     expect(metric("Overview metrics", "Available reporters")).toHaveTextContent("0");
-    expect(metric("Overview metrics", "Open jobs")).toHaveTextContent("10");
+    expect(metric("Overview metrics", "Open jobs")).toHaveTextContent("11");
     expect(screen.getByText(/Independent synthetic demo.*No real message is sent and no Steno system is connected/i)).toBeInTheDocument();
 
     await user.click(marketButton("SFO"));
@@ -58,6 +59,7 @@ describe("P4 integrated V2 experience", () => {
 
   it("saves the goal without manufacturing readiness, coverage, acceptance, or first-job outcomes", async () => {
     const user = await renderApp();
+    await user.click(marketButton("LAX"));
     expect(metric("Overview metrics", "Available reporters")).toHaveTextContent("0");
     expect(metric("Overview metrics", "Open jobs")).toHaveTextContent("10");
 
@@ -72,6 +74,7 @@ describe("P4 integrated V2 experience", () => {
 
   it("keeps planning, readiness, acceptance, and delivery as separate replayable checkpoints", async () => {
     const user = await renderApp();
+    await user.click(marketButton("LAX"));
     const feedback = await openDemoControls(user);
 
     await user.click(within(feedback).getByRole("button", { name: "Advance to Plan saved" }));
@@ -103,12 +106,13 @@ describe("P4 integrated V2 experience", () => {
     expect(await screen.findByRole("main", { name: "Overview" })).toBeInTheDocument();
     expect(feedback).toHaveTextContent("Baseline");
     expect(metric("Overview metrics", "Available reporters")).toHaveTextContent("0");
-    expect(metric("Overview metrics", "Open jobs")).toHaveTextContent("10");
-    expect(marketButton("LAX")).toHaveAttribute("aria-pressed", "true");
+    expect(metric("Overview metrics", "Open jobs")).toHaveTextContent("11");
+    expect(marketButton("All")).toHaveAttribute("aria-pressed", "true");
   });
 
   it("opens contextual evidence, closes on Escape with focus return, and carries exact context into work", async () => {
     const user = await renderApp();
+    await user.click(marketButton("LAX"));
     const trigger = screen.getByRole("button", { name: "Why this?" });
 
     await user.click(trigger);
@@ -132,13 +136,13 @@ describe("P4 integrated V2 experience", () => {
     const user = await renderApp();
     await user.click(screen.getByRole("button", { name: "Programs" }));
 
-    expect(await screen.findByText(/3 of 10 within the identical declared horizon/i)).toBeInTheDocument();
-    expect(screen.getByText(/6 of 10 within the identical declared horizon/i)).toBeInTheDocument();
+    expect(await screen.findByText(/6 of 20 within the identical declared horizon/i)).toBeInTheDocument();
+    expect(screen.getByText(/11 of 20 within the identical declared horizon/i)).toBeInTheDocument();
 
-    await user.click(marketButton("All"));
+    await user.click(marketButton("LAX"));
     await waitFor(() => {
-      expect(screen.getByText(/6 of 20 within the identical declared horizon/i)).toBeInTheDocument();
-      expect(screen.getByText(/11 of 20 within the identical declared horizon/i)).toBeInTheDocument();
+      expect(screen.getByText(/3 of 10 within the identical declared horizon/i)).toBeInTheDocument();
+      expect(screen.getByText(/6 of 10 within the identical declared horizon/i)).toBeInTheDocument();
     });
 
     await user.click(marketButton("SFO"));
