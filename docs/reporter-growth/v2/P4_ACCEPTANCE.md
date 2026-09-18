@@ -107,6 +107,8 @@ sample-depth addendum.
 | SD03 | Each market's added Funnel rows supply two Under, two At, and two Over SLA-age inputs; its ready rows supply the required state/national credential mix and three Clear, one Expiring, and one Needs check compliance evidence pattern. |
 | SD04 | Every added identity has a complete, ordered, referentially valid source graph for its intended state; reset is deterministic, IDs are stable, timestamps respect the frozen as-of time, and all provenance is synthetic. |
 | SD05 | Existing named scenario IDs, checkpoint facts, program cohorts, and scenario feed remain unchanged. Aggregate UI counts and trends are derived from the expanded source records; no KPI total, SLA result, churn claim, compliance conclusion, or chart point is stored as a shortcut. |
+| SD06 | Every market and All satisfies the noticeable source-derived trend thresholds in `P4_SYNTHETIC_SAMPLE_EXPANSION.md`: Overview supply/demand/need visibly rise and fall, and Funnel R28 contains a lifecycle-driven wait-time reversal, without changing metric definitions or storing chart points. |
+| SD07 | The 50 P4 identities have 50 unique, natural-looking invented names with no `Fictional`, market, `Sample`, `Test`, `Person`, or numbered-fixture naming pattern and no copied known-person list. Synthetic provenance and the global disclosure remain intact. |
 
 ## Required screenshot matrix
 

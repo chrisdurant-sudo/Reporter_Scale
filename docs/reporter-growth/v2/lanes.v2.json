@@ -4,7 +4,7 @@
   "routing_active": true,
   "fanout_authorized": false,
   "implementation_active": true,
-  "current_phase": "P4.1_visual_proof_repair",
+  "current_phase": "P4.0b_serial_sample_expansion",
   "execution_state": "docs/reporter-growth/v2/P4_EXECUTION_STATE.json",
   "execution_model": "serial_gates_with_bounded_parallel_workspace_wave",
   "transition_control": {
@@ -47,7 +47,7 @@
       "roles": [
         "data"
       ],
-      "gate": "SD01_SD05_and_full_baseline_checks_pass"
+      "gate": "SD01_SD07_and_full_baseline_checks_pass"
     },
     {
       "order": 2,
@@ -131,7 +131,9 @@
         "SD02",
         "SD03",
         "SD04",
-        "SD05"
+        "SD05",
+        "SD06",
+        "SD07"
       ]
     },
     {
@@ -297,7 +299,7 @@
       "task": "docs/reporter-growth/v2/tasks/quality-redesign.md",
       "acceptance_ids": [
         "XR01-XR41",
-        "SD01-SD05",
+        "SD01-SD07",
         "original_V2_acceptance"
       ]
     }

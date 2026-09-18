@@ -64,7 +64,7 @@ const data = lanes.get("data");
 check(data?.task === "docs/reporter-growth/v2/tasks/data-expansion-p4.md", "Data must use the P4 expansion brief.");
 check(JSON.stringify(data?.allowed_directory_prefixes) === JSON.stringify(["src/data/"]), "Data must own only src/data/.");
 check(data?.start_phase === "P4.0b_serial_sample_expansion", "Data must be the serial first lane.");
-check(JSON.stringify(data?.acceptance_ids) === JSON.stringify(["SD01", "SD02", "SD03", "SD04", "SD05"]), "Data must own SD01-SD05.");
+check(JSON.stringify(data?.acceptance_ids) === JSON.stringify(["SD01", "SD02", "SD03", "SD04", "SD05", "SD06", "SD07"]), "Data must own SD01-SD07.");
 
 const experience = lanes.get("experience");
 const leadPaths = ["src/ui/", "src/shell/", "src/styles/", "src/features/markets/", "src/features/recruiting/"];
@@ -136,10 +136,10 @@ check(registry.reviewer.task === "docs/reporter-growth/v2/tasks/reviewer.md", "R
 check(registry.reviewer.read_only === true, "Reviewer must remain read-only.");
 
 const roleExpectations = {
-  data: ["tasks/data-expansion-p4.md", "exactly 50 canonical fictional people", "src/data/"],
+  data: ["tasks/data-expansion-p4.md", "exactly 50 canonical fictional people", "SD01-SD07", "natural-looking invented names", "src/data/"],
   experience: ["tasks/experience-redesign.md", "design-lock/reference-manifest.md", "src/features/markets/", "src/features/recruiting/", "P4_VISUAL_PROOF_READY", "design steward"],
-  quality: ["tasks/quality-redesign.md", "design-lock/reference-manifest.md", "XR01-XR41", "SD01-SD05"],
-  reviewer: ["P4 Reviewer", "design-lock/reference-manifest.md", "Quality passes without waiver", "Do not edit any file"],
+  quality: ["tasks/quality-redesign.md", "design-lock/reference-manifest.md", "XR01-XR41", "SD01-SD07"],
+  reviewer: ["P4 Reviewer", "design-lock/reference-manifest.md", "SD01-SD07", "Quality passes without waiver", "Do not edit any file"],
 };
 
 for (const [id, expected] of Object.entries(roleExpectations)) {
@@ -193,11 +193,13 @@ const requiredFiles = [
   "docs/reporter-growth/v2/tasks/experience-programs.md",
   "docs/reporter-growth/v2/tasks/domain-support-redesign.md",
   "docs/reporter-growth/v2/tasks/quality-redesign.md",
+  ".codex/agents/data.toml",
   ".codex/agents/experience.toml",
   ".codex/agents/experience_reporters.toml",
   ".codex/agents/experience_team.toml",
   ".codex/agents/experience_programs.toml",
   ".codex/agents/quality.toml",
+  ".codex/agents/reviewer.toml",
   registryPath,
   "scripts/verify-p4-readiness.mjs",
   "scripts/verify-p4-phase-gate.mjs",

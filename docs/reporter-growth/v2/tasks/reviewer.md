@@ -28,7 +28,7 @@ the presentation comparison.
 - Verify the gated hub-and-spoke implementation record: Overview/Funnel proof preceded specialist
   work, shared-component edits remained Lead-only, specialist paths did not overlap, and every
   specialist received Lead review against its candidate/reference screenshots before integration.
-- Verify SD01–SD05 from source records and confirm the expanded population did not alter named
+- Verify SD01–SD07 from source records and confirm the expanded population did not alter named
   scenario facts or create duplicate candidate/reporter identities.
 - Report prioritized findings with exact files/lines and acceptance IDs; distinguish blockers from
   non-blocking limits. Do not redesign or expand scope.

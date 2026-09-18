@@ -296,7 +296,7 @@ exact authorized baseline.
 
 Only after explicit P4 implementation authorization, dispatch one `data` role using
 `tasks/data-expansion-p4.md`. It adds exactly 50 canonical fictional people—ten per market—under
-`src/data/` and its colocated tests, following `P4_SYNTHETIC_SAMPLE_EXPANSION.md` and SD01–SD05.
+`src/data/` and its colocated tests, following `P4_SYNTHETIC_SAMPLE_EXPANSION.md` and SD01–SD07.
 
 This worker runs alone and stops at an exact commit. The coordinator integrates it, verifies the full
 suite and record counts, and freezes a new compiling data baseline. Experience must start from that
@@ -407,7 +407,8 @@ for interaction checks.
 
 - This document authorizes planning and governance corrections only.
 - P4 production implementation requires a separate explicit user instruction.
-- The serial 50-person Data expansion must integrate and pass SD01–SD05 before Experience starts.
+- The serial 50-person Data expansion and any user-authorized trend-variation repair must integrate
+  and pass SD01–SD07 before Experience starts or resumes.
 - Adding a chart or visualization dependency requires explicit dependency authorization.
 - The Overview/Funnel visual proof and frozen shared baseline must pass before the bounded specialist
   wave starts.

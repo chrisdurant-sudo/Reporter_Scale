@@ -131,7 +131,8 @@ switch to Fast, Priority, or Ultrafast.
 - Immediately before the first Data worker, the coordinator must run one routing probe with
   `fork_turns="none"` and verify the actual role/model/reasoning metadata. The probe is not an
   implementation worker and must not edit files.
-- Data must pass SD01–SD05 and the full baseline suite before Experience starts.
+- Data must pass SD01–SD07 and the full baseline suite before Experience starts or resumes after an
+  authorized data-contract repair.
 - The Experience Lead must return `P4_VISUAL_PROOF_READY` for Overview and Funnel, including
   locked-reference comparisons at every required width, before the three specialists start.
 - Before the P4.2 wave, the coordinator must verify the Lead and all three specialist role/model/

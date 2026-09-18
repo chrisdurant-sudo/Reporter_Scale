@@ -13,16 +13,21 @@
       "authorized_at": "2026-09-17",
       "scope": "Raise the P4 Experience Lead to GPT-5.6 Terra/high and the P4 Quality lane to GPT-5.6 Terra/high; preserve Standard/default processing and all other lane assignments.",
       "source": "Explicit user instruction: make your model changes"
+    },
+    {
+      "authorized_at": "2026-09-17",
+      "scope": "Add SD06 source-derived trend variation so Overview and Funnel show noticeable rises, falls, and recovery without stored chart totals or changed metric meanings; add SD07 natural-looking invented names for all 50 P4 identities.",
+      "source": "Explicit user instructions: ensure noticeable trend shifts and replace fixture-style names"
     }
   ],
   "implementation_base_commit": "8b85d4aafa2317be848e01caf47d8b6f92efa674",
   "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",
   "implementation_active": true,
   "fanout_authorized": false,
-  "current_phase": "P4.1_visual_proof_repair",
+  "current_phase": "P4.0b_serial_sample_expansion",
   "current_candidate": {
     "commit": "46f143682d06ac37ef211db237944d5a20b13a80",
-    "status": "not_accepted",
+    "status": "invalidated_pending_data_repair",
     "preview_url": "http://127.0.0.1:5174/",
     "preview_status": "blocked_environment",
     "preview_failure": "The prior preview process stopped, and the managed command environment denied a replacement Vite listener on 127.0.0.1:5174 with EPERM.",
@@ -30,9 +35,9 @@
   },
   "gates": {
     "data": {
-      "status": "source_checks_passed",
-      "required_acceptance_ids": ["SD01", "SD02", "SD03", "SD04", "SD05"],
-      "evidence": "The assembled candidate passed 21 unit-test files / 114 tests, including 9 deterministic v2 data tests."
+      "status": "repair_authorized_pending",
+      "required_acceptance_ids": ["SD01", "SD02", "SD03", "SD04", "SD05", "SD06", "SD07"],
+      "evidence": "SD01-SD05 passed on the assembled candidate. SD06 trend variation and SD07 human-readable dummy names remain pending until the serial Data handoff is integrated and verified."
     },
     "baseline": {
       "status": "passed",
@@ -78,6 +83,7 @@
       ],
       "candidate_artifacts": [],
       "blocking_conditions": [
+        "The user-authorized SD06 source-data repair must integrate and pass before visual proof is recaptured.",
         "The current candidate has no versioned candidate screenshot matrix.",
         "The repaired shell, Overview, and Funnel have not yet been directly compared against the fixed screenshots in a runnable browser.",
         "Interactive controls and filters pass focused component and integrated app tests, but have not been proven legible at every required viewport.",
@@ -117,12 +123,15 @@
   ],
   "phase_allowed_prefixes": [
     ".codex/agents/experience.toml",
+    ".codex/agents/data.toml",
     ".codex/agents/quality.toml",
+    ".codex/agents/reviewer.toml",
     "AGENTS.md",
     "docs/reporter-growth/v2/",
     "package.json",
     "playwright.config.mjs",
     "scripts/",
+    "src/data/",
     "src/features/markets/",
     "src/features/recruiting/",
     "src/integration/",

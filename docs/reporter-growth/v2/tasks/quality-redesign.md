@@ -31,7 +31,7 @@ instructions, and snapshots not owned by Quality.
   Add work; treat unexplained hierarchy, composition, density, component, or responsive differences
   as defects;
 - all original V2 source/metric/scenario reconciliation tests;
-- SD01–SD05, including exact 50/10-per-market counts, canonical identity reuse, per-market stage/SLA/
+- SD01–SD07, including exact 50/10-per-market counts, unique natural-looking dummy names, canonical identity reuse, per-market stage/SLA/
   activity/credential/compliance variation, deterministic reset, and named-scenario protection;
 - typecheck, lint, unit, acceptance, build, browser, and diff checks on the fixed commit.
 

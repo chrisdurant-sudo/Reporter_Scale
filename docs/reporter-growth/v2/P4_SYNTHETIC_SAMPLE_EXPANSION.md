@@ -1,6 +1,6 @@
 # P4 synthetic sample expansion
 
-Status: **USER-APPROVED ADDENDUM — PRODUCTION DATA EDITS NOT YET AUTHORIZED**
+Status: **USER-APPROVED ADDENDUM — SD06 TREND-VARIATION REPAIR AUTHORIZED**
 
 Approved: September 17, 2026
 
@@ -68,6 +68,36 @@ For every market:
 Color/SLA labels, churn-review labels, compliance results, funnel counts, and chart points remain
 derived presentation or logic results. Do not store those conclusions as source facts.
 
+## SD06 noticeable trend variation
+
+The September 17 user-directed repair adds an explicit visibility threshold for the record-derived
+trend lines. It does not authorize decorative points or stored chart totals.
+
+For the Overview source-backed supply/demand series, each individual market and the All scope must:
+
+- expose at least eight ordered source timestamps across the trailing 90-day history and known future
+  schedule;
+- give both `availableSupply` and `demand` a range of at least two reporter equivalents;
+- include at least one increase and at least one later decrease in both supply and demand; and
+- include a zero-needed point, a `neededSupply` peak of at least two, and a later point at least one
+  below that peak so the gap visibly opens and eases.
+
+For the Funnel R28 wait-time trends, each individual market and the All scope must contain at least
+one lifecycle status whose seven-point series has at least four non-null points, at least three
+distinct mean-wait values, and both a positive and a negative adjacent change. Stage entries and exits
+must cause the reversal; time passing by itself is not enough.
+
+All variation must come from complete `DemandRequest`, `AvailabilityWindow`, `LifecycleEvent`, and
+supporting canonical records. Existing scenario anchors and current-stage composition remain fixed.
+
+## SD07 human-readable dummy identities
+
+The 50 P4 people must use 50 unique, natural-looking invented names. Names must not contain
+`Fictional`, a market name or market code, `Sample`, `Test`, `Person`, or an ordinal/numbered-fixture
+suffix. Do not copy customer, employee, celebrity, or other known-person lists. The records remain
+synthetic demo data through provenance and disclosure; the visible name itself should read like a
+person's name rather than a database fixture.
+
 ## Record completeness
 
 Every addition must include a complete, temporally valid source graph for its intended state:
@@ -95,7 +125,8 @@ source attribution, readiness, activity, and work outcomes require their own exp
 
 ## Ownership and order
 
-After explicit P4 implementation authorization, one serial `data` role owns this expansion in
+After explicit P4 implementation authorization, one serial `data` role owns this expansion and the
+authorized SD06 variation repair in
 `src/data/` and its colocated tests. It runs before the Experience role. The coordinator integrates
 and freezes the expanded, compiling data baseline before visual implementation starts.
 

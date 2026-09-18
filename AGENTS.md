@@ -90,7 +90,7 @@ inactive; they do not authorize dispatch or source work.
   interactive reference and fixed screenshots.
 - Every P4 Data, Experience, Quality, or Reviewer dispatch must include
   `docs/reporter-growth/v2/P4_SYNTHETIC_SAMPLE_EXPANSION.md`. The Data dispatch must use
-  `docs/reporter-growth/v2/tasks/data-expansion-p4.md` and require SD01–SD05.
+  `docs/reporter-growth/v2/tasks/data-expansion-p4.md` and require SD01–SD07.
 - After spawning the initial routing probe, verify its actual session metadata before the Data worker.
   Before P4.2, separately verify the Lead and all three specialist role/model/reasoning assignments.
 - Lead and specialist messages are required for component-contract questions, shared-change broadcasts,
