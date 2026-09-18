@@ -209,13 +209,21 @@ Production actions continue to use the existing safe command layer.
 
 ## Implementation ownership
 
-One Experience owner implements shared shell, styles, all five presentation surfaces, charts, grids,
-and responsive behavior. Domain roles may provide bounded prepared-view or command repairs only after
-a concrete contract gap is proven. No workspace gets an independent presentation owner.
+The Experience Lead implements and freezes the shared shell, styles, component system, Overview, and
+Funnel. Only after the Overview/Funnel proof is accepted, three Experience specialists may implement
+Reporters, Team, and Programs in parallel, with exactly one non-overlapping feature path apiece. They
+must reuse the frozen shared system, send component questions and candidate/reference screenshots to
+the Lead, and receive the Lead's fidelity review before integration. The Lead alone may change shared
+components and may not edit a specialist's feature path.
+
+Domain roles may provide bounded prepared-view or command repairs only after a concrete contract gap
+is proven. They have no presentation ownership. This gated hub-and-spoke model does not recreate P3's
+domain-owned screen fan-out.
 
 ## Change control
 
-This is lock version 2. Version 2 adds the September 17, 2026 balanced 50-person synthetic sample
-without changing the approved visual composition. Minor user-approved adjustments must be recorded as
-a dated amendment here and mirrored in `P4_ACCEPTANCE.md`. No implementation agent may reinterpret or
-replace the composition because an older plan, task brief, or existing screen differs.
+This is lock version 3. Version 2 added the September 17, 2026 balanced 50-person synthetic sample.
+Version 3 adds gated multi-Experience implementation after the visual proof without changing the
+approved composition or sample. Minor user-approved adjustments must be recorded as a dated amendment
+here and mirrored in `P4_ACCEPTANCE.md`. No implementation agent may reinterpret or replace the
+composition because an older plan, task brief, or existing screen differs.

@@ -5,13 +5,25 @@ service_tier = "default"
 
 [agents]
 enabled = true
-max_concurrent_threads_per_session = 1
+max_concurrent_threads_per_session = 4
 default_subagent_model = "gpt-5.6-terra"
 default_subagent_reasoning_effort = "medium"
 
 [agents.experience]
-description = "P4 single presentation owner: shared shell, all five workspace presentation surfaces, charts, grids, interaction state, and responsive behavior."
+description = "P4 Experience Lead: shared design system, shell, Overview/Funnel proof, shared-component changes, and workspace fidelity review."
 config_file = "./agents/experience.toml"
+
+[agents.experience_reporters]
+description = "P4 Reporters presentation specialist after visual proof; uses the frozen shared system and owns only the Reporters feature presentation."
+config_file = "./agents/experience_reporters.toml"
+
+[agents.experience_team]
+description = "P4 Team presentation specialist after visual proof; uses the frozen shared system and owns only the Team feature presentation."
+config_file = "./agents/experience_team.toml"
+
+[agents.experience_programs]
+description = "P4 Programs presentation specialist after visual proof; uses the frozen shared system and owns only the Programs feature presentation."
+config_file = "./agents/experience_programs.toml"
 
 [agents.data]
 description = "P4 serial data-preparation lane: balanced 50-person synthetic expansion, complete histories, validation, repository, and reset."

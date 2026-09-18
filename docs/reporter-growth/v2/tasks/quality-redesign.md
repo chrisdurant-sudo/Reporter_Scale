@@ -21,8 +21,10 @@ instructions, and snapshots not owned by Quality.
 
 ## Required checks
 
-- XR01–XR40, including real charts, interaction-to-record filtering, content hierarchy, one evidence
+- XR01–XR41, including real charts, interaction-to-record filtering, content hierarchy, one evidence
   path, working actions, drawer state/focus return, and no raw technical context on default screens;
+- gated presentation ownership: frozen shared components, non-overlapping specialist paths, recorded
+  Lead screenshot review, and no specialist-local design system;
 - screenshot matrix at the exact required viewports, with no 390px waiver;
 - side-by-side comparison with every applicable locked state in
   `docs/reporter-growth/v2/design-lock/reference-manifest.md`, including Funnel SLA editor and Team

@@ -80,11 +80,12 @@ sample-depth addendum.
 
 | ID | Observable requirement |
 |---|---|
-| XR26 | The Experience owner alone edits shared and feature presentation files during P4. Domain workers, when needed, make bounded logic-only repairs with no overlapping paths. |
-| XR27 | Markets and Recruiting pass screenshot and interaction review before Reporters, Team, and Programs presentation work begins. |
+| XR26 | The Experience Lead alone edits shared UI, shell, styles, Overview, and Funnel. After the proof gate, the Reporters, Team, and Programs Experience specialists each edit only their assigned feature path. Domain workers, when needed, make bounded logic-only repairs with no overlapping paths. |
+| XR27 | Overview and Funnel pass screenshot and interaction review, and the shared presentation baseline is frozen, before Reporters, Team, and Programs presentation work begins. |
 | XR28 | Quality verifies a fixed commit with browser interaction and screenshots. Defects return to the owning production lane and are rerun; Reviewer is not launched with failures or waivers. |
 | XR29 | The original source/metric acceptance suite still passes; redesign actions do not manufacture readiness, acceptance, completion, program results, or rollout. |
 | XR30 | Final review compares the live candidate with the JD, original V2 contracts, this P4 plan, and the declared reference principles—not merely with tests written against the implementation. |
+| XR41 | Each workspace specialist uses the frozen shared components, sends component-contract questions and candidate/reference screenshot checkpoints to the Experience Lead, and receives Lead fidelity review before integration. The Lead alone changes shared components, and communication never expands a lane's write boundary. |
 
 ## Guided progress and responsible gamification
 

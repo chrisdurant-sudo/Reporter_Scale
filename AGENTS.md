@@ -1,8 +1,9 @@
 # Reporter Growth
 
 > **Current phase:** Reporter Growth v2 P4 has a user-approved design lock and a completed static
-> readiness packet, but production implementation is not authorized. P4 routing is strictly serial and
-> inactive until a separate explicit user gate. The reviewed source baseline is
+> readiness packet, but production implementation is not authorized. P4 routing uses serial Data and
+> visual-proof gates followed by one bounded Experience workspace wave; it remains inactive until a
+> separate explicit user gate. The reviewed source baseline is
 > `c4f304c376ca631d88c694f519f76ec316f12a13`. P3 LAX Vertical Integration remains the live production baseline. P3 started from integration baseline
 > `97f3ed4606f62dddcf86d5ad261b77dcf1f17ed5`, using source freeze
 > `19f7df98000e346a5b4ff32e00b699276c3f62fb`, the approved
@@ -53,9 +54,15 @@ inactive; they do not authorize dispatch or source work.
   `quality` runs after an integrated candidate; `reviewer` runs read-only after Quality.
 - P4 begins, only after explicit P4 implementation authorization, with exactly one serial `data` role
   using `docs/reporter-growth/v2/tasks/data-expansion-p4.md` to add the approved 50-person sample.
-  After coordinator integration and a frozen compiling baseline, exactly one `experience` role owns
-  shared UI plus all five feature presentation paths. Data and Experience do not run concurrently.
-  Do not recreate the seven-lane UI fan-out.
+  After coordinator integration and a frozen compiling baseline, exactly one `experience` Lead owns
+  shared UI plus Overview/Funnel and stops at `P4_VISUAL_PROOF_READY`. Data and Experience do not run
+  concurrently. Do not recreate the seven-lane domain-owned UI fan-out.
+- Only after the coordinator accepts the Overview/Funnel proof and freezes the shared presentation
+  baseline may `experience_reporters`, `experience_team`, and `experience_programs` run together.
+  Each owns exactly one feature path. The Experience Lead remains the sole shared-component writer
+  and design steward, answers component-contract questions, broadcasts shared changes, and reviews
+  each specialist's candidate/reference screenshots before integration. The Lead does not edit a
+  specialist's path, and specialists do not copy primitives or create local design systems.
 - During P4, domain roles are on-demand, logic-only support after a concrete contract-change request.
   They do not edit feature JSX/CSS. The approved serial Data expansion is the only pre-Experience
   exception. The Experience proof must pass on Overview and Funnel before the remaining presentation
@@ -63,8 +70,9 @@ inactive; they do not authorize dispatch or source work.
 - P4 Quality reports defects without production edits. The owning implementation role repairs them,
   coordinator reintegrates, and Quality reruns. Reviewer starts only after all required checks pass
   without waivers.
-- The historical P2 limit was seven spawned-agent threads. P4's lower active-registry limit is one
-  lane worker at a time, excluding the coordinator. Workers do not spawn children.
+- The historical P2 limit was seven spawned-agent threads. P4 permits one lane worker during Data and
+  visual proof, and at most four during P4.2: the Lead plus three specialists. All other phases are
+  serial. Workers do not spawn children.
 - Use the named V2 roles in `.codex/config.toml` and the active v2 registry; workers never raise
   or substitute their own model, reasoning level, or service tier.
 - Every `spawn_agent` call for a routed role must specify `fork_turns="none"`. Never use
@@ -72,13 +80,16 @@ inactive; they do not authorize dispatch or source work.
   must not replace the configured child model/instructions.
 - Include required context, absolute worktree, base commit, allowed paths, task brief, frozen
   contract commit, acceptance IDs, and handoff requirements in every implementation dispatch.
-- Every P4 Experience, Quality, or Reviewer dispatch must include the exact path
+- Every P4 Experience Lead, Experience specialist, Quality, or Reviewer dispatch must include the exact path
   `docs/reporter-growth/v2/design-lock/reference-manifest.md` and require direct comparison with its
   interactive reference and fixed screenshots.
 - Every P4 Data, Experience, Quality, or Reviewer dispatch must include
   `docs/reporter-growth/v2/P4_SYNTHETIC_SAMPLE_EXPANSION.md`. The Data dispatch must use
   `docs/reporter-growth/v2/tasks/data-expansion-p4.md` and require SD01–SD05.
-- After spawning the routing probe, verify its actual session metadata before spawning any implementation workers.
+- After spawning the initial routing probe, verify its actual session metadata before the Data worker.
+  Before P4.2, separately verify the Lead and all three specialist role/model/reasoning assignments.
+- Lead and specialist messages are required for component-contract questions, shared-change broadcasts,
+  and screenshot review. Communication does not expand write authority or replace exact-commit handoff.
 - Run `node scripts/verify-p4-readiness.mjs` before the routing probe and again before each P4 phase
   transition. A failure blocks dispatch.
 - One worker, one assigned lane, one verified Git worktree and branch. A separate chat is not a separate checkout.

@@ -5,7 +5,7 @@
   "fanout_authorized": false,
   "implementation_active": false,
   "current_phase": "P4_ready_awaiting_explicit_implementation_authorization",
-  "execution_model": "strictly_serial",
+  "execution_model": "serial_gates_with_bounded_parallel_workspace_wave",
   "routing_verification_status": "static_readiness_verified_runtime_probe_required_at_dispatch",
   "source_contract_commit": "19f7df98000e346a5b4ff32e00b699276c3f62fb",
   "prepared_against_commit": "c4f304c376ca631d88c694f519f76ec316f12a13",
@@ -19,36 +19,49 @@
     {
       "order": 1,
       "phase": "P4.0b_serial_sample_expansion",
-      "role": "data",
+      "roles": [
+        "data"
+      ],
       "gate": "SD01_SD05_and_full_baseline_checks_pass"
     },
     {
       "order": 2,
       "phase": "P4.1_overview_funnel_visual_proof",
-      "role": "experience",
+      "roles": [
+        "experience"
+      ],
       "gate": "P4_VISUAL_PROOF_ACCEPTED"
     },
     {
       "order": 3,
-      "phase": "P4.2_remaining_workspaces",
-      "role": "experience",
-      "gate": "P4_INTEGRATED_CANDIDATE_FIXED"
+      "phase": "P4.2_bounded_parallel_workspace_wave",
+      "roles": [
+        "experience",
+        "experience_reporters",
+        "experience_team",
+        "experience_programs"
+      ],
+      "gate": "THREE_WORKSPACES_LEAD_REVIEWED_and_P4_INTEGRATED_CANDIDATE_FIXED"
     },
     {
       "order": 4,
       "phase": "P4.4_independent_quality",
-      "role": "quality",
+      "roles": [
+        "quality"
+      ],
       "gate": "QUALITY_PASSED_without_waiver"
     },
     {
       "order": 5,
       "phase": "P4.5_fixed_commit_review",
-      "role": "reviewer",
+      "roles": [
+        "reviewer"
+      ],
       "gate": "REVIEW_READY"
     }
   ],
-  "max_concurrent_lane_workers": 1,
-  "max_concurrent_spawned_agents_excluding_coordinator": 1,
+  "max_concurrent_lane_workers": 4,
+  "max_concurrent_spawned_agents_excluding_coordinator": 4,
   "workers_may_spawn": false,
   "all_unassigned_paths_default_owner": "coordinator",
   "coordinator_owned": [
@@ -108,14 +121,66 @@
         "src/shell/",
         "src/styles/",
         "src/features/markets/",
-        "src/features/recruiting/",
-        "src/features/reporters/",
-        "src/features/team/",
-        "src/features/programs/"
+        "src/features/recruiting/"
       ],
       "task": "docs/reporter-growth/v2/tasks/experience-redesign.md",
       "acceptance_ids": [
-        "XR01-XR40"
+        "XR01-XR37",
+        "XR41"
+      ]
+    },
+    {
+      "id": "experience_reporters",
+      "runtime_role": "experience_reporters",
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "medium",
+      "service_tier": "default",
+      "start_phase": "P4.2_after_visual_proof",
+      "allowed_directory_prefixes": [
+        "src/features/reporters/"
+      ],
+      "task": "docs/reporter-growth/v2/tasks/experience-reporters.md",
+      "acceptance_ids": [
+        "XR11",
+        "XR14-XR25",
+        "XR31-XR38",
+        "XR41"
+      ]
+    },
+    {
+      "id": "experience_team",
+      "runtime_role": "experience_team",
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "medium",
+      "service_tier": "default",
+      "start_phase": "P4.2_after_visual_proof",
+      "allowed_directory_prefixes": [
+        "src/features/team/"
+      ],
+      "task": "docs/reporter-growth/v2/tasks/experience-team.md",
+      "acceptance_ids": [
+        "XR12",
+        "XR14-XR25",
+        "XR31-XR39",
+        "XR41"
+      ]
+    },
+    {
+      "id": "experience_programs",
+      "runtime_role": "experience_programs",
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "medium",
+      "service_tier": "default",
+      "start_phase": "P4.2_after_visual_proof",
+      "allowed_directory_prefixes": [
+        "src/features/programs/"
+      ],
+      "task": "docs/reporter-growth/v2/tasks/experience-programs.md",
+      "acceptance_ids": [
+        "XR13-XR25",
+        "XR31-XR36",
+        "XR40",
+        "XR41"
       ]
     },
     {
@@ -206,7 +271,7 @@
       ],
       "task": "docs/reporter-growth/v2/tasks/quality-redesign.md",
       "acceptance_ids": [
-        "XR01-XR40",
+        "XR01-XR41",
         "SD01-SD05",
         "original_V2_acceptance"
       ]
@@ -223,5 +288,5 @@
     "allowed_directory_prefixes": [],
     "task": "docs/reporter-growth/v2/tasks/reviewer.md"
   },
-  "note": "This is the sole active P4 routing registry. P2 and P3 are complete and inactive. P4 is configured but not authorized or active. The runtime routing probe is mandatory immediately before the first Data worker. All P4 roles use Standard/default processing; the resolved child service tier remains unobservable, so configured default is the strongest available evidence."
+  "note": "This is the sole active P4 routing registry. P2 and P3 are complete and inactive. P4 is configured but not authorized or active. Data and the Experience visual proof are serial. Only after proof acceptance may the Lead and three bounded workspace Experience specialists communicate and run concurrently; they have non-overlapping paths and the Lead alone owns shared components. The runtime routing probes are mandatory before first dispatch. All P4 roles use Standard/default processing; the resolved child service tier remains unobservable, so configured default is the strongest available evidence."
 }

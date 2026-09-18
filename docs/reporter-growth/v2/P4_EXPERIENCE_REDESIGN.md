@@ -22,12 +22,13 @@ lock and must be used by implementation, Quality, and Reviewer.
 
 The approved sample-size addendum is
 [`P4_SYNTHETIC_SAMPLE_EXPANSION.md`](P4_SYNTHETIC_SAMPLE_EXPANSION.md). It adds one serial Data step
-before Experience; it does not reopen parallel presentation ownership.
+before Experience. Presentation work then uses a gated hub-and-spoke model: the Experience Lead
+freezes the shared system and Overview/Funnel proof before three bounded workspace specialists start.
 
 The sections below from **Historical reference direction** through **Historical responsive behavior**
 are retained only to explain how the redesign evolved. They must not be implemented where they differ
 from the locked contract. Minor visual changes require an explicit amendment to `P4_DESIGN_LOCK.md` and
-the matching acceptance row; they do not reopen the distributed screen-ownership model.
+the matching acceptance row; they do not broaden any lane's assigned path.
 
 ## Outcome
 
@@ -51,9 +52,9 @@ The failure was in the implementation structure, not only the CSS.
 
 | Cause | Effect | P4 correction |
 |---|---|---|
-| Seven lanes built in parallel, while five domain lanes each owned their feature JSX/CSS | Five locally reasonable but visually unrelated screens | One Experience owner controls the shell and all five presentation surfaces |
-| Experience owned `src/ui/`, `src/shell/`, and `src/styles/` but could not edit feature screens | Shared primitives could not enforce page composition or text hierarchy | Experience owns feature presentation paths for P4; domain roles become logic-only support |
-| U01–U05 were assigned to Experience even though most violations lived in domain-owned feature files | Acceptance responsibility did not match write authority | Presentation acceptance and presentation write authority now sit with the same owner |
+| Seven lanes built in parallel, while five domain lanes each owned logic and their feature JSX/CSS | Five locally reasonable but visually unrelated screens | The Experience Lead freezes one shared system and proof before three presentation-only specialists receive non-overlapping paths |
+| Experience owned `src/ui/`, `src/shell/`, and `src/styles/` but could not edit feature screens | Shared primitives could not enforce page composition or text hierarchy | The Lead owns shared UI plus Overview/Funnel; specialists must reuse that system and the Lead alone changes it |
+| U01–U05 were assigned to Experience even though most violations lived in domain-owned feature files | Acceptance responsibility did not match write authority | Each presentation acceptance area now has an explicit presentation owner, with the Lead responsible for cross-workspace fidelity |
 | Lane briefs emphasized calculation integrity and callbacks more than finished workflows | Screens exposed data and callback plumbing instead of usable work | Every workspace now has a required decision, chart/table composition, detail flow, and working action |
 | P3 was scoped as integration and explicitly excluded a full redesign | Wiring the five tabs was treated as completion | P4 has an explicit visual proof gate before the remaining screens are built |
 | Quality could only add tests and could not repair production code | Functional tests passed while visible defects remained | Quality reports defects; the owning implementation lane repairs them; Quality reruns before Reviewer |
@@ -61,8 +62,9 @@ The failure was in the implementation structure, not only the CSS.
 | Evidence was implemented both locally and globally | Repeated `Why this?` controls and technical text dominated the workflow | One contextual evidence drawer replaces evidence walls and duplicate launchers |
 
 P4 must not repeat the original seven-lane UI fan-out. Domain roles may run only when the Experience
-owner identifies a concrete prepared-view or command gap, and those roles may not edit presentation
-files.
+Lead identifies a concrete prepared-view or command gap, and those roles may not edit presentation
+files. Workspace specialists start only after the visual proof, own one feature path each, and remain
+inside the Lead's frozen component and screenshot-review loop.
 
 ## Historical reference direction — superseded where different
 
@@ -301,10 +303,10 @@ suite and record counts, and freezes a new compiling data baseline. Experience m
 integrated baseline. Do not run Data and Experience concurrently, and do not let Experience create
 fallback rows or presentation-only sample records.
 
-### P4.1 — one-owner visual proof
+### P4.1 — Lead-owned visual proof
 
-Dispatch only the `experience` role in one verified worktree. It owns shared UI, shell, styles, and all
-five feature presentation paths for P4.
+Dispatch only the `experience` Lead role in one verified worktree. It owns shared UI, shell, styles,
+Overview, and Funnel.
 
 Build the shared components plus Overview and Funnel first. Wire real prepared V2 data and existing
 commands; do not make a disconnected mock. Produce screenshots and interaction evidence at all four
@@ -317,15 +319,25 @@ path per selected context. Compare the candidate side by side with the matching 
 `design-lock/reference-manifest.md`; unexplained composition, hierarchy, or interaction differences
 fail the proof.
 
-### P4.2 — remaining workspaces
+### P4.2 — bounded parallel workspace wave
 
-After the proof is accepted, the same Experience owner builds Reporters, Team, and Programs using the
-same primitives and composition. Do not dispatch separate presentation agents per workspace.
+After the proof is accepted and the shared presentation baseline is frozen, dispatch exactly three
+presentation specialists: `experience_reporters`, `experience_team`, and `experience_programs`.
+Each owns only its named feature path. The Experience Lead remains available as design steward and
+sole shared-component writer; the four may run concurrently because their write paths do not overlap.
 
-If a prepared view or command is missing, Experience returns a concrete contract-change request.
+Each specialist must use the frozen primitives and composition, send component-contract questions to
+the Lead, and provide candidate screenshots beside the locked reference states. The Lead returns
+precise fidelity findings and makes any approved shared-component change in the Lead's own path,
+then broadcasts that change. A specialist may not copy a primitive, create a local design system, or
+interpret communication as expanded write authority. The coordinator integrates exact commits
+sequentially after Lead review.
+
+If a prepared view or command is missing, the responsible Experience role returns a concrete
+contract-change request through the Lead and coordinator.
 Coordinator may then dispatch exactly one owning domain role for a bounded logic-only repair. The
 domain role may not edit JSX/CSS presentation paths. Coordinator integrates the repair, reruns checks,
-and returns control to Experience.
+and returns control to the requesting Experience role.
 
 ### P4.3 — coordinator integration
 
@@ -356,7 +368,10 @@ For P4 only:
 
 | Owner | Paths/responsibility |
 |---|---|
-| Experience | `src/ui/`, `src/shell/`, `src/styles/`, and presentation files under all five `src/features/` workspaces |
+| Experience Lead | `src/ui/`, `src/shell/`, `src/styles/`, `src/features/markets/`, and `src/features/recruiting/`; shared-system authority and specialist fidelity review |
+| Reporters Experience | presentation files under `src/features/reporters/` only, after proof |
+| Team Experience | presentation files under `src/features/team/` only, after proof |
+| Programs Experience | presentation files under `src/features/programs/` only, after proof |
 | Data | `src/data/` only; the serial approved 50-person sample expansion before Experience, then only specifically authorized data repairs |
 | Capacity | `src/logic/capacity/` only; prepared-view repairs for Markets |
 | Recruiting | `src/logic/recruiting/` only; prepared-view/command repairs for Recruiting |
@@ -368,7 +383,9 @@ For P4 only:
 | Reviewer | read-only fixed-commit review |
 
 No two active workers may own the same file. P4 uses one serial Data preparation worker, then one
-Experience worker after integration—not a parallel seven-lane presentation wave.
+serial Experience Lead proof. Only after that proof may the Lead and three bounded Experience
+specialists overlap. This is not the P3 domain-owned seven-lane presentation wave: business logic and
+presentation remain separate, shared files have one owner, and integration stays sequential.
 
 ## Required verification
 
@@ -392,6 +409,8 @@ for interaction checks.
 - P4 production implementation requires a separate explicit user instruction.
 - The serial 50-person Data expansion must integrate and pass SD01–SD05 before Experience starts.
 - Adding a chart or visualization dependency requires explicit dependency authorization.
-- The Overview/Funnel visual proof must pass before building the remaining presentation surfaces.
+- The Overview/Funnel visual proof and frozen shared baseline must pass before the bounded specialist
+  wave starts.
+- Each specialist requires Experience Lead screenshot review before coordinator integration.
 - Quality must pass without waivers before Reviewer.
 - Reviewer must inspect the fixed Quality-passed commit before P4 closeout.
