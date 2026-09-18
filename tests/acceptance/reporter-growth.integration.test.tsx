@@ -41,11 +41,11 @@ describe("V2 cross-workspace acceptance", () => {
     expect(screen.getByText(/No real message is sent and no Steno system is connected/i)).toBeInTheDocument();
   });
 
-  it("S07/M05 distinguishes timely first jobs from late jobs after the pair cohort matures", async () => {
+  it("S07/M05 keeps the expanded onboarding aggregate distinct from the protected pair story", async () => {
     const user = await start();
     for (const name of ["Advance to Plan saved", "Advance to Existing candidates accepted", "Advance to Two new reporters ready", "Advance to New reporters accepted", "Advance to Original plan delivered", "Advance to Pair onboarding cohort mature"]) await user.click(screen.getByRole("button", { name }));
     await user.click(screen.getByRole("button", { name: "Recruiting" }));
-    expect(await screen.findByText("1/2 within 14 days.")).toBeInTheDocument();
+    expect(await screen.findByText("1/3 within 14 days.")).toBeInTheDocument();
     expect(screen.getByText(/1 finalized 30-day cohort members; 3 still being observed/)).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Markets" }));
     expect(screen.getByText(/10 completed requests and 2 first jobs from the frozen request set/)).toBeInTheDocument();
