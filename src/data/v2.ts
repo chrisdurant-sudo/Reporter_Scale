@@ -229,6 +229,13 @@ const p4MarketTimeZone: Record<Market["id"], IanaTimeZone> = {
 const p4StateCredential: Record<Market["id"], string> = { LAX: "CA", SFO: "CA", DFW: "TX", ORD: "IL", ATL: "GA" };
 const p4MarketNames: Record<Market["id"], string> = { LAX: "Los Angeles", SFO: "San Francisco", DFW: "Dallas", ORD: "Chicago", ATL: "Atlanta" };
 const p4DateAt = (date: string, days: number) => new Date(Date.parse(date) + days * 86_400_000).toISOString().replace(".000Z", "Z");
+const p4FunnelSla = {
+  LAX: { overall: 32, Applicant: 4, Screening: 6, Approved: 5, Onboarding: 10, "Starting soon": 7 },
+  SFO: { overall: 35, Applicant: 5, Screening: 7, Approved: 5, Onboarding: 11, "Starting soon": 7 },
+  DFW: { overall: 30, Applicant: 4, Screening: 6, Approved: 4, Onboarding: 9, "Starting soon": 7 },
+  ORD: { overall: 38, Applicant: 5, Screening: 8, Approved: 6, Onboarding: 12, "Starting soon": 7 },
+  ATL: { overall: 34, Applicant: 5, Screening: 7, Approved: 5, Onboarding: 10, "Starting soon": 7 },
+} as const;
 
 function addP4Credential(reporterId: string, label: string, market: Market["id"], status: CredentialRecord["verificationStatus"], validUntil: string | null, recordedAt: string): CredentialRecord {
   const record: CredentialRecord = {
@@ -244,7 +251,6 @@ function addP4Credential(reporterId: string, label: string, market: Market["id"]
 }
 
 for (const [marketIndex, market] of (["LAX", "SFO", "DFW", "ORD", "ATL"] as const).entries()) {
-  const baseDay = 1 + marketIndex * 2;
   const capabilityCode = market === "LAX" || market === "SFO" ? "realtime-transcription" : "standard-transcription";
   const rows = [
     { stage: "applicant", offset: 0 }, { stage: "screening", offset: 1 }, { stage: "approved", offset: 2 },
@@ -257,23 +263,25 @@ for (const [marketIndex, market] of (["LAX", "SFO", "DFW", "ORD", "ATL"] as cons
     const suffix = String(number).padStart(2, "0");
     const reporterId = `person-p4-${market.toLowerCase()}-${suffix}`;
     const caseId = `case-p4-${market.toLowerCase()}-${suffix}`;
-    const entryDay = String(Math.min(baseDay + row.offset, 9)).padStart(2, "0");
     const name = `Fictional ${p4MarketNames[market]} Sample ${suffix}`;
     const isReady = ["starting-soon", "recent-a", "recent-b", "aging-active", "inactive"].includes(row.stage);
-    const timelineStart = row.stage === "starting-soon" ? "2026-02-01T17:00:00Z" : row.stage === "recent-a" ? "2026-01-01T17:00:00Z" : row.stage === "recent-b" ? "2025-12-25T17:00:00Z" : row.stage === "aging-active" ? "2025-12-10T17:00:00Z" : row.stage === "inactive" ? "2025-11-10T17:00:00Z" : `2026-02-${entryDay}T17:00:00Z`;
+    const funnelStage = row.offset === 0 ? "Applicant" : row.offset === 1 ? "Screening" : row.offset === 2 ? "Approved" : row.offset === 5 ? "Starting soon" : row.stage === "screening-bottleneck" ? "Screening" : "Onboarding";
+    const categoryDelta = row.offset < 6 ? (row.offset < 2 ? -1 : row.offset < 4 ? 0 : 1) : 0;
+    const timelineStart = row.offset < 6 ? p4DateAt(BASE_AS_OF, -(p4FunnelSla[market].overall + categoryDelta)) : row.stage === "starting-soon" ? "2026-02-01T17:00:00Z" : row.stage === "recent-a" ? "2026-01-01T17:00:00Z" : row.stage === "recent-b" ? "2025-12-25T17:00:00Z" : row.stage === "aging-active" ? "2025-12-10T17:00:00Z" : "2025-11-10T17:00:00Z";
     const openedAt = timelineStart;
-    const readyAt = isReady ? p4DateAt(timelineStart, 6) : "";
+    const readyAt = isReady ? (row.offset < 6 ? p4DateAt(BASE_AS_OF, -(p4FunnelSla[market][funnelStage] + categoryDelta)) : p4DateAt(timelineStart, 6)) : "";
+    const currentStageAt = row.offset < 6 ? p4DateAt(BASE_AS_OF, -(p4FunnelSla[market][funnelStage] + categoryDelta)) : readyAt;
     addReporter({ id: reporterId, name, market, createdAt: openedAt, capabilities: [capabilityCode], attendanceModes: row.offset % 3 === 0 ? ["remote"] : ["remote", "in-person"], proceedingTypes: row.offset % 2 === 0 ? ["deposition", "hearing"] : ["deposition"], serviceMarkets: [market], sourceId: "source-community-event" });
     const lifecycle: readonly [LifecycleEvent["eventType"], string][] = [
-      ["sourced", openedAt], ["contacted", p4DateAt(timelineStart, 1)], ["responded", p4DateAt(timelineStart, 2)],
+      ["sourced", openedAt], ["contacted", p4DateAt(timelineStart, 1)], ["responded", row.offset === 0 ? currentStageAt : p4DateAt(timelineStart, 2)],
     ];
     for (const [eventType, occurredAt] of lifecycle) addLifecycle(reporterId, market, eventType, occurredAt, `p4-${eventType}`);
-    if (row.stage !== "applicant") addLifecycle(reporterId, market, "screening-started", p4DateAt(timelineStart, 3), "p4-screening-started");
-    if (["approved", "onboarding", "onboarding-bottleneck", "starting-soon", "recent-a", "recent-b", "aging-active", "inactive"].includes(row.stage)) addLifecycle(reporterId, market, "qualified", p4DateAt(timelineStart, 4), "p4-qualified");
+    if (row.stage !== "applicant") addLifecycle(reporterId, market, "screening-started", row.offset === 1 || row.stage === "screening-bottleneck" ? currentStageAt : p4DateAt(timelineStart, 3), "p4-screening-started");
+    if (["approved", "onboarding", "onboarding-bottleneck", "starting-soon", "recent-a", "recent-b", "aging-active", "inactive"].includes(row.stage)) addLifecycle(reporterId, market, "qualified", row.offset === 2 ? currentStageAt : p4DateAt(timelineStart, 4), "p4-qualified");
     const hasOnboarding = ["onboarding", "onboarding-bottleneck", "starting-soon", "recent-a", "recent-b", "aging-active", "inactive"].includes(row.stage);
-    if (hasOnboarding) addLifecycle(reporterId, market, "onboarding-started", p4DateAt(timelineStart, 5), "p4-onboarding-started");
+    if (hasOnboarding) addLifecycle(reporterId, market, "onboarding-started", row.offset === 3 || row.stage === "onboarding-bottleneck" ? currentStageAt : p4DateAt(timelineStart, 5), "p4-onboarding-started");
     if (isReady) {
-      addLifecycle(reporterId, market, "ready", readyAt, "p4-ready");
+      addLifecycle(reporterId, market, "ready", currentStageAt, "p4-ready");
       const capability = addVerifiedCapability(reporterId, capabilityCode, readyAt, "p4-capability");
       const stepId = asId(`step-p4-${market.toLowerCase()}-${suffix}`);
       addReadiness(reporterId, readyAt, capability.id, stepId);

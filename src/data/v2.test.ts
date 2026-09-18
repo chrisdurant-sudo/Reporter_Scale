@@ -61,15 +61,26 @@ describe("V2 synthetic records and repository", () => {
       expect(ready.some((person) => DEMO_SNAPSHOT_V2.credentialRecords.some((credential) => credential.reporterId === person.id && credential.label === "CRR"))).toBe(true);
       expect(ready.every((person) => DEMO_SNAPSHOT_V2.credentialRecords.some((credential) => credential.reporterId === person.id && credential.jurisdictionScope === stateCredential[market]))).toBe(true);
 
+      const lockedSla = {
+        LAX: { overall: 32, Applicant: 4, Screening: 6, Approved: 5, Onboarding: 10, "Starting soon": 7 },
+        SFO: { overall: 35, Applicant: 5, Screening: 7, Approved: 5, Onboarding: 11, "Starting soon": 7 },
+        DFW: { overall: 30, Applicant: 4, Screening: 6, Approved: 4, Onboarding: 9, "Starting soon": 7 },
+        ORD: { overall: 38, Applicant: 5, Screening: 8, Approved: 6, Onboarding: 12, "Starting soon": 7 },
+        ATL: { overall: 34, Applicant: 5, Screening: 7, Approved: 5, Onboarding: 10, "Starting soon": 7 },
+      } as const;
       const funnel = people.slice(0, 6).map((person) => {
         const events = DEMO_SNAPSHOT_V2.lifecycleEvents.filter((event) => event.reporterId === person.id).sort((a, b) => Date.parse(a.occurredAt) - Date.parse(b.occurredAt));
         const current = events.at(-1)!;
-        const age = Math.floor((asOf - Date.parse(current.occurredAt)) / 86_400_000);
-        return { age, slaDays: age + (people.indexOf(person) < 2 ? 1 : people.indexOf(person) < 4 ? 0 : -1) };
+        const status = current.eventType === "responded" ? "Applicant" : current.eventType === "screening-started" ? "Screening" : current.eventType === "qualified" ? "Approved" : current.eventType === "onboarding-started" ? "Onboarding" : "Starting soon";
+        const acq = DEMO_SNAPSHOT_V2.acquisitionCases.find((item) => item.reporterId === person.id)!;
+        return { totalAge: Math.floor((asOf - Date.parse(acq.openedAt)) / 86_400_000), currentAge: Math.floor((asOf - Date.parse(current.occurredAt)) / 86_400_000), overallSla: lockedSla[market].overall, statusSla: lockedSla[market][status] };
       });
-      expect(funnel.filter((item) => item.age < item.slaDays)).toHaveLength(2);
-      expect(funnel.filter((item) => item.age === item.slaDays)).toHaveLength(2);
-      expect(funnel.filter((item) => item.age > item.slaDays)).toHaveLength(2);
+      expect(funnel.filter((item) => item.totalAge < item.overallSla)).toHaveLength(2);
+      expect(funnel.filter((item) => item.totalAge === item.overallSla)).toHaveLength(2);
+      expect(funnel.filter((item) => item.totalAge > item.overallSla)).toHaveLength(2);
+      expect(funnel.filter((item) => item.currentAge < item.statusSla)).toHaveLength(2);
+      expect(funnel.filter((item) => item.currentAge === item.statusSla)).toHaveLength(2);
+      expect(funnel.filter((item) => item.currentAge > item.statusSla)).toHaveLength(2);
     }
     for (const person of DEMO_SNAPSHOT_V2.reporters.filter((item) => String(item.id).startsWith("person-p4-"))) {
       const events = DEMO_SNAPSHOT_V2.lifecycleEvents.filter((event) => event.reporterId === person.id).sort((a, b) => Date.parse(a.occurredAt) - Date.parse(b.occurredAt));
