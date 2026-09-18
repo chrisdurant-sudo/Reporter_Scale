@@ -8,6 +8,13 @@
     "scope": "Coordinator takeover, process repair, and P4 visual-proof repair before any P4.2 presentation fan-out.",
     "source": "Explicit user instruction in the active coordinator task"
   },
+  "authorized_contract_changes": [
+    {
+      "authorized_at": "2026-09-17",
+      "scope": "Raise the P4 Experience Lead to GPT-5.6 Terra/high and the P4 Quality lane to GPT-5.6 Terra/high; preserve Standard/default processing and all other lane assignments.",
+      "source": "Explicit user instruction: make your model changes"
+    }
+  ],
   "implementation_base_commit": "8b85d4aafa2317be848e01caf47d8b6f92efa674",
   "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",
   "implementation_active": true,
@@ -109,6 +116,8 @@
     }
   ],
   "phase_allowed_prefixes": [
+    ".codex/agents/experience.toml",
+    ".codex/agents/quality.toml",
     "AGENTS.md",
     "docs/reporter-growth/v2/",
     "package.json",
