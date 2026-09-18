@@ -35,6 +35,11 @@ an obsolete Overview heading. The former routine command did not run that suite,
 green while the acceptance baseline was unusable. That failure is now recorded in the execution
 ledger and blocks phase transition.
 
+The takeover also found that the prior active worktrees were nested below `node_modules/`. Current
+Node rejects TypeScript Playwright configuration and test files from that path before executing a
+single assertion. Active worktrees must now live outside `node_modules`; they may use a symlink to the
+shared dependency directory. The phase verifier enforces the location rule.
+
 The preview is therefore a repair candidate. It must not be represented as P4-complete, and its
 existence does not authorize specialist fan-out.
 

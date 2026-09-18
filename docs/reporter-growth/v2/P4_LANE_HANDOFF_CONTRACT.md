@@ -16,6 +16,11 @@ Every worker handoff must identify:
 - known gaps; and
 - `REVIEW_READY` only when the evidence is complete.
 
+The worker's absolute worktree must not be nested under any `node_modules/` directory. The browser
+and TypeScript runners treat that location specially and may refuse to load the suite, creating a
+false verification gap. A worktree-local `node_modules` symlink to the shared dependency directory is
+allowed; the worktree itself must remain outside it.
+
 The coordinator must independently run:
 
 ```bash

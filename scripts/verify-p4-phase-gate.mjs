@@ -57,6 +57,7 @@ const gatePath = "docs/reporter-growth/v2/P4_VISUAL_PROOF_GATE.md";
 const registry = json(registryPath);
 const state = json(statePath);
 
+check(!root.split(path.sep).includes("node_modules"), "P4 worktrees must not be nested under node_modules; Node and Playwright reject TypeScript files there.");
 check(state.schema_version === 1, "P4 execution state must use schema version 1.");
 check(state.kind === "p4_execution_state", "P4 execution state kind is invalid.");
 check(state.authorization?.status === "active", "P4 implementation must have explicit active authorization.");
@@ -69,6 +70,7 @@ check(registry.execution_state === statePath, "Registry does not point to the ex
 check(existsSync(path.join(root, defectsPath)), "The active visual defect register is missing.");
 check(existsSync(path.join(root, gatePath)), "The visual-proof evidence contract is missing.");
 check(state.current_candidate?.defect_register === defectsPath, "The current candidate must point to the active defect register.");
+check(path.resolve(root) === path.resolve(state.active_coordinator_worktree), "Run phase verification from the recorded active coordinator worktree.");
 
 const legalPhases = [
   "P4.0b_serial_sample_expansion",

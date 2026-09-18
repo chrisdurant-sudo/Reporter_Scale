@@ -168,6 +168,7 @@ check(includesAll(laneDocs, ["bounded parallel presentation wave", "experience_r
 
 const requiredFiles = [
   "AGENTS.md",
+  "playwright.config.mjs",
   "docs/reporter-growth/v2/P4_READINESS.md",
   executionStatePath,
   "docs/reporter-growth/v2/P4_VISUAL_PROOF_GATE.md",

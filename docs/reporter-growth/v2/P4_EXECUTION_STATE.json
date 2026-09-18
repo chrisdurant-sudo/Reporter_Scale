@@ -9,11 +9,12 @@
     "source": "Explicit user instruction in the active coordinator task"
   },
   "implementation_base_commit": "8b85d4aafa2317be848e01caf47d8b6f92efa674",
+  "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",
   "implementation_active": true,
   "fanout_authorized": false,
   "current_phase": "P4.1_visual_proof_repair",
   "current_candidate": {
-    "commit": "2d1789b92ea6a14842b50e1709511dbf405f3599",
+    "commit": "ea99c859a02eb3580cdfc6d05dccf0fd5d493f20",
     "status": "not_accepted",
     "served_preview": "http://127.0.0.1:5174/",
     "defect_register": "docs/reporter-growth/v2/P4_VISUAL_PROOF_DEFECTS.md"
@@ -40,7 +41,7 @@
     },
     "visual_proof": {
       "status": "repair_required",
-      "candidate_commit": "2d1789b92ea6a14842b50e1709511dbf405f3599",
+      "candidate_commit": "ea99c859a02eb3580cdfc6d05dccf0fd5d493f20",
       "accepted_commit": null,
       "required_artifact_ids": [
         "overview_1440x900",

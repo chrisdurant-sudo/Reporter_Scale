@@ -6,7 +6,7 @@ serving a local preview does not satisfy this gate.
 
 ## Current disposition
 
-- The candidate at `2d1789b92ea6a14842b50e1709511dbf405f3599` is **not accepted**.
+- The coordinator candidate at `ea99c859a02eb3580cdfc6d05dccf0fd5d493f20` is **not accepted**.
 - `http://127.0.0.1:5174/` is a repair preview, not a completed P4 experience.
 - P4.2 specialist work, Quality, and Reviewer remain blocked.
 - The active defect register is `docs/reporter-growth/v2/P4_VISUAL_PROOF_DEFECTS.md`.

@@ -108,6 +108,8 @@ inactive; they do not authorize dispatch or source work.
 - Do not describe an unaccepted preview as P4-complete. Record its candidate commit and disposition in
   `P4_EXECUTION_STATE.json`, and keep `fanout_authorized` false until visual proof is accepted.
 - One worker, one assigned lane, one verified Git worktree and branch. A separate chat is not a separate checkout.
+- Never place an active P4 worktree under `node_modules/`. Node and Playwright reject TypeScript
+  configuration/tests from that path, which can prevent browser acceptance from running at all.
 - Coordinator alone owns shared contracts, dependencies, configuration, integration, governance, and merges.
 - Feature screens consume prepared data and callbacks. They do not import sibling features, storage, or canonical calculations.
 - Each lane owns its own tests; the quality lane owns cross-feature acceptance/browser tests and cannot modify production code.

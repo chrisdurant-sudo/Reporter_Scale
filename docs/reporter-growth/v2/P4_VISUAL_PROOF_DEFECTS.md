@@ -1,6 +1,6 @@
 # P4 Visual Proof Defects
 
-**Candidate:** `2d1789b92ea6a14842b50e1709511dbf405f3599`
+**Candidate:** `ea99c859a02eb3580cdfc6d05dccf0fd5d493f20`
 
 **Disposition:** `NOT_ACCEPTED`
 
@@ -14,7 +14,7 @@ candidate screenshots and interaction evidence prove the repair at the exact imp
 | ID | Acceptance mapping | Observed deviation | Required repair and proof |
 | --- | --- | --- | --- |
 | VP01 | XR02, XR03, XR04 | The shell is constrained to roughly 74rem, uses content-width underlined tabs, and mixes green/navy navigation treatments. | Match the full-width bordered shell, equal-width navy active navigation, spacing, typography, and responsive behavior in the locked desktop and mobile references. |
-| VP02 | XR03, XR04 | The default app state selects LAX instead of the locked all-market state. | Start in the locked default state and prove market changes update all dependent content. |
+| VP02 | XR03, XR04 | The original candidate selected LAX. Coordinator commit `ea99c85` now starts and resets to All, but the combined visual candidate is not yet proven. | Preserve the locked All default through Experience integration and prove market changes update all dependent content. |
 | VP03 | XR01, XR02 | `Demo controls · <date>` exposes implementation scaffolding that is absent from the canvas. | Remove demo-only chrome from the product surface or replace it with the exact locked utility treatment. |
 | VP04 | XR05 | Overview omits the four connected summary regions from the approved layout and introduces an extra Growth goal panel. | Rebuild the Overview hierarchy from the reference: KPI row, capacity trend, opportunity/funnel summary, coverage/attention summaries, and locked explanatory placement. |
 | VP05 | XR05, XR09 | The capacity chart lacks the reference axes, date labels, legend, forecast labeling, and comparable plot treatment. | Implement the locked chart presentation and prove readable values/labels at all four viewports. |
