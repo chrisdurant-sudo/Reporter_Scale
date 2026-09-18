@@ -5,42 +5,42 @@ service_tier = "default"
 
 [agents]
 enabled = true
-max_concurrent_threads_per_session = 7
+max_concurrent_threads_per_session = 1
 default_subagent_model = "gpt-5.6-terra"
 default_subagent_reasoning_effort = "medium"
 
 [agents.experience]
-description = "V2 shared interface lane: five-workspace shell, shared evidence UI, responsive behavior, styles, and persistent filters."
+description = "P4 single presentation owner: shared shell, all five workspace presentation surfaces, charts, grids, interaction state, and responsive behavior."
 config_file = "./agents/experience.toml"
 
 [agents.data]
-description = "V2 synthetic-record lane: complete fictional histories, scenario feed, validation, repository, and reset."
+description = "P4 serial data-preparation lane: balanced 50-person synthetic expansion, complete histories, validation, repository, and reset."
 config_file = "./agents/data.toml"
 
 [agents.capacity]
-description = "V2 capacity lane: request-slot demand, coverage, matching contention, acceptance validation, goals, and Markets workspace."
+description = "P4 on-demand capacity logic support only after an explicit contract-change request; no presentation ownership."
 config_file = "./agents/capacity.toml"
 
 [agents.recruiting]
-description = "V2 recruiting lane: acquisition lifecycle, source cohorts, screening, onboarding, readiness, and Recruiting workspace."
+description = "P4 on-demand recruiting logic support only after an explicit contract-change request; no presentation ownership."
 config_file = "./agents/recruiting.toml"
 
 [agents.network]
-description = "V2 network lane: ready reporter network, verified capabilities, explicit availability, recent work, and Reporters workspace."
+description = "P4 on-demand network logic support only after an explicit contract-change request; no presentation ownership."
 config_file = "./agents/network.toml"
 
 [agents.team]
-description = "V2 team lane: canonical work, role targets, inspected quality, coaching, reassignment, and Team workspace."
+description = "P4 on-demand team logic support only after an explicit contract-change request; no presentation ownership."
 config_file = "./agents/team.toml"
 
 [agents.programs]
-description = "V2 programs lane: explicit enrollments, results, decisions, process versions, partner work, and Programs workspace."
+description = "P4 on-demand programs logic support only after an explicit contract-change request; no presentation ownership."
 config_file = "./agents/programs.toml"
 
 [agents.quality]
-description = "V2 independent quality lane after integration: cross-workspace acceptance and browser tests only; no production repairs."
+description = "P4 independent Quality after integration: locked-reference comparison, cross-workspace acceptance, and browser tests only; no production repairs."
 config_file = "./agents/quality.toml"
 
 [agents.reviewer]
-description = "Read-only V2 final reviewer for a fixed integrated commit after Quality."
+description = "Read-only P4 final reviewer for the exact Quality-passed commit and locked visual/data contracts."
 config_file = "./agents/reviewer.toml"

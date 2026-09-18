@@ -4,30 +4,51 @@
   "routing_active": true,
   "fanout_authorized": false,
   "implementation_active": false,
-  "current_phase": "P3_complete_ready_for_separately_authorized_quality",
-  "routing_verification_status": "verified_with_tier_observability_limitation",
+  "current_phase": "P4_ready_awaiting_explicit_implementation_authorization",
+  "execution_model": "strictly_serial",
+  "routing_verification_status": "static_readiness_verified_runtime_probe_required_at_dispatch",
   "source_contract_commit": "19f7df98000e346a5b4ff32e00b699276c3f62fb",
+  "prepared_against_commit": "c4f304c376ca631d88c694f519f76ec316f12a13",
   "implementation_requires": [
-    "explicit_P3_LAX_vertical_user_authorization",
-    "FOUNDATION_REVIEWED",
-    "CONTRACTS_FROZEN",
-    "ROUTING_VERIFIED_WITH_TIER_OBSERVABILITY_LIMITATION"
+    "explicit_P4_implementation_authorization",
+    "P4_PACKET_COMMITTED",
+    "P4_READINESS_VERIFIED",
+    "RUNTIME_ROUTING_PROBE_VERIFIED_BEFORE_FIRST_WORKER"
   ],
-  "initial_implementation_roles": [
-    "experience",
-    "data",
-    "capacity",
-    "recruiting",
-    "network",
-    "team",
-    "programs"
+  "p4_execution_sequence": [
+    {
+      "order": 1,
+      "phase": "P4.0b_serial_sample_expansion",
+      "role": "data",
+      "gate": "SD01_SD05_and_full_baseline_checks_pass"
+    },
+    {
+      "order": 2,
+      "phase": "P4.1_overview_funnel_visual_proof",
+      "role": "experience",
+      "gate": "P4_VISUAL_PROOF_ACCEPTED"
+    },
+    {
+      "order": 3,
+      "phase": "P4.2_remaining_workspaces",
+      "role": "experience",
+      "gate": "P4_INTEGRATED_CANDIDATE_FIXED"
+    },
+    {
+      "order": 4,
+      "phase": "P4.4_independent_quality",
+      "role": "quality",
+      "gate": "QUALITY_PASSED_without_waiver"
+    },
+    {
+      "order": 5,
+      "phase": "P4.5_fixed_commit_review",
+      "role": "reviewer",
+      "gate": "REVIEW_READY"
+    }
   ],
-  "post_integration_sequence": [
-    "quality",
-    "reviewer"
-  ],
-  "max_concurrent_lane_workers": 7,
-  "max_concurrent_spawned_agents_excluding_coordinator": 7,
+  "max_concurrent_lane_workers": 1,
+  "max_concurrent_spawned_agents_excluding_coordinator": 1,
   "workers_may_spawn": false,
   "all_unassigned_paths_default_owner": "coordinator",
   "coordinator_owned": [
@@ -57,44 +78,44 @@
   "legacy_registry_active": false,
   "lanes": [
     {
-      "id": "experience",
-      "runtime_role": "experience",
-      "model": "gpt-5.6-terra",
-      "reasoning_effort": "medium",
-      "service_tier": "default",
-      "start_phase": "initial_implementation_wave",
-      "allowed_directory_prefixes": [
-        "src/ui/",
-        "src/shell/",
-        "src/styles/"
-      ],
-      "task": "docs/reporter-growth/v2/tasks/experience.md",
-      "acceptance_ids": [
-        "U01",
-        "U02",
-        "U03",
-        "U04",
-        "U05"
-      ]
-    },
-    {
       "id": "data",
       "runtime_role": "data",
       "model": "gpt-5.6-luna",
       "reasoning_effort": "medium",
       "service_tier": "default",
-      "start_phase": "initial_implementation_wave",
+      "start_phase": "P4.0b_serial_sample_expansion",
       "allowed_directory_prefixes": [
         "src/data/"
       ],
-      "task": "docs/reporter-growth/v2/tasks/data.md",
+      "task": "docs/reporter-growth/v2/tasks/data-expansion-p4.md",
       "acceptance_ids": [
-        "D01",
-        "D02",
-        "D03",
-        "D04",
-        "D05",
-        "D06"
+        "SD01",
+        "SD02",
+        "SD03",
+        "SD04",
+        "SD05"
+      ]
+    },
+    {
+      "id": "experience",
+      "runtime_role": "experience",
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "medium",
+      "service_tier": "default",
+      "start_phase": "P4.1_after_data_integration",
+      "allowed_directory_prefixes": [
+        "src/ui/",
+        "src/shell/",
+        "src/styles/",
+        "src/features/markets/",
+        "src/features/recruiting/",
+        "src/features/reporters/",
+        "src/features/team/",
+        "src/features/programs/"
+      ],
+      "task": "docs/reporter-growth/v2/tasks/experience-redesign.md",
+      "acceptance_ids": [
+        "XR01-XR40"
       ]
     },
     {
@@ -103,23 +124,13 @@
       "model": "gpt-5.6-terra",
       "reasoning_effort": "high",
       "service_tier": "default",
-      "start_phase": "initial_implementation_wave",
+      "start_phase": "on_demand_after_contract_change_request",
       "allowed_directory_prefixes": [
-        "src/logic/capacity/",
-        "src/features/markets/"
+        "src/logic/capacity/"
       ],
-      "task": "docs/reporter-growth/v2/tasks/capacity.md",
+      "task": "docs/reporter-growth/v2/tasks/domain-support-redesign.md",
       "acceptance_ids": [
-        "S01",
-        "S02",
-        "S03",
-        "S04",
-        "S05",
-        "S06",
-        "M01",
-        "M02",
-        "M07",
-        "M09"
+        "request_specific_only"
       ]
     },
     {
@@ -128,20 +139,13 @@
       "model": "gpt-5.6-terra",
       "reasoning_effort": "medium",
       "service_tier": "default",
-      "start_phase": "initial_implementation_wave",
+      "start_phase": "on_demand_after_contract_change_request",
       "allowed_directory_prefixes": [
-        "src/logic/recruiting/",
-        "src/features/recruiting/"
+        "src/logic/recruiting/"
       ],
-      "task": "docs/reporter-growth/v2/tasks/recruiting.md",
+      "task": "docs/reporter-growth/v2/tasks/domain-support-redesign.md",
       "acceptance_ids": [
-        "S07",
-        "M03",
-        "M04",
-        "M05",
-        "M06",
-        "W01",
-        "W02"
+        "request_specific_only"
       ]
     },
     {
@@ -150,18 +154,13 @@
       "model": "gpt-5.6-terra",
       "reasoning_effort": "medium",
       "service_tier": "default",
-      "start_phase": "initial_implementation_wave",
+      "start_phase": "on_demand_after_contract_change_request",
       "allowed_directory_prefixes": [
-        "src/logic/network/",
-        "src/features/reporters/"
+        "src/logic/network/"
       ],
-      "task": "docs/reporter-growth/v2/tasks/network.md",
+      "task": "docs/reporter-growth/v2/tasks/domain-support-redesign.md",
       "acceptance_ids": [
-        "D04",
-        "D05",
-        "M03",
-        "M08",
-        "W01"
+        "request_specific_only"
       ]
     },
     {
@@ -170,16 +169,13 @@
       "model": "gpt-5.6-terra",
       "reasoning_effort": "medium",
       "service_tier": "default",
-      "start_phase": "initial_implementation_wave",
+      "start_phase": "on_demand_after_contract_change_request",
       "allowed_directory_prefixes": [
-        "src/logic/team/",
-        "src/features/team/"
+        "src/logic/team/"
       ],
-      "task": "docs/reporter-growth/v2/tasks/team.md",
+      "task": "docs/reporter-growth/v2/tasks/domain-support-redesign.md",
       "acceptance_ids": [
-        "W02",
-        "W03",
-        "W04"
+        "request_specific_only"
       ]
     },
     {
@@ -188,19 +184,13 @@
       "model": "gpt-5.6-terra",
       "reasoning_effort": "medium",
       "service_tier": "default",
-      "start_phase": "initial_implementation_wave",
+      "start_phase": "on_demand_after_contract_change_request",
       "allowed_directory_prefixes": [
-        "src/logic/programs/",
-        "src/features/programs/"
+        "src/logic/programs/"
       ],
-      "task": "docs/reporter-growth/v2/tasks/programs.md",
+      "task": "docs/reporter-growth/v2/tasks/domain-support-redesign.md",
       "acceptance_ids": [
-        "W05",
-        "W06",
-        "W07",
-        "W08",
-        "M02",
-        "M07"
+        "request_specific_only"
       ]
     },
     {
@@ -209,23 +199,16 @@
       "model": "gpt-5.6-luna",
       "reasoning_effort": "medium",
       "service_tier": "default",
-      "start_phase": "after_integrated_candidate",
+      "start_phase": "P4.4_after_fixed_integrated_candidate",
       "allowed_directory_prefixes": [
         "tests/acceptance/",
         "tests/e2e/"
       ],
-      "task": "docs/reporter-growth/v2/tasks/quality.md",
+      "task": "docs/reporter-growth/v2/tasks/quality-redesign.md",
       "acceptance_ids": [
-        "S01",
-        "S02",
-        "S03",
-        "S04",
-        "S05",
-        "S06",
-        "S07",
-        "S08",
-        "M02",
-        "U06"
+        "XR01-XR40",
+        "SD01-SD05",
+        "original_V2_acceptance"
       ]
     }
   ],
@@ -235,10 +218,10 @@
     "model": "gpt-5.6-terra",
     "reasoning_effort": "high",
     "service_tier": "default",
-    "start_phase": "after_quality",
+    "start_phase": "P4.5_after_quality_passes_without_waiver",
     "read_only": true,
     "allowed_directory_prefixes": [],
     "task": "docs/reporter-growth/v2/tasks/reviewer.md"
   },
-  "note": "This remains the sole routing registry, not an executable dispatcher or sandbox. P2 and P3 LAX Vertical Integration are complete and inactive. The integrated P3 implementation is 3c37fefa2c7b8c9e7a4dd5a0013e2251cd53a66d. Quality and Reviewer have not been launched and require separate authorization. The resolved child service tier remains unobservable, so configured default/Standard is the accepted strongest available evidence."
+  "note": "This is the sole active P4 routing registry. P2 and P3 are complete and inactive. P4 is configured but not authorized or active. The runtime routing probe is mandatory immediately before the first Data worker. All P4 roles use Standard/default processing; the resolved child service tier remains unobservable, so configured default is the strongest available evidence."
 }

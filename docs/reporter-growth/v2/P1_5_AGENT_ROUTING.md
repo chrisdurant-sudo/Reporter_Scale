@@ -1,5 +1,8 @@
 # P1.5 V2 role and lane routing gate
 
+> Historical P2/P3 routing record. For P4, this document's seven-lane schedule and feature ownership
+> are inactive and superseded by `P4_READINESS.md`, `LANES.md`, and `lanes.v2.json`.
+
 Status: **ROUTING_VERIFIED_WITH_TIER_OBSERVABILITY_LIMITATION**
 
 Reviewed source-contract authority: `19f7df98000e346a5b4ff32e00b699276c3f62fb`

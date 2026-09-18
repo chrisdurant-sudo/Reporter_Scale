@@ -30,6 +30,21 @@ The first Codex session is a **documentation-only foundation review**. It reconc
 6. [BASELINE_AND_MIGRATION.md](BASELINE_AND_MIGRATION.md) — actual source gaps, governance, and phase gates.
 7. [LANES.md](LANES.md) and [ACCEPTANCE.md](ACCEPTANCE.md) — future write boundaries and checks.
 
+For the current post-P3 continuation, then read:
+
+8. [P4_READINESS.md](P4_READINESS.md) — active serial routing, ownership, gates, and P3 failure closure.
+9. [P4_DESIGN_LOCK.md](P4_DESIGN_LOCK.md) — user-approved presentation and interaction contract.
+10. [P4_SYNTHETIC_SAMPLE_EXPANSION.md](P4_SYNTHETIC_SAMPLE_EXPANSION.md) — approved balanced
+   50-person synthetic sample addendum.
+11. [design-lock/reference-manifest.md](design-lock/reference-manifest.md) — literal interactive and
+   screenshot reference for implementation, Quality, and Reviewer.
+12. [P4_EXPERIENCE_REDESIGN.md](P4_EXPERIENCE_REDESIGN.md) — corrected ownership and implementation plan.
+13. [P4_ACCEPTANCE.md](P4_ACCEPTANCE.md) — testable experience and responsive gates.
+
+P4's design and static routing are ready, but production implementation is not authorized. Its serial
+Data → Experience → Quality → Reviewer model supersedes the earlier parallel feature-screen routing
+only after explicit P4 authorization.
+
 `scenario_contract.json` contains expected scenario facts and stable anchor IDs, not a complete runnable dataset.
 `lanes.v2.json` is an ownership registry, not an agent launcher or enforcement mechanism.
 
