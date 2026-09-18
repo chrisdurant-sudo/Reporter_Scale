@@ -22,6 +22,7 @@ export interface V2AppShellProps {
   readonly capabilityOptions?: readonly { readonly value: CapabilityCode; readonly label: string }[];
   readonly attendanceOptions?: readonly { readonly value: AttendanceMode; readonly label: string }[];
   readonly actionFeedback?: ReactNode;
+  readonly focusCondition?: string;
   readonly selectedEvidence?: EvidenceBundle | null;
   readonly onCloseEvidence?: () => void;
   readonly onOpenEvidenceWork?: (target: WorkspaceNavigationTarget) => void;
@@ -47,6 +48,7 @@ export function V2AppShell({
   capabilityOptions = [],
   attendanceOptions = [],
   actionFeedback,
+  focusCondition,
   selectedEvidence,
   onCloseEvidence,
   onOpenEvidenceWork,
@@ -58,7 +60,7 @@ export function V2AppShell({
     <div className="v2-shell">
       <header className="v2-shell__header">
         <h1>Provider growth command center</h1>
-        <span className="v2-shell__focus">Focus <strong>{filters.selectedMarket === "ALL" ? "All markets" : filters.selectedMarket}</strong></span>
+        <span className="v2-shell__focus">Focus <strong>{focusCondition ?? (filters.selectedMarket === "ALL" ? "All markets" : filters.selectedMarket)}</strong></span>
       </header>
       <section aria-label="Market" className="v2-market-switcher"><span>Market</span><div>{marketOptions.map((market) => <button aria-pressed={filters.selectedMarket === market.value} className={filters.selectedMarket === market.value ? "is-active" : undefined} key={market.value} onClick={() => onFiltersChange({ ...filters, selectedMarket: market.value })} type="button">{market.label}</button>)}</div><label className="sr-only">Market<select onChange={(event) => onFiltersChange({ ...filters, selectedMarket: event.target.value as SelectedMarket })} value={filters.selectedMarket}>{marketOptions.map((market) => <option key={market.value} value={market.value}>{market.label}</option>)}</select></label></section>
       <nav aria-label="Reporter Growth workspaces" className="v2-shell__tabs">
@@ -75,15 +77,6 @@ export function V2AppShell({
         ))}
       </nav>
       <section aria-label="Shared filters" className="v2-filter-bar sr-only">
-        <label>
-          <span>Market</span>
-          <select
-            onChange={(event) => onFiltersChange({ ...filters, selectedMarket: event.target.value as SelectedMarket })}
-            value={filters.selectedMarket}
-          >
-            {marketOptions.map((market) => <option key={market.value} value={market.value}>{market.label}</option>)}
-          </select>
-        </label>
         {capabilityOptions.length > 0 ? (
           <fieldset>
             <legend>Capabilities</legend>
