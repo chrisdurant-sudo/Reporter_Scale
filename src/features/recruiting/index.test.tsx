@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { RecruitingScreen } from "./index";
 
@@ -42,5 +42,28 @@ describe("RecruitingScreen", () => {
     expect(document.querySelector(".chart-key--waitTime")).toHaveTextContent("Wait time");
     expect(consoleError.mock.calls.flat().join(" ")).not.toContain("Encountered two children with the same key");
     consoleError.mockRestore();
+  });
+
+  it("preserves ordinary note whitespace while editing and commits the draft on blur", () => {
+    const onLocalNoteCommand = vi.fn();
+    const editableView = Object.assign({}, view, {
+      currentCases: [{
+        acquisitionCaseId: "case-ord-blocked-1",
+        reporterName: "Avery Example",
+        marketId: "LAX",
+        funnelStatus: "Onboarding",
+        stage: "onboarding",
+        totalElapsedDays: 14,
+        openActions: [],
+        sla: { total: { state: "under", elapsedDays: 14 }, currentStatus: { state: "over", elapsedDays: 14 } },
+      }],
+    }) as never;
+    render(<RecruitingScreen onLocalNoteCommand={onLocalNoteCommand} onOpenWork={vi.fn()} onWhyThis={vi.fn()} view={editableView} />);
+    const input = screen.getByRole("textbox", { name: "Notes for Avery Example" });
+    fireEvent.change(input, { target: { value: "Quality note" } });
+    expect(input).toHaveValue("Quality note");
+    expect(onLocalNoteCommand).not.toHaveBeenCalled();
+    fireEvent.blur(input);
+    expect(onLocalNoteCommand).toHaveBeenCalledWith({ type: "recruiting.local-note.set", target: { kind: "candidate", acquisitionCaseId: "case-ord-blocked-1" }, text: "Quality note" });
   });
 });
