@@ -29,16 +29,21 @@ function PilotTrend({ row, points }: { readonly row: PreparedProgramRow | null; 
   const max = Math.max(1, ...values.map((value) => value * 100));
   const x = (index: number) => 14 + index * 76 / Math.max(1, programPoints.length - 1);
   const y = (point: number) => 88 - point * 70 / max;
-  const line = (field: "result" | "target") => programPoints.flatMap((point, index) => point[field] === null ? [] : [`${x(index)},${y(point[field] * 100)}`]).join(" ");
+  const segments = (field: "result" | "target") => programPoints.reduce<readonly (readonly string[])[]>((all, point, index) => {
+    if (point[field] === null) return [...all, []];
+    const last = all.at(-1) ?? [];
+    return [...all.slice(0, -1), [...last, `${x(index)},${y(point[field] * 100)}`]];
+  }, [[]]).filter((segment) => segment.length > 0);
+  const windowLabel = (point: PreparedProgramsView["resultOverTime"][number]) => point.periodStartAt === null ? "Undated" : point.periodEndAt === null || point.periodStartAt === point.periodEndAt ? formatDate(point.periodStartAt) : `${formatDate(point.periodStartAt)}–${formatDate(point.periodEndAt)}`;
   return <figure className="programs__chart" aria-label="Program result and target">
     <p>{row ? `${row.title} result over time is shown against its declared target.` : "Choose a program record to view its declared result."}</p>
     <div className="programs__plot-wrap">
       <span>Started work</span>
       <svg aria-label={row ? programPoints.map((point) => point.accessibleLabel).join(" ") : "No program selected."} role="img" viewBox="0 0 100 100">
         {[0, .25, .5, .75, 1].map((tick) => <g key={tick}><line className="programs__grid" x1="9" x2="96" y1={y(tick * max)} y2={y(tick * max)} /><text x="1" y={y(tick * max) + 2}>{Math.round(tick * max)}%</text></g>)}
-        {line("target") ? <polyline className="programs__target" points={line("target")} /> : null}
-        {line("result") ? <polyline className="programs__line" points={line("result")} /> : null}
-        {programPoints.map((point, index) => point.result === null ? null : <g key={point.id}><circle className="programs__point" cx={x(index)} cy={y(point.result * 100)} r="2.4" /><text className="programs__value" x={x(index)} y={y(point.result * 100) - 4} textAnchor="middle">{Math.round(point.result * 100)}%</text><text x={x(index)} y="98" textAnchor="middle">{point.groupId}</text></g>)}
+        {segments("target").map((segment) => <polyline className="programs__target" key={`target-${segment.join("-")}`} points={segment.join(" ")} />)}
+        {segments("result").map((segment) => <polyline className="programs__line" key={`result-${segment.join("-")}`} points={segment.join(" ")} />)}
+        {programPoints.map((point, index) => <g key={point.id}>{point.result === null ? null : <><circle className="programs__point" cx={x(index)} cy={y(point.result * 100)} r="2.4" /><text className="programs__value" x={x(index)} y={y(point.result * 100) - 4} textAnchor="middle">{Math.round(point.result * 100)}%</text></>}<text x={x(index)} y="98" textAnchor="middle">{windowLabel(point)}</text></g>)}
       </svg>
     </div>
     <figcaption><span className="programs__legend-result">Pilot result</span>{programPoints.some((point) => point.target !== null) ? <span className="programs__legend-target">Target</span> : null}</figcaption>

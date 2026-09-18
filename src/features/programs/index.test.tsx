@@ -34,5 +34,6 @@ describe("ProgramsScreen", () => {
     expect(screen.getByRole("button", { name: "Why this?" })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Why this?" }));
     expect(actions.onOpenEvidence).toHaveBeenCalledWith("evidence-pilot");
+    expect(screen.getAllByText("Jan 1–Jan 10").length).toBeGreaterThan(0);
   });
 });
