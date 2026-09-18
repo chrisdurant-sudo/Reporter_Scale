@@ -239,6 +239,20 @@ const p4VisibleNames = [
   "Willa Rhodes", "Jasper Finch", "Asha Wynn", "Gideon Park", "Maren Cole",
   "Tobin Hayes", "Isla Rowan", "Soren Blake", "Calla Pierce", "Emmett Ray",
 ] as const;
+const legacyLaxNames = ["Tessa Monroe", "Carter Wynn", "Ivy Lang", "Rafael Moss", "Nadia Price", "Jonas Webb", "Keira Holt", "Micah Vale"] as const;
+const checklistNames = [
+  "Alina Mercer", "Bruno Hale", "Celia Knox", "Damon Reese", "Elise Warren", "Felix Ames", "Greta Sloan", "Hugo Lin", "Imani Frost", "Jared Stone",
+  "Kara Bloom", "Lionel Drake", "Maris Cole", "Nolan Pierce", "Opal Reed", "Paolo Kent", "Quincy Lowe", "Rina Shaw", "Sasha Bell", "Tristan Gray",
+  "Uma Blair", "Victor Lane", "Wren Diaz", "Xander Poe", "Yara Moon", "Zane Birch", "Ada Finch", "Blaise Hart", "Cora Wells", "Drew Nash",
+  "Eden Ray", "Faye Moss", "Galen Pike", "Hana Scott", "Ivan Cross", "Juno Ames", "Kellan Fox", "Livia Grant", "Marek Dunn", "Nell Quinn",
+] as const;
+const referralNames = ["Della Quinn", "Milo Vance"] as const;
+const supportingNames = {
+  dfw: ["Rhea Nolan", "Silas Dean", "Mina Voss", "Evan Pike", "Lara Wynn", "Cyrus Beck"],
+  sfo: "Sofia Lane",
+  ord: ["Mira Chen", "Tobin Shaw", "Anya Wells"],
+  atl: ["Nell Harper", "Soren Pike"],
+} as const;
 const p4DateAt = (date: string, days: number) => new Date(Date.parse(date) + days * 86_400_000).toISOString().replace(".000Z", "Z");
 const p4FunnelSla = {
   LAX: { overall: 32, Applicant: 4, Screening: 6, Approved: 5, Onboarding: 10, "Starting soon": 7 },
@@ -387,7 +401,7 @@ for (let number = 1; number <= 10; number += 1) {
   const requestNumber = 100 + number;
   const reporterId = `person-lax-${suffix}`;
   const isAvery = number === 9;
-  const name = isAvery ? "Avery Cole" : `Fictional LAX Reporter ${suffix}`;
+  const name = isAvery ? "Avery Cole" : legacyLaxNames[number - 1]!;
   if (number <= 9) {
     addReporter({
       id: reporterId,
@@ -503,7 +517,7 @@ for (const group of ["earlier", "pilot"] as const) {
       const enteredDay = group === "earlier" ? 5 + ((member - 1) % 5) : 19 + ((member - 1) % 5);
       const enteredAt = `2026-01-${String(enteredDay).padStart(2, "0")}T17:00:00Z`;
       const timely = group === "earlier" ? member <= 3 : market === "LAX" ? member <= 6 : member <= 5;
-      addReporter({ id: reporterId, name: `Fictional ${group} ${market} ${suffix}`, market, createdAt: "2025-12-20T17:00:00Z", capabilities: ["standard-transcription"], originProgramId: checklistProgramId });
+      addReporter({ id: reporterId, name: checklistNames[(market === "LAX" ? 0 : 20) + (group === "pilot" ? 10 : 0) + member - 1]!, market, createdAt: "2025-12-20T17:00:00Z", capabilities: ["standard-transcription"], originProgramId: checklistProgramId });
       addLifecycle(reporterId, market, "sourced", "2025-12-20T17:00:00Z");
       addLifecycle(reporterId, market, "contacted", "2025-12-21T17:00:00Z");
       addLifecycle(reporterId, market, "responded", "2025-12-22T17:00:00Z");
@@ -551,7 +565,7 @@ const supportingPrograms: Program[] = [];
 
 for (let member = 1; member <= 2; member += 1) {
   const reporterId = `person-lax-referral-${String(member).padStart(2, "0")}`;
-  addReporter({ id: reporterId, name: `Fictional LAX Referral ${member}`, market: "LAX", createdAt: `2026-02-${String(10 + member).padStart(2, "0")}T17:00:00Z`, capabilities: ["realtime-transcription"], sourceId: "source-targeted-referrals", originProgramId: "program-lax-realtime-referrals" });
+  addReporter({ id: reporterId, name: referralNames[member - 1]!, market: "LAX", createdAt: `2026-02-${String(10 + member).padStart(2, "0")}T17:00:00Z`, capabilities: ["realtime-transcription"], sourceId: "source-targeted-referrals", originProgramId: "program-lax-realtime-referrals" });
   addLifecycle(reporterId, "LAX", "sourced", `2026-02-${String(10 + member).padStart(2, "0")}T17:00:00Z`);
   addLifecycle(reporterId, "LAX", "contacted", `2026-02-${String(11 + member).padStart(2, "0")}T17:00:00Z`);
   if (member === 1) addLifecycle(reporterId, "LAX", "qualified", "2026-02-14T17:00:00Z");
@@ -565,7 +579,7 @@ for (let member = 1; member <= 2; member += 1) {
 
 for (let member = 1; member <= 6; member += 1) {
   const reporterId = `person-dfw-outreach-${String(member).padStart(2, "0")}`;
-  addReporter({ id: reporterId, name: `Fictional DFW Outreach ${member}`, market: "DFW", createdAt: "2025-12-01T18:00:00Z", capabilities: ["standard-transcription"], sourceId: "source-dfw-broad-outreach", originProgramId: "program-dfw-broad-outreach" });
+  addReporter({ id: reporterId, name: supportingNames.dfw[member - 1]!, market: "DFW", createdAt: "2025-12-01T18:00:00Z", capabilities: ["standard-transcription"], sourceId: "source-dfw-broad-outreach", originProgramId: "program-dfw-broad-outreach" });
   addLifecycle(reporterId, "DFW", "sourced", "2025-12-01T18:00:00Z");
   addLifecycle(reporterId, "DFW", "contacted", `2025-12-${String(2 + member).padStart(2, "0")}T18:00:00Z`);
   if (member <= 3) addLifecycle(reporterId, "DFW", "responded", `2025-12-${String(5 + member).padStart(2, "0")}T18:00:00Z`);
@@ -578,7 +592,7 @@ for (let member = 1; member <= 6; member += 1) {
   });
 }
 
-const sfoReporter = addReporter({ id: "person-sfo-availability-01", name: "Fictional SFO In-person Reporter", market: "SFO", createdAt: "2026-01-05T17:00:00Z", capabilities: ["standard-transcription"], attendanceModes: ["in-person"] });
+const sfoReporter = addReporter({ id: "person-sfo-availability-01", name: supportingNames.sfo, market: "SFO", createdAt: "2026-01-05T17:00:00Z", capabilities: ["standard-transcription"], attendanceModes: ["in-person"] });
 addLifecycle(sfoReporter.id, "SFO", "onboarding-started", "2026-01-10T17:00:00Z");
 addLifecycle(sfoReporter.id, "SFO", "ready", "2026-01-15T17:00:00Z");
 const sfoCapability = addVerifiedCapability(sfoReporter.id, "standard-transcription", "2026-01-14T17:00:00Z");
@@ -598,7 +612,7 @@ availabilityWindows.push({
 
 for (let member = 1; member <= 3; member += 1) {
   const reporterId = `person-ord-blocked-${member}`;
-  addReporter({ id: reporterId, name: `Fictional ORD Onboarding ${member}`, market: "ORD", createdAt: "2026-01-20T18:00:00Z", capabilities: ["standard-transcription"] });
+  addReporter({ id: reporterId, name: supportingNames.ord[member - 1]!, market: "ORD", createdAt: "2026-01-20T18:00:00Z", capabilities: ["standard-transcription"] });
   addLifecycle(reporterId, "ORD", "onboarding-started", `2026-02-0${member}T18:00:00Z`);
   onboardingSteps.push({
     id: asId(`step-${reporterId}-sample-requirement`), acquisitionCaseId: asId(`case-${reporterId.replace(/^person-/, "")}`),
@@ -609,7 +623,7 @@ for (let member = 1; member <= 3; member += 1) {
 
 for (let member = 1; member <= 2; member += 1) {
   const reporterId = `person-atl-returning-${member}`;
-  addReporter({ id: reporterId, name: `Fictional ATL Returning ${member}`, market: "ATL", createdAt: "2025-10-01T16:00:00Z", capabilities: ["standard-transcription"] });
+  addReporter({ id: reporterId, name: supportingNames.atl[member - 1]!, market: "ATL", createdAt: "2025-10-01T16:00:00Z", capabilities: ["standard-transcription"] });
   addLifecycle(reporterId, "ATL", "onboarding-started", "2025-10-05T16:00:00Z");
   addLifecycle(reporterId, "ATL", "ready", "2025-10-10T16:00:00Z");
   const capability = addVerifiedCapability(reporterId, "standard-transcription", "2025-10-09T16:00:00Z");

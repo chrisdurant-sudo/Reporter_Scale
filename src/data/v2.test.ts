@@ -78,6 +78,30 @@ describe("V2 synthetic records and repository", () => {
     expect(names.every((name) => !/(fictional|sample|test|person|LAX|SFO|DFW|ORD|ATL|\d)/i.test(name))).toBe(true);
   });
 
+
+  it("SD07 covers base and scenario reporter identities while preserving replay and reset", async () => {
+    const scenarioReporters = SCENARIO_CONTRACT.feed.events.flatMap((event) => event.operation.kind === "append-record" && event.operation.value.kind === "reporter" ? [event.operation.value.record] : []);
+    const allNames = [...DEMO_SNAPSHOT_V2.reporters, ...scenarioReporters].map((item) => item.fictionalName);
+    expect(allNames).toHaveLength(DEMO_SNAPSHOT_V2.reporters.length + 1);
+    expect(new Set(allNames).size).toBe(allNames.length);
+    expect(allNames.every((name) => /^[A-Za-z]+ [A-Za-z]+$/.test(name))).toBe(true);
+    expect(allNames.every((name) => !/(fictional|sample|test|person|los angeles|san francisco|dallas|fort worth|chicago|atlanta|LAX|SFO|DFW|ORD|ATL|\d)/i.test(name))).toBe(true);
+    const replayed = applyScenarioCheckpoint(DEMO_SNAPSHOT_V2, "two-new-ready");
+    expect(validateDemoSnapshot(replayed).ok).toBe(true);
+    expect(replayed.reporters.find((item) => item.id === "person-lax-010")?.fictionalName).toBe("Rowan Ellis");
+    expect(replayed.lifecycleEvents.filter((item) => item.reporterId === "person-lax-010").length).toBeGreaterThan(0);
+    const repository = createDemoRepositoryV2();
+    const initial = await repository.load();
+    if (!initial.ok) throw new Error(initial.message);
+    expect(initial.value.reporters.some((item) => item.id === "person-lax-010")).toBe(false);
+    const saved = await repository.save(replayed, initial.revision);
+    if (!saved.ok) throw new Error(saved.message);
+    const reset = await repository.reset();
+    if (!reset.ok) throw new Error(reset.message);
+    expect(reset.value.reporters.some((item) => item.id === "person-lax-010")).toBe(false);
+    expect(validateDemoSnapshot(reset.value).ok).toBe(true);
+  });
+
   it("SD02-SD05 preserves exact roles, source-derived age inputs, evidence patterns, and anchors", () => {
     const asOf = Date.parse(DEMO_SNAPSHOT_V2.baseAsOfAt);
     const stateCredential = { LAX: "CA", SFO: "CA", DFW: "TX", ORD: "IL", ATL: "GA" } as const;
