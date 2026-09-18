@@ -347,9 +347,11 @@ textarea {
 
 /* Chart legend colors and labels match the locked Overview/Funnel references. */
 .chart-key--availableSupply::before { background:#2d7d60; }
+.chart-key--waitTime::before { background:#193b6b; }
 .chart-key--demand::before { background:#193b6b; }
 .chart-key--neededSupply::before { background:#b46423; }
 .rg-chart__line--availableSupply { stroke:#2d7d60; }
+.rg-chart--funnel .rg-chart__line--waitTime { stroke:#193b6b; }
 .rg-chart__line--demand { stroke:#193b6b; }
 .rg-chart__line--neededSupply { stroke:#b46423; }
 .rg-chart__tick { fill:var(--color-muted); font-size:3.5px; }
@@ -359,4 +361,4 @@ textarea {
 .rg-chart__sla-label--over { fill:#9b3939; }
 .rg-chart__sla-label--not-applicable { fill:var(--color-muted); }
 .v2-shell__footer { display:block; margin:.65rem 1.1rem 0; padding:0; border:0; color:var(--color-muted); font-size:.68rem; line-height:1.35; }
-@media (max-width:520px) { .v2-shell__footer { margin:.65rem .75rem 0; } }
+@media (max-width:520px) { .v2-shell__header h1 { max-width:17rem; }.v2-shell__footer { margin:.65rem .75rem 0; } }

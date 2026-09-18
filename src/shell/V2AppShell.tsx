@@ -40,6 +40,11 @@ const marketOptions: readonly { readonly value: SelectedMarket; readonly label: 
   { value: "ATL", label: "ATL" },
 ];
 
+const compactFocus = (value: string) => {
+  const match = value.match(/^(.+?) is (under|at|over) SLA at ([\d.]+) days against ([\d.]+) days\./i);
+  return match ? `${match[1]} is ${match[2]} SLA at ${Math.round(Number(match[3]))} days.` : value;
+};
+
 /** A controlled v2 shell. It deliberately does not own data, filters, or navigation state. */
 export function V2AppShell({
   activeWorkspace,
@@ -59,7 +64,7 @@ export function V2AppShell({
     <div className="v2-shell">
       <header className="v2-shell__header">
         <h1>Provider growth command center</h1>
-        <span className="v2-shell__focus">Focus <strong>{focusCondition ?? (filters.selectedMarket === "ALL" ? "All markets" : filters.selectedMarket)}</strong></span>
+        <span className="v2-shell__focus">Focus <strong>{compactFocus(focusCondition ?? (filters.selectedMarket === "ALL" ? "All markets" : filters.selectedMarket))}</strong></span>
       </header>
       <section aria-label="Market" className="v2-market-switcher"><span>Market</span><div>{marketOptions.map((market) => <button aria-pressed={filters.selectedMarket === market.value} className={filters.selectedMarket === market.value ? "is-active" : undefined} key={market.value} onClick={() => onFiltersChange({ ...filters, selectedMarket: market.value })} type="button">{market.label}</button>)}</div><label className="sr-only">Market<select onChange={(event) => onFiltersChange({ ...filters, selectedMarket: event.target.value as SelectedMarket })} value={filters.selectedMarket}>{marketOptions.map((market) => <option key={market.value} value={market.value}>{market.label}</option>)}</select></label></section>
       <nav aria-label="Reporter Growth workspaces" className="v2-shell__tabs">

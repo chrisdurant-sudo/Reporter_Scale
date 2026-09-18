@@ -44,4 +44,10 @@ describe("V2AppShell", () => {
     expect(document.querySelector("main")!.compareDocumentPosition(details) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(details.querySelector("button")?.textContent).toBe("Advance scenario");
   });
+
+  it("keeps the Focus condition compact when a prepared Funnel finding includes SLA detail", () => {
+    render(<V2AppShell activeWorkspace="recruiting" demoDateLabel="February 16, 2026" filters={filters} focusCondition="Onboarding is over SLA at 14.958333333333334 days against 12 days. Complete sample-required-evidence is overdue." onFiltersChange={vi.fn()} onWorkspaceChange={vi.fn()}><p>Funnel</p></V2AppShell>);
+    expect(screen.getByText("Onboarding is over SLA at 15 days.")).toBeVisible();
+    expect(screen.queryByText(/sample-required-evidence/)).not.toBeInTheDocument();
+  });
 });
