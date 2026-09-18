@@ -55,7 +55,7 @@ unassigned paths.
 
 | Role | Model | Reasoning | Requested service tier |
 |---|---|---|---|
-| Experience Lead | GPT-5.6 Terra | medium | `default` |
+| Experience Lead | GPT-5.6 Terra | high | `default` |
 | Reporters Experience | GPT-5.6 Terra | medium | `default` |
 | Team Experience | GPT-5.6 Terra | medium | `default` |
 | Programs Experience | GPT-5.6 Terra | medium | `default` |
@@ -65,7 +65,7 @@ unassigned paths.
 | Network | GPT-5.6 Terra | medium | `default` |
 | Team | GPT-5.6 Terra | medium | `default` |
 | Programs | GPT-5.6 Terra | medium | `default` |
-| Quality | GPT-5.6 Luna | medium | `default` |
+| Quality | GPT-5.6 Terra | high | `default` |
 | Reviewer | GPT-5.6 Terra | high | `default` |
 
 All roles use Standard/default processing. The coordinator remains selected interactively. The
@@ -74,11 +74,11 @@ zero-inheritance policy requires every routed probe and worker spawn to use the 
 explicit dispatch packet plus repository instructions, do not spawn children, and do not change their
 model, reasoning effort, or service tier.
 
-Terra balances intelligence and cost for coordinated coding work, so it serves the Lead, presentation
-specialists, and domain support. Luna is optimized for cost-sensitive, high-volume work, which fits
-deterministic Data generation and repeatable Quality execution. `high` reasoning is reserved for
-Capacity's projection-sensitive rules and the Reviewer's cross-contract final inspection; the other
-lanes use `medium`.
+Terra balances intelligence and cost for coordinated coding and review work, so it serves the Lead,
+presentation specialists, domain support, Quality, and Reviewer. Luna remains reserved for the
+cost-sensitive, high-volume deterministic Data expansion. `high` reasoning is required for the
+Lead's visual/system decisions, Capacity's projection-sensitive rules, Quality's cross-reference
+inspection, and the Reviewer's final cross-contract review; bounded specialists use `medium`.
 
 ## Concurrency and communication
 

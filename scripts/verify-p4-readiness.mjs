@@ -71,7 +71,7 @@ const leadPaths = ["src/ui/", "src/shell/", "src/styles/", "src/features/markets
 check(experience?.task === "docs/reporter-growth/v2/tasks/experience-redesign.md", "Experience Lead must use the P4 Lead brief.");
 check(JSON.stringify(experience?.allowed_directory_prefixes) === JSON.stringify(leadPaths), "Experience Lead must own shared UI plus Overview/Funnel only.");
 check(experience?.start_phase === "P4.1_after_data_integration", "Experience Lead must start only after Data integration.");
-check(experience?.model === "gpt-5.6-terra" && experience?.reasoning_effort === "medium", "Experience Lead must use Terra/medium.");
+check(experience?.model === "gpt-5.6-terra" && experience?.reasoning_effort === "high", "Experience Lead must use Terra/high.");
 
 const specialistExpectations = {
   experience_reporters: {
@@ -126,6 +126,12 @@ const quality = lanes.get("quality");
 check(quality?.task === "docs/reporter-growth/v2/tasks/quality-redesign.md", "Quality must use the P4 brief.");
 check(quality?.start_phase === "P4.4_after_fixed_integrated_candidate", "Quality must wait for a fixed candidate.");
 check(quality?.acceptance_ids.includes("XR01-XR41"), "Quality must verify XR01-XR41.");
+check(quality?.model === "gpt-5.6-terra" && quality?.reasoning_effort === "high" && quality?.service_tier === "default", "Quality must use Terra/high/default.");
+
+const experienceAgent = read(".codex/agents/experience.toml");
+check(includesAll(experienceAgent, ['model = "gpt-5.6-terra"', 'model_reasoning_effort = "high"', 'service_tier = "default"']), "Experience runtime config must match Terra/high/default routing.");
+const qualityAgent = read(".codex/agents/quality.toml");
+check(includesAll(qualityAgent, ['model = "gpt-5.6-terra"', 'model_reasoning_effort = "high"', 'service_tier = "default"']), "Quality runtime config must match Terra/high/default routing.");
 check(registry.reviewer.task === "docs/reporter-growth/v2/tasks/reviewer.md", "Reviewer must use the fixed-candidate brief.");
 check(registry.reviewer.read_only === true, "Reviewer must remain read-only.");
 
@@ -187,9 +193,11 @@ const requiredFiles = [
   "docs/reporter-growth/v2/tasks/experience-programs.md",
   "docs/reporter-growth/v2/tasks/domain-support-redesign.md",
   "docs/reporter-growth/v2/tasks/quality-redesign.md",
+  ".codex/agents/experience.toml",
   ".codex/agents/experience_reporters.toml",
   ".codex/agents/experience_team.toml",
   ".codex/agents/experience_programs.toml",
+  ".codex/agents/quality.toml",
   registryPath,
   "scripts/verify-p4-readiness.mjs",
   "scripts/verify-p4-phase-gate.mjs",

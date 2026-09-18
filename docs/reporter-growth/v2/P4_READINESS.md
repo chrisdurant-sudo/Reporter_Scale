@@ -108,16 +108,17 @@ The sole active registry is [`lanes.v2.json`](lanes.v2.json).
 | Lane | Model | Reasoning | Why |
 |---|---|---:|---|
 | Data | GPT-5.6 Luna | medium | Deterministic, high-volume synthetic record generation and validation benefit from a cost-sensitive focused model. |
-| Experience Lead | GPT-5.6 Terra | medium | Shared UI architecture, interaction work, and cross-workspace coordination need balanced coding ability and judgment. |
+| Experience Lead | GPT-5.6 Terra | high | Shared UI architecture, exact visual comparison, interaction work, and cross-workspace coordination require deeper cross-contract reasoning. |
 | Reporters / Team / Programs Experience | GPT-5.6 Terra | medium | Each specialist must implement a polished screen while following the Lead's frozen system and visual reference. |
 | Capacity logic support | GPT-5.6 Terra | high | Supply/demand and projection rules are the most reasoning-sensitive domain calculations. |
 | Recruiting / Network / Team / Programs logic support | GPT-5.6 Terra | medium | Bounded prepared-view or command repairs need solid coding/reasoning without broad redesign authority. |
-| Quality | GPT-5.6 Luna | medium | Independent, repeatable acceptance/browser execution is focused and test-driven. |
+| Quality | GPT-5.6 Terra | high | Independent visual comparison, responsive/browser investigation, and cross-contract acceptance require deeper deviation detection in addition to repeatable execution. |
 | Reviewer | GPT-5.6 Terra | high | Final cross-contract inspection and deviation detection need deeper reasoning over the complete candidate. |
 
 Terra is the balanced intelligence/cost model; Luna is optimized for cost-sensitive, high-volume
-work. `medium` is the normal implementation setting, while `high` is reserved for the two lanes that
-need deeper rule or cross-cutting scrutiny. All lanes use Standard/default processing; no worker may
+work. `medium` remains the normal bounded implementation setting, while `high` is reserved for the
+Experience Lead, Capacity, Quality, and Reviewer lanes that need deeper visual, rule, or cross-cutting
+scrutiny. All lanes use Standard/default processing; no worker may
 switch to Fast, Priority, or Ultrafast.
 
 ## Mandatory gates
