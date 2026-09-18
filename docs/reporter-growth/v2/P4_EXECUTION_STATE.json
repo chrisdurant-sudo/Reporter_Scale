@@ -14,7 +14,7 @@
   "fanout_authorized": false,
   "current_phase": "P4.1_visual_proof_repair",
   "current_candidate": {
-    "commit": "ea99c859a02eb3580cdfc6d05dccf0fd5d493f20",
+    "commit": "46f143682d06ac37ef211db237944d5a20b13a80",
     "status": "not_accepted",
     "served_preview": "http://127.0.0.1:5174/",
     "defect_register": "docs/reporter-growth/v2/P4_VISUAL_PROOF_DEFECTS.md"
@@ -23,7 +23,7 @@
     "data": {
       "status": "source_checks_passed",
       "required_acceptance_ids": ["SD01", "SD02", "SD03", "SD04", "SD05"],
-      "evidence": "The takeover run passed 21 unit-test files / 114 tests, including 9 deterministic v2 data tests."
+      "evidence": "The assembled candidate passed 21 unit-test files / 114 tests, including 9 deterministic v2 data tests."
     },
     "baseline": {
       "status": "failed",
@@ -32,13 +32,14 @@
         "lint",
         "typecheck",
         "unit: 21 files / 114 tests",
-        "production build"
+        "production build",
+        "acceptance reconciliation: 4 tests"
       ],
       "failed": [
         "cross-workspace acceptance: 5 of 5 integration tests failed before their first assertion because the suite waits for an obsolete Overview heading",
         "browser acceptance: the runner discovered all 8 desktop/mobile tests, but installed Chrome aborted at launch under the host policy, so no browser assertion executed"
       ],
-      "blocking_reason": "The routine check command excluded acceptance and browser suites, allowing a green build to mask a broken cross-workspace baseline. Browser execution must also be rerun in an allowed local browser environment; it is not waived."
+      "blocking_reason": "The expanded phase-transition command now exposes both failures instead of allowing a green routine build to promote the candidate. Quality must adopt or replace its stale UI suite, and browser execution must be rerun in an allowed local browser environment; neither gate is waived."
     },
     "browser": {
       "status": "blocked_environment",
@@ -48,7 +49,7 @@
     },
     "visual_proof": {
       "status": "repair_required",
-      "candidate_commit": "ea99c859a02eb3580cdfc6d05dccf0fd5d493f20",
+      "candidate_commit": "46f143682d06ac37ef211db237944d5a20b13a80",
       "accepted_commit": null,
       "required_artifact_ids": [
         "overview_1440x900",
@@ -68,8 +69,8 @@
       "candidate_artifacts": [],
       "blocking_conditions": [
         "The current candidate has no versioned candidate screenshot matrix.",
-        "The current candidate materially differs from the locked shell, Overview, and Funnel references.",
-        "Interactive controls and filters have not been proven to change state and remain legible at every required viewport.",
+        "The repaired shell, Overview, and Funnel have not yet been directly compared against the fixed screenshots in a runnable browser.",
+        "Interactive controls and filters pass focused component and integrated app tests, but have not been proven legible at every required viewport.",
         "The legacy 390px browser-test waiver has not been replaced by a real mobile assertion.",
         "The corrected browser runner loads the suite, but this host currently aborts Chrome before assertions; browser proof remains blocked, not waived."
       ]
@@ -89,12 +90,12 @@
   },
   "lane_audits": {
     "experience": {
-      "base_commit": "410f0fdfe01fa5f190eef42c8247e413ab4465e2",
-      "handoff_commit": "f60a02dddb697e7af4d478dd88f9cea16e59c4f4",
+      "base_commit": "dd1e9df458fc8c84d248d040d78d3628938e6c0a",
+      "handoff_commit": "5d632ea0aef5852935d458cd48e4a1d3eafa303f",
       "boundary_status": "passed",
-      "acceptance_evidence_status": "missing",
+      "acceptance_evidence_status": "unit_passed_full_acceptance_blocked",
       "visual_evidence_status": "missing",
-      "disposition": "repair_required"
+      "disposition": "repair_integrated_pending_visual_proof"
     }
   },
   "known_ownership_exceptions": [

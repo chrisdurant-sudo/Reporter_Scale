@@ -1,6 +1,6 @@
 # P4 Visual Proof Defects
 
-**Candidate:** `ea99c859a02eb3580cdfc6d05dccf0fd5d493f20`
+**Candidate:** `46f143682d06ac37ef211db237944d5a20b13a80`
 
 **Disposition:** `NOT_ACCEPTED`
 
@@ -14,13 +14,13 @@ candidate screenshots and interaction evidence prove the repair at the exact imp
 | ID | Acceptance mapping | Observed deviation | Required repair and proof |
 | --- | --- | --- | --- |
 | VP01 | XR02, XR03, XR04 | The shell is constrained to roughly 74rem, uses content-width underlined tabs, and mixes green/navy navigation treatments. | Match the full-width bordered shell, equal-width navy active navigation, spacing, typography, and responsive behavior in the locked desktop and mobile references. |
-| VP02 | XR03, XR04 | The original candidate selected LAX. Coordinator commit `ea99c85` now starts and resets to All, but the combined visual candidate is not yet proven. | Preserve the locked All default through Experience integration and prove market changes update all dependent content. |
-| VP03 | XR01, XR02 | `Demo controls · <date>` exposes implementation scaffolding that is absent from the canvas. | Remove demo-only chrome from the product surface or replace it with the exact locked utility treatment. |
-| VP04 | XR05 | Overview omits the four connected summary regions from the approved layout and introduces an extra Growth goal panel. | Rebuild the Overview hierarchy from the reference: KPI row, capacity trend, opportunity/funnel summary, coverage/attention summaries, and locked explanatory placement. |
-| VP05 | XR05, XR09 | The capacity chart lacks the reference axes, date labels, legend, forecast labeling, and comparable plot treatment. | Implement the locked chart presentation and prove readable values/labels at all four viewports. |
-| VP06 | XR09 | The visible Overview view selector does not provide a demonstrated state change. | Wire the control or remove it to match the lock; capture interaction evidence for every remaining visible control. |
-| VP07 | XR06, XR09 | Funnel status/count controls are presented as actionable but do not demonstrate filtering behavior; bottleneck mode is largely a heading swap. | Implement real status filtering and distinct People/SLA and Bottlenecks compositions with visible state changes. |
-| VP08 | XR06, XR09 | Funnel filter combinations and immediate SLA recomputation lack exact-state proof. | Add deterministic interactions and screenshots for filters and SLA edits, proving the applicable visual SLA state recomputes without altering lifecycle facts or unrelated market values. |
+| VP02 | XR03, XR04 | The original candidate selected LAX. Candidate `46f1436` now starts and resets to All, and the assembled integration test proves market persistence across navigation. Browser proof remains outstanding. | Capture the required viewport evidence showing the All default and dependent market updates. |
+| VP03 | XR01, XR02 | The dated demo strip has been removed from the primary surface. Scenario controls now live in a collapsed secondary disclosure after the main workspace. | Verify the collapsed treatment against the locked utility expectations in browser screenshots. |
+| VP04 | XR05 | Candidate `46f1436` restores the connected summary regions and removes the superseded Growth goal panel; the assembled integration test asserts this composition. | Complete direct screenshot comparison at all four Overview viewports. |
+| VP05 | XR05, XR09 | The repaired capacity chart adds the reference axes, date labels, legend, and forecast treatment. | Prove readable values and labels at all four required viewports. |
+| VP06 | XR09 | The Overview summary actions are now deterministic navigation controls, and the assembled integration test exercises `View Funnel`. | Capture interaction evidence for every remaining visible control. |
+| VP07 | XR06, XR09 | Funnel status filtering and distinct People/SLA and Bottlenecks compositions are implemented and covered by focused Experience tests. | Capture browser state changes and compare them directly with both fixed Funnel references. |
+| VP08 | XR06, XR09 | Deterministic filters and immediate SLA recomputation are implemented without changing lifecycle facts. | Capture the exact SLA-editor state and prove unrelated market values remain unchanged in browser acceptance. |
 | VP09 | XR02, XR11 | The browser acceptance suite still contains a 390px waiver even though mobile is mandatory. | Replace the waiver with real 390×844 navigation, wrapping, no-horizontal-overflow, and interaction assertions in the Quality-owned phase. |
 | VP10 | XR01–XR11 | No candidate screenshot matrix, checksum manifest, exact-commit comparison, or `P4_VISUAL_PROOF_READY` handoff exists. | Produce the evidence package defined in `P4_VISUAL_PROOF_GATE.md`; coordinator acceptance must name the exact commit. |
 | VP11 | Process ownership | A cross-feature acceptance file changed before the Quality phase. | Quality must explicitly adopt or replace `tests/acceptance/reporter-growth.integration.test.tsx` before its gate can pass. |
