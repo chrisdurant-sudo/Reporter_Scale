@@ -24,10 +24,10 @@
   "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",
   "implementation_active": true,
   "fanout_authorized": false,
-  "current_phase": "P4.0b_serial_sample_expansion",
+  "current_phase": "P4.1_visual_proof_repair",
   "current_candidate": {
-    "commit": "095170a96d86a791e65a34ea10fb50793c357adc",
-    "status": "invalidated_pending_complete_name_repair",
+    "commit": "29735a174028795b107c07d75aa7a58a32aeec05",
+    "status": "not_accepted_pending_visual_reproof",
     "preview_url": "http://127.0.0.1:5174/",
     "preview_status": "blocked_environment",
     "preview_failure": "The prior preview process stopped, and the managed command environment denied a replacement Vite listener on 127.0.0.1:5174 with EPERM.",
@@ -35,9 +35,9 @@
   },
   "gates": {
     "data": {
-      "status": "repair_required",
+      "status": "passed",
       "required_acceptance_ids": ["SD01", "SD02", "SD03", "SD04", "SD05", "SD06", "SD07"],
-      "evidence": "Integrated Data commit 095170a passes SD01-SD06 and gives all 50 P4 additions natural-looking names, but older base-seed and scenario-added fixture names remain visible. SD07 is open until every reporter identity is repaired and retested."
+      "evidence": "Integrated Data commit 29735a1 passes SD01-SD07: 50 canonical P4 additions remain balanced at 10 per market; Overview and Funnel retain source-derived rise/fall/recovery for All plus every market; and all 113 base-seed plus 1 scenario-added reporter identities have 114 unique natural-looking invented names. The independent coordinator run passed 12 focused data tests, the Data lane boundary, and the 117-test full baseline."
     },
     "baseline": {
       "status": "passed",
@@ -45,7 +45,7 @@
       "passed": [
         "lint",
         "typecheck",
-        "unit: 21 files / 116 tests",
+        "unit: 21 files / 117 tests",
         "production build",
         "acceptance reconciliation: 4 tests"
       ],
@@ -64,7 +64,7 @@
     },
     "visual_proof": {
       "status": "repair_required",
-      "candidate_commit": "095170a96d86a791e65a34ea10fb50793c357adc",
+      "candidate_commit": "29735a174028795b107c07d75aa7a58a32aeec05",
       "accepted_commit": null,
       "required_artifact_ids": [
         "overview_1440x900",
@@ -83,7 +83,7 @@
       ],
       "candidate_artifacts": [],
       "blocking_conditions": [
-        "SD06 is integrated, but SD07 remains open because older base-seed and scenario-added fixture names are still visible. All prior candidate screenshots are invalid.",
+        "SD06 and the complete SD07 identity repair are integrated, so all prior candidate screenshots are invalid and visual proof must be recaptured from commit 29735a1 or a descendant with identical data.",
         "The current candidate has no versioned candidate screenshot matrix.",
         "The repaired shell, Overview, and Funnel have not yet been directly compared against the fixed screenshots in a runnable browser.",
         "Interactive controls and filters pass focused component and integrated app tests, but have not been proven legible at every required viewport.",
@@ -106,9 +106,9 @@
   },
   "lane_audits": {
     "data": {
-      "base_commit": "04cf0497845ed28e7121f0d3dd648623929902c5",
-      "handoff_commit": "a9be9deeeafb941f5c38b39817227f37b1e7d388",
-      "integrated_commit": "095170a96d86a791e65a34ea10fb50793c357adc",
+      "base_commit": "88f133672b2edfed4e7650fdc7b2fc5a8e586525",
+      "handoff_commit": "e601cb4a27514725afb38d70e2b1dba6f1e57ebb",
+      "integrated_commit": "29735a174028795b107c07d75aa7a58a32aeec05",
       "boundary_status": "passed",
       "acceptance_evidence_status": "passed_sd01_sd07",
       "disposition": "integrated"

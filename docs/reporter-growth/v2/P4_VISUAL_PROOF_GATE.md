@@ -6,7 +6,7 @@ serving a local preview does not satisfy this gate.
 
 ## Current disposition
 
-- The assembled coordinator candidate at `095170a96d86a791e65a34ea10fb50793c357adc` is **not accepted**.
+- The assembled coordinator candidate at `29735a174028795b107c07d75aa7a58a32aeec05` is **not accepted**.
 - SD01–SD07 are integrated and passed; screenshot proof must use this data commit or a descendant
   with identical source records.
 - `http://127.0.0.1:5174/` is the intended repair preview URL, not a completed P4 experience. The
