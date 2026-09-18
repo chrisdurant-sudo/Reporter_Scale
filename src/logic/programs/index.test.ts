@@ -49,12 +49,62 @@ describe("prepareProgramsView", () => {
     expect(results[1]!.evidence.contributingRecords.some((record) => record.kind === "lifecycle-event")).toBe(true);
   });
 
-  it("treats a zero-participant market as unavailable rather than a failed rate", () => {
+  it("prepares market-scoped locked rows, summaries, notes, workflow sources, and ordered cohort trend points", () => {
+    const snapshot = fixture();
+    const reviewing = snapshot.programs[0]!;
+    const stopped = { ...reviewing, id: "program-stopped" as never, title: "Stopped source test", marketIds: ["LAX"] as never, type: "source" as const, stage: "closed" as const, targetRef: null, originWorkaroundRef: null };
+    const running = { ...reviewing, id: "program-running" as never, title: "Running campaign", marketIds: ["LAX"] as never, type: "incentive" as const, stage: "trying" as const, targetRef: null, originWorkaroundRef: null };
+    const expanding = { ...reviewing, id: "program-expanding" as never, title: "Expanding experiment", marketIds: ["SFO"] as never, type: "tool" as const, stage: "rolling-out" as const, targetRef: null, originWorkaroundRef: null };
+    const withDetails = {
+      ...snapshot,
+      programs: [reviewing, stopped, running, expanding],
+      programNotes: [
+        { id: "note-general" as never, programId, authorId: "actor-1" as never, text: "Latest general note", createdAt: "2026-02-14T17:00:00.000Z" as never, provenance: "synthetic-demo" as const },
+        { id: "note-step" as never, programId, authorId: "actor-1" as never, kind: "next-step" as const, text: "Review source records", createdAt: "2026-02-15T17:00:00.000Z" as never, provenance: "synthetic-demo" as const },
+      ],
+      processVersions: [{ id: "process-1" as never, programId, version: 2, status: "review-ready" as const, trigger: "Fixture", ownerId: "team-1" as never, requiredSteps: [], exceptions: [], approvalHistory: [{ status: "draft" as const, actorId: "actor-1" as never, occurredAt: "2026-02-01T17:00:00.000Z" as never, rationale: "Fixture" }], evidenceSnapshotId: "evidence-1" as never, nextReviewAt: stamp as never, definitionVersion: "v1" as never, provenance: "synthetic-demo" as const }],
+    } as DemoSnapshotV2;
+    const lax = prepareProgramsView(withDetails, context("LAX"));
+    expect(lax.rows.map((row) => row.id)).toEqual([programId, stopped.id, running.id]);
+    expect(lax.summary).toEqual({ running: 1, reviewNow: 1, expanding: 0, stopped: 1 });
+    expect(lax.rows[0]).toMatchObject({ typeLabel: "Process", brief: "Checklist", implementationAt: stamp, latestNote: "Latest general note", latestNextStep: "Review source records", nextStep: "Review source records", workflowSource: "Process v2 (review-ready) · Targeted referral" });
+    expect(lax.rows.find((row) => row.id === stopped.id)).toMatchObject({ typeLabel: "Sourcing", stage: "closed" });
+    expect(lax.resultOverTime.map((point) => point.groupId)).toEqual(["earlier", "pilot"]);
+    expect(lax.resultOverTime[0]).toMatchObject({ target: 0.5, targetState: "not-met", evidenceId: expect.stringContaining("evidence-program") });
+    expect(lax.resultOverTime[1]).toMatchObject({ targetState: "met" });
+    expect(lax.resultOverTime[1]!.accessibleLabel).toMatch(/declared target 50%, met/i);
+    expect(prepareProgramsView(withDetails, context("ALL")).rows.map((row) => [row.title, row.typeLabel])).toEqual([
+      ["Readiness checklist", "Process"],
+      ["Stopped source test", "Sourcing"],
+      ["Running campaign", "Campaign"],
+      ["Expanding experiment", "Experiment"],
+    ]);
+  });
+
+  it("uses a dated decision rationale only when no as-of next-step note exists", () => {
+    const snapshot = fixture();
+    const decision = { id: "decision-now" as never, programId, decision: "change" as const, rationale: "Use the decision fallback", decidedBy: "actor-1" as never, decidedAt: "2026-02-15T17:00:00.000Z" as never, evidenceSnapshotId: "evidence-1" as never, nextReviewAt: null, provenance: "synthetic-demo" as const };
+    const view = prepareProgramsView({ ...snapshot, programNotes: [{ id: "future-next-step" as never, programId, authorId: "actor-1" as never, kind: "next-step" as const, text: "Do not expose", createdAt: "2026-03-01T00:00:00.000Z" as never, provenance: "synthetic-demo" as const }], programDecisions: [decision] } as DemoSnapshotV2, context("ALL"));
+    expect(view.rows[0]).toMatchObject({ latestNextStep: null, nextStep: "Use the decision fallback" });
+  });
+
+  it("removes programs outside the shared market scope", () => {
     const view = prepareProgramsView(fixture(), context("LAX"));
     const altered = { ...view.appliedFilters, selectedMarket: "DFW" as const, marketIds: ["DFW" as const] };
     const zero = prepareProgramsView(fixture(), { ...context("LAX"), filters: altered });
-    expect(zero.rows[0]!.result?.evidence.computation).toMatchObject({ status: "unavailable", reason: "No participants in this market." });
-    expect(zero.resultsByProgram.get(programId)!.every((result) => result.label && result.entrants === 0)).toBe(true);
+    expect(zero.rows).toEqual([]);
+    expect(zero.resultsByProgram.size).toBe(0);
+    expect(zero.summary).toEqual({ running: 0, reviewNow: 0, expanding: 0, stopped: 0 });
+  });
+
+  it("retains a stopped selected program with its source-derived results and evidence", () => {
+    const snapshot = fixture();
+    const stopped = { ...snapshot.programs[0]!, stage: "closed" as const };
+    const selected = prepareProgramsView({ ...snapshot, programs: [stopped] } as DemoSnapshotV2, { ...context("LAX"), filters: { ...context("LAX").filters, programIds: [programId] } });
+    expect(selected.rows).toHaveLength(1);
+    expect(selected.rows[0]).toMatchObject({ stage: "closed" });
+    expect(selected.rows[0]!.result).not.toBeNull();
+    expect(selected.evidence).toHaveLength(2);
   });
 
   it("excludes immature members, including just-before-boundary members, and includes the exact follow-up boundary", () => {

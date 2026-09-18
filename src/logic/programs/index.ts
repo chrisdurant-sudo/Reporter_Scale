@@ -7,6 +7,7 @@ import type {
   ProgramDecision,
   ProgramEnrollment,
   ProgramId,
+  ProgramType,
   ProcessVersion,
   RecordPointer,
   ResolvedRecordReference,
@@ -57,14 +58,40 @@ export interface WeeklyProgramsReview {
 export interface PreparedProgramRow {
   readonly id: ProgramId;
   readonly title: string;
+  readonly typeLabel: "Experiment" | "Campaign" | "Sourcing" | "Process";
   readonly marketLabel: string;
   readonly stage: Program["stage"];
   readonly ownerId: string;
+  readonly brief: string;
+  readonly implementationAt: string;
   readonly target: number | null;
   readonly result: ProgramResultGroup | null;
   readonly reviewAt: string;
+  readonly latestNote: string | null;
+  readonly latestNextStep: string | null;
   readonly nextStep: string;
+  readonly workflowSource: string;
   readonly latestDecision: ProgramDecision | null;
+}
+
+export interface ProgramResultTrendPoint {
+  readonly id: string;
+  readonly programId: ProgramId;
+  readonly groupId: string;
+  readonly periodStartAt: string | null;
+  readonly periodEndAt: string | null;
+  readonly result: number | null;
+  readonly target: number | null;
+  readonly targetState: "met" | "not-met" | "unavailable" | "not-declared";
+  readonly accessibleLabel: string;
+  readonly evidenceId: string;
+}
+
+export interface ProgramsSummary {
+  readonly running: number;
+  readonly reviewNow: number;
+  readonly expanding: number;
+  readonly stopped: number;
 }
 
 export interface PreparedProgramsView {
@@ -74,6 +101,8 @@ export interface PreparedProgramsView {
   readonly evidence: readonly EvidenceBundle[];
   readonly rows: readonly PreparedProgramRow[];
   readonly resultsByProgram: ReadonlyMap<ProgramId, readonly ProgramResultGroup[]>;
+  readonly summary: ProgramsSummary;
+  readonly resultOverTime: readonly ProgramResultTrendPoint[];
 }
 
 /** These builders are intentionally side-effect free. Repository command handling owns persistence. */
@@ -99,6 +128,51 @@ const pointer = (kind: RecordPointer["kind"], id: string): RecordPointer => ({ k
 const inWindow = (value: string, start: string, end: string) => value >= start && value < end;
 const knownAt = (recordedAt: string, asOfAt: string) => recordedAt <= asOfAt;
 const followUpDeadline = (enteredAt: string, days: number) => new Date(new Date(enteredAt).getTime() + days * 86_400_000).toISOString();
+
+const PROGRAM_TYPE_LABELS: Readonly<Record<ProgramType, PreparedProgramRow["typeLabel"]>> = {
+  tool: "Experiment",
+  incentive: "Campaign",
+  source: "Sourcing",
+  workflow: "Process",
+  "re-engagement": "Campaign",
+};
+
+function latestAt<T extends { readonly createdAt?: string; readonly decidedAt?: string }>(records: readonly T[], asOfAt: string): T | null {
+  return records.filter((record) => (record.createdAt ?? record.decidedAt ?? "") <= asOfAt).sort((left, right) => (right.createdAt ?? right.decidedAt ?? "").localeCompare(left.createdAt ?? left.decidedAt ?? ""))[0] ?? null;
+}
+
+function workflowSource(snapshot: DemoSnapshotV2, program: Program, asOfAt: string): string {
+  const sources = new Set<string>();
+  const workaround = program.originWorkaroundRef ? snapshot.workaroundExamples.find((item) => item.id === program.originWorkaroundRef) : undefined;
+  if (workaround) sources.add(workaround.kind === "synthetic-spreadsheet" ? "Synthetic spreadsheet workaround" : workaround.kind);
+  for (const process of snapshot.processVersions.filter((item) => item.programId === program.id && item.approvalHistory.some((approval) => approval.occurredAt <= asOfAt))) {
+    sources.add(`Process v${process.version} (${process.status})`);
+  }
+  const labels = new Map(snapshot.sources.map((source) => [source.id, source.label]));
+  for (const enrollment of snapshot.programEnrollments.filter((item) => item.programId === program.id && item.enteredAt <= asOfAt)) {
+    if (enrollment.sourceAtEntry) sources.add(labels.get(enrollment.sourceAtEntry) ?? "Unknown recorded source");
+  }
+  return sources.size ? [...sources].sort().join(" · ") : "No recorded synthetic workflow source";
+}
+
+function trendPoint(program: Program, group: ProgramResultGroup, enrollments: readonly ProgramEnrollment[], target: number | null): ProgramResultTrendPoint {
+  const ordered = [...enrollments].sort((left, right) => left.enteredAt.localeCompare(right.enteredAt));
+  const targetState = target === null ? "not-declared" : group.result === null ? "unavailable" : group.result >= target ? "met" : "not-met";
+  const resultLabel = group.result === null ? "result unavailable" : `${group.timelyFirstJobs} of ${group.matureEntrants} timely first jobs (${Math.round(group.result * 100)}%)`;
+  const targetLabel = target === null ? "no declared target" : `declared target ${Math.round(target * 100)}%, ${targetState === "met" ? "met" : targetState === "not-met" ? "not met" : "not yet evaluable"}`;
+  return {
+    id: `${program.id}-${group.groupId}`,
+    programId: program.id,
+    groupId: group.groupId,
+    periodStartAt: ordered[0]?.enteredAt ?? null,
+    periodEndAt: ordered.at(-1)?.enteredAt ?? null,
+    result: group.result,
+    target,
+    targetState,
+    accessibleLabel: `${program.title}, ${group.groupId}: ${resultLabel}; ${targetLabel}.`,
+    evidenceId: group.evidence.id,
+  };
+}
 
 function filterEnrollments(snapshot: DemoSnapshotV2, program: Program, context: WorkspaceQueryContext<typeof PROGRAMS_WORKSPACE>) {
   const selected = context.filters.selectedMarket;
@@ -251,14 +325,57 @@ export function prepareWeeklyProgramsReview(snapshot: DemoSnapshotV2, context: W
 
 export function prepareProgramsView(snapshot: DemoSnapshotV2, context: WorkspaceQueryContext<typeof PROGRAMS_WORKSPACE>): PreparedProgramsView {
   const resultsByProgram = new Map<ProgramId, readonly ProgramResultGroup[]>();
-  const rows = snapshot.programs.filter((program) => context.filters.programIds.length === 0 || context.filters.programIds.includes(program.id)).map((program) => {
+  const resultOverTime: ProgramResultTrendPoint[] = [];
+  const rows = snapshot.programs
+    .filter((program) =>
+      (context.filters.programIds.length === 0 || context.filters.programIds.includes(program.id)) &&
+      (context.filters.selectedMarket === "ALL" || program.marketIds.includes(context.filters.selectedMarket)),
+    )
+    .map((program) => {
     const groups = new Map<string, ProgramEnrollment[]>();
     for (const enrollment of snapshot.programEnrollments) if (enrollment.programId === program.id && enrollment.enteredAt <= context.evaluation.asOfAt && inWindow(enrollment.enteredAt, program.measurementPlan.entryWindow.startAt, program.measurementPlan.entryWindow.endAt)) groups.set(enrollment.groupId, []);
     for (const enrollment of filterEnrollments(snapshot, program, context)) groups.set(enrollment.groupId, [...(groups.get(enrollment.groupId) ?? []), enrollment]);
     const results = [...groups.entries()].sort(([left], [right]) => left.localeCompare(right)).map(([groupId, enrollments]) => groupEvidence(snapshot, program, groupId, enrollments, context));
     resultsByProgram.set(program.id, results);
     const decisions = snapshot.programDecisions.filter((decision) => decision.programId === program.id && decision.decidedAt <= context.evaluation.asOfAt).sort((left, right) => right.decidedAt.localeCompare(left.decidedAt));
-    return { id: program.id, title: program.title, marketLabel: program.marketIds.join(", "), stage: program.stage, ownerId: program.ownerId, target: program.targetRef ? snapshot.goalRevisions.filter((goal) => goal.goalId === program.targetRef && goal.savedAt <= context.evaluation.asOfAt).sort((a, b) => b.version - a.version)[0]?.target ?? null : null, result: results.at(-1) ?? null, reviewAt: program.reviewAt, nextStep: decisions[0]?.rationale ?? "Review participant evidence before deciding.", latestDecision: decisions[0] ?? null };
+    const notes = snapshot.programNotes.filter((note) => note.programId === program.id && note.createdAt <= context.evaluation.asOfAt);
+    const latestNote = latestAt(notes.filter((note) => note.kind !== "next-step"), context.evaluation.asOfAt);
+    const latestNextStep = latestAt(notes.filter((note) => note.kind === "next-step"), context.evaluation.asOfAt);
+    const target = program.targetRef ? snapshot.goalRevisions.filter((goal) => goal.goalId === program.targetRef && goal.savedAt <= context.evaluation.asOfAt).sort((a, b) => b.version - a.version)[0]?.target ?? null : null;
+    for (const group of results) resultOverTime.push(trendPoint(program, group, filterEnrollments(snapshot, program, context).filter((enrollment) => enrollment.groupId === group.groupId), target));
+    return {
+      id: program.id,
+      title: program.title,
+      typeLabel: PROGRAM_TYPE_LABELS[program.type],
+      marketLabel: program.marketIds.join(", "),
+      stage: program.stage,
+      ownerId: program.ownerId,
+      brief: program.changeSummary,
+      implementationAt: program.startAt,
+      target,
+      result: results.at(-1) ?? null,
+      reviewAt: program.reviewAt,
+      latestNote: latestNote?.text ?? null,
+      latestNextStep: latestNextStep?.text ?? null,
+      nextStep: latestNextStep?.text ?? decisions[0]?.rationale ?? "No recorded next step.",
+      workflowSource: workflowSource(snapshot, program, context.evaluation.asOfAt),
+      latestDecision: decisions[0] ?? null,
+    };
   });
-  return { workspace: PROGRAMS_WORKSPACE, evaluation: context.evaluation, appliedFilters: context.filters, evidence: [...resultsByProgram.values()].flatMap((groups) => groups.map((group) => group.evidence)), rows, resultsByProgram };
+  const summary: ProgramsSummary = {
+    running: rows.filter((row) => row.stage === "trying").length,
+    reviewNow: rows.filter((row) => row.stage === "reviewing").length,
+    expanding: rows.filter((row) => row.stage === "rolling-out").length,
+    stopped: rows.filter((row) => row.stage === "closed").length,
+  };
+  return {
+    workspace: PROGRAMS_WORKSPACE,
+    evaluation: context.evaluation,
+    appliedFilters: context.filters,
+    evidence: [...resultsByProgram.values()].flatMap((groups) => groups.map((group) => group.evidence)),
+    rows,
+    resultsByProgram,
+    summary,
+    resultOverTime: resultOverTime.sort((left, right) => (left.periodStartAt ?? "").localeCompare(right.periodStartAt ?? "") || left.id.localeCompare(right.id)),
+  };
 }
