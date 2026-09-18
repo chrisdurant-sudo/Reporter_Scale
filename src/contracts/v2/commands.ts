@@ -29,6 +29,7 @@ export type V2CommandType =
   | "capacity.record-assignment"
   | "capacity.record-job-outcome"
   | "programs.enroll"
+  | "programs.note.save"
   | "programs.record-decision"
   | "programs.save-process-version"
   | "scenario.apply-event";
@@ -98,6 +99,15 @@ export type TeamCommandEnvelope =
   | V2CommandEnvelope<"team.coaching.record", TeamCoachingRecordPayload>
   | V2CommandEnvelope<"team.coaching.review", TeamCoachingReviewPayload>
   | V2CommandEnvelope<"team.practice.share", TeamPracticeSharePayload>;
+
+export interface ProgramTextSavePayload {
+  readonly programId: ProgramId;
+  readonly field: "note" | "next-step";
+  readonly text: string;
+}
+
+export type ProgramsCommandEnvelope =
+  | V2CommandEnvelope<"programs.note.save", ProgramTextSavePayload>;
 
 export interface V2CommandError {
   readonly code: "invalid-command" | "stale-revision" | "validation-failed" | "invariant-failed";

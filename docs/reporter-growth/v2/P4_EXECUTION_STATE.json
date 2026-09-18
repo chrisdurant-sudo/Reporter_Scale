@@ -23,6 +23,16 @@
       "authorized_at": "2026-09-18",
       "scope": "Add the missing typed Team work-create/transition payloads and optional canonical work title required by the locked Team Add Work interaction; Team logic may expose only source-derived board, summary, member, and option views.",
       "source": "Concrete P4.2 contract-change request from the Team Experience specialist after verifying that presentation-only ownership could not implement XR17/XR39 without shadow data"
+    },
+    {
+      "authorized_at": "2026-09-18",
+      "scope": "Expose latest-known certification and explicit compliance review state from canonical credential records for the locked Reporters grid.",
+      "source": "Concrete P4.2 contract-change request from the Reporters Experience specialist and confirmed Experience Lead defect for XR38"
+    },
+    {
+      "authorized_at": "2026-09-18",
+      "scope": "Expose source-derived Programs summaries, locked row fields, result-over-time points, notes, and next steps; add a typed canonical note/next-step save payload without manufacturing outcomes.",
+      "source": "Concrete P4.2 contract-change request from the Programs Experience specialist and Experience Lead DEFECTS disposition for XR13/XR17/XR40"
     }
   ],
   "implementation_base_commit": "8b85d4aafa2317be848e01caf47d8b6f92efa674",
@@ -170,7 +180,10 @@
     "src/features/team/",
     "src/integration/",
     "src/logic/capacity/",
+    "src/logic/network/",
+    "src/logic/programs/",
     "src/logic/recruiting/",
+    "src/logic/team/",
     "src/shell/",
     "src/styles/",
     "src/ui/",

@@ -100,6 +100,8 @@ export interface ProgramNote {
   readonly id: ProgramNoteId;
   readonly programId: ProgramId;
   readonly authorId: ActorId;
+  /** Historical notes omit the kind and are treated as general notes. */
+  readonly kind?: "note" | "next-step";
   readonly text: string;
   readonly createdAt: UtcTimestamp;
   readonly provenance: DemoProvenance;
