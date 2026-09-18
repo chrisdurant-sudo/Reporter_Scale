@@ -78,7 +78,7 @@ describe("P3 live V2 vertical", () => {
 
     await user.click(screen.getByRole("button", { name: "Advance to Pair onboarding cohort mature" }));
     await user.click(screen.getByRole("button", { name: "Recruiting" }));
-    expect(await screen.findByText("1/2 within 14 days.")).toBeInTheDocument();
+    expect(await screen.findByText("1/3 within 14 days.")).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Reset demo" }));
     expect(await screen.findByRole("heading", { name: "Where do we need more capacity?" })).toBeInTheDocument();

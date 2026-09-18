@@ -53,14 +53,20 @@ describe("P2 source → calculation → EvidenceBundle reconciliation", () => {
     expect(firstJobIds).toEqual(["outcome-req-lax-109", "outcome-req-lax-110"]);
   });
 
-  it("derives the mature Avery/Rowan onboarding result as one timely and two completed", () => {
+  it("preserves the mature Avery/Rowan result inside the expanded LAX onboarding cohort", () => {
     const snapshot = applyScenarioCheckpoint(DEMO_SNAPSHOT_V2, "pair-cohort-mature");
     const entryWindow = { startAt: at("2026-02-01T00:00:00Z"), endAt: at("2026-03-01T00:00:00Z"), boundary: "[start,end)" as const };
     const outcome = onboardingOutcomes(snapshot, snapshot.currentAsOfAt, entryWindow, "LAX");
-    expect([...outcome.matureCaseIds].sort()).toEqual(["case-lax-009", "case-lax-010"]);
+    expect([...outcome.matureCaseIds].sort()).toEqual(["case-lax-009", "case-lax-010", "case-p4-lax-04"]);
     expect(outcome.timelyCaseIds).toEqual(["case-lax-010"]);
     expect([...outcome.completedToDateCaseIds].sort()).toEqual(["case-lax-009", "case-lax-010"]);
-    expect(outcome.rate).toBe(0.5);
+    const namedPair = new Set(["case-lax-009", "case-lax-010"]);
+    const maturePair = outcome.matureCaseIds.filter((id) => namedPair.has(id));
+    const timelyPair = outcome.timelyCaseIds.filter((id) => namedPair.has(id));
+    expect(maturePair.sort()).toEqual(["case-lax-009", "case-lax-010"]);
+    expect(timelyPair).toEqual(["case-lax-010"]);
+    expect(timelyPair.length / maturePair.length).toBe(0.5);
+    expect(outcome.rate).toBe(1 / 3);
     const view = prepareRecruitingWorkspace(snapshot, context("recruiting", snapshot.currentAsOfAt, filters("LAX", "recruiting-market-at-entry", [], entryWindow), snapshot.revision));
     expect(view.evidence.flatMap(validateEvidenceBundle)).toEqual([]);
   });
@@ -84,8 +90,8 @@ describe("P2 source → calculation → EvidenceBundle reconciliation", () => {
     expect(DEMO_SNAPSHOT_V2.onboardingSteps.filter((step) => step.blockerCode === "same-required-step-missing")).toHaveLength(3);
     expect(DEMO_SNAPSHOT_V2.programDecisions.find((decision) => decision.programId === "program-dfw-broad-outreach")).toMatchObject({ decision: "stop" });
     const atl = prepareNetworkView(DEMO_SNAPSHOT_V2, context("reporters", DEMO_SNAPSHOT_V2.currentAsOfAt, filters("ATL", "service-market", [], null)));
-    expect(atl.reporters.map((reporter) => reporter.availability).sort()).toEqual(["expired", "unknown"]);
-    expect(atl.reengagementCandidates).toHaveLength(2);
+    expect(atl.reporters.map((reporter) => reporter.availability).sort()).toEqual(["expired", "unknown", "unknown", "unknown", "unknown", "unknown", "unknown"]);
+    expect(atl.reengagementCandidates.map((reporter) => reporter.reporterId).sort()).toEqual(["person-atl-returning-1", "person-atl-returning-2", "person-p4-atl-09", "person-p4-atl-10"]);
     expect(atl.evidence.flatMap(validateEvidenceBundle)).toEqual([]);
   });
 
