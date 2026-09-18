@@ -40,6 +40,58 @@ export interface OriginalPlanResults {
 export interface MarketSummaryRow {
   readonly marketId: string; readonly marketName: string; readonly coverage: CoverageSummary;
   readonly issue: string; readonly nextAction: string; readonly evidence: readonly EvidenceBundle[];
+  /** Always supplied by prepareMarketsWorkspace; optional only for legacy hand-built view fixtures. */
+  readonly overview?: PreparedMarketOverviewRow;
+}
+export interface PreparedMarketsSourceIds {
+  readonly marketIds: readonly MarketId[];
+  readonly reporterIds: readonly ReporterId[];
+  readonly requestIds: readonly RequestId[];
+  readonly readinessEventIds: readonly ReadinessEventId[];
+  readonly availabilityWindowIds: readonly AvailabilityWindowId[];
+}
+export interface PreparedMarketDirection {
+  readonly state: "up" | "down" | "flat" | "insufficient-history";
+  readonly comparedFromAt: UtcTimestamp | null;
+  readonly comparedToAt: UtcTimestamp | null;
+  readonly rule: string;
+  readonly source: PreparedMarketsSourceIds;
+}
+export interface PreparedMarketOverviewRow {
+  readonly gap: number;
+  readonly supplyDirection: PreparedMarketDirection;
+  readonly demandDirection: PreparedMarketDirection;
+  readonly source: PreparedMarketsSourceIds;
+}
+export interface PreparedOverviewKpis {
+  readonly marketCount: { readonly value: number; readonly source: PreparedMarketsSourceIds };
+  readonly availableReporters: { readonly value: number; readonly source: PreparedMarketsSourceIds };
+  readonly openSlots: { readonly value: number; readonly source: PreparedMarketsSourceIds };
+  readonly projectedAdditionalNeed: {
+    /** Maximum neededSupply across known future series points; null when no future point is recorded. */
+    readonly value: number | null;
+    readonly forecastPointAt: UtcTimestamp | null;
+    readonly source: PreparedMarketsSourceIds;
+    readonly rule: string;
+  };
+}
+export interface PreparedOverviewFocus {
+  readonly condition: "projected-additional-need" | "open-slots" | "available-supply" | "no-current-work";
+  readonly finding: string;
+  readonly nextAction: string;
+  readonly source: PreparedMarketsSourceIds;
+}
+export interface PreparedOverviewAttentionItem {
+  readonly id: "requirements-unknown" | "projected-additional-need" | "no-verified-ready-match" | "possible-match";
+  readonly finding: string;
+  readonly nextAction: string;
+  readonly source: PreparedMarketsSourceIds;
+}
+export interface PreparedOverview {
+  readonly kpis: PreparedOverviewKpis;
+  readonly focus: PreparedOverviewFocus;
+  /** Deterministic priority order: missing requirements, projected gap, no verified match, possible match. */
+  readonly attention: readonly PreparedOverviewAttentionItem[];
 }
 /**
  * A source-backed instant in the Overview supply-and-demand series. Historical points use facts that
@@ -77,6 +129,8 @@ export interface PreparedMarketsView {
   readonly growthGoal: GrowthGoalView | null; readonly originalPlan: OriginalPlanResults;
   /** Always supplied by prepareMarketsWorkspace; optional only for legacy hand-built view fixtures. */
   readonly supplyDemandSeries?: SupplyDemandSeries;
+  /** Always supplied by prepareMarketsWorkspace; optional only for legacy hand-built view fixtures. */
+  readonly overview?: PreparedOverview;
   readonly limitations: readonly string[];
 }
 interface CandidateCheck { readonly failures: readonly string[]; readonly unknowns: readonly string[]; }
@@ -388,19 +442,128 @@ function supplyDemandSeries(snapshot: DemoSnapshotV2, context: Context): SupplyD
     ],
   };
 }
+function sortedIds<T extends string>(values: readonly T[]): readonly T[] {
+  return [...new Set(values)].sort((left, right) => String(left).localeCompare(String(right)));
+}
+function sourceIds(
+  marketIds: readonly MarketId[],
+  reporterIds: readonly ReporterId[] = [],
+  requestIds: readonly RequestId[] = [],
+  readinessEventIds: readonly ReadinessEventId[] = [],
+  availabilityWindowIds: readonly AvailabilityWindowId[] = [],
+): PreparedMarketsSourceIds {
+  return {
+    marketIds: sortedIds(marketIds), reporterIds: sortedIds(reporterIds), requestIds: sortedIds(requestIds),
+    readinessEventIds: sortedIds(readinessEventIds), availabilityWindowIds: sortedIds(availabilityWindowIds),
+  };
+}
+function pointSource(marketIds: readonly MarketId[], point: SupplyDemandSeriesPoint): PreparedMarketsSourceIds {
+  return sourceIds(marketIds, point.reporterIds, point.demandRequestIds, point.readinessEventIds, point.availabilityWindowIds);
+}
+function direction(
+  marketIds: readonly MarketId[],
+  points: readonly SupplyDemandSeriesPoint[],
+  value: (point: SupplyDemandSeriesPoint) => number,
+): PreparedMarketDirection {
+  const historical = points.filter((point) => point.phase === "historical");
+  if (historical.length < 2) {
+    return { state: "insufficient-history", comparedFromAt: null, comparedToAt: null, rule: "Two historical source timestamps are required to describe a direction.", source: sourceIds(marketIds) };
+  }
+  const from = historical[historical.length - 2]!;
+  const to = historical[historical.length - 1]!;
+  const change = value(to) - value(from);
+  return {
+    state: change > 0 ? "up" : change < 0 ? "down" : "flat",
+    comparedFromAt: from.at,
+    comparedToAt: to.at,
+    rule: "Compares the final two historical source timestamps; direction is the change in the prepared value.",
+    source: sourceIds(
+      marketIds,
+      [...from.reporterIds, ...to.reporterIds],
+      [...from.demandRequestIds, ...to.demandRequestIds],
+      [...from.readinessEventIds, ...to.readinessEventIds],
+      [...from.availabilityWindowIds, ...to.availabilityWindowIds],
+    ),
+  };
+}
+function overview(
+  snapshot: DemoSnapshotV2,
+  context: Context,
+  series: SupplyDemandSeries,
+  assessments: readonly RequestCapacityAssessment[],
+): PreparedOverview {
+  const marketIds = scopedMarketIds(snapshot, context.filters);
+  const current = series.points.find((point) => point.at === context.evaluation.asOfAt)!;
+  const openRequests = scoped(snapshot, context.filters, context.evaluation.asOfAt, true)
+    .filter((request) => request.status === "open")
+    .map((request) => request.id);
+  const forecast = series.points.filter((point) => point.isProjection);
+  const projected = forecast.reduce<SupplyDemandSeriesPoint | null>(
+    (selected, point) => selected === null || point.neededSupply > selected.neededSupply ? point : selected,
+    null,
+  );
+  const currentSource = pointSource(marketIds, current);
+  const projectedSource = projected === null ? sourceIds(marketIds) : pointSource(marketIds, projected);
+  const kpis: PreparedOverviewKpis = {
+    marketCount: { value: marketIds.length, source: sourceIds(marketIds) },
+    availableReporters: { value: current.availableSupply, source: currentSource },
+    openSlots: { value: openRequests.length, source: sourceIds(marketIds, [], openRequests) },
+    projectedAdditionalNeed: {
+      value: projected?.neededSupply ?? null,
+      forecastPointAt: projected?.at ?? null,
+      source: projectedSource,
+      rule: "The maximum neededSupply among source-backed future series points; each point is active scheduled request slots minus distinct explicitly available reporters, floored at zero.",
+    },
+  };
+  const focus: PreparedOverviewFocus = projected !== null && projected.neededSupply > 0
+    ? { condition: "projected-additional-need", finding: String(projected.neededSupply) + " additional reporter" + (projected.neededSupply === 1 ? "" : "s") + " may be needed at the largest known future gap.", nextAction: "Inspect the affected request slots.", source: projectedSource }
+    : openRequests.length > 0
+      ? { condition: "open-slots", finding: String(openRequests.length) + " open request slot" + (openRequests.length === 1 ? " is" : "s are") + " recorded in the selected scope.", nextAction: "Review upcoming request coverage.", source: sourceIds(marketIds, [], openRequests) }
+      : current.availableSupply > 0
+        ? { condition: "available-supply", finding: String(current.availableSupply) + " explicitly available reporter" + (current.availableSupply === 1 ? " is" : "s are") + " recorded now.", nextAction: "Monitor known schedules and availability.", source: currentSource }
+        : { condition: "no-current-work", finding: "No open request slots or explicitly available reporters are recorded in the selected scope.", nextAction: "Review source records before taking action.", source: currentSource };
+  const item = (id: PreparedOverviewAttentionItem["id"], finding: string, nextAction: string, source: PreparedMarketsSourceIds): PreparedOverviewAttentionItem => ({ id, finding, nextAction, source });
+  const groups: Array<{ status: RequestCapacityStatus; id: PreparedOverviewAttentionItem["id"]; finding: string; nextAction: string }> = [
+    { status: "requirements-unknown", id: "requirements-unknown", finding: "request slot" + "s have requirements that need confirmation.", nextAction: "Confirm the missing request requirements." },
+    { status: "no-verified-ready-match", id: "no-verified-ready-match", finding: "request slot" + "s have no verified ready match.", nextAction: "Inspect the affected capacity gap." },
+    { status: "possible-match", id: "possible-match", finding: "request slot" + "s have unconfirmed candidate options.", nextAction: "Contact suitable available reporters." },
+  ];
+  const attention: PreparedOverviewAttentionItem[] = [];
+  const unknown = assessments.filter((assessment) => assessment.status === "requirements-unknown");
+  if (unknown.length) attention.push(item("requirements-unknown", String(unknown.length) + " " + groups[0]!.finding, groups[0]!.nextAction, sourceIds(marketIds, [], unknown.map((assessment) => assessment.request.id))));
+  if (projected !== null && projected.neededSupply > 0) attention.push(item("projected-additional-need", String(projected.neededSupply) + " additional reporter" + (projected.neededSupply === 1 ? " may" : "s may") + " be needed at the largest known future gap.", "Inspect the affected request slots.", projectedSource));
+  for (const group of groups.slice(1)) {
+    const matching = assessments.filter((assessment) => assessment.status === group.status);
+    if (!matching.length) continue;
+    attention.push(item(group.id, String(matching.length) + " " + group.finding, group.nextAction, sourceIds(marketIds, matching.flatMap((assessment) => assessment.candidates.map((candidate) => candidate.reporterId)), matching.map((assessment) => assessment.request.id))));
+  }
+  return { kpis, focus, attention: attention.slice(0, 3) };
+}
 export function prepareMarketsWorkspace(snapshot: DemoSnapshotV2, context: Context): PreparedMarketsView {
   const live = scoped(snapshot, context.filters, context.evaluation.asOfAt, false).filter((item) => item.status === "open"), requests = assessments(snapshot, live, context.evaluation.asOfAt), coverage = summary(requests);
   const m01 = countEvidence(snapshot, "M01", definition(snapshot, "M01"), context, live, String(coverage.requested) + " distinct non-canceled request slots are upcoming in the selected schedule scope.");
   const m02 = coverageEvidence(snapshot, context, live, requests.filter((item) => item.status === "confirmed"));
   const m03 = (["possible-match", "no-verified-ready-match", "requirements-unknown"] as const).map((status) => countEvidence(snapshot, "M03-" + status, definition(snapshot, "M03"), context, requests.filter((item) => item.status === status).map((item) => item.request), status + " requests are derived from current requirements, readiness, verification, availability, scope, and accepted commitments.", status === "requirements-unknown" ? requests.filter((item) => item.status === status).length : 0)).filter((item): item is EvidenceBundle => item !== null);
-  const goalValue = goal(snapshot, context), plan = originalPlan(snapshot, context);
+  const goalValue = goal(snapshot, context), plan = originalPlan(snapshot, context), series = supplyDemandSeries(snapshot, context), overviewValue = overview(snapshot, context, series, requests);
   const marketRows = snapshot.markets.map((market) => {
     const values = assessments(snapshot, scoped(snapshot, { ...context.filters, selectedMarket: market.id, requestIds: [] }, context.evaluation.asOfAt, false).filter((item) => item.status === "open"), context.evaluation.asOfAt), itemSummary = summary(values);
     const issue = itemSummary.requirementsUnknown ? String(itemSummary.requirementsUnknown) + " request needs requirements confirmation" : itemSummary.noVerifiedReadyMatch ? String(itemSummary.noVerifiedReadyMatch) + " request has no verified ready match" : itemSummary.possible ? String(itemSummary.possible) + " request has unconfirmed candidate options" : "No unresolved upcoming request slots";
-    return { marketId: market.id, marketName: market.name, coverage: itemSummary, issue, nextAction: itemSummary.requirementsUnknown ? "Confirm request requirements" : itemSummary.noVerifiedReadyMatch ? "Inspect the affected gap" : itemSummary.possible ? "Contact suitable available reporters" : "Monitor upcoming commitments", evidence: [] };
+    const marketContext: Context = { ...context, filters: { ...context.filters, selectedMarket: market.id, requestIds: [] } };
+    const marketSeries = supplyDemandSeries(snapshot, marketContext);
+    const current = marketSeries.points.find((point) => point.at === context.evaluation.asOfAt)!;
+    return {
+      marketId: market.id, marketName: market.name, coverage: itemSummary, issue,
+      nextAction: itemSummary.requirementsUnknown ? "Confirm request requirements" : itemSummary.noVerifiedReadyMatch ? "Inspect the affected gap" : itemSummary.possible ? "Contact suitable available reporters" : "Monitor upcoming commitments", evidence: [],
+      overview: {
+        gap: current.neededSupply,
+        supplyDirection: direction([market.id], marketSeries.points, (point) => point.availableSupply),
+        demandDirection: direction([market.id], marketSeries.points, (point) => point.demand),
+        source: pointSource([market.id], current),
+      },
+    };
   });
   const limitations: string[] = [];
   if (!snapshot.metricDefinitions.some((item) => ["M01", "M02", "M03"].includes(String(item.id)))) limitations.push("Some capacity metric definitions are absent from the snapshot; their evidence is unavailable.");
-  return { workspace: CAPACITY_WORKSPACE, evaluation: context.evaluation, appliedFilters: context.filters, evidence: [m01, m02, ...m03, ...(goalValue ? [goalValue.evidence] : []), ...plan.evidence].filter((item): item is EvidenceBundle => item !== null), coverage, requests, requirementBreakdown: requirements(requests), marketRows, growthGoal: goalValue, originalPlan: plan, supplyDemandSeries: supplyDemandSeries(snapshot, context), limitations };
+  return { workspace: CAPACITY_WORKSPACE, evaluation: context.evaluation, appliedFilters: context.filters, evidence: [m01, m02, ...m03, ...(goalValue ? [goalValue.evidence] : []), ...plan.evidence].filter((item): item is EvidenceBundle => item !== null), coverage, requests, requirementBreakdown: requirements(requests), marketRows, growthGoal: goalValue, originalPlan: plan, supplyDemandSeries: series, overview: overviewValue, limitations };
 }
 export const capacityLogic: CapacityLogicPort = { workspace: CAPACITY_WORKSPACE, prepare: prepareMarketsWorkspace };

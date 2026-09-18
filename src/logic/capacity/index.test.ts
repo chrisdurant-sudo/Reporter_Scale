@@ -172,6 +172,29 @@ describe("capacity markets calculations", () => {
     expect(series.points.every((point) => point.isProjection === (Date.parse(point.at) > Date.parse(asOf)))).toBe(true);
   });
 
+  it("prepares Overview KPIs from distinct as-of availability, open slots, and the maximum known future gap", () => {
+    const snapshot = base();
+    const dana = reporter("Dana Available");
+    const danaReadiness = { ...snapshot.readinessEvents[0]!, id: id("ready-dana"), reporterId: dana.id, acquisitionCaseId: id("case-dana") };
+    const danaAvailability = {
+      ...snapshot.availabilityWindows[0]!, id: id("avail-dana"), reporterId: dana.id,
+      startAt: utc("2026-02-10T11:00:00Z"), endAt: utc("2026-02-10T14:00:00Z"), confirmationExpiresAt: utc("2026-02-10T13:00:00Z"),
+    };
+    const availableView = prepareMarketsWorkspace({
+      ...snapshot, reporters: [...snapshot.reporters, dana], readinessEvents: [...snapshot.readinessEvents, danaReadiness], availabilityWindows: [...snapshot.availabilityWindows, danaAvailability],
+    }, context());
+    const baselineOverview = prepareMarketsWorkspace(snapshot, context()).overview!;
+
+    expect(availableView.overview!.kpis).toMatchObject({
+      marketCount: { value: 1, source: { marketIds: ["LAX"] } },
+      availableReporters: { value: 1, source: { reporterIds: [id("Dana Available")], readinessEventIds: [id("ready-dana")], availabilityWindowIds: [id("avail-dana")] } },
+      openSlots: { value: 5, source: { requestIds: [id("req-confirmed"), id("req-none"), id("req-possible-a"), id("req-possible-b"), id("req-unknown")] } },
+    });
+    expect(availableView.coverage.confirmed).toBe(1);
+    expect(baselineOverview.kpis.projectedAdditionalNeed).toMatchObject({ value: 1, forecastPointAt: utc("2026-02-20T10:00:00Z"), source: { requestIds: [id("req-confirmed")] } });
+    expect(baselineOverview.kpis.projectedAdditionalNeed.rule).toContain("maximum neededSupply");
+  });
+
   it("scopes the series to the selected demand market and is deterministic across source collection order", () => {
     const snapshot = base();
     const dana = { ...reporter("Dana DFW"), recruitingMarketId: "DFW" as never, serviceMarketIds: ["DFW"] as never, preferences: { ...reporter("Dana DFW").preferences, serviceMarkets: [{ marketId: "DFW", status: "serves" }] as never } };
@@ -187,17 +210,35 @@ describe("capacity markets calculations", () => {
       demandRequests: [...snapshot.demandRequests, dfwRequest],
     } as DemoSnapshotV2;
     const dfwContext: WorkspaceQueryContext<"markets"> = { ...context(), filters: { ...filters(), selectedMarket: "DFW" as never } };
-    const first = prepareMarketsWorkspace(expanded, dfwContext).supplyDemandSeries!;
-    const reversed = prepareMarketsWorkspace({
+    const firstView = prepareMarketsWorkspace(expanded, dfwContext);
+    const first = firstView.supplyDemandSeries!;
+    const reversedView = prepareMarketsWorkspace({
       ...expanded,
       markets: [...expanded.markets].reverse(), reporters: [...expanded.reporters].reverse(), readinessEvents: [...expanded.readinessEvents].reverse(),
       availabilityWindows: [...expanded.availabilityWindows].reverse(), demandRequests: [...expanded.demandRequests].reverse(),
-    }, dfwContext).supplyDemandSeries!;
+    }, dfwContext);
+    const reversed = reversedView.supplyDemandSeries!;
     const dfwForecast = first.points.find((point) => point.at === utc("2026-02-20T10:00:00Z"));
 
     expect(dfwForecast).toMatchObject({ availableSupply: 1, demand: 1, neededSupply: 0, reporterIds: [id("Dana DFW")], demandRequestIds: [id("req-dfw")] });
     expect(first.points.every((point) => point.demandRequestIds.every((requestId) => requestId === id("req-dfw")))).toBe(true);
     expect(reversed).toEqual(first);
+    expect(firstView.overview!.kpis).toMatchObject({ marketCount: { value: 1, source: { marketIds: ["DFW"] } }, openSlots: { value: 1, source: { requestIds: [id("req-dfw")] } } });
+    expect(reversedView.overview!.attention).toEqual(firstView.overview!.attention);
+  });
+
+  it("prepares deterministic attention and honest market direction states with contributing source IDs", () => {
+    const snapshot = base();
+    const view = prepareMarketsWorkspace(snapshot, context());
+    const row = view.marketRows[0]!.overview!;
+    const insufficient = prepareMarketsWorkspace({ ...snapshot, readinessEvents: [] }, context()).marketRows[0]!.overview!;
+
+    expect(view.overview!.attention.map((item) => item.id)).toEqual(["requirements-unknown", "projected-additional-need", "no-verified-ready-match"]);
+    expect(view.overview!.attention[0]!.source.requestIds).toEqual([id("req-unknown")]);
+    expect(view.overview!.attention[1]!.source.requestIds).toEqual([id("req-confirmed")]);
+    expect(row).toMatchObject({ gap: 0, supplyDirection: { state: "flat" }, demandDirection: { state: "flat" } });
+    expect(row.supplyDirection.source).toMatchObject({ marketIds: ["LAX"], reporterIds: [], readinessEventIds: [], availabilityWindowIds: [] });
+    expect(insufficient).toMatchObject({ supplyDirection: { state: "insufficient-history", comparedFromAt: null, comparedToAt: null }, demandDirection: { state: "insufficient-history", comparedFromAt: null, comparedToAt: null } });
   });
 
   it("does not count a known availability window as forecast supply after its confirmation expires", () => {
