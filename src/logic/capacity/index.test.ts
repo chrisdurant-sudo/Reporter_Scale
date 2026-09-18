@@ -225,6 +225,8 @@ describe("capacity markets calculations", () => {
     expect(reversed).toEqual(first);
     expect(firstView.overview!.kpis).toMatchObject({ marketCount: { value: 1, source: { marketIds: ["DFW"] } }, openSlots: { value: 1, source: { requestIds: [id("req-dfw")] } } });
     expect(reversedView.overview!.attention).toEqual(firstView.overview!.attention);
+    expect(firstView.marketRows.map((row) => row.marketId)).toEqual(["DFW"]);
+    expect(prepareMarketsWorkspace(expanded, { ...dfwContext, filters: { ...dfwContext.filters, selectedMarket: "ALL" } }).marketRows.map((row) => row.marketId)).toEqual(["LAX", "DFW"]);
   });
 
   it("prepares deterministic attention and honest market direction states with contributing source IDs", () => {
@@ -232,10 +234,14 @@ describe("capacity markets calculations", () => {
     const view = prepareMarketsWorkspace(snapshot, context());
     const row = view.marketRows[0]!.overview!;
     const insufficient = prepareMarketsWorkspace({ ...snapshot, readinessEvents: [] }, context()).marketRows[0]!.overview!;
+    const possible = prepareMarketsWorkspace({ ...snapshot, demandRequests: snapshot.demandRequests.filter((request) => String(request.id) !== "req-unknown") }, context()).overview!.attention.find((item) => item.id === "possible-match")!;
+    const noVerified = view.overview!.attention.find((item) => item.id === "no-verified-ready-match")!;
 
     expect(view.overview!.attention.map((item) => item.id)).toEqual(["requirements-unknown", "projected-additional-need", "no-verified-ready-match"]);
     expect(view.overview!.attention[0]!.source.requestIds).toEqual([id("req-unknown")]);
     expect(view.overview!.attention[1]!.source.requestIds).toEqual([id("req-confirmed")]);
+    expect(noVerified.source).toMatchObject({ readinessEventIds: [id("ready-Ari Confirmed"), id("ready-Bea Shared")], availabilityWindowIds: [id("avail-a"), id("avail-b")] });
+    expect(possible.source).toMatchObject({ readinessEventIds: [id("ready-Ari Confirmed"), id("ready-Bea Shared")], availabilityWindowIds: [id("avail-a"), id("avail-b")] });
     expect(row).toMatchObject({ gap: 0, supplyDirection: { state: "flat" }, demandDirection: { state: "flat" } });
     expect(row.supplyDirection.source).toMatchObject({ marketIds: ["LAX"], reporterIds: [], readinessEventIds: [], availabilityWindowIds: [] });
     expect(insufficient).toMatchObject({ supplyDirection: { state: "insufficient-history", comparedFromAt: null, comparedToAt: null }, demandDirection: { state: "insufficient-history", comparedFromAt: null, comparedToAt: null } });

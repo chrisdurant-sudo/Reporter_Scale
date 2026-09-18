@@ -460,6 +460,22 @@ function sourceIds(
 function pointSource(marketIds: readonly MarketId[], point: SupplyDemandSeriesPoint): PreparedMarketsSourceIds {
   return sourceIds(marketIds, point.reporterIds, point.demandRequestIds, point.readinessEventIds, point.availabilityWindowIds);
 }
+function candidateSource(
+  snapshot: DemoSnapshotV2,
+  marketIds: readonly MarketId[],
+  assessments: readonly RequestCapacityAssessment[],
+  asOf: UtcTimestamp,
+): PreparedMarketsSourceIds {
+  const reporterIds = sortedIds(assessments.flatMap((assessment) => assessment.candidates.map((candidate) => candidate.reporterId)));
+  const contributing = new Set(reporterIds);
+  const readinessEventIds = snapshot.readinessEvents
+    .filter((event) => contributing.has(event.reporterId) && before(event.occurredAt, asOf) && before(event.recordedAt, asOf))
+    .map((event) => event.id);
+  const availabilityWindowIds = snapshot.availabilityWindows
+    .filter((window) => contributing.has(window.reporterId) && before(window.recordedAt, asOf) && window.serviceMarketIds.some((marketId) => marketIds.includes(marketId)))
+    .map((window) => window.id);
+  return sourceIds(marketIds, reporterIds, assessments.map((assessment) => assessment.request.id), readinessEventIds, availabilityWindowIds);
+}
 function direction(
   marketIds: readonly MarketId[],
   points: readonly SupplyDemandSeriesPoint[],
@@ -535,7 +551,7 @@ function overview(
   for (const group of groups.slice(1)) {
     const matching = assessments.filter((assessment) => assessment.status === group.status);
     if (!matching.length) continue;
-    attention.push(item(group.id, String(matching.length) + " " + group.finding, group.nextAction, sourceIds(marketIds, matching.flatMap((assessment) => assessment.candidates.map((candidate) => candidate.reporterId)), matching.map((assessment) => assessment.request.id))));
+    attention.push(item(group.id, String(matching.length) + " " + group.finding, group.nextAction, candidateSource(snapshot, marketIds, matching, context.evaluation.asOfAt)));
   }
   return { kpis, focus, attention: attention.slice(0, 3) };
 }
@@ -545,7 +561,10 @@ export function prepareMarketsWorkspace(snapshot: DemoSnapshotV2, context: Conte
   const m02 = coverageEvidence(snapshot, context, live, requests.filter((item) => item.status === "confirmed"));
   const m03 = (["possible-match", "no-verified-ready-match", "requirements-unknown"] as const).map((status) => countEvidence(snapshot, "M03-" + status, definition(snapshot, "M03"), context, requests.filter((item) => item.status === status).map((item) => item.request), status + " requests are derived from current requirements, readiness, verification, availability, scope, and accepted commitments.", status === "requirements-unknown" ? requests.filter((item) => item.status === status).length : 0)).filter((item): item is EvidenceBundle => item !== null);
   const goalValue = goal(snapshot, context), plan = originalPlan(snapshot, context), series = supplyDemandSeries(snapshot, context), overviewValue = overview(snapshot, context, series, requests);
-  const marketRows = snapshot.markets.map((market) => {
+  const displayedMarkets = context.filters.selectedMarket === "ALL"
+    ? snapshot.markets
+    : snapshot.markets.filter((market) => market.id === context.filters.selectedMarket);
+  const marketRows = displayedMarkets.map((market) => {
     const values = assessments(snapshot, scoped(snapshot, { ...context.filters, selectedMarket: market.id, requestIds: [] }, context.evaluation.asOfAt, false).filter((item) => item.status === "open"), context.evaluation.asOfAt), itemSummary = summary(values);
     const issue = itemSummary.requirementsUnknown ? String(itemSummary.requirementsUnknown) + " request needs requirements confirmation" : itemSummary.noVerifiedReadyMatch ? String(itemSummary.noVerifiedReadyMatch) + " request has no verified ready match" : itemSummary.possible ? String(itemSummary.possible) + " request has unconfirmed candidate options" : "No unresolved upcoming request slots";
     const marketContext: Context = { ...context, filters: { ...context.filters, selectedMarket: market.id, requestIds: [] } };
