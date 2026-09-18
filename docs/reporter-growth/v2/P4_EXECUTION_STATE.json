@@ -41,8 +41,8 @@
   "fanout_authorized": true,
   "current_phase": "P4.3_integration",
   "current_candidate": {
-    "commit": "1e03a5d538b64bb647bafa01dcacab7fa869ea45",
-    "status": "accepted_p4_2_workspace_candidate",
+    "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+    "status": "repaired_p4_2_workspace_candidate_awaiting_quality_rerun",
     "preview_url": "http://127.0.0.1:5174/",
     "preview_status": "online_verified",
     "preview_process": {
@@ -63,16 +63,16 @@
       "passed": [
         "lint",
         "typecheck",
-        "unit/integration: 24 files / 130 tests",
+        "unit/integration: 24 files / 131 tests",
         "production build",
         "required Experience checks"
       ],
       "failed": [],
       "deferred_quality_findings": [
-        "The Quality-owned cross-workspace suite has 5 stale UI scenarios that wait for a superseded P3 Overview heading; its 4 reconciliation tests pass.",
-        "The Quality-owned browser suite still targets P3 navigation and contains the prohibited 390px waiver."
+        "Quality adopted the stale cross-workspace and browser suites and removed the prohibited 390px waiver. Its first pass found two Funnel controlled-input defects; the Experience Lead repaired them, and the 9-test acceptance suite now passes. A fresh independent Quality rerun remains mandatory.",
+        "The Quality worktree's Playwright Chromium 153.0.8010.12 launch still terminates with SIGABRT before page open. The external exact-commit proof completed without waiver, but it does not replace the independent Quality rerun."
       ],
-      "scope_note": "The accepted P4.2 workspace candidate passes lint, types, all 24 registered unit/integration files with 130 tests, the production build, and required Experience checks. Quality-owned cross-workspace and browser suites remain recorded for adoption or replacement by the independent Quality lane."
+      "scope_note": "The repaired P4.2 workspace candidate passes lint, types, all 24 registered unit/integration files with 131 tests, the 9-test Quality acceptance suite, the production build, and required Experience checks. Independent Quality must rerun after the production repair."
     },
     "browser": {
       "status": "passed",
@@ -124,23 +124,26 @@
     "workspace_wave": {
       "status": "passed",
       "frozen_shared_baseline": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
-      "accepted_commit": "1e03a5d538b64bb647bafa01dcacab7fa869ea45",
-      "artifact_manifest": "docs/reporter-growth/v2/design-lock/candidate/1e03a5d538b64bb647bafa01dcacab7fa869ea45/manifest.json",
-      "interaction_proof": "docs/reporter-growth/v2/design-lock/candidate/1e03a5d538b64bb647bafa01dcacab7fa869ea45/interactions.json",
+      "accepted_commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "artifact_manifest": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/manifest.json",
+      "interaction_proof": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/interactions.json",
       "lead_disposition": "P4_WORKSPACE_VISUAL_PROOF_READY",
       "coordinator_disposition": "accepted_after_independent_locked-reference_comparison",
       "route": "http://127.0.0.1:5174/",
       "browser": "Playwright Chromium 153.0.8010.12",
       "artifact_count": 37,
-      "interaction_count": 15,
+      "interaction_count": 16,
       "console_errors": 0,
       "page_errors": 0,
       "waiver_allowed": false,
-      "reason": "The Lead and coordinator accepted the repaired exact-commit Reporters, Team, and Programs proof after direct locked-reference comparison. All required desktop, tablet, and 390×844 states are checksum-valid; all interactions passed without browser errors or waivers."
+      "reason": "After Quality exposed Funnel sequential note and numeric-input defects, the Experience Lead repaired them and the coordinator recaptured the full exact-commit proof. All required desktop, tablet, and 390×844 states are checksum-valid; 16 interactions, including exact note whitespace and clear-then-type SLA recomputation, passed without browser errors or waivers."
     },
     "quality": {
       "status": "blocked",
-      "reason": "The P4.3 evidence ledger and integration freeze must pass governance before Quality is dispatched. Quality must then adopt or replace its stale P3 UI/browser scenarios before its gate can pass."
+      "first_candidate_commit": "439829151151de6e8279e5af01261f07d1b50a3c",
+      "first_disposition": "DEFECTS",
+      "repair_commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "reason": "Quality adopted the stale suites and found Funnel note-whitespace and clear-then-type SLA defects. The Experience Lead repair and replacement exact-commit proof are integrated; Quality must rerun independently from the repaired candidate."
     },
     "reviewer": {
       "status": "blocked",
@@ -204,15 +207,18 @@
     "programs_logic_support": {
       "integrated_commit": "60831a3ec1c7133eb7dd286f326f8e7389058136",
       "disposition": "integrated_contract_change"
+    },
+    "experience_p4_3_repair": {
+      "base_commit": "05909579b31834705218abb4a650dd8fda0eb04c",
+      "handoff_commit": "f120189a808503f1b5894513c1fdc65b0b4cb18c",
+      "integrated_commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "boundary_status": "passed",
+      "acceptance_evidence_status": "passed_9_of_9",
+      "visual_evidence_status": "passed_37_artifacts_16_interactions",
+      "disposition": "integrated_awaiting_quality_rerun"
     }
   },
-  "known_ownership_exceptions": [
-    {
-      "path": "tests/acceptance/reporter-growth.integration.test.tsx",
-      "status": "requires_quality_adoption_or_replacement",
-      "reason": "The file changed before the Quality phase even though cross-feature acceptance tests are Quality-owned."
-    }
-  ],
+  "known_ownership_exceptions": [],
   "phase_allowed_prefixes": [
     ".codex/agents/experience.toml",
     ".codex/agents/data.toml",

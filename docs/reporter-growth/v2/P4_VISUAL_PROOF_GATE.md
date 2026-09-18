@@ -26,15 +26,18 @@ serving a local preview does not satisfy this gate.
 
 ## P4.2 assembled workspace proof
 
-- The assembled Reporters, Team, and Programs source candidate is exact commit
-  `1e03a5d538b64bb647bafa01dcacab7fa869ea45`. Its proof manifest is
-  `docs/reporter-growth/v2/design-lock/candidate/1e03a5d538b64bb647bafa01dcacab7fa869ea45/manifest.json`
+- The current repaired Reporters, Team, Programs, and Funnel source candidate is exact commit
+  `16479473d6b22ed64a18d4b1b5b9748f1c84374b`. Its proof manifest is
+  `docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/manifest.json`
   and its interaction record is in the same directory.
 - The proof contains 37 unique checksum-valid artifacts covering all required 1440×900, 1024×768,
   768×1024, and 390×844 workspace states plus Reporters Activity/filter/action feedback, Team Add
   Work/work-added/Goals, and Programs Results/filter/text-persistence states.
-- All 15 interaction proofs passed in Playwright Chromium 153.0.8010.12 at
+- All 16 interaction proofs passed in Playwright Chromium 153.0.8010.12 at
   `http://127.0.0.1:5174/`; browser console and page error lists are empty.
+- The replacement proof explicitly verifies sequential Funnel note input preserves internal
+  whitespace and that clearing then sequentially typing a market-specific SLA immediately recomputes
+  status without leaking lifecycle facts or the override to another market.
 - The Experience Lead returned `P4_WORKSPACE_VISUAL_PROOF_READY`, and the coordinator independently
   accepted the repaired locked-reference comparison. Quality remains a separate no-waiver gate.
 
@@ -78,9 +81,9 @@ commit are not admissible.
 `scripts/verify-p4-phase-gate.mjs` enforces the state transitions. It refuses fan-out without an
 accepted exact commit, a complete checksum-valid screenshot matrix, clean-worktree interaction
 evidence, all required interaction passes, empty browser error lists, and real 390×844 artifacts.
-The stale Quality-owned browser-suite waiver text remains a mandatory post-P4.2 Quality repair; it
-cannot block the ordered P4.1 transition after independent real mobile proof, and the verifier
-rejects it at the Quality phase.
+Quality adopted the browser suite and replaced its stale mobile waiver with real 390×844 assertions.
+The verifier still rejects any reintroduced waiver at the Quality phase, and the independent suite
+must pass after the latest production repair.
 
 The full `npm run verify:p4` command is the post-integration Quality/Reviewer gate. It intentionally
 includes the Quality-owned cross-workspace and browser suites and must be fully green before Reviewer.

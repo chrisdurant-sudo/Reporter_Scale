@@ -49,8 +49,24 @@ interactions with empty console and page error lists. The proof includes real 39
 captured in Playwright Chromium 153.0.8010.12 at `http://127.0.0.1:5174/`.
 
 The Experience Lead returned `P4_WORKSPACE_VISUAL_PROOF_READY`; the coordinator independently
-accepted the locked-reference comparison. VP09, VP11, and VP12 remain mandatory Quality obligations:
-the stale browser and cross-workspace suites must be adopted or replaced and pass without waiver.
+accepted the locked-reference comparison. VP09, VP11, and VP12 were mandatory Quality obligations;
+Quality has now adopted the suites and removed the waiver, but its repaired-candidate rerun remains
+mandatory.
+
+### Quality defect loop
+
+Quality commit `439829151151de6e8279e5af01261f07d1b50a3c` adopted the stale suites and removed
+the 390px waiver, then returned `DEFECTS`: sequential Funnel note input collapsed internal whitespace,
+and clearing the controlled Onboarding SLA before typing `90` produced `1090`. The Experience Lead
+repaired only its authorized Funnel path in handoff `f120189a808503f1b5894513c1fdc65b0b4cb18c`,
+integrated as exact source commit `16479473d6b22ed64a18d4b1b5b9748f1c84374b`.
+
+The replacement manifest at
+`docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/manifest.json`
+contains 37 checksum-valid screenshots and 16 passing interactions. It explicitly verifies the two
+repaired sequential-input paths, real 390×844 states, per-market SLA isolation, unchanged lifecycle
+facts, and empty console/page error lists. Independent Quality must still rerun; this repair evidence
+does not self-approve the candidate.
 
 ## Verification record
 
@@ -58,7 +74,7 @@ the stale browser and cross-workspace suites must be adopted or replaced and pas
 | --- | --- | --- |
 | VP01–VP05 | Verified | The complete Overview matrix matches the locked shell, All-first controls, hierarchy, axes, legend, forecast treatment, and responsive composition with source-backed values. |
 | VP06–VP08 | Verified | `interactions.json` records passed navigation, range/status/filter changes, Bottlenecks mode, and LAX SLA 1→90 recomputation without lifecycle mutation or SFO leakage. |
-| VP09 | Verified for P4.1; Quality repair still mandatory | Three exact 390×844 artifacts prove the mobile composition without overflow or clipping. The stale Quality-owned suite wording must be replaced during P4.4 and cannot pass that gate unchanged. |
+| VP09 | Quality suite adopted; rerun pending | Three exact 390×844 artifacts prove the mobile composition without overflow or clipping. Quality replaced the stale waiver with real mobile assertions; those assertions must pass after the latest repair. |
 | VP10 | Verified | The committed manifest contains exactly 13 checksum-valid artifacts from the accepted commit and links the clean-worktree interaction record. |
-| VP11–VP12 | Recorded Quality obligations | The ownership exception and stale Quality scenarios remain registered for adoption or replacement after P4.2; neither is waived. |
+| VP11–VP12 | Quality adoption complete; rerun pending | Quality adopted the cross-workspace and browser suites. The first run exposed production defects, so the repaired candidate must be rerun before Quality can pass. |
 | VP13 | Verified | After the recorded Chrome/Brave SIGABRT and managed Vite EPERM attempts, the unrestricted local preview and Playwright Chromium runner completed with all required interactions passed and empty console/page error lists. |
