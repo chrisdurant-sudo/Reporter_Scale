@@ -122,6 +122,7 @@ if (!state.fanout_authorized) {
 
 const visual = state.gates?.visual_proof;
 const baseline = state.gates?.baseline;
+const browser = state.gates?.browser;
 const workspace = state.gates?.workspace_wave;
 const quality = state.gates?.quality;
 const reviewer = state.gates?.reviewer;
@@ -149,6 +150,8 @@ if (state.fanout_authorized || visual?.status === "accepted") {
   const manifestPath = visual?.artifact_manifest;
   check(state.fanout_authorized === true, "Accepted visual proof must transition fan-out authorization explicitly.");
   check(baseline?.status === "passed", "Visual-proof acceptance and fan-out require the full baseline suite to pass.");
+  check(browser?.status === "passed", "Visual-proof acceptance and fan-out require a real browser-suite pass.");
+  check(browser?.waiver_allowed === false, "P4 browser verification cannot be waived.");
   check(experienceAudit?.acceptance_evidence_status === "passed", "Experience acceptance evidence must pass before visual-proof acceptance.");
   check(experienceAudit?.visual_evidence_status === "passed", "Experience visual evidence must pass before visual-proof acceptance.");
   check(typeof acceptedCommit === "string" && commitExists(acceptedCommit), "Accepted visual proof requires a valid exact implementation commit.");

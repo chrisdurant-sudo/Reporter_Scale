@@ -40,6 +40,11 @@ Node rejects TypeScript Playwright configuration and test files from that path b
 single assertion. Active worktrees must now live outside `node_modules`; they may use a symlink to the
 shared dependency directory. The phase verifier enforces the location rule.
 
+From the corrected `/private/tmp` worktree, Playwright now loads the configuration and discovers all
+eight desktop/mobile tests. Installed Chrome still aborts at launch under the host policy before an
+assertion runs, with process cleanup denied by `EPERM`. The ledger records this as an environment
+block, not a pass and not a waiver; browser proof must be rerun in an allowed local browser runtime.
+
 The preview is therefore a repair candidate. It must not be represented as P4-complete, and its
 existence does not authorize specialist fan-out.
 

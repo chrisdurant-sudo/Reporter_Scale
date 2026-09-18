@@ -35,9 +35,16 @@
         "production build"
       ],
       "failed": [
-        "cross-workspace acceptance: 5 of 5 integration tests failed before their first assertion because the suite waits for an obsolete Overview heading"
+        "cross-workspace acceptance: 5 of 5 integration tests failed before their first assertion because the suite waits for an obsolete Overview heading",
+        "browser acceptance: the runner discovered all 8 desktop/mobile tests, but installed Chrome aborted at launch under the host policy, so no browser assertion executed"
       ],
-      "blocking_reason": "The routine check command excluded acceptance and browser suites, allowing a green build to mask a broken cross-workspace baseline."
+      "blocking_reason": "The routine check command excluded acceptance and browser suites, allowing a green build to mask a broken cross-workspace baseline. Browser execution must also be rerun in an allowed local browser environment; it is not waived."
+    },
+    "browser": {
+      "status": "blocked_environment",
+      "runner_status": "Playwright configuration and all 8 tests load from the corrected /private/tmp worktree.",
+      "failure": "Installed Google Chrome exits with SIGABRT at launch and the host denies process cleanup with EPERM.",
+      "waiver_allowed": false
     },
     "visual_proof": {
       "status": "repair_required",
@@ -63,7 +70,8 @@
         "The current candidate has no versioned candidate screenshot matrix.",
         "The current candidate materially differs from the locked shell, Overview, and Funnel references.",
         "Interactive controls and filters have not been proven to change state and remain legible at every required viewport.",
-        "The legacy 390px browser-test waiver has not been replaced by a real mobile assertion."
+        "The legacy 390px browser-test waiver has not been replaced by a real mobile assertion.",
+        "The corrected browser runner loads the suite, but this host currently aborts Chrome before assertions; browser proof remains blocked, not waived."
       ]
     },
     "workspace_wave": {
