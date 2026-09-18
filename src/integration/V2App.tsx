@@ -31,11 +31,19 @@ import { TeamScreen } from "../features/team";
 import { prepareMarketsWorkspace } from "../logic/capacity";
 import { prepareNetworkView } from "../logic/network";
 import { prepareProgramsView } from "../logic/programs";
-import { prepareRecruitingWorkspace } from "../logic/recruiting";
+import {
+  applyRecruitingLocalNoteCommand,
+  prepareRecruitingWorkspace,
+} from "../logic/recruiting";
+import type {
+  FunnelSlaInput,
+  RecruitingLocalNoteCommand,
+  RecruitingLocalNoteState,
+} from "../logic/recruiting";
 import { prepareTeamView } from "../logic/team";
 import { V2AppShell } from "../shell";
 import type { V2GlobalFilters } from "../shell/V2AppShell";
-import { EmptyStateV2, ErrorState, EvidencePresentation, LoadingState } from "../ui/v2";
+import { ErrorState, LoadingState } from "../ui/v2";
 
 const MAIN_REQUEST_IDS = Array.from({ length: 10 }, (_, index) => `req-lax-${101 + index}` as never);
 const RECRUITING_ENTRY_WINDOW = {
@@ -161,6 +169,12 @@ export function V2App() {
   const [globalFilters, setGlobalFilters] = useState<V2GlobalFilters>(INITIAL_FILTERS);
   const [drillDown, setDrillDown] = useState<WorkspaceNavigationTarget | null>(null);
   const [selectedEvidence, setSelectedEvidence] = useState<EvidenceBundle | null>(null);
+  const evidenceTriggerRef = useRef<HTMLElement | null>(null);
+  const [funnelSlaInput, setFunnelSlaInput] = useState<FunnelSlaInput>({});
+  const [recruitingNotes, setRecruitingNotes] = useState<RecruitingLocalNoteState>({
+    persistence: "local-only-not-persisted",
+    notes: [],
+  });
   const [feedback, setFeedback] = useState<ActionFeedback>({
     changed: "Loaded the fixed LAX baseline.",
     notChanged: "No scenario event or operational outcome has been applied.",
@@ -239,6 +253,9 @@ export function V2App() {
       setGlobalFilters(INITIAL_FILTERS);
       setDrillDown(null);
       setSelectedEvidence(null);
+      evidenceTriggerRef.current = null;
+      setFunnelSlaInput({});
+      setRecruitingNotes({ persistence: "local-only-not-persisted", notes: [] });
       setFeedback({
         changed: "Restored the original seed, fixed clock, saved goal and decision state, and replay state.",
         notChanged: "No external data or system was touched.",
@@ -267,8 +284,8 @@ export function V2App() {
     ? prepareMarketsWorkspace(snapshot, queryContext("markets", snapshot, globalFilters, drillDown))
     : null, [drillDown, globalFilters, snapshot]);
   const recruitingView = useMemo(() => snapshot
-    ? prepareRecruitingWorkspace(snapshot, queryContext("recruiting", snapshot, globalFilters, drillDown))
-    : null, [drillDown, globalFilters, snapshot]);
+    ? prepareRecruitingWorkspace(snapshot, queryContext("recruiting", snapshot, globalFilters, drillDown), { slaInput: funnelSlaInput })
+    : null, [drillDown, funnelSlaInput, globalFilters, snapshot]);
   const reportersView = useMemo(() => snapshot
     ? prepareNetworkView(snapshot, queryContext("reporters", snapshot, globalFilters, drillDown))
     : null, [drillDown, globalFilters, snapshot]);
@@ -288,6 +305,35 @@ export function V2App() {
   }, [activeWorkspace, marketsView, programsView, recruitingView, reportersView, teamView]);
 
   const findEvidence = useCallback((id: string) => workspaceEvidence.find((item) => String(item.id) === id) ?? null, [workspaceEvidence]);
+
+  const openEvidence = useCallback((evidence: EvidenceBundle | null) => {
+    if (!evidence) return;
+    evidenceTriggerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    setSelectedEvidence(evidence);
+  }, []);
+
+  const openEvidenceTarget = useCallback((target: WorkspaceNavigationTarget) => {
+    const evidence = workspaceEvidence.find((item) => item.navigationTarget === target) ?? null;
+    openEvidence(evidence);
+  }, [openEvidence, workspaceEvidence]);
+
+  const closeEvidence = useCallback(() => {
+    const trigger = evidenceTriggerRef.current;
+    evidenceTriggerRef.current = null;
+    setSelectedEvidence(null);
+    window.requestAnimationFrame(() => trigger?.focus());
+  }, []);
+
+  useEffect(() => {
+    if (!selectedEvidence) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      closeEvidence();
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [closeEvidence, selectedEvidence]);
 
   const openWork = useCallback((target: WorkspaceNavigationTarget) => {
     setDrillDown(target);
@@ -451,19 +497,32 @@ export function V2App() {
     if (activeWorkspace === "markets") return <MarketsV2Screen
       view={marketsView}
       onSelectMarket={(value) => { if (isMarket(value)) { setGlobalFilters((current) => ({ ...current, selectedMarket: value })); setDrillDown(null); } }}
-      onOpenEvidence={openWork}
+      onOpenEvidence={openEvidenceTarget}
       onPreviewGoal={() => setFeedback({ changed: "Prepared the dated two-addition goal preview from the current record-backed baseline.", notChanged: "No goal, task, readiness, coverage, acceptance, or first-job record changed." })}
       onSaveGoal={() => { void savePlan(); }}
     />;
     if (activeWorkspace === "recruiting") return <RecruitingScreen
       view={recruitingView}
-      onWhyThis={(id) => setSelectedEvidence(findEvidence(id))}
+      slaInput={funnelSlaInput}
+      localNotes={recruitingNotes}
+      onChangeSlaInput={(next) => {
+        setFunnelSlaInput(next);
+        setFeedback({ changed: "Updated the local Funnel SLA input.", notChanged: "Lifecycle, readiness, acceptance, and completed-work facts did not change." });
+      }}
+      onLocalNoteCommand={(command: RecruitingLocalNoteCommand) => {
+        const current = snapshotRef.current;
+        if (!current) return;
+        const result = applyRecruitingLocalNoteCommand(current, current.currentAsOfAt, recruitingNotes, command);
+        if (result.ok) setRecruitingNotes(result.state);
+        setFeedback({ changed: result.ok ? result.message : "No local note changed.", notChanged: result.ok ? "Canonical records and external systems were not changed." : result.message });
+      }}
+      onWhyThis={(id) => openEvidence(findEvidence(id))}
       onOpenWork={(id) => { const evidence = findEvidence(id); if (evidence) openWork(evidence.navigationTarget); }}
     />;
     if (activeWorkspace === "reporters") return <ReportersNetworkScreen view={reportersView} actions={{
       onConfirmAvailability: (input) => appendAvailability(input.reporterId, input.confirmedAt),
       onCreateReengagementTask: appendReengagementTask,
-      onOpenEvidence: setSelectedEvidence,
+      onOpenEvidence: (id) => openEvidence(findEvidence(String(id))),
       onOpenRecruitingChecklist: (reporterId) => {
         const acquisition = snapshot.acquisitionCases.find((item) => item.reporterId === reporterId);
         const evidence = reportersView.evidence[0];
@@ -482,7 +541,7 @@ export function V2App() {
       },
     }} />;
     if (activeWorkspace === "team") return <TeamScreen view={teamView} actions={{
-      onOpenEvidence: (id) => setSelectedEvidence(findEvidence(String(id))),
+      onOpenEvidence: (id) => openEvidence(findEvidence(String(id))),
       onReassignWork: async (payload) => {
         await saveMutation(
           "Reassigned the canonical work item.",
@@ -522,7 +581,7 @@ export function V2App() {
       onRecordDecision: recordProgramDecision,
       onSaveProcessDraft: saveProcessDraft,
       onCreatePartnerTask: createPartnerTask,
-      onOpenEvidence: (id) => setSelectedEvidence(findEvidence(id)),
+      onOpenEvidence: (id) => openEvidence(findEvidence(id)),
     }} />;
   }
 
@@ -532,6 +591,13 @@ export function V2App() {
     demoDateLabel={displayDate(snapshot?.currentAsOfAt ?? "2026-02-16T17:00:00Z")}
     capabilityOptions={CAPABILITY_OPTIONS}
     attendanceOptions={ATTENDANCE_OPTIONS}
+    selectedEvidence={selectedEvidence}
+    onCloseEvidence={closeEvidence}
+    onOpenEvidenceWork={(target) => {
+      evidenceTriggerRef.current = null;
+      setSelectedEvidence(null);
+      openWork(target);
+    }}
     actionFeedback={<section aria-label="Scenario and action result">
       <p><strong>Checkpoint:</strong> {checkpoint?.label ?? "Baseline"}</p>
       <p role="status"><strong>Changed:</strong> {feedback.changed}</p>
@@ -539,7 +605,7 @@ export function V2App() {
       <button type="button" disabled={busy || !nextCheckpoint} onClick={() => { void advanceScenario(); }}>{nextCheckpoint ? `Advance to ${nextCheckpoint.label}` : "Final checkpoint reached"}</button>{" "}
       <button type="button" disabled={busy} onClick={() => { void resetDemo(); }}>Reset demo</button>
     </section>}
-    onWorkspaceChange={setActiveWorkspace}
+    onWorkspaceChange={(workspace) => { setActiveWorkspace(workspace); setSelectedEvidence(null); evidenceTriggerRef.current = null; }}
     onFiltersChange={(next) => { setGlobalFilters(next); setDrillDown(null); setSelectedEvidence(null); }}
   >
     {drillDown ? <section aria-label="Preserved evidence context">
@@ -548,12 +614,5 @@ export function V2App() {
       <button type="button" onClick={() => setDrillDown(null)}>Clear drill-down</button>
     </section> : null}
     {renderWorkspace()}
-    <section aria-label="Shared evidence panel">
-      <h2>Evidence from this workspace</h2>
-      {workspaceEvidence.length ? <ul>{workspaceEvidence.map((evidence) => <li key={evidence.id}>
-        <button type="button" onClick={() => setSelectedEvidence(evidence)}>Why this? {evidence.metric.id}</button> — {evidence.explanation}
-      </li>)}</ul> : <EmptyStateV2 title="No evidence in this scope" detail="Change the market or clear the drill-down to inspect another source-backed result." />}
-      {selectedEvidence ? <EvidencePresentation evidence={selectedEvidence} onOpenWork={openWork} /> : null}
-    </section>
   </V2AppShell>;
 }
