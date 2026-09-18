@@ -17,6 +17,7 @@ function snapshot(overrides: Record<string, unknown> = {}): DemoSnapshotV2 {
   } as unknown as DemoSnapshotV2;
 }
 const window = { startAt: utc("2026-02-01T00:00:00Z"), endAt: utc("2026-03-01T00:00:00Z"), boundary: "[start,end)" as const };
+const context = (selectedMarket: "ALL" | "LAX" | "SFO" = "ALL") => ({ workspace: "recruiting", evaluation: { asOfAt: asOf, snapshotRevision: 7, reportingTimeZone: "America/Los_Angeles" }, filters: { selectedMarket, marketBasis: "recruiting-market-at-entry", marketIds: [], reporterIds: [], acquisitionCaseIds: [], requestIds: [], workItemIds: [], programIds: [], programEnrollmentIds: [], sourceIds: [], jobOutcomeIds: [], capabilityCodes: [], attendanceModes: [], recordRefs: [], window } } as never);
 
 describe("recruiting calculations", () => {
   it("keeps a late first job completed-to-date but out of the 14-day numerator, including the exact boundary", () => {
@@ -135,5 +136,35 @@ describe("recruiting calculations", () => {
     expect(source.lifecycleEvents).toHaveLength(1);
     expect(prepareRecruitingWorkspace(source, { workspace: "recruiting", evaluation: { asOfAt: asOf, snapshotRevision: 7, reportingTimeZone: "America/Los_Angeles" }, filters: { selectedMarket: "LAX", marketBasis: "recruiting-market-at-entry", marketIds: [], reporterIds: [], acquisitionCaseIds: [], requestIds: [], workItemIds: [], programIds: [], programEnrollmentIds: [], sourceIds: [], jobOutcomeIds: [], capabilityCodes: [], attendanceModes: [], recordRefs: [], window } } as never).currentCases).toEqual(baseline.currentCases);
     expect(applyRecruitingLocalNoteCommand(source, asOf, initial, { type: "recruiting.local-note.set", target: { kind: "candidate", acquisitionCaseId: "unknown" as never }, text: "Nope" }).ok).toBe(false);
+  });
+
+  it("prepares Funnel KPIs without counting closed or completed cases as active", () => {
+    const reporterB = { ...snapshot().reporters[0]!, id: "reporter-b", fictionalName: "Blair" };
+    const reporterC = { ...snapshot().reporters[0]!, id: "reporter-c", fictionalName: "Casey" };
+    const caseB = { ...snapshot().acquisitionCases[0]!, id: "case-b", reporterId: "reporter-b" };
+    const caseC = { ...snapshot().acquisitionCases[0]!, id: "case-c", reporterId: "reporter-c" };
+    const closed = { ...snapshot().lifecycleEvents[0]!, id: "closed-b", acquisitionCaseId: "case-b", reporterId: "reporter-b", eventType: "closed", occurredAt: utc("2026-03-01T00:00:00Z"), recordedAt: utc("2026-03-01T00:00:00Z") };
+    const accepted = { ...snapshot().assignmentEvents[0]!, id: "accepted-c", reporterId: "reporter-c", requestId: "request-c" };
+    const completed = { id: "completed-c", requestId: "request-c", reporterId: "reporter-c", acceptedAssignmentEventId: "accepted-c", outcome: "completed", startedAt: null, completedAt: utc("2026-03-02T00:00:00Z"), deliveryAt: null, recordedAt: utc("2026-03-02T00:00:00Z"), provenance: "synthetic-demo" };
+    const view = prepareRecruitingWorkspace(snapshot({ reporters: [...snapshot().reporters, reporterB, reporterC], acquisitionCases: [...snapshot().acquisitionCases, caseB, caseC], lifecycleEvents: [...snapshot().lifecycleEvents, closed], assignmentEvents: [...snapshot().assignmentEvents, accepted], jobOutcomes: [completed] }), context());
+    expect(view.kpis.activePeopleInFunnel).toMatchObject({ value: 1, acquisitionCaseIds: ["case-a"] });
+    expect(view.kpis.percentStartedWork).toMatchObject({ numerator: 1, denominator: 3, value: 1 / 3, numeratorCaseIds: ["case-c"], denominatorCaseIds: ["case-a", "case-b", "case-c"] });
+  });
+
+  it("selects the default SLA for All and the explicit market override for a market scope", () => {
+    const all = prepareRecruitingWorkspace(snapshot(), context());
+    const lax = prepareRecruitingWorkspace(snapshot(), context("LAX"));
+    expect(all.applicableSla).toMatchObject({ scope: "default-all-markets", marketId: "ALL", values: { overallDays: 35 } });
+    expect(lax.applicableSla).toMatchObject({ scope: "market-override", marketId: "LAX", values: { overallDays: 32, statusDays: { Screening: 6 } } });
+  });
+
+  it("prepares status/waiting filters and deterministic attention with source records", () => {
+    const step = { id: "step-a", acquisitionCaseId: "case-a", stepDefinitionId: "orientation", required: true, state: "blocked", assignedTo: null, dueAt: utc("2026-03-10T00:00:00Z"), completedAt: null, completedBy: null, evidenceRef: null, blockerCode: "missing-evidence", recordedAt: utc("2026-02-10T00:00:00Z"), provenance: "synthetic-demo" };
+    const view = prepareRecruitingWorkspace(snapshot({ onboardingSteps: [step] }), context("LAX"));
+    expect(view.statusFilterCounts.find((item) => item.status === "Onboarding")).toMatchObject({ count: 1, acquisitionCaseIds: ["case-a"] });
+    expect(view.waitingOnFilterOptions).toEqual([{ key: "unowned", label: "Unowned action", count: 1, acquisitionCaseIds: ["case-a"], actionRecords: [{ kind: "onboarding-step", id: "step-a" }] }]);
+    expect(view.attentionItems).toHaveLength(1);
+    expect(view.attentionItems[0]).toMatchObject({ acquisitionCaseId: "case-a", nextAction: "Complete orientation: Blocked: missing-evidence", contributingRecords: [{ kind: "acquisition-case", id: "case-a" }, { kind: "lifecycle-event", id: "event-onboard" }, { kind: "onboarding-step", id: "step-a" }] });
+    expect(view.focusCondition).toBe(view.attentionItems[0]!.finding);
   });
 });
