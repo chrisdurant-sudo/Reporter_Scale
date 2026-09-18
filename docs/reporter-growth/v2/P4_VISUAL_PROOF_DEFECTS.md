@@ -35,6 +35,23 @@ returned `P4_VISUAL_PROOF_READY`, `npm run verify:p4:visual` passed, the coordin
 accepted the locked-reference comparison, and the manifest proves the complete viewport/state matrix.
 The full `npm run verify:p4` command remains the post-integration Quality/Reviewer gate.
 
+## P4.2 assembled workspace disposition
+
+The first assembled proof at `8c331d5d85816ec282597a099bc12187add1d7e4` was rejected after direct
+review found generic “All markets” Focus badges on Reporters, Team, and Programs and no visible
+Programs target-met label. That rejected local proof is preserved at
+`/private/tmp/steno-p4-rejected-8c331d5d` and is not part of the accepted artifact set.
+
+The repaired exact source commit is `1e03a5d538b64bb647bafa01dcacab7fa869ea45`. Its committed manifest
+at `docs/reporter-growth/v2/design-lock/candidate/1e03a5d538b64bb647bafa01dcacab7fa869ea45/manifest.json`
+records 37 unique checksum-valid screenshots, and its interaction record contains 15 passing
+interactions with empty console and page error lists. The proof includes real 390×844 states and was
+captured in Playwright Chromium 153.0.8010.12 at `http://127.0.0.1:5174/`.
+
+The Experience Lead returned `P4_WORKSPACE_VISUAL_PROOF_READY`; the coordinator independently
+accepted the locked-reference comparison. VP09, VP11, and VP12 remain mandatory Quality obligations:
+the stale browser and cross-workspace suites must be adopted or replaced and pass without waiver.
+
 ## Verification record
 
 | Defect | P4.1 disposition | Exact evidence |

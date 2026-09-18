@@ -39,10 +39,10 @@
   "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",
   "implementation_active": true,
   "fanout_authorized": true,
-  "current_phase": "P4.2_workspace_wave",
+  "current_phase": "P4.3_integration",
   "current_candidate": {
-    "commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
-    "status": "accepted_shared_presentation_baseline",
+    "commit": "1e03a5d538b64bb647bafa01dcacab7fa869ea45",
+    "status": "accepted_p4_2_workspace_candidate",
     "preview_url": "http://127.0.0.1:5174/",
     "preview_status": "online_verified",
     "preview_process": {
@@ -63,16 +63,16 @@
       "passed": [
         "lint",
         "typecheck",
-        "unit: 22 files / 119 tests",
+        "unit/integration: 24 files / 130 tests",
         "production build",
-        "acceptance reconciliation: 4 tests"
+        "required Experience checks"
       ],
       "failed": [],
       "deferred_quality_findings": [
         "The Quality-owned cross-workspace suite has 5 stale UI scenarios that wait for a superseded P3 Overview heading; its 4 reconciliation tests pass.",
         "The Quality-owned browser suite still targets P3 navigation and contains the prohibited 390px waiver."
       ],
-      "scope_note": "P4.1 baseline means lint, types, unit/integration tests owned by the active implementation lanes, and a production build. Quality-owned cross-workspace and browser suites are recorded now but repaired and replayed only after the integrated P4.2 candidate, as required by the approved routing."
+      "scope_note": "The accepted P4.2 workspace candidate passes lint, types, all 24 registered unit/integration files with 130 tests, the production build, and required Experience checks. Quality-owned cross-workspace and browser suites remain recorded for adoption or replacement by the independent Quality lane."
     },
     "browser": {
       "status": "passed",
@@ -122,13 +122,25 @@
       "blocking_conditions": []
     },
     "workspace_wave": {
-      "status": "authorized",
+      "status": "passed",
       "frozen_shared_baseline": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
-      "reason": "Exact Overview/Funnel visual proof is accepted; only the Lead plus the three registered presentation specialists may run."
+      "accepted_commit": "1e03a5d538b64bb647bafa01dcacab7fa869ea45",
+      "artifact_manifest": "docs/reporter-growth/v2/design-lock/candidate/1e03a5d538b64bb647bafa01dcacab7fa869ea45/manifest.json",
+      "interaction_proof": "docs/reporter-growth/v2/design-lock/candidate/1e03a5d538b64bb647bafa01dcacab7fa869ea45/interactions.json",
+      "lead_disposition": "P4_WORKSPACE_VISUAL_PROOF_READY",
+      "coordinator_disposition": "accepted_after_independent_locked-reference_comparison",
+      "route": "http://127.0.0.1:5174/",
+      "browser": "Playwright Chromium 153.0.8010.12",
+      "artifact_count": 37,
+      "interaction_count": 15,
+      "console_errors": 0,
+      "page_errors": 0,
+      "waiver_allowed": false,
+      "reason": "The Lead and coordinator accepted the repaired exact-commit Reporters, Team, and Programs proof after direct locked-reference comparison. All required desktop, tablet, and 390×844 states are checksum-valid; all interactions passed without browser errors or waivers."
     },
     "quality": {
       "status": "blocked",
-      "reason": "The bounded P4.2 workspace wave and coordinator integration are not complete. Quality must then adopt or replace its stale P3 UI/browser scenarios before its gate can pass."
+      "reason": "The P4.3 evidence ledger and integration freeze must pass governance before Quality is dispatched. Quality must then adopt or replace its stale P3 UI/browser scenarios before its gate can pass."
     },
     "reviewer": {
       "status": "blocked",
@@ -152,6 +164,46 @@
       "acceptance_evidence_status": "passed",
       "visual_evidence_status": "passed",
       "disposition": "P4_VISUAL_PROOF_READY_accepted_shared_baseline_frozen"
+    },
+    "experience_reporters": {
+      "base_commit": "3a659eaa2c3d1c1d63022d499c5e00599caf17a1",
+      "handoff_commit": "0856bda7a3978855f38794e19ee31564c7fbb08c",
+      "integrated_commit": "f84f9a192b1f6009148e14cdd64b235a3c6f174d",
+      "boundary_status": "passed",
+      "acceptance_evidence_status": "passed",
+      "visual_evidence_status": "lead_reviewed_and_accepted",
+      "disposition": "integrated"
+    },
+    "experience_team": {
+      "base_commit": "e28bd5ec85d1280ff0428cde0a7fd44eb012ae04",
+      "handoff_commit": "c0bb4ca8f7cc5f93881e69d23b0b804d84fa5f7b",
+      "integrated_commit": "2291b3cb166229f9dd308d58aa83ca464487fb96",
+      "boundary_status": "passed",
+      "acceptance_evidence_status": "passed",
+      "visual_evidence_status": "lead_reviewed_and_accepted",
+      "disposition": "integrated"
+    },
+    "experience_programs": {
+      "base_commit": "60831a3ec1c7133eb7dd286f326f8e7389058136",
+      "handoff_commit": "b1a47d0fcf9af76097de3985a560d1a997d1df0f",
+      "integrated_commit": "1e03a5d538b64bb647bafa01dcacab7fa869ea45",
+      "repair_base_commit": "8c331d5d85816ec282597a099bc12187add1d7e4",
+      "boundary_status": "passed",
+      "acceptance_evidence_status": "passed",
+      "visual_evidence_status": "lead_reviewed_and_accepted_after_target_label_repair",
+      "disposition": "integrated"
+    },
+    "team_logic_support": {
+      "integrated_commit": "85e62f41b17992a1ab0a048fe1875b4b9827793f",
+      "disposition": "integrated_contract_change"
+    },
+    "network_logic_support": {
+      "integrated_commit": "3a659eaa2c3d1c1d63022d499c5e00599caf17a1",
+      "disposition": "integrated_contract_change"
+    },
+    "programs_logic_support": {
+      "integrated_commit": "60831a3ec1c7133eb7dd286f326f8e7389058136",
+      "disposition": "integrated_contract_change"
     }
   },
   "known_ownership_exceptions": [

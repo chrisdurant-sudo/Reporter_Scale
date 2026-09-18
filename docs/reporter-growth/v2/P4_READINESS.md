@@ -1,11 +1,13 @@
 # P4 implementation readiness
 
-> **Execution update (2026-09-18):** Exact Overview/Funnel visual proof was accepted for
-> `e33ee8d1a70a7f103eaf67354aa98139c1fd20a7` with the complete checksum-valid 13-state matrix and
-> passing interaction record. The shared presentation baseline is frozen and the bounded P4.2
-> Lead-plus-three-specialist workspace wave is authorized. Quality and Reviewer remain gated.
+> **Execution update (2026-09-18):** The shared Overview/Funnel baseline remains frozen at
+> `e33ee8d1a70a7f103eaf67354aa98139c1fd20a7`. The assembled Reporters, Team, and Programs proof for
+> exact source commit `1e03a5d538b64bb647bafa01dcacab7fa869ea45` is now accepted: all 37
+> checksum-valid screenshots and all 15 interactions passed in Playwright Chromium 153.0.8010.12,
+> including real 390×844 states, with no console or page errors and no waiver. P4.3 integration is
+> frozen for governance; Quality and Reviewer remain gated.
 
-Status: **IMPLEMENTATION ACTIVE — P4.2 BOUNDED WORKSPACE WAVE**
+Status: **IMPLEMENTATION ACTIVE — P4.3 INTEGRATION FREEZE**
 
 Prepared: September 17, 2026
 
@@ -35,25 +37,22 @@ The correction is now explicit:
   `npm run verify:p4` also runs lint, types, unit, build, acceptance, and browser suites for the
   post-integration Quality/Reviewer gate. P4.1 uses `npm run verify:p4:visual` and its artifact matrix.
 
-The takeover recheck confirmed the need for the full command: lint, types, 114 unit tests, and the
-build passed, while all five cross-workspace integration tests failed because they still waited for
-an obsolete Overview heading. The former routine command did not run that suite, so it could report
-green while the future Quality suite was stale. That finding is now recorded in the execution
-ledger for the Quality-owned phase. It does not start Quality early or create a circular dependency
-before P4.2; the current visual transition remains blocked by missing browser evidence.
+The takeover recheck confirmed the need for the full command: lint, types, and the build passed,
+while the Quality-owned cross-workspace and browser scenarios were stale. The integrated P4.2
+candidate now passes all 24 registered unit/integration files with 130 tests plus the required
+Experience checks and production build. The stale Quality suites remain recorded for explicit
+adoption or replacement by the independent Quality lane; they are not waived.
 
 The takeover also found that the prior active worktrees were nested below `node_modules/`. Current
 Node rejects TypeScript Playwright configuration and test files from that path before executing a
 single assertion. Active worktrees must now live outside `node_modules`; they may use a symlink to the
 shared dependency directory. The phase verifier enforces the location rule.
 
-From the corrected `/private/tmp` worktree, Playwright now loads the configuration and discovers all
-eight desktop/mobile tests. Installed Chrome still aborts at launch under the host policy before an
-assertion runs, with process cleanup denied by `EPERM`. The ledger records this as an environment
-block, not a pass and not a waiver; browser proof must be rerun in an allowed local browser runtime.
-
-The preview is therefore a repair candidate. It must not be represented as P4-complete, and its
-existence does not authorize specialist fan-out.
+From the corrected `/private/tmp` worktree, earlier Vite `EPERM` and Chrome/Brave `SIGABRT` attempts
+were retained as failures rather than waived. The exact-commit proof later completed in Playwright
+Chromium 153.0.8010.12 against `http://127.0.0.1:5174/`, with all 37 screenshots, all 15 interactions,
+and empty console/page error lists. This accepts P4.2 visual integration only; it is not a Quality or
+Reviewer pass and does not make P4 complete.
 
 ## Readiness decision
 

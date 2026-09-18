@@ -24,6 +24,20 @@ serving a local preview does not satisfy this gate.
   wave is authorized. Quality and Reviewer remain blocked until their ordered phases.
 - The active defect register is `docs/reporter-growth/v2/P4_VISUAL_PROOF_DEFECTS.md`.
 
+## P4.2 assembled workspace proof
+
+- The assembled Reporters, Team, and Programs source candidate is exact commit
+  `1e03a5d538b64bb647bafa01dcacab7fa869ea45`. Its proof manifest is
+  `docs/reporter-growth/v2/design-lock/candidate/1e03a5d538b64bb647bafa01dcacab7fa869ea45/manifest.json`
+  and its interaction record is in the same directory.
+- The proof contains 37 unique checksum-valid artifacts covering all required 1440×900, 1024×768,
+  768×1024, and 390×844 workspace states plus Reporters Activity/filter/action feedback, Team Add
+  Work/work-added/Goals, and Programs Results/filter/text-persistence states.
+- All 15 interaction proofs passed in Playwright Chromium 153.0.8010.12 at
+  `http://127.0.0.1:5174/`; browser console and page error lists are empty.
+- The Experience Lead returned `P4_WORKSPACE_VISUAL_PROOF_READY`, and the coordinator independently
+  accepted the repaired locked-reference comparison. Quality remains a separate no-waiver gate.
+
 ## Evidence required for acceptance
 
 The Experience Lead must capture the exact candidate commit against the references in

@@ -4,7 +4,7 @@
   "routing_active": true,
   "fanout_authorized": true,
   "implementation_active": true,
-  "current_phase": "P4.2_workspace_wave",
+  "current_phase": "P4.3_integration",
   "execution_state": "docs/reporter-growth/v2/P4_EXECUTION_STATE.json",
   "execution_model": "serial_gates_with_bounded_parallel_workspace_wave",
   "transition_control": {
@@ -30,7 +30,7 @@
     ],
     "applies_to": "every_routed_probe_and_worker_spawn"
   },
-  "routing_verification_status": "authorized_bounded_workspace_wave_after_visual_acceptance",
+  "routing_verification_status": "p4_2_workspace_proof_accepted_integration_frozen",
   "source_contract_commit": "19f7df98000e346a5b4ff32e00b699276c3f62fb",
   "prepared_against_commit": "c4f304c376ca631d88c694f519f76ec316f12a13",
   "implementation_requires": [
