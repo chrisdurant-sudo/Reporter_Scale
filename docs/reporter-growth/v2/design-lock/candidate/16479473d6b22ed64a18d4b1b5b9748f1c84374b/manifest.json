@@ -1,0 +1,496 @@
+{
+  "schema_version": 1,
+  "kind": "p4_assembled_visual_proof_manifest",
+  "captured_from_commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+  "captured_at": "2026-09-18T08:32:22.110Z",
+  "route": "http://127.0.0.1:5174/",
+  "browser": {
+    "name": "Playwright Chromium",
+    "version": "153.0.8010.12",
+    "headless": true
+  },
+  "interaction_proof": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/interactions.json",
+  "artifacts": [
+    {
+      "id": "overview_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/overview_1440x900.png",
+      "sha256": "e2ca6f049488f65788765aaaa4363d2ea2af5468a5927476c6dd3061f788d116",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "full_page": false,
+      "state": "Overview; market=ALL; view=Trends; projection=on"
+    },
+    {
+      "id": "funnel_people_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/funnel_people_1440x900.png",
+      "sha256": "ab43c4e9e85a8270d8a9a59c671bdd88fbcd6730a2b2475d9e9df52feb9dcba2",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "full_page": false,
+      "state": "Funnel; market=ALL; mode=People; range=R7; chartStatus=Onboarding; statusFilters=all"
+    },
+    {
+      "id": "funnel_bottlenecks_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/funnel_bottlenecks_1440x900.png",
+      "sha256": "a6cdcab9a0f0264f12e69fd77815b3a51ad7c1c5a4e5510a1973d70b6ed2ea6b",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "full_page": false,
+      "state": "Funnel; market=ALL; mode=Bottlenecks"
+    },
+    {
+      "id": "reporters_ready_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/reporters_ready_1440x900.png",
+      "sha256": "98b60f343ed320878406992557aa8d10534816767c3fcde6adf9f86dad3dc3a3",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "full_page": false,
+      "state": "Reporters; market=ALL; view=Ready; filters=all"
+    },
+    {
+      "id": "team_work_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/team_work_1440x900.png",
+      "sha256": "13b37a75413eee5fb569b08c6a9502757d7818ec666fdfcf9f56658680b1f663",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "full_page": false,
+      "state": "Team; market=ALL; view=Work; Add work=closed"
+    },
+    {
+      "id": "programs_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/programs_1440x900.png",
+      "sha256": "148aa6a275e7bc184fa3ea149ec2de0c169a1ea16cfc296c379437878981ed5a",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "full_page": false,
+      "state": "Programs; market=ALL; view=Programs; filters=all"
+    },
+    {
+      "id": "overview_1024x768",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/overview_1024x768.png",
+      "sha256": "e4b843ae15e15467fb086a47b12621cebe466fb5e25509b436e39fb3430bf614",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "full_page": false,
+      "state": "Overview; market=ALL; view=Trends; projection=on"
+    },
+    {
+      "id": "funnel_people_1024x768",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/funnel_people_1024x768.png",
+      "sha256": "5a123e0e2579daac1e15ad481bc30e8ad14abe0927c32ccc5f3a45a2dcbbabe9",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "full_page": false,
+      "state": "Funnel; market=ALL; mode=People; range=R7; chartStatus=Onboarding; statusFilters=all"
+    },
+    {
+      "id": "funnel_bottlenecks_1024x768",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/funnel_bottlenecks_1024x768.png",
+      "sha256": "79681cab2014085752dff2a5850e1dcdbf84d192cc418bbf33c8767900a93785",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "full_page": false,
+      "state": "Funnel; market=ALL; mode=Bottlenecks"
+    },
+    {
+      "id": "reporters_ready_1024x768",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/reporters_ready_1024x768.png",
+      "sha256": "57f79232ef790f0884deb726bea20b7ca369439156d7f9fbeec88c6c2d5015fe",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "full_page": false,
+      "state": "Reporters; market=ALL; view=Ready; filters=all"
+    },
+    {
+      "id": "team_work_1024x768",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/team_work_1024x768.png",
+      "sha256": "4d208d70a35d5e9fde67d7bf6b9a6d731f7d9906c38e0972cec1203177d33f27",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "full_page": false,
+      "state": "Team; market=ALL; view=Work; Add work=closed"
+    },
+    {
+      "id": "programs_1024x768",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/programs_1024x768.png",
+      "sha256": "010f13f710d55267506a2e5fdf70c5fb5c0d9b3f5953707d6d75a81ca6329d19",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "full_page": false,
+      "state": "Programs; market=ALL; view=Programs; filters=all"
+    },
+    {
+      "id": "overview_768x1024",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/overview_768x1024.png",
+      "sha256": "a8727ec12e7a77131cd92747564311106e3eb7304c631f82db4c2bd1cea91af4",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "full_page": false,
+      "state": "Overview; market=ALL; view=Trends; projection=on"
+    },
+    {
+      "id": "funnel_people_768x1024",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/funnel_people_768x1024.png",
+      "sha256": "f279529cad46a70caa48df61af04ae277d467cedb402acc61cc82cd8a3207637",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "full_page": false,
+      "state": "Funnel; market=ALL; mode=People; range=R7; chartStatus=Onboarding; statusFilters=all"
+    },
+    {
+      "id": "funnel_bottlenecks_768x1024",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/funnel_bottlenecks_768x1024.png",
+      "sha256": "17b3db9d739e40e87fca6073dc541bef797e776e4813aae8b8c0219ae8c4f513",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "full_page": false,
+      "state": "Funnel; market=ALL; mode=Bottlenecks"
+    },
+    {
+      "id": "reporters_ready_768x1024",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/reporters_ready_768x1024.png",
+      "sha256": "ff0c5eadfb1c5901bb3ae0cc3f65300493ec24279ef469dbd4636047bc7391b5",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "full_page": false,
+      "state": "Reporters; market=ALL; view=Ready; filters=all"
+    },
+    {
+      "id": "team_work_768x1024",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/team_work_768x1024.png",
+      "sha256": "0384a0acb26d2be6d568127643faabf60ae8a02b383f2b6ffe4e899c450f79d3",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "full_page": false,
+      "state": "Team; market=ALL; view=Work; Add work=closed"
+    },
+    {
+      "id": "programs_768x1024",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/programs_768x1024.png",
+      "sha256": "1962cfbdf637e82baec6874c2ae543b2bfcbbed76956e28ef57e40e4675ddb22",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "full_page": false,
+      "state": "Programs; market=ALL; view=Programs; filters=all"
+    },
+    {
+      "id": "overview_390x844",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/overview_390x844.png",
+      "sha256": "671def96965a1933f20e699c1fa96094cf270f7ecb5db0c53d25519f834368d9",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "full_page": false,
+      "state": "Overview; market=ALL; view=Trends; projection=on"
+    },
+    {
+      "id": "funnel_people_390x844",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/funnel_people_390x844.png",
+      "sha256": "86a3415d260f25fb8a4f2d484586b37bd92e11d7f9f8a26bb47943266956e21b",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "full_page": false,
+      "state": "Funnel; market=ALL; mode=People; range=R7; chartStatus=Onboarding; statusFilters=all"
+    },
+    {
+      "id": "funnel_bottlenecks_390x844",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/funnel_bottlenecks_390x844.png",
+      "sha256": "f23358d0f784d3272ef8c8107f2aeb49026ff75e0c4498efcc3f5f1d947e6069",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "full_page": false,
+      "state": "Funnel; market=ALL; mode=Bottlenecks"
+    },
+    {
+      "id": "reporters_ready_390x844",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/reporters_ready_390x844.png",
+      "sha256": "b18b8283ba9ea6b269cf6709a00eef7a014bc6110650bbfb89008eb873679c2a",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "full_page": false,
+      "state": "Reporters; market=ALL; view=Ready; filters=all"
+    },
+    {
+      "id": "team_work_390x844",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/team_work_390x844.png",
+      "sha256": "d391157a8add0437025a22d4b2dd99cbe39fce5c9b3ffa9d506882fee3217907",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "full_page": false,
+      "state": "Team; market=ALL; view=Work; Add work=closed"
+    },
+    {
+      "id": "programs_390x844",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/programs_390x844.png",
+      "sha256": "065efa31784ebabcb2061267a2eae9581dcd78055e5495f10dcdb4fb95ea380a",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "full_page": false,
+      "state": "Programs; market=ALL; view=Programs; filters=all"
+    },
+    {
+      "id": "funnel_sla_editor",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/funnel_sla_editor.png",
+      "sha256": "0ec4e20cbf6e2960330338a02008dbfe47298ef0f709a1503d91492cced90dc8",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "full_page": false,
+      "state": "Funnel; market=ALL; mode=People; SLA editor=open; values=default"
+    },
+    {
+      "id": "reporters_full_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/reporters_full_1440x900.png",
+      "sha256": "7439d3144da4edc6e10d7b13cf618cc15744bdb997e0449a0d2f748b540fe4e1",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "full_page": true,
+      "state": "Reporters; market=ALL; default view; full composition"
+    },
+    {
+      "id": "team_full_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/team_full_1440x900.png",
+      "sha256": "164a5fb673053a6fbd7b2b0e4166a5e13ebd779f4dd45bd17e89a6a44802a0db",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "full_page": true,
+      "state": "Team; market=ALL; default view; full composition"
+    },
+    {
+      "id": "programs_full_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/programs_full_1440x900.png",
+      "sha256": "dbe26441e2b919f1e40e21b1d18c14e4d6396a7118799d84e418eedd333e0266",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "full_page": true,
+      "state": "Programs; market=ALL; default view; full composition"
+    },
+    {
+      "id": "reporters_activity_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/reporters_activity_1440x900.png",
+      "sha256": "173e66a5461b0fa4ad17f52fa0cc828e1548e6363634648b3ac28bffc4c54fd5",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "full_page": false,
+      "state": "Reporters; market=ALL; view=Activity; filters=all"
+    },
+    {
+      "id": "reporters_filtered_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/reporters_filtered_1440x900.png",
+      "sha256": "d7a4873fce97cb27fe7602699db0d06f4d377985f6812e268ee6764fe4c01f3f",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "full_page": false,
+      "state": "Reporters; market=ALL; view=Ready; search=LAX"
+    },
+    {
+      "id": "reporters_action_feedback_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/reporters_action_feedback_1440x900.png",
+      "sha256": "43c2f3e268f7f4e3ac812578eaeaf22fbc1b35cf20cc9651e662a236c0209ef5",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "full_page": false,
+      "state": "Reporters; re-engagement task requested; bounded feedback visible"
+    },
+    {
+      "id": "team_add_work_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/team_add_work_1440x900.png",
+      "sha256": "acfff07890dcd15c30c009934827ecf76154fcc412d512ebe9fd236ab5eac2f7",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "full_page": false,
+      "state": "Team; view=Work; Add work=open"
+    },
+    {
+      "id": "team_work_added_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/team_work_added_1440x900.png",
+      "sha256": "1b1a4b52f3e147678461ddd3eabe8314f141b84e81bf5e0b563ec55a4e68047a",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "full_page": false,
+      "state": "Team; view=Work; canonical work added in In progress"
+    },
+    {
+      "id": "team_goals_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/team_goals_1440x900.png",
+      "sha256": "8a6b4741b3128ec970c128d5fa4ba0947d1cef90d3058691686801cfb451a739",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "full_page": false,
+      "state": "Team; view=Goals"
+    },
+    {
+      "id": "programs_results_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/programs_results_1440x900.png",
+      "sha256": "575c01ec6e827b87691bfad1533d8ccfde6f8acb4d86dd971b57170154071863",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "full_page": false,
+      "state": "Programs; market=ALL; view=Results"
+    },
+    {
+      "id": "programs_filtered_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/programs_filtered_1440x900.png",
+      "sha256": "2bf2a9d733b5180080c30d8986a4386c43c1ae40ab635bdb83637cb6e07728d5",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "full_page": false,
+      "state": "Programs; market=ALL; view=Programs; search=DFW"
+    },
+    {
+      "id": "programs_text_saved_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/programs_text_saved_1440x900.png",
+      "sha256": "088c46dba1e73d0ce8c50be71982747552bbbe89889ed21c809ad3f60f193970",
+      "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "full_page": false,
+      "state": "Programs; note and next step persisted after workspace remount"
+    }
+  ]
+}
