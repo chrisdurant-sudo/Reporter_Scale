@@ -39,6 +39,7 @@ function view(growthGoal: PreparedMarketsView["growthGoal"]): PreparedMarketsVie
     marketRows: [],
     growthGoal,
     originalPlan: { status: "unavailable", requestIds: [], completedRequests: null, firstJobs: null, evidence: [], limitation: "No frozen request set." },
+    overview: { kpis: { marketCount: { value: 0, source: {} as never }, availableReporters: { value: 0, source: {} as never }, openSlots: { value: 0, source: {} as never }, projectedAdditionalNeed: { value: null, forecastPointAt: null, source: {} as never, rule: "test" } }, focus: { condition: "no-current-work", finding: "No current work.", nextAction: "Inspect work.", source: {} as never }, attention: [] },
     limitations: [],
   };
 }

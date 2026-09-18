@@ -237,6 +237,13 @@ textarea {
   outline-offset: 2px;
 }
 
+.rg-chart__line--availableSupply { stroke:#193b6b; }
+.rg-chart__line--neededSupply { stroke:#2d7d60; }
+.rg-chart__line--forecast { stroke-dasharray:3 2; }
+.rg-chart__sla { stroke:#93651d; stroke-width:.8; stroke-dasharray:2 2; }
+.status-filters { display:flex; flex-wrap:wrap; gap:var(--space-2); padding:0 var(--space-3) var(--space-3); }
+.process-note { display:grid; gap:var(--space-1); max-width:28rem; }
+
 /* V2 foundations are isolated from the preserved V1 shell until integration selects them. */
 .v2-shell { width: min(100%, calc(var(--content-max) + 3rem)); margin: 0 auto; padding: var(--space-6); }
 .v2-shell__header { display: flex; justify-content: space-between; align-items: start; gap: var(--space-4); }
