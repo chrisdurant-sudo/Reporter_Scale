@@ -35,6 +35,11 @@ describe("ProgramsScreen", () => {
     fireEvent.click(screen.getByRole("button", { name: "Why this?" }));
     expect(actions.onOpenEvidence).toHaveBeenCalledWith("evidence-pilot");
     expect(screen.getAllByText("Jan 1–Jan 10").length).toBeGreaterThan(0);
-    expect(screen.getAllByText("Target met").length).toBeGreaterThan(0);
+    const targetMetLabels = screen.getAllByText("Target met");
+    expect(targetMetLabels.length).toBeGreaterThan(0);
+    for (const label of targetMetLabels) {
+      expect(label).toHaveAttribute("text-anchor", "end");
+      expect(Number(label.getAttribute("x"))).toBeLessThanOrEqual(96);
+    }
   });
 });
