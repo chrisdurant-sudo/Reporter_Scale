@@ -54,7 +54,7 @@ export interface WorkAssignPayload {
 
 export interface WorkCreatePayload {
   readonly title: string;
-  readonly ownerId: TeamMemberId;
+  readonly ownerId: TeamMemberId | null;
   readonly status: Exclude<WorkItemStatus, "canceled">;
   readonly domain: WorkOwnershipDomain;
   readonly programId: ProgramId | null;
