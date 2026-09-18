@@ -1,6 +1,11 @@
 # P4 implementation readiness
 
-Status: **IMPLEMENTATION ACTIVE — P4.1 VISUAL PROOF REPAIR; FAN-OUT BLOCKED**
+> **Execution update (2026-09-18):** Exact Overview/Funnel visual proof was accepted for
+> `e33ee8d1a70a7f103eaf67354aa98139c1fd20a7` with the complete checksum-valid 13-state matrix and
+> passing interaction record. The shared presentation baseline is frozen and the bounded P4.2
+> Lead-plus-three-specialist workspace wave is authorized. Quality and Reviewer remain gated.
+
+Status: **IMPLEMENTATION ACTIVE — P4.2 BOUNDED WORKSPACE WAVE**
 
 Prepared: September 17, 2026
 

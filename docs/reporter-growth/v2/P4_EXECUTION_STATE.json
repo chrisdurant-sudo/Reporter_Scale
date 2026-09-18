@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-17",
+  "updated_at": "2026-09-18",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
-    "scope": "Coordinator takeover, process repair, and P4 visual-proof repair before any P4.2 presentation fan-out.",
+    "scope": "Coordinator takeover, process repair, P4 visual-proof acceptance, and the bounded P4.2 presentation workspace wave.",
     "source": "Explicit user instruction in the active coordinator task"
   },
   "authorized_contract_changes": [
@@ -23,14 +23,17 @@
   "implementation_base_commit": "8b85d4aafa2317be848e01caf47d8b6f92efa674",
   "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",
   "implementation_active": true,
-  "fanout_authorized": false,
-  "current_phase": "P4.1_visual_proof_repair",
+  "fanout_authorized": true,
+  "current_phase": "P4.2_workspace_wave",
   "current_candidate": {
-    "commit": "29735a174028795b107c07d75aa7a58a32aeec05",
-    "status": "not_accepted_pending_visual_reproof",
+    "commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
+    "status": "accepted_shared_presentation_baseline",
     "preview_url": "http://127.0.0.1:5174/",
-    "preview_status": "blocked_environment",
-    "preview_failure": "The prior preview process stopped, and the managed command environment denied a replacement Vite listener on 127.0.0.1:5174 with EPERM.",
+    "preview_status": "online_verified",
+    "preview_process": {
+      "pid": 81713,
+      "cwd": "/private/tmp/steno-p4-coordinator"
+    },
     "defect_register": "docs/reporter-growth/v2/P4_VISUAL_PROOF_DEFECTS.md"
   },
   "gates": {
@@ -41,11 +44,11 @@
     },
     "baseline": {
       "status": "passed",
-      "verified_at": "2026-09-17",
+      "verified_at": "2026-09-18",
       "passed": [
         "lint",
         "typecheck",
-        "unit: 21 files / 117 tests",
+        "unit: 22 files / 119 tests",
         "production build",
         "acceptance reconciliation: 4 tests"
       ],
@@ -57,15 +60,20 @@
       "scope_note": "P4.1 baseline means lint, types, unit/integration tests owned by the active implementation lanes, and a production build. Quality-owned cross-workspace and browser suites are recorded now but repaired and replayed only after the integrated P4.2 candidate, as required by the approved routing."
     },
     "browser": {
-      "status": "blocked_environment",
-      "runner_status": "Playwright configuration and all 8 tests load from the corrected /private/tmp worktree.",
-      "failure": "Both installed Chromium runtimes, Google Chrome and Brave Browser, exit with SIGABRT before a page opens; the host also denies Chrome process cleanup with EPERM.",
+      "status": "passed",
+      "runner_status": "The exact-commit proof runner completed in Playwright Chromium 153.0.8010.12 from the verified /private/tmp coordinator preview.",
+      "evidence": "docs/reporter-growth/v2/design-lock/candidate/e33ee8d1a70a7f103eaf67354aa98139c1fd20a7/interactions.json",
+      "result": "All required P4.1 interactions passed; the complete 390×844 matrix was captured; browser console and page error lists are empty.",
       "waiver_allowed": false
     },
     "visual_proof": {
-      "status": "repair_required",
-      "candidate_commit": "29735a174028795b107c07d75aa7a58a32aeec05",
-      "accepted_commit": null,
+      "status": "accepted",
+      "candidate_commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
+      "accepted_commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
+      "accepted_at": "2026-09-18",
+      "artifact_manifest": "docs/reporter-growth/v2/design-lock/candidate/e33ee8d1a70a7f103eaf67354aa98139c1fd20a7/manifest.json",
+      "lead_disposition": "P4_VISUAL_PROOF_READY",
+      "coordinator_disposition": "accepted_after_independent_locked-reference_comparison",
       "required_artifact_ids": [
         "overview_1440x900",
         "overview_1024x768",
@@ -81,23 +89,31 @@
         "funnel_bottlenecks_390x844",
         "funnel_sla_editor"
       ],
-      "candidate_artifacts": [],
-      "blocking_conditions": [
-        "SD06 and the complete SD07 identity repair are integrated, so all prior candidate screenshots are invalid and visual proof must be recaptured from commit 29735a1 or a descendant with identical data.",
-        "The current candidate has no versioned candidate screenshot matrix.",
-        "The repaired shell, Overview, and Funnel have not yet been directly compared against the fixed screenshots in a runnable browser.",
-        "Interactive controls and filters pass focused component and integrated app tests, but have not been proven legible at every required viewport.",
-        "The legacy 390px browser-test waiver has not been replaced by a real mobile assertion.",
-        "The corrected browser runner loads the suite, but this host aborts both Chrome and Brave before assertions; browser proof remains blocked, not waived."
-      ]
+      "candidate_artifacts": [
+        "overview_1440x900",
+        "overview_1024x768",
+        "overview_768x1024",
+        "overview_390x844",
+        "funnel_people_1440x900",
+        "funnel_people_1024x768",
+        "funnel_people_768x1024",
+        "funnel_people_390x844",
+        "funnel_bottlenecks_1440x900",
+        "funnel_bottlenecks_1024x768",
+        "funnel_bottlenecks_768x1024",
+        "funnel_bottlenecks_390x844",
+        "funnel_sla_editor"
+      ],
+      "blocking_conditions": []
     },
     "workspace_wave": {
-      "status": "blocked",
-      "reason": "P4_VISUAL_PROOF_READY has not been accepted for an exact commit."
+      "status": "authorized",
+      "frozen_shared_baseline": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
+      "reason": "Exact Overview/Funnel visual proof is accepted; only the Lead plus the three registered presentation specialists may run."
     },
     "quality": {
       "status": "blocked",
-      "reason": "The visual-proof gate and P4.2 integration are incomplete. Quality must then adopt or replace its stale P3 UI/browser scenarios before its gate can pass."
+      "reason": "The bounded P4.2 workspace wave and coordinator integration are not complete. Quality must then adopt or replace its stale P3 UI/browser scenarios before its gate can pass."
     },
     "reviewer": {
       "status": "blocked",
@@ -114,12 +130,13 @@
       "disposition": "integrated"
     },
     "experience": {
-      "base_commit": "dd1e9df458fc8c84d248d040d78d3628938e6c0a",
-      "handoff_commit": "5d632ea0aef5852935d458cd48e4a1d3eafa303f",
+      "base_commit": "dc408b017629b3ec16dcd511bccd85adbed3e0f8",
+      "handoff_commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
+      "integrated_commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
       "boundary_status": "passed",
-      "acceptance_evidence_status": "unit_passed_full_acceptance_blocked",
-      "visual_evidence_status": "missing",
-      "disposition": "repair_integrated_pending_visual_proof"
+      "acceptance_evidence_status": "passed",
+      "visual_evidence_status": "passed",
+      "disposition": "P4_VISUAL_PROOF_READY_accepted_shared_baseline_frozen"
     }
   },
   "known_ownership_exceptions": [
@@ -141,12 +158,16 @@
     "scripts/",
     "src/data/",
     "src/features/markets/",
+    "src/features/programs/",
     "src/features/recruiting/",
+    "src/features/reporters/",
+    "src/features/team/",
     "src/integration/",
     "src/logic/capacity/",
     "src/logic/recruiting/",
     "src/shell/",
     "src/styles/",
+    "src/ui/",
     "tests/acceptance/"
   ]
 }

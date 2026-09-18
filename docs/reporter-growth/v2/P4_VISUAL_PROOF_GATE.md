@@ -6,13 +6,22 @@ serving a local preview does not satisfy this gate.
 
 ## Current disposition
 
-- The assembled coordinator candidate at `29735a174028795b107c07d75aa7a58a32aeec05` is **not accepted**.
-- SD01–SD07 are integrated and passed; screenshot proof must use this data commit or a descendant
-  with identical source records.
-- `http://127.0.0.1:5174/` is the intended repair preview URL, not a completed P4 experience. The
-  managed command environment currently denies the Vite socket bind with `EPERM`, so the ledger marks
-  the preview offline until it is restarted from an unrestricted local shell.
-- P4.2 specialist work, Quality, and Reviewer remain blocked.
+- The coordinator accepted exact candidate `e33ee8d1a70a7f103eaf67354aa98139c1fd20a7`
+  for P4.1 after the Experience Lead returned `P4_VISUAL_PROOF_READY` and the coordinator completed
+  an independent comparison with the locked interactive and screenshot references.
+- SD01–SD07 remain integrated and passed. The accepted proof contains all 13 required artifacts,
+  captured from the clean exact commit at `http://127.0.0.1:5174/` in Playwright Chromium
+  153.0.8010.12.
+- The manifest is
+  `docs/reporter-growth/v2/design-lock/candidate/e33ee8d1a70a7f103eaf67354aa98139c1fd20a7/manifest.json`;
+  its image checksums were independently verified.
+- Market selection, Overview controls, workspace navigation, Funnel range/status controls, status
+  filtering, Bottlenecks mode, per-market immediate SLA recomputation, and synthetic disclosure all
+  passed. Browser console and page error lists are empty.
+- The 390×844 Overview, Funnel People, and Funnel Bottlenecks artifacts are real captures; mobile was
+  not waived.
+- The shared presentation baseline is frozen at the accepted commit and the bounded P4.2 workspace
+  wave is authorized. Quality and Reviewer remain blocked until their ordered phases.
 - The active defect register is `docs/reporter-growth/v2/P4_VISUAL_PROOF_DEFECTS.md`.
 
 ## Evidence required for acceptance
@@ -52,8 +61,12 @@ commit are not admissible.
 7. Only then may the coordinator set `fanout_authorized: true` and transition to
    `P4.2_workspace_wave`.
 
-`scripts/verify-p4-phase-gate.mjs` enforces the state transitions. It must refuse fan-out without an
-accepted exact commit and a complete, checksum-valid screenshot matrix.
+`scripts/verify-p4-phase-gate.mjs` enforces the state transitions. It refuses fan-out without an
+accepted exact commit, a complete checksum-valid screenshot matrix, clean-worktree interaction
+evidence, all required interaction passes, empty browser error lists, and real 390×844 artifacts.
+The stale Quality-owned browser-suite waiver text remains a mandatory post-P4.2 Quality repair; it
+cannot block the ordered P4.1 transition after independent real mobile proof, and the verifier
+rejects it at the Quality phase.
 
 The full `npm run verify:p4` command is the post-integration Quality/Reviewer gate. It intentionally
 includes the Quality-owned cross-workspace and browser suites and must be fully green before Reviewer.

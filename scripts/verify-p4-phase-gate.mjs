@@ -178,10 +178,38 @@ if (state.fanout_authorized || visual?.status === "accepted") {
         check(actual === artifact.sha256, `${id} checksum does not match its manifest.`);
       }
     }
-  }
 
-  const browserSuite = read("tests/e2e/reporter-growth.browser.spec.ts");
-  check(!/(390.{0,80}waiv|waiv.{0,80}390)/is.test(browserSuite), "The 390px waiver must be removed before visual-proof acceptance.");
+    const interactionPath = manifest.interaction_proof;
+    check(typeof interactionPath === "string" && existsSync(path.join(root, interactionPath)), "Accepted visual proof requires an interaction record.");
+    if (typeof interactionPath === "string" && existsSync(path.join(root, interactionPath))) {
+      const interactionProof = json(interactionPath);
+      check(interactionProof.captured_from_commit === acceptedCommit, "Interaction proof commit must match the accepted implementation commit.");
+      check(interactionProof.worktree_clean_before_capture === true, "Interaction proof must come from a clean implementation worktree.");
+      const requiredInteractions = [
+        "market_selection",
+        "overview_controls",
+        "workspace_navigation",
+        "funnel_time_and_status",
+        "status_filters",
+        "bottleneck_mode",
+        "sla_recomputation",
+        "synthetic_disclosure",
+      ];
+      const interactionStatuses = new Map(
+        (interactionProof.interactions ?? []).map((interaction) => [interaction.id, interaction.status]),
+      );
+      for (const id of requiredInteractions) {
+        check(interactionStatuses.get(id) === "passed", `Required browser interaction did not pass: ${id}`);
+      }
+      check(Array.isArray(interactionProof.console_errors) && interactionProof.console_errors.length === 0, "Accepted visual proof cannot contain browser console errors.");
+      check(Array.isArray(interactionProof.page_errors) && interactionProof.page_errors.length === 0, "Accepted visual proof cannot contain page errors.");
+    }
+
+    for (const id of ["overview_390x844", "funnel_people_390x844", "funnel_bottlenecks_390x844"]) {
+      const artifact = byId.get(id);
+      check(artifact?.viewport?.width === 390 && artifact?.viewport?.height === 844, `${id} must be real 390×844 evidence; mobile cannot be waived.`);
+    }
+  }
 }
 
 const phaseIndex = legalPhases.indexOf(state.current_phase);
@@ -197,7 +225,11 @@ if (phaseIndex >= visualProofIndex) {
   check(dataAudit?.acceptance_evidence_status === "passed_sd01_sd07", "P4.1 or later requires recorded SD01-SD07 evidence.");
 }
 if (phaseIndex >= workspaceIndex) check(visual?.status === "accepted", "P4.2 or later requires accepted visual proof.");
-if (phaseIndex >= qualityIndex) check(workspace?.status === "passed", "Quality requires a passed workspace-wave integration gate.");
+if (phaseIndex >= qualityIndex) {
+  check(workspace?.status === "passed", "Quality requires a passed workspace-wave integration gate.");
+  const browserSuite = read("tests/e2e/reporter-growth.browser.spec.ts");
+  check(!/(390.{0,80}waiv|waiv.{0,80}390)/is.test(browserSuite), "The 390px waiver must be removed before the Quality gate can pass.");
+}
 if (phaseIndex >= reviewerIndex) check(quality?.status === "passed", "Reviewer requires a waiver-free Quality pass.");
 if (state.current_phase === "P4_complete") check(reviewer?.status === "passed", "P4 completion requires Reviewer pass.");
 

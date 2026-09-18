@@ -1,15 +1,16 @@
 # P4 Visual Proof Defects
 
-**Candidate:** `29735a174028795b107c07d75aa7a58a32aeec05`
+**Candidate:** `e33ee8d1a70a7f103eaf67354aa98139c1fd20a7`
 
-**Disposition:** `NOT_ACCEPTED`
+**Disposition:** `P4_VISUAL_PROOF_READY_ACCEPTED`
 
 **Owner:** Experience Lead
 
 **Gate:** P4.1 visual proof repair
 
-These defects record why the current preview is not the locked P4 canvas. They are blocking until
-candidate screenshots and interaction evidence prove the repair at the exact implementation commit.
+These defects record why the earlier preview was not the locked P4 canvas. The exact-commit artifact
+matrix and interaction record now prove the P4.1 repairs. VP11 and VP12 remain explicit post-P4.2
+Quality obligations; they do not authorize Quality to start early.
 
 | ID | Acceptance mapping | Observed deviation | Required repair and proof |
 | --- | --- | --- | --- |
@@ -29,5 +30,18 @@ candidate screenshots and interaction evidence prove the repair at the exact imp
 
 ## Exit condition
 
-This register closes only when every defect is marked verified against the candidate artifact manifest,
-`npm run verify:p4` passes, and the coordinator records the exact visual-proof commit as accepted.
+P4.1 closed for exact commit `e33ee8d1a70a7f103eaf67354aa98139c1fd20a7`: the Experience Lead
+returned `P4_VISUAL_PROOF_READY`, `npm run verify:p4:visual` passed, the coordinator independently
+accepted the locked-reference comparison, and the manifest proves the complete viewport/state matrix.
+The full `npm run verify:p4` command remains the post-integration Quality/Reviewer gate.
+
+## Verification record
+
+| Defect | P4.1 disposition | Exact evidence |
+| --- | --- | --- |
+| VP01–VP05 | Verified | The complete Overview matrix matches the locked shell, All-first controls, hierarchy, axes, legend, forecast treatment, and responsive composition with source-backed values. |
+| VP06–VP08 | Verified | `interactions.json` records passed navigation, range/status/filter changes, Bottlenecks mode, and LAX SLA 1→90 recomputation without lifecycle mutation or SFO leakage. |
+| VP09 | Verified for P4.1; Quality repair still mandatory | Three exact 390×844 artifacts prove the mobile composition without overflow or clipping. The stale Quality-owned suite wording must be replaced during P4.4 and cannot pass that gate unchanged. |
+| VP10 | Verified | The committed manifest contains exactly 13 checksum-valid artifacts from the accepted commit and links the clean-worktree interaction record. |
+| VP11–VP12 | Recorded Quality obligations | The ownership exception and stale Quality scenarios remain registered for adoption or replacement after P4.2; neither is waived. |
+| VP13 | Verified | After the recorded Chrome/Brave SIGABRT and managed Vite EPERM attempts, the unrestricted local preview and Playwright Chromium runner completed with all required interactions passed and empty console/page error lists. |

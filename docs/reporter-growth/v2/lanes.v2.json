@@ -2,9 +2,9 @@
   "schema_version": 2,
   "packet_kind": "routing_registry",
   "routing_active": true,
-  "fanout_authorized": false,
+  "fanout_authorized": true,
   "implementation_active": true,
-  "current_phase": "P4.1_visual_proof_repair",
+  "current_phase": "P4.2_workspace_wave",
   "execution_state": "docs/reporter-growth/v2/P4_EXECUTION_STATE.json",
   "execution_model": "serial_gates_with_bounded_parallel_workspace_wave",
   "transition_control": {
@@ -30,7 +30,7 @@
     ],
     "applies_to": "every_routed_probe_and_worker_spawn"
   },
-  "routing_verification_status": "authorized_active_visual_proof_repair",
+  "routing_verification_status": "authorized_bounded_workspace_wave_after_visual_acceptance",
   "source_contract_commit": "19f7df98000e346a5b4ff32e00b699276c3f62fb",
   "prepared_against_commit": "c4f304c376ca631d88c694f519f76ec316f12a13",
   "implementation_requires": [
@@ -315,5 +315,5 @@
     "allowed_directory_prefixes": [],
     "task": "docs/reporter-growth/v2/tasks/reviewer.md"
   },
-  "note": "This is the sole active P4 routing registry. P2 and P3 are complete and inactive. P4 is configured but not authorized or active. Data and the Experience visual proof are serial. Only after proof acceptance may the Lead and three bounded workspace Experience specialists communicate and run concurrently; they have non-overlapping paths and the Lead alone owns shared components. The runtime routing probes are mandatory before first dispatch. All P4 roles use Standard/default processing; the resolved child service tier remains unobservable, so configured default is the strongest available evidence."
+  "note": "This is the sole active P4 routing registry. P2 and P3 are complete and inactive. P4 is active. Exact Overview/Funnel visual proof was accepted for commit e33ee8d1a70a7f103eaf67354aa98139c1fd20a7, freezing the shared presentation baseline and authorizing the bounded P4.2 wave. Only the Lead and three registered workspace Experience specialists may communicate and run concurrently; they have non-overlapping paths and the Lead alone owns shared components. Runtime routing verification is mandatory before dispatch. All P4 roles use Standard/default processing; the resolved child service tier remains unobservable, so configured default is the strongest available evidence."
 }

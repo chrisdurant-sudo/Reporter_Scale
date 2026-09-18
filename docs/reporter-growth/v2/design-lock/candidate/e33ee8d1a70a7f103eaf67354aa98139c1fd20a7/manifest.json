@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "kind": "p4_visual_proof_manifest",
+  "captured_from_commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
+  "captured_at": "2026-09-18T07:05:19.601Z",
+  "route": "http://127.0.0.1:5174/",
+  "browser": {
+    "name": "Playwright Chromium",
+    "version": "153.0.8010.12",
+    "headless": true
+  },
+  "interaction_proof": "docs/reporter-growth/v2/design-lock/candidate/e33ee8d1a70a7f103eaf67354aa98139c1fd20a7/interactions.json",
+  "artifacts": [
+    {
+      "id": "overview_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/e33ee8d1a70a7f103eaf67354aa98139c1fd20a7/overview_1440x900.png",
+      "sha256": "e2ca6f049488f65788765aaaa4363d2ea2af5468a5927476c6dd3061f788d116",
+      "commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "Overview; market=ALL; view=Trends; projection=on"
+    },
+    {
+      "id": "funnel_people_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/e33ee8d1a70a7f103eaf67354aa98139c1fd20a7/funnel_people_1440x900.png",
+      "sha256": "ab43c4e9e85a8270d8a9a59c671bdd88fbcd6730a2b2475d9e9df52feb9dcba2",
+      "commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "Funnel; market=ALL; mode=People; range=R7; chartStatus=Onboarding; statusFilters=all"
+    },
+    {
+      "id": "funnel_bottlenecks_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/e33ee8d1a70a7f103eaf67354aa98139c1fd20a7/funnel_bottlenecks_1440x900.png",
+      "sha256": "a6cdcab9a0f0264f12e69fd77815b3a51ad7c1c5a4e5510a1973d70b6ed2ea6b",
+      "commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "Funnel; market=ALL; mode=Bottlenecks"
+    },
+    {
+      "id": "overview_1024x768",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/e33ee8d1a70a7f103eaf67354aa98139c1fd20a7/overview_1024x768.png",
+      "sha256": "e4b843ae15e15467fb086a47b12621cebe466fb5e25509b436e39fb3430bf614",
+      "commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "state": "Overview; market=ALL; view=Trends; projection=on"
+    },
+    {
+      "id": "funnel_people_1024x768",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/e33ee8d1a70a7f103eaf67354aa98139c1fd20a7/funnel_people_1024x768.png",
+      "sha256": "5a123e0e2579daac1e15ad481bc30e8ad14abe0927c32ccc5f3a45a2dcbbabe9",
+      "commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "state": "Funnel; market=ALL; mode=People; range=R7; chartStatus=Onboarding; statusFilters=all"
+    },
+    {
+      "id": "funnel_bottlenecks_1024x768",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/e33ee8d1a70a7f103eaf67354aa98139c1fd20a7/funnel_bottlenecks_1024x768.png",
+      "sha256": "79681cab2014085752dff2a5850e1dcdbf84d192cc418bbf33c8767900a93785",
+      "commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "state": "Funnel; market=ALL; mode=Bottlenecks"
+    },
+    {
+      "id": "overview_768x1024",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/e33ee8d1a70a7f103eaf67354aa98139c1fd20a7/overview_768x1024.png",
+      "sha256": "a8727ec12e7a77131cd92747564311106e3eb7304c631f82db4c2bd1cea91af4",
+      "commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "state": "Overview; market=ALL; view=Trends; projection=on"
+    },
+    {
+      "id": "funnel_people_768x1024",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/e33ee8d1a70a7f103eaf67354aa98139c1fd20a7/funnel_people_768x1024.png",
+      "sha256": "f279529cad46a70caa48df61af04ae277d467cedb402acc61cc82cd8a3207637",
+      "commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "state": "Funnel; market=ALL; mode=People; range=R7; chartStatus=Onboarding; statusFilters=all"
+    },
+    {
+      "id": "funnel_bottlenecks_768x1024",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/e33ee8d1a70a7f103eaf67354aa98139c1fd20a7/funnel_bottlenecks_768x1024.png",
+      "sha256": "17b3db9d739e40e87fca6073dc541bef797e776e4813aae8b8c0219ae8c4f513",
+      "commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "state": "Funnel; market=ALL; mode=Bottlenecks"
+    },
+    {
+      "id": "overview_390x844",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/e33ee8d1a70a7f103eaf67354aa98139c1fd20a7/overview_390x844.png",
+      "sha256": "671def96965a1933f20e699c1fa96094cf270f7ecb5db0c53d25519f834368d9",
+      "commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "state": "Overview; market=ALL; view=Trends; projection=on"
+    },
+    {
+      "id": "funnel_people_390x844",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/e33ee8d1a70a7f103eaf67354aa98139c1fd20a7/funnel_people_390x844.png",
+      "sha256": "86a3415d260f25fb8a4f2d484586b37bd92e11d7f9f8a26bb47943266956e21b",
+      "commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "state": "Funnel; market=ALL; mode=People; range=R7; chartStatus=Onboarding; statusFilters=all"
+    },
+    {
+      "id": "funnel_bottlenecks_390x844",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/e33ee8d1a70a7f103eaf67354aa98139c1fd20a7/funnel_bottlenecks_390x844.png",
+      "sha256": "f23358d0f784d3272ef8c8107f2aeb49026ff75e0c4498efcc3f5f1d947e6069",
+      "commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "state": "Funnel; market=ALL; mode=Bottlenecks"
+    },
+    {
+      "id": "funnel_sla_editor",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/e33ee8d1a70a7f103eaf67354aa98139c1fd20a7/funnel_sla_editor.png",
+      "sha256": "0ec4e20cbf6e2960330338a02008dbfe47298ef0f709a1503d91492cced90dc8",
+      "commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
+      "route": "http://127.0.0.1:5174/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "Funnel; market=ALL; mode=People; SLA editor=open; values=default"
+    }
+  ]
+}
