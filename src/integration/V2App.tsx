@@ -591,6 +591,11 @@ export function V2App() {
     demoDateLabel={displayDate(snapshot?.currentAsOfAt ?? "2026-02-16T17:00:00Z")}
     capabilityOptions={CAPABILITY_OPTIONS}
     attendanceOptions={ATTENDANCE_OPTIONS}
+    focusCondition={activeWorkspace === "markets"
+      ? marketsView?.overview?.focus.finding
+      : activeWorkspace === "recruiting"
+        ? recruitingView?.focusCondition
+        : undefined}
     selectedEvidence={selectedEvidence}
     onCloseEvidence={closeEvidence}
     onOpenEvidenceWork={(target) => {
