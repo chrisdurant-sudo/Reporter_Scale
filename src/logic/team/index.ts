@@ -11,7 +11,9 @@ import type {
   TeamMember,
   TeamTarget,
   WorkItem,
+  WorkItemKind,
   WorkItemStatus,
+  WorkOwnershipDomain,
   WorkspaceFilterPayload,
   WorkspaceLogicPort,
   WorkspaceQueryContext,
@@ -24,6 +26,21 @@ type OpenStatus = Exclude<WorkItemStatus, "completed" | "canceled">;
 export interface TeamWorkItemView {
   readonly id: string; readonly label: string; readonly currentStatus: OpenStatus; readonly dueAt: string | null;
   readonly isOverdue: boolean; readonly selectedMarket: boolean;
+}
+export type TeamBoardStatus = "To do" | "In progress" | "Done";
+export interface TeamBoardItem {
+  readonly id: string; readonly title: string; readonly status: TeamBoardStatus;
+  readonly ownerId: string | null; readonly ownerName: string;
+  readonly ownershipDomain: WorkOwnershipDomain;
+  readonly programId: string | null; readonly programTitle: string | null;
+}
+export interface TeamMemberCompactView {
+  readonly id: string; readonly name: string; readonly ownedDomains: readonly WorkOwnershipDomain[];
+  readonly openWork: number; readonly goal: number | null; readonly coachingDue: number;
+}
+export interface TeamAddWorkOptions {
+  readonly owners: readonly { readonly id: string | null; readonly name: string }[];
+  readonly programs: readonly { readonly id: string; readonly title: string }[];
 }
 export interface TeamMemberView {
   readonly id: string; readonly name: string; readonly role: string;
@@ -39,6 +56,10 @@ export interface TeamMemberView {
 }
 export interface PreparedTeamView extends PreparedWorkspaceViewBase<typeof TEAM_WORKSPACE> {
   readonly members: readonly TeamMemberView[]; readonly unownedOpenWork: readonly TeamWorkItemView[]; readonly limitations: readonly string[];
+  readonly board: readonly TeamBoardItem[];
+  readonly summary: { readonly openTasks: number; readonly unownedTasks: number; readonly programsOwned: number; readonly coachingDue: number };
+  readonly memberCompactValues: readonly TeamMemberCompactView[];
+  readonly addWorkOptions: TeamAddWorkOptions;
 }
 
 const stamp = (value: string) => Date.parse(value);
@@ -47,6 +68,9 @@ const latest = <T extends { readonly occurredAt: string }>(items: readonly T[], 
   items.filter((item) => beforeOrAt(item.occurredAt, asOf)).sort((a, b) => stamp(b.occurredAt) - stamp(a.occurredAt))[0] ?? null;
 const ownerAt = (work: WorkItem, asOf: string) => latest(work.ownerHistory, asOf)?.ownerId ?? null;
 const statusAt = (work: WorkItem, asOf: string) => latest(work.statusHistory, asOf)?.status ?? null;
+const boardStatus = (status: WorkItemStatus): TeamBoardStatus => status === "completed" ? "Done" : status === "open" ? "To do" : "In progress";
+const ownershipDomain = (kind: WorkItemKind): WorkOwnershipDomain => kind === "source" ? "sourcing" : kind === "screen" ? "screening" : kind === "onboard" ? "onboarding" : kind === "partner-task" ? "program" : "market";
+const knownAt = (work: WorkItem, asOf: string) => beforeOrAt(work.createdAt, asOf);
 /** A canonical WorkItem may earn only its first completion credit. */
 const completion = (work: WorkItem) => work.statusHistory.filter((event) => event.status === "completed").sort((a, b) => stamp(a.occurredAt) - stamp(b.occurredAt))[0] ?? null;
 const inWindow = (value: string, window: WorkspaceFilterPayload["window"]) => window !== null && stamp(value) >= stamp(window.startAt) && stamp(value) < stamp(window.endAt);
@@ -80,10 +104,20 @@ function itemView(work: WorkItem, snapshot: DemoSnapshotV2, context: WorkspaceQu
   const status = statusAt(work, context.evaluation.asOfAt) as OpenStatus;
   return { id: work.id, label: label(work), currentStatus: status, dueAt: work.dueAt, isOverdue: work.dueAt !== null && stamp(work.dueAt) < stamp(context.evaluation.asOfAt), selectedMarket: selected(work, snapshot, context.filters.selectedMarket) };
 }
+function boardItem(work: WorkItem, snapshot: DemoSnapshotV2, asOf: string): TeamBoardItem | null {
+  const status = statusAt(work, asOf);
+  if (status === null || status === "canceled") return null;
+  const ownerId = ownerAt(work, asOf);
+  const owner = ownerId === null ? null : snapshot.teamMembers.find((member) => member.id === ownerId);
+  const program = work.programId === null ? null : snapshot.programs?.find((item) => item.id === work.programId && beforeOrAt(item.startAt, asOf));
+  return { id: work.id, title: work.title?.trim() || label(work), status: boardStatus(status), ownerId, ownerName: owner?.fictionalName ?? "Unassigned", ownershipDomain: ownershipDomain(work.kind), programId: program?.id ?? null, programTitle: program?.title ?? null };
+}
 
 export function prepareTeamView(snapshot: DemoSnapshotV2, context: WorkspaceQueryContext<typeof TEAM_WORKSPACE>, metric: MetricDefinitionRef): PreparedTeamView {
   const asOf = context.evaluation.asOfAt;
-  const open = snapshot.workItems.filter((work) => { const status = statusAt(work, asOf); return status !== null && status !== "completed" && status !== "canceled"; });
+  const currentWork = snapshot.workItems.filter((work) => knownAt(work, asOf));
+  const board = currentWork.map((work) => boardItem(work, snapshot, asOf)).filter((work): work is TeamBoardItem => work !== null);
+  const open = currentWork.filter((work) => { const status = statusAt(work, asOf); return status !== null && status !== "completed" && status !== "canceled"; });
   const evidence: EvidenceBundle[] = [];
   const members = snapshot.teamMembers.filter((member) => beforeOrAt(member.activeFrom, asOf) && (member.activeTo === null || stamp(member.activeTo) > stamp(asOf))).map((member) => {
     const assigned = open.filter((work) => ownerAt(work, asOf) === member.id);
@@ -98,6 +132,9 @@ export function prepareTeamView(snapshot: DemoSnapshotV2, context: WorkspaceQuer
     return { id: member.id, name: member.fictionalName, role: member.focusRole, totalOpenWorkload: assigned.length, selectedMarketOpenWorkload: assigned.filter((work) => selected(work, snapshot, context.filters.selectedMarket)).length, overdueWorkload: assigned.filter((work) => work.dueAt !== null && stamp(work.dueAt) < stamp(asOf)).length, unknownDueWorkload: assigned.filter((work) => work.dueAt === null).length, completed: { completed: credited.length, target: target?.target ?? null, note: target ? `Compared with the ${member.focusRole} tasks target for this same reporting window.` : "No like-role tasks target is recorded for this reporting window." }, quality: { inspectedCount: samples.length, passedCount: samples.filter((sample) => sample.passed).length, ratio: samples.length ? samples.filter((sample) => sample.passed).length / samples.length : null, sample: samples.map((sample) => ({ workItemId: sample.work.id, label: label(sample.work), passed: sample.passed, checkedAt: sample.checkedAt })) }, cycleTime: { completedSamples: credited.map((work) => { const event = completion(work)!; return { workItemId: work.id, label: label(work), createdAt: work.createdAt, completedAt: event.occurredAt, elapsedHours: (stamp(event.occurredAt) - stamp(work.createdAt)) / 3_600_000 }; }), waitingSamples: assigned.map((work) => ({ workItemId: work.id, label: label(work), createdAt: work.createdAt, ageHours: (stamp(asOf) - stamp(work.createdAt)) / 3_600_000 })) }, workItems: assigned.map((work) => itemView(work, snapshot, context)), coachingActions: snapshot.coachingActions.filter((action) => action.teamMemberId === member.id && beforeOrAt(action.createdAt, asOf)) };
   });
   const unowned = open.filter((work) => ownerAt(work, asOf) === null); evidence.push(countEvidence("team-unowned-open", metric, context, unowned, "Unowned open work is separate from individual workload."));
-  return { workspace: TEAM_WORKSPACE, evaluation: context.evaluation, appliedFilters: context.filters, evidence, members, unownedOpenWork: unowned.map((work) => itemView(work, snapshot, context)), limitations: ["Selected-market workload is linked-demand workload; total workload remains visible for context.", "Unknown due dates remain unknown and are not classified as overdue."] };
+  const coachingDueFor = (memberId: TeamMember["id"]) => snapshot.coachingActions.filter((action) => action.teamMemberId === memberId && beforeOrAt(action.createdAt, asOf) && beforeOrAt(action.reviewAt, asOf) && action.outcomeNote === null).length;
+  const memberCompactValues = members.map((member) => ({ id: member.id, name: member.name, ownedDomains: [...new Set(open.filter((work) => ownerAt(work, asOf) === member.id).map((work) => ownershipDomain(work.kind)))], openWork: member.totalOpenWorkload, goal: member.completed.target, coachingDue: coachingDueFor(member.id) }));
+  const startedPrograms = snapshot.programs?.filter((program) => beforeOrAt(program.startAt, asOf)) ?? [];
+  return { workspace: TEAM_WORKSPACE, evaluation: context.evaluation, appliedFilters: context.filters, evidence, members, unownedOpenWork: unowned.map((work) => itemView(work, snapshot, context)), board, summary: { openTasks: open.length, unownedTasks: unowned.length, programsOwned: startedPrograms.length, coachingDue: snapshot.coachingActions.filter((action) => beforeOrAt(action.createdAt, asOf) && beforeOrAt(action.reviewAt, asOf) && action.outcomeNote === null).length }, memberCompactValues, addWorkOptions: { owners: [{ id: null, name: "Unassigned" }, ...snapshot.teamMembers.filter((member) => beforeOrAt(member.activeFrom, asOf) && (member.activeTo === null || stamp(member.activeTo) > stamp(asOf))).map((member) => ({ id: member.id, name: member.fictionalName }))], programs: startedPrograms.map((program) => ({ id: program.id, title: program.title })) }, limitations: ["Selected-market workload is linked-demand workload; total workload remains visible for context.", "Unknown due dates remain unknown and are not classified as overdue."] };
 }
 export function createTeamLogic(metric: MetricDefinitionRef): TeamLogicPort { return { workspace: TEAM_WORKSPACE, prepare: (snapshot, context) => prepareTeamView(snapshot, context, metric) }; }
