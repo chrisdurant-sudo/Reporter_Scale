@@ -227,7 +227,18 @@ const p4MarketTimeZone: Record<Market["id"], IanaTimeZone> = {
   ATL: zone("America/New_York"),
 };
 const p4StateCredential: Record<Market["id"], string> = { LAX: "CA", SFO: "CA", DFW: "TX", ORD: "IL", ATL: "GA" };
-const p4MarketNames: Record<Market["id"], string> = { LAX: "Los Angeles", SFO: "San Francisco", DFW: "Dallas", ORD: "Chicago", ATL: "Atlanta" };
+const p4VisibleNames = [
+  "Amara Bell", "Jonah Mercer", "Priya Dalton", "Noah Calder", "Elena Marlow",
+  "Marcus Wren", "Talia Brooks", "Owen Rivas", "Sienna Hart", "Theo Rowan",
+  "Leila Grant", "Caleb Monroe", "Mina Ellis", "Dorian Wells", "Nia Porter",
+  "Arielle Stone", "Mateo Quinn", "Rhea Sutton", "Julian Frost", "Cleo Vaughn",
+  "Iris Nolan", "Bennett Shaw", "Anika Reed", "Milo Harper", "Zara Whitaker",
+  "Luca Bennett", "Maeve Sinclair", "Elias Hart", "Nora Vale", "Kieran Moss",
+  "Selene Cross", "Adrian Lowe", "Veda Lane", "Silas North", "Maya Sterling",
+  "Ronan Pike", "Esme Calder", "Devon Ames", "Lena Mercer", "Cassian Holt",
+  "Willa Rhodes", "Jasper Finch", "Asha Wynn", "Gideon Park", "Maren Cole",
+  "Tobin Hayes", "Isla Rowan", "Soren Blake", "Calla Pierce", "Emmett Ray",
+] as const;
 const p4DateAt = (date: string, days: number) => new Date(Date.parse(date) + days * 86_400_000).toISOString().replace(".000Z", "Z");
 const p4FunnelSla = {
   LAX: { overall: 32, Applicant: 4, Screening: 6, Approved: 5, Onboarding: 10, "Starting soon": 7 },
@@ -263,7 +274,7 @@ for (const [marketIndex, market] of (["LAX", "SFO", "DFW", "ORD", "ATL"] as cons
     const suffix = String(number).padStart(2, "0");
     const reporterId = `person-p4-${market.toLowerCase()}-${suffix}`;
     const caseId = `case-p4-${market.toLowerCase()}-${suffix}`;
-    const name = `Fictional ${p4MarketNames[market]} Sample ${suffix}`;
+    const name = p4VisibleNames[marketIndex * 10 + row.offset]!;
     const isReady = ["starting-soon", "recent-a", "recent-b", "aging-active", "inactive"].includes(row.stage);
     const funnelStage = row.offset === 0 ? "Applicant" : row.offset === 1 ? "Screening" : row.offset === 2 ? "Approved" : row.offset === 5 ? "Starting soon" : row.stage === "screening-bottleneck" ? "Screening" : "Onboarding";
     const categoryDelta = row.offset < 6 ? (row.offset < 2 ? -1 : row.offset < 4 ? 0 : 1) : 0;
@@ -315,6 +326,47 @@ for (const [marketIndex, market] of (["LAX", "SFO", "DFW", "ORD", "ATL"] as cons
       }
     }
   }
+}
+
+
+// Additional known schedules and availability create record-derived rises, ebbs, and gap recovery.
+// They are deliberately source facts only; prepared views calculate all trend values.
+const p4TrendDemandWindows = [
+  ["2026-01-04T18:00:00Z", "2026-01-08T18:00:00Z"],
+  ["2026-01-10T18:00:00Z", "2026-01-20T18:00:00Z"],
+  ["2026-01-11T18:00:00Z", "2026-01-21T18:00:00Z"],
+  ["2026-02-02T18:00:00Z", "2026-02-10T18:00:00Z"],
+  ["2026-02-12T18:00:00Z", "2026-02-15T18:00:00Z"],
+  ["2026-02-15T18:00:00Z", "2026-02-16T12:00:00Z"],
+] as const;
+const p4TrendSupplyWindows = [
+  ["2026-01-03T18:00:00Z", "2026-01-08T18:00:00Z"],
+  ["2026-01-12T18:00:00Z", "2026-01-20T18:00:00Z"],
+  ["2026-01-13T18:00:00Z", "2026-01-21T18:00:00Z"],
+  ["2026-01-14T18:00:00Z", "2026-01-22T18:00:00Z"],
+  ["2026-02-01T18:00:00Z", "2026-02-08T18:00:00Z"],
+  ["2026-02-08T18:00:00Z", "2026-02-15T18:00:00Z"],
+] as const;
+for (const market of ["LAX", "SFO", "DFW", "ORD", "ATL"] as const) {
+  const capabilityCode = market === "LAX" || market === "SFO" ? "realtime-transcription" : "standard-transcription";
+  const readyPeople = reporters.filter((item) => item.id.startsWith(`person-p4-${market.toLowerCase()}-`) && lifecycleEvents.some((event) => event.reporterId === item.id && event.eventType === "ready"));
+  p4TrendDemandWindows.forEach(([startAt, endAt], index) => {
+    demandRequests.push({
+      id: asId(`req-p4-trend-${market.toLowerCase()}-${index + 1}`), marketId: market,
+      createdAt: utc("2026-01-01T12:00:00Z"), recordedAt: utc("2026-01-01T12:00:00Z"), startAt: utc(startAt), endAt: utc(endAt),
+      timeZone: p4MarketTimeZone[market], proceedingType: asId("deposition"), attendanceMode: "remote",
+      requiredCapabilityCodes: [asId(capabilityCode)], sampleCredentialRequirements: [], requirementsVersion: "p4-synthetic-trend-v1",
+      status: startAt > "2026-02-16" ? "open" : "concluded", canceledAt: null, cancellationReason: null, agreedDeliveryAt: utc(endAt), provenance,
+    });
+  });
+  p4TrendSupplyWindows.forEach(([startAt, endAt], index) => {
+    const reporter = readyPeople[[2, 2, 3, 1, 3, 0][index % 6]! % readyPeople.length]!;
+    availabilityWindows.push({
+      id: asId(`availability-p4-trend-${market.toLowerCase()}-${index + 1}`), reporterId: reporter.id,
+      startAt: utc(startAt), endAt: utc(endAt), status: "available", serviceMarketIds: [market], attendanceModes: ["remote"],
+      recordedAt: utc("2026-01-01T12:00:00Z"), confirmationExpiresAt: utc("2026-03-02T08:00:00Z"), source: "synthetic-seed", actorId: asId("actor-team-3"), provenance,
+    });
+  });
 }
 
 const mainRequestTimes = [

@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { DemoSnapshotV2 } from "../contracts/v2";
+import { prepareMarketsWorkspace } from "../logic/capacity";
+import { funnelWaitTimeTrends } from "../logic/recruiting/recruiting";
 import {
   DEMO_SNAPSHOT_V2,
   SCENARIO_CONTRACT,
@@ -35,6 +37,45 @@ describe("V2 synthetic records and repository", () => {
     expect("churn" in DEMO_SNAPSHOT_V2.reporters[0]!).toBe(false);
     expect(validateDemoSnapshot(DEMO_SNAPSHOT_V2).ok).toBe(true);
     expect(createDemoRepositoryV2).toBeTypeOf("function");
+  });
+
+
+  it("SD06 derives varied Overview and Funnel trends from canonical records", () => {
+    const filters = (selectedMarket: "ALL" | "LAX" | "SFO" | "DFW" | "ORD" | "ATL") => ({
+      selectedMarket, marketBasis: "demand-market" as const, marketIds: [], reporterIds: [], acquisitionCaseIds: [], requestIds: [], workItemIds: [], programIds: [], programEnrollmentIds: [], sourceIds: [], jobOutcomeIds: [], capabilityCodes: [], attendanceModes: [], recordRefs: [], window: null,
+    });
+    const scopes = ["ALL", "LAX", "SFO", "DFW", "ORD", "ATL"] as const;
+    for (const selectedMarket of scopes) {
+      const view = prepareMarketsWorkspace(DEMO_SNAPSHOT_V2, { workspace: "markets", evaluation: { asOfAt: DEMO_SNAPSHOT_V2.currentAsOfAt, snapshotRevision: DEMO_SNAPSHOT_V2.revision, reportingTimeZone: "America/Los_Angeles" as never }, filters: filters(selectedMarket) });
+      const points = view.supplyDemandSeries!.points;
+      expect(points.length).toBeGreaterThanOrEqual(8);
+      for (const value of ["availableSupply", "demand"] as const) {
+        const values = points.map((point) => point[value]);
+        expect(Math.max(...values) - Math.min(...values)).toBeGreaterThanOrEqual(2);
+        expect(values.some((value, index) => index > 0 && value > values[index - 1]!)).toBe(true);
+        const rise = values.findIndex((value, index) => index > 0 && value > values[index - 1]!);
+        expect(values.some((value, index) => index > rise && value < values[index - 1]!)).toBe(true);
+      }
+      const needed = points.map((point) => point.neededSupply);
+      expect(needed).toContain(0);
+      const peak = Math.max(...needed);
+      expect(peak).toBeGreaterThanOrEqual(2);
+      const peakIndex = needed.indexOf(peak);
+      expect(needed.some((value, index) => index > peakIndex && value <= peak - 1)).toBe(true);
+      const trends = funnelWaitTimeTrends(DEMO_SNAPSHOT_V2, DEMO_SNAPSHOT_V2.currentAsOfAt, selectedMarket);
+      expect(Object.values(trends.R28).some((series) => {
+        const values = series.map((point) => point.meanElapsedDays).filter((value): value is number => value !== null);
+        return values.length >= 4 && new Set(values).size >= 3 && series.some((point, index) => index > 0 && point.meanElapsedDays !== null && series[index - 1]!.meanElapsedDays !== null && point.meanElapsedDays > series[index - 1]!.meanElapsedDays!) && series.some((point, index) => index > 0 && point.meanElapsedDays !== null && series[index - 1]!.meanElapsedDays !== null && point.meanElapsedDays < series[index - 1]!.meanElapsedDays!);
+      })).toBe(true);
+    }
+  });
+
+  it("SD07 uses unique human-readable synthetic names for all P4 identities", () => {
+    const people = DEMO_SNAPSHOT_V2.reporters.filter((item) => String(item.id).startsWith("person-p4-"));
+    const names = people.map((item) => item.fictionalName);
+    expect(new Set(names).size).toBe(50);
+    expect(names.every((name) => /^[A-Za-z]+ [A-Za-z]+$/.test(name))).toBe(true);
+    expect(names.every((name) => !/(fictional|sample|test|person|LAX|SFO|DFW|ORD|ATL|\d)/i.test(name))).toBe(true);
   });
 
   it("SD02-SD05 preserves exact roles, source-derived age inputs, evidence patterns, and anchors", () => {
