@@ -305,6 +305,22 @@ export function V2App() {
     return programsView?.evidence ?? [];
   }, [activeWorkspace, marketsView, programsView, recruitingView, reportersView, teamView]);
 
+  const focusCondition = activeWorkspace === "markets"
+    ? marketsView?.overview?.focus.finding
+    : activeWorkspace === "recruiting"
+      ? recruitingView?.focusCondition
+      : activeWorkspace === "reporters" && reportersView
+        ? `${reportersView.reengagementCandidates.length} inactive for 28+ days`
+        : activeWorkspace === "team" && teamView
+          ? teamView.summary.unownedTasks === 1
+            ? "1 task needs an owner"
+            : `${teamView.summary.unownedTasks} tasks need an owner`
+          : activeWorkspace === "programs" && programsView
+            ? programsView.summary.reviewNow === 1
+              ? "1 review is due"
+              : `${programsView.summary.reviewNow} reviews are due`
+            : undefined;
+
   const findEvidence = useCallback((id: string) => workspaceEvidence.find((item) => String(item.id) === id) ?? null, [workspaceEvidence]);
 
   const openEvidence = useCallback((evidence: EvidenceBundle | null) => {
@@ -662,11 +678,7 @@ export function V2App() {
     demoDateLabel={displayDate(snapshot?.currentAsOfAt ?? "2026-02-16T17:00:00Z")}
     capabilityOptions={CAPABILITY_OPTIONS}
     attendanceOptions={ATTENDANCE_OPTIONS}
-    focusCondition={activeWorkspace === "markets"
-      ? marketsView?.overview?.focus.finding
-      : activeWorkspace === "recruiting"
-        ? recruitingView?.focusCondition
-        : undefined}
+    focusCondition={focusCondition}
     selectedEvidence={selectedEvidence}
     onCloseEvidence={closeEvidence}
     onOpenEvidenceWork={(target) => {

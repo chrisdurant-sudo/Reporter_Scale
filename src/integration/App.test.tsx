@@ -45,13 +45,16 @@ describe("P4 integrated V2 experience", () => {
 
     await user.click(screen.getByRole("button", { name: "Reporters" }));
     expect(await screen.findByRole("main", { name: "Reporters" })).toBeInTheDocument();
+    expect(screen.getByText(/\d+ inactive for 28\+ days/)).toBeInTheDocument();
     expect(marketButton("SFO")).toHaveAttribute("aria-pressed", "true");
 
     await user.click(screen.getByRole("button", { name: "Team" }));
     expect(await screen.findByRole("main", { name: "Team" })).toBeInTheDocument();
+    expect(screen.getByText("1 task needs an owner")).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Programs" }));
     expect(await screen.findByRole("main", { name: "Programs" })).toBeInTheDocument();
+    expect(screen.getByText("1 review is due")).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Overview" }));
     expect(await screen.findByRole("main", { name: "Overview" })).toBeInTheDocument();
