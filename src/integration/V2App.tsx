@@ -498,6 +498,7 @@ export function V2App() {
       view={marketsView}
       onSelectMarket={(value) => { if (isMarket(value)) { setGlobalFilters((current) => ({ ...current, selectedMarket: value })); setDrillDown(null); } }}
       onOpenEvidence={openEvidenceTarget}
+      onNavigateWorkspace={(workspace) => { setActiveWorkspace(workspace); setSelectedEvidence(null); evidenceTriggerRef.current = null; }}
       onPreviewGoal={() => setFeedback({ changed: "Prepared the dated two-addition goal preview from the current record-backed baseline.", notChanged: "No goal, task, readiness, coverage, acceptance, or first-job record changed." })}
       onSaveGoal={() => { void savePlan(); }}
     />;

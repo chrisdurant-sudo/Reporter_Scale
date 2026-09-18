@@ -23,7 +23,7 @@ function metric(regionName: "Overview metrics" | "Funnel metrics", label: string
 }
 
 async function openDemoControls(user: ReturnType<typeof userEvent.setup>) {
-  await user.click(screen.getByText(/^Demo controls ·/));
+  await user.click(screen.getByText("Scenario controls"));
   return screen.getByRole("region", { name: "Scenario and action result" });
 }
 
@@ -39,7 +39,7 @@ describe("P4 integrated V2 experience", () => {
     await user.click(marketButton("SFO"));
     expect(marketButton("SFO")).toHaveAttribute("aria-pressed", "true");
 
-    await user.click(screen.getByRole("button", { name: "Funnel" }));
+    await user.click(screen.getByRole("button", { name: "View Funnel" }));
     expect(await screen.findByRole("main", { name: "Funnel" })).toBeInTheDocument();
     expect(marketButton("SFO")).toHaveAttribute("aria-pressed", "true");
 
@@ -57,19 +57,14 @@ describe("P4 integrated V2 experience", () => {
     expect(await screen.findByRole("main", { name: "Overview" })).toBeInTheDocument();
   });
 
-  it("saves the goal without manufacturing readiness, coverage, acceptance, or first-job outcomes", async () => {
+  it("uses the locked Overview composition without restoring the superseded growth-goal panel", async () => {
     const user = await renderApp();
     await user.click(marketButton("LAX"));
     expect(metric("Overview metrics", "Available reporters")).toHaveTextContent("0");
     expect(metric("Overview metrics", "Open jobs")).toHaveTextContent("10");
-
-    await user.click(screen.getByRole("button", { name: "Save goal revision" }));
-
-    expect(await screen.findByText(/Saved the dated two-addition LAX readiness goal/i)).toBeInTheDocument();
-    expect(screen.getByText(/Coverage remains 6 confirmed, 2 possible, and 2 without a verified ready match/i)).toBeInTheDocument();
-    expect(screen.getByText(/0 of 2 first-time readiness additions/i)).toBeInTheDocument();
-    expect(metric("Overview metrics", "Available reporters")).toHaveTextContent("0");
-    expect(metric("Overview metrics", "Open jobs")).toHaveTextContent("10");
+    expect(screen.queryByText("Growth goal")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Save goal revision" })).not.toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Cross-workspace overview" })).toBeInTheDocument();
   });
 
   it("keeps planning, readiness, acceptance, and delivery as separate replayable checkpoints", async () => {
@@ -86,17 +81,17 @@ describe("P4 integrated V2 experience", () => {
     expect(metric("Overview metrics", "Available reporters")).toHaveTextContent("0");
 
     await user.click(within(feedback).getByRole("button", { name: "Advance to Two new reporters ready" }));
-    expect(await screen.findByText(/2 of 2 first-time readiness additions/i)).toBeInTheDocument();
+    await waitFor(() => expect(feedback).toHaveTextContent("Checkpoint: Two new reporters ready"));
     expect(metric("Overview metrics", "Available reporters")).toHaveTextContent("0");
 
     await user.click(within(feedback).getByRole("button", { name: "Advance to New reporters accepted" }));
     await waitFor(() => expect(feedback).toHaveTextContent("Checkpoint: New reporters accepted"));
     expect(metric("Overview metrics", "Available reporters")).toHaveTextContent("0");
-    expect(screen.getByText(/0 completed requests · 0 first jobs/i)).toBeInTheDocument();
+    expect(metric("Overview metrics", "Open jobs")).toHaveTextContent("10");
 
     await user.click(within(feedback).getByRole("button", { name: "Advance to Original plan delivered" }));
     await waitFor(() => expect(metric("Overview metrics", "Open jobs")).toHaveTextContent("0"));
-    expect(screen.getByText(/10 completed requests · 2 first jobs/i)).toBeInTheDocument();
+    expect(feedback).toHaveTextContent("Checkpoint: Original plan delivered");
 
     await user.click(within(feedback).getByRole("button", { name: "Advance to Pair onboarding cohort mature" }));
     await user.click(screen.getByRole("button", { name: "Funnel" }));
@@ -113,7 +108,7 @@ describe("P4 integrated V2 experience", () => {
   it("opens contextual evidence, closes on Escape with focus return, and carries exact context into work", async () => {
     const user = await renderApp();
     await user.click(marketButton("LAX"));
-    const trigger = screen.getByRole("button", { name: "Why this?" });
+    const trigger = screen.getByRole("button", { name: "Inspect the affected request slots." });
 
     await user.click(trigger);
     const dialog = await screen.findByRole("dialog", { name: "Why this?" });
