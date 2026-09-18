@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "kind": "p4_assembled_browser_interaction_proof",
+  "captured_from_commit": "1e03a5d538b64bb647bafa01dcacab7fa869ea45",
+  "captured_at": "2026-09-18T08:05:30.362Z",
+  "worktree_clean_before_capture": true,
+  "preview": {
+    "route": "http://127.0.0.1:5174/",
+    "pid": 81713,
+    "cwd": "/private/tmp/steno-p4-coordinator"
+  },
+  "browser": {
+    "name": "Playwright Chromium",
+    "version": "153.0.8010.12",
+    "headless": true
+  },
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "interactions": [
+    {
+      "id": "market_selection",
+      "status": "passed",
+      "detail": "LAX, SFO, DFW, ORD, ATL, and All each became the pressed market without navigation loss."
+    },
+    {
+      "id": "overview_controls",
+      "status": "passed",
+      "detail": "Overview/Trends and projection off/on controls changed state."
+    },
+    {
+      "id": "workspace_navigation",
+      "status": "passed",
+      "detail": "All five workspace tabs and the Overview View Funnel control selected the intended workspace."
+    },
+    {
+      "id": "funnel_time_and_status",
+      "status": "passed",
+      "detail": "R7/R28 and Applicant/Onboarding chart selections exposed accurate pressed state."
+    },
+    {
+      "id": "status_filters",
+      "status": "passed",
+      "detail": "Applicant filter changed visible rows 66 → 55 → 66."
+    },
+    {
+      "id": "bottleneck_mode",
+      "status": "passed",
+      "detail": "Bottlenecks and People modes both rendered and exposed accurate pressed state."
+    },
+    {
+      "id": "sla_recomputation",
+      "status": "passed",
+      "detail": "LAX Onboarding SLA changed 1 → 90 with immediate over/under recomputation for 13 Onboarding rows; lifecycle facts were unchanged and the override did not leak to SFO."
+    },
+    {
+      "id": "synthetic_disclosure",
+      "status": "passed",
+      "detail": "Synthetic provenance and no-real-message/no-connection disclosure remained present."
+    },
+    {
+      "id": "reporter_views",
+      "status": "passed",
+      "detail": "Ready/Activity changed rendered scope 76 → 47."
+    },
+    {
+      "id": "reporter_filters",
+      "status": "passed",
+      "detail": "Search narrowed reporter rows 76 → 33; table remained in its scroll wrapper (1369/1369px)."
+    },
+    {
+      "id": "reporter_action_feedback",
+      "status": "passed",
+      "detail": "An enabled re-engagement action created one canonical work item and explicitly preserved availability, readiness, acceptance, and outcomes."
+    },
+    {
+      "id": "team_create_work",
+      "status": "passed",
+      "detail": "Add work created a canonical program-domain work item, rendered it in In progress, and preserved readiness, acceptance, jobs, and program outcomes."
+    },
+    {
+      "id": "team_views",
+      "status": "passed",
+      "detail": "Work/Goals controls changed state and returned to Work."
+    },
+    {
+      "id": "program_views_filters",
+      "status": "passed",
+      "detail": "Programs/Results changed state; search narrowed rows 3 → 1; table remained contained (1369/1369px)."
+    },
+    {
+      "id": "program_text_save",
+      "status": "passed",
+      "detail": "A note and next step saved immediately, persisted after workspace remount, and explicitly left results, stage, enrollment, rollout, readiness, acceptance, and jobs unchanged."
+    }
+  ],
+  "console_errors": [],
+  "page_errors": []
+}
