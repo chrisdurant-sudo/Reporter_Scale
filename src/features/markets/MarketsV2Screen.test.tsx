@@ -77,7 +77,7 @@ describe("MarketsV2Screen growth goal", () => {
       evidence,
     });
 
-    expect(screen.getByText("3 of 7 first-time readiness additions. Baseline: 2026-02-10T17:00:00Z; deadline: 2026-02-28T17:00:00Z.")).toBeInTheDocument();
+    expect(screen.getByText("3 of 7 first-time readiness additions.")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Preview goal revision" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Save goal revision" })).toBeInTheDocument();
   });

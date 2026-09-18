@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
-import type { AttendanceMode, CapabilityCode, SelectedMarket, WorkspaceId } from "../contracts/v2";
+import type { AttendanceMode, CapabilityCode, EvidenceBundle, SelectedMarket, WorkspaceId, WorkspaceNavigationTarget } from "../contracts/v2";
 
 const V2_WORKSPACE_TABS: readonly { readonly id: WorkspaceId; readonly label: string }[] = [
-  { id: "markets", label: "Markets" },
-  { id: "recruiting", label: "Recruiting" },
+  { id: "markets", label: "Overview" },
+  { id: "recruiting", label: "Funnel" },
   { id: "reporters", label: "Reporters" },
   { id: "team", label: "Team" },
   { id: "programs", label: "Programs" },
@@ -22,13 +22,16 @@ export interface V2AppShellProps {
   readonly capabilityOptions?: readonly { readonly value: CapabilityCode; readonly label: string }[];
   readonly attendanceOptions?: readonly { readonly value: AttendanceMode; readonly label: string }[];
   readonly actionFeedback?: ReactNode;
+  readonly selectedEvidence?: EvidenceBundle | null;
+  readonly onCloseEvidence?: () => void;
+  readonly onOpenEvidenceWork?: (target: WorkspaceNavigationTarget) => void;
   readonly onWorkspaceChange: (workspace: WorkspaceId) => void;
   readonly onFiltersChange: (filters: V2GlobalFilters) => void;
   readonly children: ReactNode;
 }
 
 const marketOptions: readonly { readonly value: SelectedMarket; readonly label: string }[] = [
-  { value: "ALL", label: "All markets" },
+  { value: "ALL", label: "All" },
   { value: "LAX", label: "LAX" },
   { value: "SFO", label: "SFO" },
   { value: "DFW", label: "DFW" },
@@ -44,6 +47,9 @@ export function V2AppShell({
   capabilityOptions = [],
   attendanceOptions = [],
   actionFeedback,
+  selectedEvidence,
+  onCloseEvidence,
+  onOpenEvidenceWork,
   onWorkspaceChange,
   onFiltersChange,
   children,
@@ -51,12 +57,10 @@ export function V2AppShell({
   return (
     <div className="v2-shell">
       <header className="v2-shell__header">
-        <div>
-          <p className="v2-shell__eyebrow">Reporter Growth</p>
-          <h1>Supply growth, with the evidence visible</h1>
-        </div>
-        <p className="v2-shell__date">Fixed demo date: {demoDateLabel}</p>
+        <h1>Provider growth command center</h1>
+        <span className="v2-shell__focus">Focus <strong>{filters.selectedMarket === "ALL" ? "All markets" : filters.selectedMarket}</strong></span>
       </header>
+      <section aria-label="Market" className="v2-market-switcher"><span>Market</span><div>{marketOptions.map((market) => <button aria-pressed={filters.selectedMarket === market.value} className={filters.selectedMarket === market.value ? "is-active" : undefined} key={market.value} onClick={() => onFiltersChange({ ...filters, selectedMarket: market.value })} type="button">{market.label}</button>)}</div><label className="sr-only">Market<select onChange={(event) => onFiltersChange({ ...filters, selectedMarket: event.target.value as SelectedMarket })} value={filters.selectedMarket}>{marketOptions.map((market) => <option key={market.value} value={market.value}>{market.label}</option>)}</select></label></section>
       <nav aria-label="Reporter Growth workspaces" className="v2-shell__tabs">
         {V2_WORKSPACE_TABS.map((tab) => (
           <button
@@ -70,7 +74,7 @@ export function V2AppShell({
           </button>
         ))}
       </nav>
-      <section aria-label="Shared filters" className="v2-filter-bar">
+      <section aria-label="Shared filters" className="v2-filter-bar sr-only">
         <label>
           <span>Market</span>
           <select
@@ -121,8 +125,9 @@ export function V2AppShell({
           </fieldset>
         ) : null}
       </section>
-      {actionFeedback ? <div aria-live="polite" className="v2-shell__feedback">{actionFeedback}</div> : null}
+      {actionFeedback ? <details className="v2-shell__feedback"><summary>Demo controls · {demoDateLabel}</summary>{actionFeedback}</details> : null}
       <main className="v2-shell__content">{children}</main>
+      {selectedEvidence && onCloseEvidence && onOpenEvidenceWork ? <aside aria-label="Why this?" aria-modal="true" className="v2-evidence-drawer" role="dialog"><header><div><span>Why this?</span><h2>{selectedEvidence.explanation}</h2></div><button aria-label="Close evidence" onClick={onCloseEvidence} type="button">Close</button></header><p>{selectedEvidence.computation.status === "available" ? `${selectedEvidence.computation.value} ${selectedEvidence.unit}` : selectedEvidence.computation.reason}</p><p>{selectedEvidence.reportingWindow ? `Window: ${selectedEvidence.reportingWindow.startAt} to ${selectedEvidence.reportingWindow.endAt}` : "Current record scope"}</p><ul>{selectedEvidence.contributingRecords.map((record) => <li key={`${record.kind}-${record.id}`}>{record.label}</li>)}</ul>{selectedEvidence.unknownCount ? <p>{selectedEvidence.unknownCount} records have unknown information.</p> : null}{selectedEvidence.limitations.map((item) => <p key={item}>{item}</p>)}<button className="ui-button ui-button--primary" onClick={() => onOpenEvidenceWork(selectedEvidence.navigationTarget)} type="button">Open the work</button></aside> : null}
       <footer className="v2-shell__footer">
         Independent synthetic demo. Fixed dates and simulated events are labeled. No real message is sent and no Steno system is connected.
       </footer>
