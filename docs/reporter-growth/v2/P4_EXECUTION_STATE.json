@@ -16,7 +16,9 @@
   "current_candidate": {
     "commit": "46f143682d06ac37ef211db237944d5a20b13a80",
     "status": "not_accepted",
-    "served_preview": "http://127.0.0.1:5174/",
+    "preview_url": "http://127.0.0.1:5174/",
+    "preview_status": "blocked_environment",
+    "preview_failure": "The prior preview process stopped, and the managed command environment denied a replacement Vite listener on 127.0.0.1:5174 with EPERM.",
     "defect_register": "docs/reporter-growth/v2/P4_VISUAL_PROOF_DEFECTS.md"
   },
   "gates": {

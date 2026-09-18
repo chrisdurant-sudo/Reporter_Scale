@@ -7,7 +7,9 @@ serving a local preview does not satisfy this gate.
 ## Current disposition
 
 - The coordinator candidate at `46f143682d06ac37ef211db237944d5a20b13a80` is **not accepted**.
-- `http://127.0.0.1:5174/` is a repair preview, not a completed P4 experience.
+- `http://127.0.0.1:5174/` is the intended repair preview URL, not a completed P4 experience. The
+  managed command environment currently denies the Vite socket bind with `EPERM`, so the ledger marks
+  the preview offline until it is restarted from an unrestricted local shell.
 - P4.2 specialist work, Quality, and Reviewer remain blocked.
 - The active defect register is `docs/reporter-growth/v2/P4_VISUAL_PROOF_DEFECTS.md`.
 
