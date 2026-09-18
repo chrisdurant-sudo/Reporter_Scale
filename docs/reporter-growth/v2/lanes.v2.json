@@ -4,7 +4,7 @@
   "routing_active": true,
   "fanout_authorized": false,
   "implementation_active": true,
-  "current_phase": "P4.1_visual_proof_repair",
+  "current_phase": "P4.0b_serial_sample_expansion",
   "execution_state": "docs/reporter-growth/v2/P4_EXECUTION_STATE.json",
   "execution_model": "serial_gates_with_bounded_parallel_workspace_wave",
   "transition_control": {

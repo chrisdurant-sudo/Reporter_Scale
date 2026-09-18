@@ -31,10 +31,12 @@ path. Do not spawn children.
 - no stored KPI totals, SLA outcomes, churn claims, compliance conclusions, or chart series; and
 - SD06 record-derived Overview and Funnel variation for every market plus All, using the exact
   thresholds in the sample addendum; and
-- SD07 unique human-readable invented names for all 50 P4 identities, with no fixture-style market,
-  `Fictional`, `Sample`, `Test`, `Person`, or numeric suffix in the visible name.
+- SD07 unique human-readable invented names for every reporter identity that can appear in the base
+  seed or scenario-added state, with no fixture-style market, `Fictional`, `Sample`, `Test`, `Person`,
+  or numeric suffix in the visible name.
 
-Add focused tests for SD01–SD07. Include per-market counts, unique natural-looking names, current stage distribution, activity
+Add focused tests for SD01–SD07. Include per-market counts, unique natural-looking names across all
+base-seed and scenario-added reporter identities, current stage distribution, activity
 windows, credentials/compliance evidence, SLA-age coverage inputs, Overview rise/fall/range and
 gap-recovery checks, Funnel R28 reversal checks, record integrity, reset, and named scenario
 protection.

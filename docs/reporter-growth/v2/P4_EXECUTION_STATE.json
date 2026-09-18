@@ -16,7 +16,7 @@
     },
     {
       "authorized_at": "2026-09-17",
-      "scope": "Add SD06 source-derived trend variation so Overview and Funnel show noticeable rises, falls, and recovery without stored chart totals or changed metric meanings; add SD07 natural-looking invented names for all 50 P4 identities.",
+      "scope": "Add SD06 source-derived trend variation so Overview and Funnel show noticeable rises, falls, and recovery without stored chart totals or changed metric meanings; add SD07 natural-looking invented names for every base-seed and scenario-added reporter identity.",
       "source": "Explicit user instructions: ensure noticeable trend shifts and replace fixture-style names"
     }
   ],
@@ -24,10 +24,10 @@
   "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",
   "implementation_active": true,
   "fanout_authorized": false,
-  "current_phase": "P4.1_visual_proof_repair",
+  "current_phase": "P4.0b_serial_sample_expansion",
   "current_candidate": {
     "commit": "095170a96d86a791e65a34ea10fb50793c357adc",
-    "status": "not_accepted_pending_visual_reproof",
+    "status": "invalidated_pending_complete_name_repair",
     "preview_url": "http://127.0.0.1:5174/",
     "preview_status": "blocked_environment",
     "preview_failure": "The prior preview process stopped, and the managed command environment denied a replacement Vite listener on 127.0.0.1:5174 with EPERM.",
@@ -35,9 +35,9 @@
   },
   "gates": {
     "data": {
-      "status": "passed",
+      "status": "repair_required",
       "required_acceptance_ids": ["SD01", "SD02", "SD03", "SD04", "SD05", "SD06", "SD07"],
-      "evidence": "Integrated Data commit 095170a passes SD01-SD07: 50 canonical P4 identities, 10 per market, 50 unique natural-looking names, source-derived rise/fall/recovery in Overview and lifecycle-driven R28 reversals for All plus every market. The independent coordinator run passed 11 focused data tests and the 116-test full baseline."
+      "evidence": "Integrated Data commit 095170a passes SD01-SD06 and gives all 50 P4 additions natural-looking names, but older base-seed and scenario-added fixture names remain visible. SD07 is open until every reporter identity is repaired and retested."
     },
     "baseline": {
       "status": "passed",
@@ -83,7 +83,7 @@
       ],
       "candidate_artifacts": [],
       "blocking_conditions": [
-        "SD06 and SD07 are integrated and passed, so all prior candidate screenshots are invalid and visual proof must be recaptured from commit 095170a or a descendant with identical data.",
+        "SD06 is integrated, but SD07 remains open because older base-seed and scenario-added fixture names are still visible. All prior candidate screenshots are invalid.",
         "The current candidate has no versioned candidate screenshot matrix.",
         "The repaired shell, Overview, and Funnel have not yet been directly compared against the fixed screenshots in a runnable browser.",
         "Interactive controls and filters pass focused component and integrated app tests, but have not been proven legible at every required viewport.",

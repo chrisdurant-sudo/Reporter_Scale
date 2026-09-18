@@ -92,11 +92,12 @@ supporting canonical records. Existing scenario anchors and current-stage compos
 
 ## SD07 human-readable dummy identities
 
-The 50 P4 people must use 50 unique, natural-looking invented names. Names must not contain
-`Fictional`, a market name or market code, `Sample`, `Test`, `Person`, or an ordinal/numbered-fixture
-suffix. Do not copy customer, employee, celebrity, or other known-person lists. The records remain
-synthetic demo data through provenance and disclosure; the visible name itself should read like a
-person's name rather than a database fixture.
+Every reporter identity that can appear in the base seed or scenario-added state must use a unique,
+natural-looking invented name, including—but not limited to—the 50 P4 additions. Names must not
+contain `Fictional`, a market name or market code, `Sample`, `Test`, `Person`, or an
+ordinal/numbered-fixture suffix. Do not copy customer, employee, celebrity, or other known-person
+lists. The records remain synthetic demo data through provenance and disclosure; the visible name
+itself should read like a person's name rather than a database fixture.
 
 ## Record completeness
 
