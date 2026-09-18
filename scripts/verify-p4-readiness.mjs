@@ -29,10 +29,15 @@ check(registry.implementation_active === false, "Readiness must not activate imp
 check(registry.fanout_authorized === false, "The configured P4 wave must remain inactive until authorization and proof.");
 check(registry.current_phase === "P4_ready_awaiting_explicit_implementation_authorization", "Registry phase must be P4 ready/awaiting authorization.");
 check(registry.execution_model === "serial_gates_with_bounded_parallel_workspace_wave", "P4 must use serial gates with one bounded workspace wave.");
+check(registry.spawn_context_policy?.name === "zero_inheritance", "P4 must declare a zero-inheritance spawn policy.");
+check(registry.spawn_context_policy?.required_fork_turns === "none", "Every P4 spawn must require fork_turns=none.");
+check(JSON.stringify(registry.spawn_context_policy?.forbidden_fork_turns) === JSON.stringify(["all", "bounded_history"]), "Full and bounded-history forks must be forbidden.");
+check(registry.spawn_context_policy?.applies_to === "every_routed_probe_and_worker_spawn", "Zero inheritance must cover probes and workers.");
 check(registry.max_concurrent_lane_workers === 4, "P4 must cap the workspace wave at four lane workers.");
 check(registry.max_concurrent_spawned_agents_excluding_coordinator === 4, "P4 spawn limit must be four.");
 check(registry.workers_may_spawn === false, "P4 workers must not spawn children.");
 check(registry.implementation_requires.includes("explicit_P4_implementation_authorization"), "Explicit P4 authorization must be a registry gate.");
+check(registry.implementation_requires.includes("ZERO_INHERITANCE_SPAWN_POLICY_VERIFIED"), "Zero inheritance must be an implementation gate.");
 check(registry.implementation_requires.includes("RUNTIME_ROUTING_PROBE_VERIFIED_BEFORE_FIRST_WORKER"), "Runtime routing probe must be a registry gate.");
 
 const expectedSequence = [
@@ -144,10 +149,12 @@ check(config.includes("P4 serial data-preparation lane"), "Data description must
 
 const acceptance = read("docs/reporter-growth/v2/P4_ACCEPTANCE.md");
 check(includesAll(acceptance, ["XR41", "Experience Lead alone edits shared", "candidate/reference screenshot checkpoints"]), "Acceptance must enforce Lead-only shared changes and specialist screenshot review.");
+const agentInstructions = read("AGENTS.md");
+check(includesAll(agentInstructions, ["Zero-inheritance policy", 'fork_turns="none"', 'fork_turns="all"', "bounded history fork", "zero coordinator"]), "AGENTS.md must enforce zero inherited coordinator turns.");
 const readiness = read("docs/reporter-growth/v2/P4_READINESS.md");
-check(includesAll(readiness, ["serial gates", "bounded parallel", "Models and why each lane uses them", "four concurrent workers"]), "Readiness must explain gates, concurrency, and model rationale.");
+check(includesAll(readiness, ["serial gates", "bounded parallel", "Models and why each lane uses them", "four concurrent workers", "Zero inheritance", 'fork_turns="none"']), "Readiness must explain gates, concurrency, models, and zero inheritance.");
 const laneDocs = read("docs/reporter-growth/v2/LANES.md");
-check(includesAll(laneDocs, ["bounded parallel presentation wave", "experience_reporters", "Experience Lead", "candidate/reference"]), "Lane docs must describe the Lead/specialist workflow.");
+check(includesAll(laneDocs, ["bounded parallel presentation wave", "experience_reporters", "Experience Lead", "candidate/reference", "zero-inheritance policy", 'fork_turns="none"']), "Lane docs must describe the Lead/specialist workflow and zero inheritance.");
 
 const requiredFiles = [
   "AGENTS.md",

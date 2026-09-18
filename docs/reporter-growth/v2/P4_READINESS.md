@@ -83,6 +83,9 @@ switch to Fast, Priority, or Ultrafast.
 
 - `implementation_active` and `fanout_authorized` remain false until the user explicitly authorizes
   P4 implementation.
+- Zero inheritance is mandatory for every routing probe and worker: each spawn must use
+  `fork_turns="none"`; `all` and bounded-history forks are forbidden. A child receives only its
+  explicit dispatch packet plus repository instructions, never the coordinator conversation.
 - Immediately before the first Data worker, the coordinator must run one routing probe with
   `fork_turns="none"` and verify the actual role/model/reasoning metadata. The probe is not an
   implementation worker and must not edit files.
@@ -106,16 +109,16 @@ Run from the repository root:
 node scripts/verify-p4-readiness.mjs
 ```
 
-The verifier fails if parallelism can begin before the proof, the P4.2 limit exceeds four, paths
-overlap, a specialist can change shared UI, Lead review disappears, a domain role regains a feature
-path, Standard/default processing changes, required packet files are untracked, the visual bundle
-drifts, or the locked screenshots are incomplete.
+The verifier fails if zero inheritance is removed, parallelism can begin before the proof, the P4.2
+limit exceeds four, paths overlap, a specialist can change shared UI, Lead review disappears, a
+domain role regains a feature path, Standard/default processing changes, required packet files are
+untracked, the visual bundle drifts, or the locked screenshots are incomplete.
 
 Baseline verification for this readiness packet:
 
 | Check | Result |
 |---|---|
-| P4 static routing verifier | Pass — 139 checks |
+| P4 static routing verifier | Pass — 145 checks |
 | TypeScript | Pass — exit 0 |
 | Lint | Pass — exit 0, zero warnings |
 | Unit tests | Pass — 21 files, 100 tests |

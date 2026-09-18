@@ -6,6 +6,15 @@
   "implementation_active": false,
   "current_phase": "P4_ready_awaiting_explicit_implementation_authorization",
   "execution_model": "serial_gates_with_bounded_parallel_workspace_wave",
+  "spawn_context_policy": {
+    "name": "zero_inheritance",
+    "required_fork_turns": "none",
+    "forbidden_fork_turns": [
+      "all",
+      "bounded_history"
+    ],
+    "applies_to": "every_routed_probe_and_worker_spawn"
+  },
   "routing_verification_status": "static_readiness_verified_runtime_probe_required_at_dispatch",
   "source_contract_commit": "19f7df98000e346a5b4ff32e00b699276c3f62fb",
   "prepared_against_commit": "c4f304c376ca631d88c694f519f76ec316f12a13",
@@ -13,6 +22,7 @@
     "explicit_P4_implementation_authorization",
     "P4_PACKET_COMMITTED",
     "P4_READINESS_VERIFIED",
+    "ZERO_INHERITANCE_SPAWN_POLICY_VERIFIED",
     "RUNTIME_ROUTING_PROBE_VERIFIED_BEFORE_FIRST_WORKER"
   ],
   "p4_execution_sequence": [

@@ -75,9 +75,10 @@ inactive; they do not authorize dispatch or source work.
   serial. Workers do not spawn children.
 - Use the named V2 roles in `.codex/config.toml` and the active v2 registry; workers never raise
   or substitute their own model, reasoning level, or service tier.
-- Every `spawn_agent` call for a routed role must specify `fork_turns="none"`. Never use
-  `fork_turns="all"` or a bounded history fork for a V2 lane because inherited coordinator context
-  must not replace the configured child model/instructions.
+- Zero-inheritance policy: every routed probe and worker `spawn_agent` call must specify
+  `fork_turns="none"`. Never use `fork_turns="all"` or a bounded history fork for any Data,
+  Experience, domain-support, Quality, or Reviewer role. Each child starts with zero coordinator
+  conversation turns and receives only its explicit dispatch packet plus repository instructions.
 - Include required context, absolute worktree, base commit, allowed paths, task brief, frozen
   contract commit, acceptance IDs, and handoff requirements in every implementation dispatch.
 - Every P4 Experience Lead, Experience specialist, Quality, or Reviewer dispatch must include the exact path

@@ -68,9 +68,11 @@ unassigned paths.
 | Quality | GPT-5.6 Luna | medium | `default` |
 | Reviewer | GPT-5.6 Terra | high | `default` |
 
-All roles use Standard/default processing. The coordinator remains selected interactively. Every
-routed spawn uses the named role with `fork_turns="none"`; workers do not spawn children or change
-their model, reasoning effort, or service tier.
+All roles use Standard/default processing. The coordinator remains selected interactively. The
+zero-inheritance policy requires every routed probe and worker spawn to use the named role with
+`fork_turns="none"`; `all` and bounded-history forks are forbidden. Workers receive only their
+explicit dispatch packet plus repository instructions, do not spawn children, and do not change their
+model, reasoning effort, or service tier.
 
 Terra balances intelligence and cost for coordinated coding work, so it serves the Lead, presentation
 specialists, and domain support. Luna is optimized for cost-sensitive, high-volume work, which fits
