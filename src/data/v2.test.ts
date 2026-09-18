@@ -26,7 +26,7 @@ describe("V2 synthetic records and repository", () => {
       expect(people.filter((person) => DEMO_SNAPSHOT_V2.jobOutcomes.some((job) => job.reporterId === person.id))).toHaveLength(4);
       const ready = people.filter((person) => DEMO_SNAPSHOT_V2.readinessEvents.some((event) => event.reporterId === person.id));
       expect(ready).toHaveLength(5);
-      expect(ready.every((person) => DEMO_SNAPSHOT_V2.credentialRecords.some((record) => record.reporterId === person.id && record.jurisdictionScope === (market === "LAX" || market === "SFO" ? "CA" : market)))).toBe(true);
+      expect(ready.every((person) => DEMO_SNAPSHOT_V2.credentialRecords.some((record) => record.reporterId === person.id && record.jurisdictionScope === ({ LAX: "CA", SFO: "CA", DFW: "TX", ORD: "IL", ATL: "GA" } as const)[market]))).toBe(true);
       expect(ready.every((person) => DEMO_SNAPSHOT_V2.availabilityWindows.some((window) => window.reporterId === person.id))).toBe(true);
     }
     expect(DEMO_SNAPSHOT_V2.reporters.filter((item) => String(item.id).startsWith("person-p4-")).every((person) => person.provenance === "synthetic-demo")).toBe(true);
@@ -35,6 +35,59 @@ describe("V2 synthetic records and repository", () => {
     expect("churn" in DEMO_SNAPSHOT_V2.reporters[0]!).toBe(false);
     expect(validateDemoSnapshot(DEMO_SNAPSHOT_V2).ok).toBe(true);
     expect(createDemoRepositoryV2).toBeTypeOf("function");
+  });
+
+  it("SD02-SD05 preserves exact roles, source-derived age inputs, evidence patterns, and anchors", () => {
+    const asOf = Date.parse(DEMO_SNAPSHOT_V2.baseAsOfAt);
+    const stateCredential = { LAX: "CA", SFO: "CA", DFW: "TX", ORD: "IL", ATL: "GA" } as const;
+    const roleFor = (events: DemoSnapshotV2["lifecycleEvents"]) => events.at(-1)?.eventType;
+    for (const market of ["LAX", "SFO", "DFW", "ORD", "ATL"] as const) {
+      const people = DEMO_SNAPSHOT_V2.reporters.filter((item) => String(item.id).startsWith(`person-p4-${market.toLowerCase()}-`));
+      const latest = people.map((person) => roleFor(DEMO_SNAPSHOT_V2.lifecycleEvents.filter((event) => event.reporterId === person.id).sort((a, b) => Date.parse(a.occurredAt) - Date.parse(b.occurredAt))));
+      expect(latest.filter((stage) => stage === "responded")).toHaveLength(1);
+      expect(latest.filter((stage) => stage === "screening-started")).toHaveLength(["LAX", "DFW", "ATL"].includes(market) ? 2 : 1);
+      expect(latest.filter((stage) => stage === "qualified")).toHaveLength(1);
+      expect(latest.filter((stage) => stage === "onboarding-started")).toHaveLength(["LAX", "DFW", "ATL"].includes(market) ? 1 : 2);
+      expect(latest.filter((stage) => stage === "ready")).toHaveLength(5);
+      const ready = people.filter((person) => latest[people.indexOf(person)] === "ready");
+      expect(ready.filter((person) => DEMO_SNAPSHOT_V2.jobOutcomes.some((job) => job.reporterId === person.id && job.completedAt !== null && asOf - Date.parse(job.completedAt) < 28 * 86_400_000))).toHaveLength(2);
+      expect(ready.filter((person) => { const job = DEMO_SNAPSHOT_V2.jobOutcomes.find((item) => item.reporterId === person.id); return job && job.completedAt !== null && asOf - Date.parse(job.completedAt) >= 28 * 86_400_000 && asOf - Date.parse(job.completedAt) < 56 * 86_400_000; })).toHaveLength(1);
+      expect(ready.filter((person) => { const job = DEMO_SNAPSHOT_V2.jobOutcomes.find((item) => item.reporterId === person.id); return job && job.completedAt !== null && asOf - Date.parse(job.completedAt) >= 56 * 86_400_000; })).toHaveLength(1);
+      expect(ready.filter((person) => !DEMO_SNAPSHOT_V2.jobOutcomes.some((job) => job.reporterId === person.id))).toHaveLength(1);
+      expect(ready.filter((person) => DEMO_SNAPSHOT_V2.credentialRecords.some((credential) => credential.reporterId === person.id && credential.label === stateCredential[market] && credential.verificationStatus === "verified" && credential.validUntil !== null && Date.parse(credential.validUntil) > asOf + 56 * 86_400_000))).toHaveLength(3);
+      expect(ready.filter((person) => DEMO_SNAPSHOT_V2.credentialRecords.some((credential) => credential.reporterId === person.id && credential.label === stateCredential[market] && credential.verificationStatus === "verified" && credential.validUntil !== null && Date.parse(credential.validUntil) <= asOf + 7 * 86_400_000))).toHaveLength(1);
+      expect(ready.filter((person) => DEMO_SNAPSHOT_V2.credentialRecords.some((credential) => credential.reporterId === person.id && credential.label === stateCredential[market] && credential.verificationStatus === "needs-information"))).toHaveLength(1);
+      expect(ready.some((person) => DEMO_SNAPSHOT_V2.credentialRecords.some((credential) => credential.reporterId === person.id && credential.label === "RPR"))).toBe(true);
+      expect(ready.some((person) => DEMO_SNAPSHOT_V2.credentialRecords.some((credential) => credential.reporterId === person.id && credential.label === "CRR"))).toBe(true);
+      expect(ready.every((person) => DEMO_SNAPSHOT_V2.credentialRecords.some((credential) => credential.reporterId === person.id && credential.jurisdictionScope === stateCredential[market]))).toBe(true);
+
+      const funnel = people.slice(0, 6).map((person) => {
+        const events = DEMO_SNAPSHOT_V2.lifecycleEvents.filter((event) => event.reporterId === person.id).sort((a, b) => Date.parse(a.occurredAt) - Date.parse(b.occurredAt));
+        const current = events.at(-1)!;
+        const age = Math.floor((asOf - Date.parse(current.occurredAt)) / 86_400_000);
+        return { age, slaDays: age + (people.indexOf(person) < 2 ? 1 : people.indexOf(person) < 4 ? 0 : -1) };
+      });
+      expect(funnel.filter((item) => item.age < item.slaDays)).toHaveLength(2);
+      expect(funnel.filter((item) => item.age === item.slaDays)).toHaveLength(2);
+      expect(funnel.filter((item) => item.age > item.slaDays)).toHaveLength(2);
+    }
+    for (const person of DEMO_SNAPSHOT_V2.reporters.filter((item) => String(item.id).startsWith("person-p4-"))) {
+      const events = DEMO_SNAPSHOT_V2.lifecycleEvents.filter((event) => event.reporterId === person.id).sort((a, b) => Date.parse(a.occurredAt) - Date.parse(b.occurredAt));
+      expect(events[0]?.eventType).toBe("sourced");
+      expect(events.every((event, index) => index === 0 || Date.parse(event.occurredAt) >= Date.parse(events[index - 1]!.occurredAt))).toBe(true);
+      const acq = DEMO_SNAPSHOT_V2.acquisitionCases.find((item) => item.reporterId === person.id)!;
+      expect(Date.parse(acq.openedAt)).toBeLessThanOrEqual(Date.parse(events[0]!.occurredAt));
+      const readiness = DEMO_SNAPSHOT_V2.readinessEvents.find((item) => item.reporterId === person.id);
+      if (readiness) {
+        expect(readiness.checkedStepIds.every((id) => DEMO_SNAPSHOT_V2.onboardingSteps.some((step) => step.id === id && step.state === "completed" && step.acquisitionCaseId === readiness.acquisitionCaseId))).toBe(true);
+        expect(readiness.capabilityVerificationIds.every((id) => DEMO_SNAPSHOT_V2.capabilityVerifications.some((capability) => capability.id === id && capability.status === "verified" && capability.reporterId === person.id))).toBe(true);
+      }
+    }
+    expect(SCENARIO_CONTRACT.checkpoints.map((checkpoint) => checkpoint.id)).toEqual(["baseline", "plan-saved", "existing-acceptances", "two-new-ready", "new-acceptances", "original-plan-delivered", "pair-cohort-mature"]);
+    expect(SCENARIO_CONTRACT.checkpoints[0]?.expectedFactsForTestsOnly).toEqual(expect.arrayContaining([{ metricKey: "requested", value: 10, unit: "requests" }, { metricKey: "confirmed", value: 6, unit: "requests" }]));
+    expect(DEMO_SNAPSHOT_V2.programEnrollments.filter((item) => item.programId === "program-readiness-checklist")).toHaveLength(40);
+    expect(DEMO_SNAPSHOT_V2.programEnrollments.filter((item) => String(item.reporterId).startsWith("person-p4-"))).toHaveLength(0);
+    expect(DEMO_SNAPSHOT_V2.jobOutcomes.every((job) => !("sla" in job) && !("churn" in job) && !("series" in job))).toBe(true);
   });
 
   it("D01 resolves the complete seed graph without duplicate canonical identities", () => {

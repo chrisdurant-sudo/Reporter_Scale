@@ -228,11 +228,12 @@ const p4MarketTimeZone: Record<Market["id"], IanaTimeZone> = {
 };
 const p4StateCredential: Record<Market["id"], string> = { LAX: "CA", SFO: "CA", DFW: "TX", ORD: "IL", ATL: "GA" };
 const p4MarketNames: Record<Market["id"], string> = { LAX: "Los Angeles", SFO: "San Francisco", DFW: "Dallas", ORD: "Chicago", ATL: "Atlanta" };
+const p4DateAt = (date: string, days: number) => new Date(Date.parse(date) + days * 86_400_000).toISOString().replace(".000Z", "Z");
 
 function addP4Credential(reporterId: string, label: string, market: Market["id"], status: CredentialRecord["verificationStatus"], validUntil: string | null, recordedAt: string): CredentialRecord {
   const record: CredentialRecord = {
     id: asId(`credential-p4-${reporterId}-${label.toLowerCase()}`), reporterId: asId(reporterId), label,
-    issuerLabel: "Fictional state registry", jurisdictionScope: market === "LAX" || market === "SFO" ? "CA" : market,
+    issuerLabel: "Fictional state registry", jurisdictionScope: p4StateCredential[market],
     verificationStatus: status, verifiedAt: status === "verified" ? utc(recordedAt) : null,
     validFrom: status === "verified" ? utc("2025-01-01T00:00:00Z") : null,
     validUntil: validUntil ? utc(validUntil) : null, recordedAt: utc(recordedAt),
@@ -257,19 +258,20 @@ for (const [marketIndex, market] of (["LAX", "SFO", "DFW", "ORD", "ATL"] as cons
     const reporterId = `person-p4-${market.toLowerCase()}-${suffix}`;
     const caseId = `case-p4-${market.toLowerCase()}-${suffix}`;
     const entryDay = String(Math.min(baseDay + row.offset, 9)).padStart(2, "0");
-    const openedAt = `2026-02-${entryDay}T17:00:00Z`;
     const name = `Fictional ${p4MarketNames[market]} Sample ${suffix}`;
     const isReady = ["starting-soon", "recent-a", "recent-b", "aging-active", "inactive"].includes(row.stage);
-    const readyAt = row.stage === "starting-soon" ? "2026-02-14T17:00:00Z" : row.stage === "recent-a" ? "2026-01-25T17:00:00Z" : row.stage === "recent-b" ? "2026-01-20T17:00:00Z" : row.stage === "aging-active" ? "2026-01-01T17:00:00Z" : "2025-11-30T17:00:00Z";
+    const timelineStart = row.stage === "starting-soon" ? "2026-02-01T17:00:00Z" : row.stage === "recent-a" ? "2026-01-01T17:00:00Z" : row.stage === "recent-b" ? "2025-12-25T17:00:00Z" : row.stage === "aging-active" ? "2025-12-10T17:00:00Z" : row.stage === "inactive" ? "2025-11-10T17:00:00Z" : `2026-02-${entryDay}T17:00:00Z`;
+    const openedAt = timelineStart;
+    const readyAt = isReady ? p4DateAt(timelineStart, 6) : "";
     addReporter({ id: reporterId, name, market, createdAt: openedAt, capabilities: [capabilityCode], attendanceModes: row.offset % 3 === 0 ? ["remote"] : ["remote", "in-person"], proceedingTypes: row.offset % 2 === 0 ? ["deposition", "hearing"] : ["deposition"], serviceMarkets: [market], sourceId: "source-community-event" });
     const lifecycle: readonly [LifecycleEvent["eventType"], string][] = [
-      ["sourced", openedAt], ["contacted", `2026-02-${entryDay}T19:00:00Z`], ["responded", `2026-02-${entryDay}T21:00:00Z`],
+      ["sourced", openedAt], ["contacted", p4DateAt(timelineStart, 1)], ["responded", p4DateAt(timelineStart, 2)],
     ];
     for (const [eventType, occurredAt] of lifecycle) addLifecycle(reporterId, market, eventType, occurredAt, `p4-${eventType}`);
-    if (row.stage !== "applicant") addLifecycle(reporterId, market, "screening-started", `2026-02-${entryDay}T22:00:00Z`, "p4-screening-started");
-    if (["approved", "onboarding", "onboarding-bottleneck", "starting-soon", "recent-a", "recent-b", "aging-active", "inactive"].includes(row.stage)) addLifecycle(reporterId, market, "qualified", `2026-02-${entryDay}T23:00:00Z`, "p4-qualified");
+    if (row.stage !== "applicant") addLifecycle(reporterId, market, "screening-started", p4DateAt(timelineStart, 3), "p4-screening-started");
+    if (["approved", "onboarding", "onboarding-bottleneck", "starting-soon", "recent-a", "recent-b", "aging-active", "inactive"].includes(row.stage)) addLifecycle(reporterId, market, "qualified", p4DateAt(timelineStart, 4), "p4-qualified");
     const hasOnboarding = ["onboarding", "onboarding-bottleneck", "starting-soon", "recent-a", "recent-b", "aging-active", "inactive"].includes(row.stage);
-    if (hasOnboarding) addLifecycle(reporterId, market, "onboarding-started", isReady ? readyAt : `2026-02-${String(Math.min(baseDay + row.offset + 1, 12)).padStart(2, "0")}T17:00:00Z`, "p4-onboarding-started");
+    if (hasOnboarding) addLifecycle(reporterId, market, "onboarding-started", p4DateAt(timelineStart, 5), "p4-onboarding-started");
     if (isReady) {
       addLifecycle(reporterId, market, "ready", readyAt, "p4-ready");
       const capability = addVerifiedCapability(reporterId, capabilityCode, readyAt, "p4-capability");
@@ -283,11 +285,11 @@ for (const [marketIndex, market] of (["LAX", "SFO", "DFW", "ORD", "ATL"] as cons
     }
     if (row.stage === "screening" || row.stage === "screening-bottleneck" || hasOnboarding) {
       const pending = row.stage === "screening-bottleneck";
-      screeningReviews.push({ id: asId(`screening-p4-${market.toLowerCase()}-${suffix}`), reporterId: asId(reporterId), acquisitionCaseId: asId(caseId), checks: [{ checkCode: "p4-capability", required: true, status: pending ? "needs-information" : "complete", evidenceRef: pending ? null : { kind: "reporter", id: reporterId }, note: pending ? "Fictional capability evidence remains unrecorded." : "Fictional screening evidence recorded." }], outcome: pending ? "needs-information" : "verified", unresolvedInformation: pending ? ["p4-capability"] : [], reviewerId: asId("team-1"), reviewedAt: utc(`2026-02-${entryDay}T23:30:00Z`), recordedAt: utc(`2026-02-${entryDay}T23:30:00Z`), reason: pending ? "Awaiting defined fictional evidence." : "Fictional screening review completed.", provenance });
+      screeningReviews.push({ id: asId(`screening-p4-${market.toLowerCase()}-${suffix}`), reporterId: asId(reporterId), acquisitionCaseId: asId(caseId), checks: [{ checkCode: "p4-capability", required: true, status: pending ? "needs-information" : "complete", evidenceRef: pending ? null : { kind: "reporter", id: reporterId }, note: pending ? "Fictional capability evidence remains unrecorded." : "Fictional screening evidence recorded." }], outcome: pending ? "needs-information" : "verified", unresolvedInformation: pending ? ["p4-capability"] : [], reviewerId: asId("team-1"), reviewedAt: utc(p4DateAt(timelineStart, 3)), recordedAt: utc(p4DateAt(timelineStart, 3)), reason: pending ? "Awaiting defined fictional evidence." : "Fictional screening review completed.", provenance });
     }
     if (hasOnboarding) {
       const blocked = row.stage === "onboarding-bottleneck";
-      onboardingSteps.push({ id: asId(`step-p4-${market.toLowerCase()}-${suffix}`), acquisitionCaseId: asId(caseId), stepDefinitionId: "p4-requirements", required: true, state: blocked ? "blocked" : "completed", assignedTo: asId("team-1"), dueAt: utc(isReady ? readyAt : "2026-02-15T17:00:00Z"), completedAt: blocked ? null : utc(isReady ? readyAt : `2026-02-${String(Math.min(baseDay + row.offset + 1, 12)).padStart(2, "0")}T17:00:00Z`), completedBy: blocked ? null : asId("team-1"), evidenceRef: blocked ? null : { kind: "reporter", id: reporterId }, blockerCode: blocked ? "p4-required-evidence-missing" : null, recordedAt: utc(isReady ? readyAt : `2026-02-${entryDay}T23:45:00Z`), provenance });
+      onboardingSteps.push({ id: asId(`step-p4-${market.toLowerCase()}-${suffix}`), acquisitionCaseId: asId(caseId), stepDefinitionId: "p4-requirements", required: true, state: blocked ? "blocked" : "completed", assignedTo: asId("team-1"), dueAt: utc(isReady ? readyAt : p4DateAt(timelineStart, 7)), completedAt: blocked ? null : utc(isReady ? readyAt : p4DateAt(timelineStart, 7)), completedBy: blocked ? null : asId("team-1"), evidenceRef: blocked ? null : { kind: "reporter", id: reporterId }, blockerCode: blocked ? "p4-required-evidence-missing" : null, recordedAt: utc(isReady ? readyAt : p4DateAt(timelineStart, 5)), provenance });
     }
     if (isReady) {
       const activityDay = row.stage === "recent-a" ? "2026-02-10" : row.stage === "recent-b" ? "2026-02-05" : row.stage === "aging-active" ? "2026-01-10" : row.stage === "inactive" ? "2025-12-15" : null;
