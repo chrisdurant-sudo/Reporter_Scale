@@ -245,6 +245,7 @@
     "src/shell/",
     "src/styles/",
     "src/ui/",
-    "tests/acceptance/"
+    "tests/acceptance/",
+    "tests/e2e/"
   ]
 }
