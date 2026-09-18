@@ -88,10 +88,34 @@ describe("V2 synthetic records and repository", () => {
       expect(events.every((event, index) => index === 0 || Date.parse(event.occurredAt) >= Date.parse(events[index - 1]!.occurredAt))).toBe(true);
       const acq = DEMO_SNAPSHOT_V2.acquisitionCases.find((item) => item.reporterId === person.id)!;
       expect(Date.parse(acq.openedAt)).toBeLessThanOrEqual(Date.parse(events[0]!.occurredAt));
+      const screeningAt = events.find((event) => event.eventType === "screening-started");
+      const review = DEMO_SNAPSHOT_V2.screeningReviews.find((item) => item.reporterId === person.id);
+      if (screeningAt && review) expect(Date.parse(review.recordedAt)).toBeGreaterThanOrEqual(Date.parse(screeningAt.occurredAt));
+      const onboardingAt = events.find((event) => event.eventType === "onboarding-started");
+      const steps = DEMO_SNAPSHOT_V2.onboardingSteps.filter((step) => step.acquisitionCaseId === acq.id);
+      for (const step of steps) {
+        expect(Date.parse(step.recordedAt)).toBeGreaterThanOrEqual(Date.parse(onboardingAt?.occurredAt ?? step.recordedAt));
+        if (step.completedAt) expect(Date.parse(step.completedAt)).toBeGreaterThanOrEqual(Date.parse(step.recordedAt));
+      }
       const readiness = DEMO_SNAPSHOT_V2.readinessEvents.find((item) => item.reporterId === person.id);
       if (readiness) {
+        expect(Date.parse(readiness.occurredAt)).toBeGreaterThanOrEqual(Date.parse(events.find((event) => event.eventType === "ready")!.occurredAt));
         expect(readiness.checkedStepIds.every((id) => DEMO_SNAPSHOT_V2.onboardingSteps.some((step) => step.id === id && step.state === "completed" && step.acquisitionCaseId === readiness.acquisitionCaseId))).toBe(true);
         expect(readiness.capabilityVerificationIds.every((id) => DEMO_SNAPSHOT_V2.capabilityVerifications.some((capability) => capability.id === id && capability.status === "verified" && capability.reporterId === person.id))).toBe(true);
+      }
+      const assignments = DEMO_SNAPSHOT_V2.assignmentEvents.filter((assignment) => assignment.reporterId === person.id);
+      for (const assignment of assignments) {
+        expect(Date.parse(assignment.occurredAt)).toBeGreaterThanOrEqual(Date.parse(acq.openedAt));
+        if (readiness) expect(Date.parse(assignment.occurredAt)).toBeGreaterThanOrEqual(Date.parse(readiness.occurredAt));
+        const job = DEMO_SNAPSHOT_V2.jobOutcomes.find((outcome) => outcome.acceptedAssignmentEventId === assignment.id);
+        if (job && job.startedAt) {
+          const completedAt = job.completedAt ?? job.startedAt;
+          const deliveryAt = job.deliveryAt ?? completedAt;
+          expect(Date.parse(job.startedAt)).toBeGreaterThanOrEqual(Date.parse(assignment.occurredAt));
+          expect(Date.parse(completedAt)).toBeGreaterThanOrEqual(Date.parse(job.startedAt));
+          expect(Date.parse(deliveryAt)).toBeGreaterThanOrEqual(Date.parse(completedAt));
+          expect(Date.parse(job.recordedAt)).toBeGreaterThanOrEqual(Date.parse(deliveryAt));
+        }
       }
     }
     expect(SCENARIO_CONTRACT.checkpoints.map((checkpoint) => checkpoint.id)).toEqual(["baseline", "plan-saved", "existing-acceptances", "two-new-ready", "new-acceptances", "original-plan-delivered", "pair-cohort-mature"]);
