@@ -25,7 +25,7 @@ candidate screenshots and interaction evidence prove the repair at the exact imp
 | VP10 | XR01–XR11 | No candidate screenshot matrix, checksum manifest, exact-commit comparison, or `P4_VISUAL_PROOF_READY` handoff exists. | Produce the evidence package defined in `P4_VISUAL_PROOF_GATE.md`; coordinator acceptance must name the exact commit. |
 | VP11 | Process ownership | A cross-feature acceptance file changed before the Quality phase. | Quality must explicitly adopt or replace `tests/acceptance/reporter-growth.integration.test.tsx` before its gate can pass. |
 | VP12 | Process gate | The normal check passes, but all five cross-workspace integration tests fail while waiting for an obsolete Overview heading. Acceptance was not part of the routine check. | Repair or replace the stale Quality-owned suite, require it in the phase-transition command, and prove the candidate passes before any downstream dispatch. |
-| VP13 | Process gate | After moving outside `node_modules`, Playwright discovers all eight desktop/mobile tests, but installed Chrome aborts under the current host policy before any assertion. | Rerun the browser suite in an allowed local browser environment and record actual assertion results. Do not convert the environment failure into a waiver. |
+| VP13 | Process gate | After moving outside `node_modules`, Playwright discovers all eight desktop/mobile tests, but both installed Chromium runtimes (Chrome and Brave) abort under the current host policy before any page opens. | Rerun the browser suite in an allowed local browser environment and record actual assertion results. Do not convert the environment failure into a waiver. |
 
 ## Exit condition
 

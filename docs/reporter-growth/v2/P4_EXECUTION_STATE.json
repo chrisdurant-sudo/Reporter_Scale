@@ -44,7 +44,7 @@
     "browser": {
       "status": "blocked_environment",
       "runner_status": "Playwright configuration and all 8 tests load from the corrected /private/tmp worktree.",
-      "failure": "Installed Google Chrome exits with SIGABRT at launch and the host denies process cleanup with EPERM.",
+      "failure": "Both installed Chromium runtimes, Google Chrome and Brave Browser, exit with SIGABRT before a page opens; the host also denies Chrome process cleanup with EPERM.",
       "waiver_allowed": false
     },
     "visual_proof": {
@@ -72,7 +72,7 @@
         "The repaired shell, Overview, and Funnel have not yet been directly compared against the fixed screenshots in a runnable browser.",
         "Interactive controls and filters pass focused component and integrated app tests, but have not been proven legible at every required viewport.",
         "The legacy 390px browser-test waiver has not been replaced by a real mobile assertion.",
-        "The corrected browser runner loads the suite, but this host currently aborts Chrome before assertions; browser proof remains blocked, not waived."
+        "The corrected browser runner loads the suite, but this host aborts both Chrome and Brave before assertions; browser proof remains blocked, not waived."
       ]
     },
     "workspace_wave": {
