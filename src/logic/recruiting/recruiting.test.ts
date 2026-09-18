@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { DemoSnapshotV2, UtcTimestamp } from "../../contracts/v2";
 import { validateEvidenceBundle } from "../shared/evidence";
-import { globallyEarliestCompletedOutcomes, onboardingOutcomes, prepareRecruitingWorkspace, projectCurrentCases, sourceOutcomes } from "./recruiting";
+import { applyRecruitingLocalNoteCommand, funnelWaitTimeTrends, globallyEarliestCompletedOutcomes, onboardingOutcomes, prepareRecruitingWorkspace, projectCurrentCases, resolveFunnelSlaConfiguration, sourceOutcomes } from "./recruiting";
 
 const utc = (value: string) => value as UtcTimestamp;
 const asOf = utc("2026-03-20T00:00:00Z");
@@ -85,5 +85,55 @@ describe("recruiting calculations", () => {
     const outcomes = sourceOutcomes(snapshot({ jobOutcomes: [job], sourceSpend: [{ id: "spend", sourceId: "source-a", programId: null, cohortRef: null, attributableWindow: null, amountMinor: 5000, currency: "USD", occurredAt: utc("2026-02-12T00:00:00Z"), allocationNote: "direct", provenance: "synthetic-demo" }] }), asOf, window);
     expect(outcomes[0]?.firstJobCaseIds).toEqual([]);
     expect(outcomes[0]?.spend.display).toBe("No first jobs yet; 5000 minor USD spent");
+  });
+
+  it("projects source-backed total and current-status elapsed days at the selected as-of time", () => {
+    const configuration = resolveFunnelSlaConfiguration({ marketOverrides: { LAX: { overallDays: 47, statusDays: { Onboarding: 38 } } } });
+    const view = projectCurrentCases(snapshot(), asOf, "LAX", configuration)[0]!;
+    expect(view).toMatchObject({ acquisitionCaseId: "case-a", marketId: "LAX", stage: "onboarding", funnelStatus: "Onboarding", totalElapsedDays: 47, statusElapsedDays: 38, stageEntryEventId: "event-onboard" });
+    expect(view.sla.total.state).toBe("at");
+    expect(view.sla.currentStatus.state).toBe("at");
+    const earlier = projectCurrentCases(snapshot(), utc("2026-02-20T00:00:00Z"), "LAX", configuration)[0]!;
+    expect(earlier.totalElapsedDays).toBe(19);
+    expect(earlier.statusElapsedDays).toBe(10);
+    expect(earlier.sla.currentStatus.state).toBe("under");
+  });
+
+  it("builds ordered R7/R28 source-backed status trends scoped to the selected market", () => {
+    const reporterB = { ...snapshot().reporters[0]!, id: "reporter-b", fictionalName: "Blair", recruitingMarketId: "SFO" };
+    const caseB = { ...snapshot().acquisitionCases[0]!, id: "case-b", reporterId: "reporter-b", ownerMarketId: "SFO", openedAt: utc("2026-02-15T00:00:00Z"), recordedAt: utc("2026-02-15T00:00:00Z") };
+    const eventB = { ...snapshot().lifecycleEvents[0]!, id: "event-b", acquisitionCaseId: "case-b", reporterId: "reporter-b", occurredAt: utc("2026-03-10T00:00:00Z"), recordedAt: utc("2026-03-10T00:00:00Z") };
+    const trends = funnelWaitTimeTrends(snapshot({ reporters: [...snapshot().reporters, reporterB], acquisitionCases: [...snapshot().acquisitionCases, caseB], lifecycleEvents: [...snapshot().lifecycleEvents, eventB] }), asOf, "LAX");
+    const r7 = trends.R7.Onboarding;
+    const r28 = trends.R28.Onboarding;
+    expect(r7).toHaveLength(7);
+    expect(r28).toHaveLength(7);
+    expect(r7.map((point) => point.asOfAt)).toEqual([...r7.map((point) => point.asOfAt)].sort());
+    expect(r28.map((point) => point.asOfAt)).toEqual([...r28.map((point) => point.asOfAt)].sort());
+    expect(r7.at(-1)).toMatchObject({ acquisitionCaseIds: ["case-a"], lifecycleEventIds: ["event-onboard"], meanElapsedDays: 38 });
+    expect(r28.at(-1)?.acquisitionCaseIds).toEqual(["case-a"]);
+  });
+
+  it("uses deterministic demo SLA inputs and distinguishes under, at, and over boundaries", () => {
+    const configuration = resolveFunnelSlaConfiguration({ marketOverrides: { LAX: { overallDays: 47, statusDays: { Onboarding: 38 } } } });
+    const at = projectCurrentCases(snapshot(), asOf, "LAX", configuration)[0]!;
+    const under = projectCurrentCases(snapshot(), utc("2026-03-19T00:00:00Z"), "LAX", configuration)[0]!;
+    const over = projectCurrentCases(snapshot(), utc("2026-03-21T00:00:00Z"), "LAX", configuration)[0]!;
+    expect(configuration).toMatchObject({ source: "demo-input-not-persisted", canonicalPolicyStatus: "not-present-in-DemoSnapshotV2" });
+    expect([under, at, over].map((item) => item.sla.total.state)).toEqual(["under", "at", "over"]);
+    expect([under, at, over].map((item) => item.sla.currentStatus.state)).toEqual(["under", "at", "over"]);
+    expect(resolveFunnelSlaConfiguration()).toEqual(resolveFunnelSlaConfiguration());
+  });
+
+  it("keeps local candidate/process notes outside canonical operational outcomes", () => {
+    const source = snapshot();
+    const baseline = prepareRecruitingWorkspace(source, { workspace: "recruiting", evaluation: { asOfAt: asOf, snapshotRevision: 7, reportingTimeZone: "America/Los_Angeles" }, filters: { selectedMarket: "LAX", marketBasis: "recruiting-market-at-entry", marketIds: [], reporterIds: [], acquisitionCaseIds: [], requestIds: [], workItemIds: [], programIds: [], programEnrollmentIds: [], sourceIds: [], jobOutcomeIds: [], capabilityCodes: [], attendanceModes: [], recordRefs: [], window } } as never);
+    const initial = { persistence: "local-only-not-persisted" as const, notes: [] };
+    const candidate = applyRecruitingLocalNoteCommand(source, asOf, initial, { type: "recruiting.local-note.set", target: { kind: "candidate", acquisitionCaseId: "case-a" as never }, text: "Awaiting fictional form" });
+    const process = applyRecruitingLocalNoteCommand(source, asOf, candidate.ok ? candidate.state : initial, { type: "recruiting.local-note.set", target: { kind: "process", marketId: "LAX" }, text: "Review handoff wording" });
+    expect(process.ok && process.state.notes).toHaveLength(2);
+    expect(source.lifecycleEvents).toHaveLength(1);
+    expect(prepareRecruitingWorkspace(source, { workspace: "recruiting", evaluation: { asOfAt: asOf, snapshotRevision: 7, reportingTimeZone: "America/Los_Angeles" }, filters: { selectedMarket: "LAX", marketBasis: "recruiting-market-at-entry", marketIds: [], reporterIds: [], acquisitionCaseIds: [], requestIds: [], workItemIds: [], programIds: [], programEnrollmentIds: [], sourceIds: [], jobOutcomeIds: [], capabilityCodes: [], attendanceModes: [], recordRefs: [], window } } as never).currentCases).toEqual(baseline.currentCases);
+    expect(applyRecruitingLocalNoteCommand(source, asOf, initial, { type: "recruiting.local-note.set", target: { kind: "candidate", acquisitionCaseId: "unknown" as never }, text: "Nope" }).ok).toBe(false);
   });
 });
