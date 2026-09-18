@@ -349,7 +349,7 @@ function supplyDemandSeries(snapshot: DemoSnapshotV2, context: Context): SupplyD
             window.serviceMarketIds.some((marketId) => marketIds.has(marketId) && reporter.serviceMarketIds.includes(marketId)),
           );
           if (windows.some((window) => window.status === "unavailable")) return false;
-          if (!windows.some((window) => window.status === "available" && (window.confirmationExpiresAt === null || Date.parse(window.confirmationExpiresAt) > Date.parse(asOf)))) return false;
+          if (!windows.some((window) => window.status === "available" && (window.confirmationExpiresAt === null || Date.parse(window.confirmationExpiresAt) > Date.parse(time)))) return false;
           return !(acceptedReservations.get(reporter.id) ?? []).some((request) => activeAt(request.startAt, request.endAt, time));
         })
         .map((reporter) => reporter.id)

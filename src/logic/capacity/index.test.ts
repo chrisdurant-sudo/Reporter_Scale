@@ -199,4 +199,18 @@ describe("capacity markets calculations", () => {
     expect(first.points.every((point) => point.demandRequestIds.every((requestId) => requestId === id("req-dfw")))).toBe(true);
     expect(reversed).toEqual(first);
   });
+
+  it("does not count a known availability window as forecast supply after its confirmation expires", () => {
+    const snapshot = base();
+    const expiredBeforeForecast = {
+      ...snapshot.availabilityWindows[1]!, confirmationExpiresAt: utc("2026-02-21T09:00:00Z"),
+    };
+    const series = prepareMarketsWorkspace({
+      ...snapshot,
+      availabilityWindows: [snapshot.availabilityWindows[0]!, expiredBeforeForecast],
+    }, context()).supplyDemandSeries!;
+    const forecast = series.points.find((point) => point.at === utc("2026-02-21T10:00:00Z"));
+
+    expect(forecast).toMatchObject({ phase: "forecast", availableSupply: 0, demand: 1, neededSupply: 1, reporterIds: [], availabilityWindowIds: [] });
+  });
 });
