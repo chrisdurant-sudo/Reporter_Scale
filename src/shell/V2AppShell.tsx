@@ -44,7 +44,6 @@ const marketOptions: readonly { readonly value: SelectedMarket; readonly label: 
 export function V2AppShell({
   activeWorkspace,
   filters,
-  demoDateLabel,
   capabilityOptions = [],
   attendanceOptions = [],
   actionFeedback,
@@ -118,8 +117,8 @@ export function V2AppShell({
           </fieldset>
         ) : null}
       </section>
-      {actionFeedback ? <details className="v2-shell__feedback"><summary>Demo controls · {demoDateLabel}</summary>{actionFeedback}</details> : null}
       <main className="v2-shell__content">{children}</main>
+      {actionFeedback ? <details className="v2-shell__scenario-controls"><summary>Scenario controls</summary><div aria-live="polite">{actionFeedback}</div></details> : null}
       {selectedEvidence && onCloseEvidence && onOpenEvidenceWork ? <aside aria-label="Why this?" className="v2-evidence-drawer" role="dialog"><header><div><span>Why this?</span><h2>{selectedEvidence.explanation}</h2></div><button aria-label="Close evidence" onClick={onCloseEvidence} type="button">Close</button></header><p>{selectedEvidence.computation.status === "available" ? `${selectedEvidence.computation.value} ${selectedEvidence.unit}` : selectedEvidence.computation.reason}</p><p>{selectedEvidence.reportingWindow ? `Window: ${selectedEvidence.reportingWindow.startAt} to ${selectedEvidence.reportingWindow.endAt}` : "Current record scope"}</p><ul>{selectedEvidence.contributingRecords.map((record) => <li key={`${record.kind}-${record.id}`}>{record.label}</li>)}</ul>{selectedEvidence.unknownCount ? <p>{selectedEvidence.unknownCount} records have unknown information.</p> : null}{selectedEvidence.limitations.map((item) => <p key={item}>{item}</p>)}<button className="ui-button ui-button--primary" onClick={() => onOpenEvidenceWork(selectedEvidence.navigationTarget)} type="button">Open the work</button></aside> : null}
       <footer className="v2-shell__footer">
         Independent synthetic demo. Fixed dates and simulated events are labeled. No real message is sent and no Steno system is connected.

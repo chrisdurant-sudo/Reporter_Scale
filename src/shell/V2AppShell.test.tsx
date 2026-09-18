@@ -36,4 +36,12 @@ describe("V2AppShell", () => {
     await user.click(screen.getByLabelText("Remote"));
     expect(onFiltersChange).toHaveBeenLastCalledWith({ ...filters, attendanceModes: ["remote"] });
   });
+
+  it("keeps scenario controls collapsed and after the working surface", () => {
+    render(<V2AppShell actionFeedback={<button type="button">Advance scenario</button>} activeWorkspace="markets" demoDateLabel="February 16, 2026" filters={filters} onFiltersChange={vi.fn()} onWorkspaceChange={vi.fn()}><p>Prepared markets view</p></V2AppShell>);
+    const details = screen.getByText("Scenario controls").closest("details")!;
+    expect(details).not.toHaveAttribute("open");
+    expect(document.querySelector("main")!.compareDocumentPosition(details) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(details.querySelector("button")?.textContent).toBe("Advance scenario");
+  });
 });

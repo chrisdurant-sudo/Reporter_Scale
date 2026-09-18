@@ -1,85 +1,26 @@
-import { cleanup, render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { afterEach, describe, expect, it, vi } from "vitest";
-import type { EvidenceBundle, WorkspaceFilterPayload } from "../../contracts/v2";
-import type { PreparedMarketsView } from "../../logic/capacity";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import { MarketsV2Screen } from "./MarketsV2Screen";
 
-const filters: WorkspaceFilterPayload = {
-  selectedMarket: "LAX",
-  marketBasis: "demand-market",
-  marketIds: [],
-  reporterIds: [],
-  acquisitionCaseIds: [],
-  requestIds: [],
-  workItemIds: [],
-  programIds: [],
-  programEnrollmentIds: [],
-  sourceIds: [],
-  jobOutcomeIds: [],
-  capabilityCodes: [],
-  attendanceModes: [],
-  recordRefs: [],
-  window: null,
-};
+const view = { overview: { kpis: { marketCount: { value: 5 }, availableReporters: { value: 51 }, openSlots: { value: 38 }, projectedAdditionalNeed: { value: 3 } }, attention: [] }, evidence: [{ navigationTarget: {} }], marketRows: [], supplyDemandSeries: null } as never;
 
-function view(growthGoal: PreparedMarketsView["growthGoal"]): PreparedMarketsView {
-  return {
-    workspace: "markets",
-    evaluation: {
-      asOfAt: "2026-02-16T17:00:00Z" as never,
-      snapshotRevision: 1,
-      reportingTimeZone: "America/Los_Angeles" as never,
-    },
-    appliedFilters: filters,
-    evidence: [],
-    coverage: { requested: 0, confirmed: 0, possible: 0, noVerifiedReadyMatch: 0, requirementsUnknown: 0, confirmedRate: null },
-    requests: [],
-    requirementBreakdown: [],
-    marketRows: [],
-    growthGoal,
-    originalPlan: { status: "unavailable", requestIds: [], completedRequests: null, firstJobs: null, evidence: [], limitation: "No frozen request set." },
-    overview: { kpis: { marketCount: { value: 0, source: {} as never }, availableReporters: { value: 0, source: {} as never }, openSlots: { value: 0, source: {} as never }, projectedAdditionalNeed: { value: null, forecastPointAt: null, source: {} as never, rule: "test" } }, focus: { condition: "no-current-work", finding: "No current work.", nextAction: "Inspect work.", source: {} as never }, attention: [] },
-    limitations: [],
-  };
-}
-
-function renderScreen(growthGoal: PreparedMarketsView["growthGoal"]) {
-  const onPreviewGoal = vi.fn();
-  const onSaveGoal = vi.fn();
-  render(<MarketsV2Screen view={view(growthGoal)} onSelectMarket={vi.fn()} onOpenEvidence={vi.fn()} onPreviewGoal={onPreviewGoal} onSaveGoal={onSaveGoal} />);
-  return { onPreviewGoal, onSaveGoal };
-}
-
-describe("MarketsV2Screen growth goal", () => {
-  afterEach(cleanup);
-
-  it("offers preview and save actions before any goal revision is saved", async () => {
-    const user = userEvent.setup();
-    const actions = renderScreen(null);
-
-    expect(screen.getByText(/no growth-goal revision is saved/i)).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "Preview goal revision" }));
-    await user.click(screen.getByRole("button", { name: "Save goal revision" }));
-    expect(actions.onPreviewGoal).toHaveBeenCalledOnce();
-    expect(actions.onSaveGoal).toHaveBeenCalledOnce();
-  });
-
-  it("continues to show the saved revision's record-derived values and actions", () => {
-    const evidence = {} as EvidenceBundle;
-    renderScreen({
-      goalRevisionId: "goal-revision-test",
-      goalId: "goal-test",
-      target: 7,
-      baselineAsOfAt: "2026-02-10T17:00:00Z" as never,
-      deadline: "2026-02-28T17:00:00Z" as never,
-      actual: 3,
-      metric: { id: "M04" as never, version: "v2-test" as never },
-      evidence,
-    });
-
-    expect(screen.getByText("3 of 7 first-time readiness additions.")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Preview goal revision" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Save goal revision" })).toBeInTheDocument();
+describe("MarketsV2Screen", () => {
+  it("uses stateful controls and deterministic summary-card navigation without a growth-goal panel", () => {
+    const onNavigateWorkspace = vi.fn();
+    render(<MarketsV2Screen onNavigateWorkspace={onNavigateWorkspace} onOpenEvidence={vi.fn()} onPreviewGoal={vi.fn()} onSaveGoal={vi.fn()} onSelectMarket={vi.fn()} view={view} />);
+    expect(screen.queryByText("Growth goal")).not.toBeInTheDocument();
+    const overview = screen.getByRole("button", { name: "Overview" });
+    fireEvent.click(overview);
+    expect(overview).toHaveAttribute("aria-pressed", "true");
+    fireEvent.click(screen.getByRole("button", { name: "Projection on" }));
+    expect(screen.getByRole("button", { name: "Projection off" })).toHaveAttribute("aria-pressed", "false");
+    fireEvent.click(screen.getByRole("button", { name: "View Funnel" }));
+    fireEvent.click(screen.getByRole("button", { name: "View Team" }));
+    fireEvent.click(screen.getByRole("button", { name: "View Programs" }));
+    expect(onNavigateWorkspace).toHaveBeenNthCalledWith(1, "recruiting");
+    expect(onNavigateWorkspace).toHaveBeenNthCalledWith(2, "team");
+    expect(onNavigateWorkspace).toHaveBeenNthCalledWith(3, "programs");
+    fireEvent.click(screen.getByRole("button", { name: "View Markets" }));
+    expect(screen.getByRole("button", { name: "Trends" })).toHaveAttribute("aria-pressed", "true");
   });
 });
