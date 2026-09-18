@@ -3,12 +3,13 @@ import type {
   ActorId,
   CoachingActionId,
   CommandId,
+  ProgramId,
   TeamMemberId,
   TeamTargetId,
   WorkItemId,
 } from "./ids";
 import type { RecordPointer } from "./references";
-import type { CoachingAction, TeamTarget, WorkQualityCheck } from "./work";
+import type { CoachingAction, TeamTarget, WorkItemStatus, WorkOwnershipDomain, WorkQualityCheck } from "./work";
 
 export type V2CommandType =
   | "goal.save-revision"
@@ -51,6 +52,20 @@ export interface WorkAssignPayload {
   readonly reason: string;
 }
 
+export interface WorkCreatePayload {
+  readonly title: string;
+  readonly ownerId: TeamMemberId;
+  readonly status: Exclude<WorkItemStatus, "canceled">;
+  readonly domain: WorkOwnershipDomain;
+  readonly programId: ProgramId | null;
+}
+
+export interface WorkTransitionPayload {
+  readonly workItemId: WorkItemId;
+  readonly status: Exclude<WorkItemStatus, "canceled">;
+  readonly reason: string;
+}
+
 export interface TeamTargetSaveRevisionPayload {
   readonly target: TeamTarget;
   readonly supersedesTargetId: TeamTargetId | null;
@@ -75,7 +90,9 @@ export interface TeamPracticeSharePayload {
 }
 
 export type TeamCommandEnvelope =
+  | V2CommandEnvelope<"work.create", WorkCreatePayload>
   | V2CommandEnvelope<"work.assign", WorkAssignPayload>
+  | V2CommandEnvelope<"work.transition", WorkTransitionPayload>
   | V2CommandEnvelope<"team.target.save-revision", TeamTargetSaveRevisionPayload>
   | V2CommandEnvelope<"team.quality.record", TeamQualityRecordPayload>
   | V2CommandEnvelope<"team.coaching.record", TeamCoachingRecordPayload>

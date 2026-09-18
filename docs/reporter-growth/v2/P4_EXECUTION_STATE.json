@@ -18,6 +18,11 @@
       "authorized_at": "2026-09-17",
       "scope": "Add SD06 source-derived trend variation so Overview and Funnel show noticeable rises, falls, and recovery without stored chart totals or changed metric meanings; add SD07 natural-looking invented names for every base-seed and scenario-added reporter identity.",
       "source": "Explicit user instructions: ensure noticeable trend shifts and replace fixture-style names"
+    },
+    {
+      "authorized_at": "2026-09-18",
+      "scope": "Add the missing typed Team work-create/transition payloads and optional canonical work title required by the locked Team Add Work interaction; Team logic may expose only source-derived board, summary, member, and option views.",
+      "source": "Concrete P4.2 contract-change request from the Team Experience specialist after verifying that presentation-only ownership could not implement XR17/XR39 without shadow data"
     }
   ],
   "implementation_base_commit": "8b85d4aafa2317be848e01caf47d8b6f92efa674",
@@ -156,6 +161,7 @@
     "package.json",
     "playwright.config.mjs",
     "scripts/",
+    "src/contracts/",
     "src/data/",
     "src/features/markets/",
     "src/features/programs/",

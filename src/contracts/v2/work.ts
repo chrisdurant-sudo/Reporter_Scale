@@ -23,6 +23,7 @@ export interface TeamMember {
 
 export type WorkItemKind = "source" | "screen" | "onboard" | "first-opportunity" | "re-engage" | "partner-task";
 export type WorkItemStatus = "open" | "in-progress" | "blocked" | "completed" | "canceled";
+export type WorkOwnershipDomain = "sourcing" | "screening" | "onboarding" | "market" | "program";
 
 export interface WorkItemOwnerChange {
   readonly ownerId: TeamMemberId | null;
@@ -40,6 +41,8 @@ export interface WorkItemStatusChange {
 
 export interface WorkItem {
   readonly id: WorkItemId;
+  /** User-facing label for work created through the Team board. Historical records use the kind-based fallback. */
+  readonly title?: string;
   readonly kind: WorkItemKind;
   readonly primaryEntityRef: RecordPointer;
   readonly relatedRequestIds: readonly RequestId[];
