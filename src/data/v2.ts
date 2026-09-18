@@ -4,6 +4,7 @@ import type {
   AvailabilityWindow,
   CapabilityVerification,
   CoachingAction,
+  CredentialRecord,
   DateWindow,
   DemoRepositoryV2,
   DemoSnapshotV2,
@@ -87,6 +88,7 @@ const reporters: Reporter[] = [];
 const acquisitionCases: AcquisitionCase[] = [];
 const lifecycleEvents: LifecycleEvent[] = [];
 const capabilityVerifications: CapabilityVerification[] = [];
+const credentialRecords: CredentialRecord[] = [];
 const screeningReviews: ScreeningReview[] = [];
 const onboardingSteps: OnboardingStep[] = [];
 const readinessEvents: DemoSnapshotV2["readinessEvents"][number][] = [];
@@ -141,7 +143,7 @@ function addReporter(input: {
   return reporter;
 }
 
-function addLifecycle(reporterId: string, market: Market["id"], eventType: LifecycleEvent["eventType"], occurredAt: string, suffix = eventType): LifecycleEvent {
+function addLifecycle(reporterId: string, market: Market["id"], eventType: LifecycleEvent["eventType"], occurredAt: string, suffix: string = eventType): LifecycleEvent {
   const event: LifecycleEvent = {
     id: asId(`life-${reporterId}-${suffix}`),
     acquisitionCaseId: asId(`case-${reporterId.replace(/^person-/, "")}`),
@@ -210,6 +212,97 @@ function addReadiness(reporterId: string, occurredAt: string, capabilityId: stri
   };
   readinessEvents.push(record);
   return record;
+}
+
+/**
+ * P4's balanced sample is source data only.  Funnel stages, SLA labels,
+ * activity buckets, and compliance summaries are intentionally reconstructed
+ * by the consuming logic from these records.
+ */
+const p4MarketTimeZone: Record<Market["id"], IanaTimeZone> = {
+  LAX: zone("America/Los_Angeles"),
+  SFO: zone("America/Los_Angeles"),
+  DFW: zone("America/Chicago"),
+  ORD: zone("America/Chicago"),
+  ATL: zone("America/New_York"),
+};
+const p4StateCredential: Record<Market["id"], string> = { LAX: "CA", SFO: "CA", DFW: "TX", ORD: "IL", ATL: "GA" };
+const p4MarketNames: Record<Market["id"], string> = { LAX: "Los Angeles", SFO: "San Francisco", DFW: "Dallas", ORD: "Chicago", ATL: "Atlanta" };
+
+function addP4Credential(reporterId: string, label: string, market: Market["id"], status: CredentialRecord["verificationStatus"], validUntil: string | null, recordedAt: string): CredentialRecord {
+  const record: CredentialRecord = {
+    id: asId(`credential-p4-${reporterId}-${label.toLowerCase()}`), reporterId: asId(reporterId), label,
+    issuerLabel: "Fictional state registry", jurisdictionScope: market === "LAX" || market === "SFO" ? "CA" : market,
+    verificationStatus: status, verifiedAt: status === "verified" ? utc(recordedAt) : null,
+    validFrom: status === "verified" ? utc("2025-01-01T00:00:00Z") : null,
+    validUntil: validUntil ? utc(validUntil) : null, recordedAt: utc(recordedAt),
+    evidenceRef: { kind: "reporter", id: reporterId }, provenance,
+  };
+  credentialRecords.push(record);
+  return record;
+}
+
+for (const [marketIndex, market] of (["LAX", "SFO", "DFW", "ORD", "ATL"] as const).entries()) {
+  const baseDay = 1 + marketIndex * 2;
+  const capabilityCode = market === "LAX" || market === "SFO" ? "realtime-transcription" : "standard-transcription";
+  const rows = [
+    { stage: "applicant", offset: 0 }, { stage: "screening", offset: 1 }, { stage: "approved", offset: 2 },
+    { stage: "onboarding", offset: 3 }, { stage: marketIndex % 2 === 0 ? "screening-bottleneck" : "onboarding-bottleneck", offset: 4 },
+    { stage: "starting-soon", offset: 5 }, { stage: "recent-a", offset: 6 }, { stage: "recent-b", offset: 7 },
+    { stage: "aging-active", offset: 8 }, { stage: "inactive", offset: 9 },
+  ] as const;
+  for (const row of rows) {
+    const number = row.offset + 1;
+    const suffix = String(number).padStart(2, "0");
+    const reporterId = `person-p4-${market.toLowerCase()}-${suffix}`;
+    const caseId = `case-p4-${market.toLowerCase()}-${suffix}`;
+    const entryDay = String(Math.min(baseDay + row.offset, 9)).padStart(2, "0");
+    const openedAt = `2026-02-${entryDay}T17:00:00Z`;
+    const name = `Fictional ${p4MarketNames[market]} Sample ${suffix}`;
+    const isReady = ["starting-soon", "recent-a", "recent-b", "aging-active", "inactive"].includes(row.stage);
+    const readyAt = row.stage === "starting-soon" ? "2026-02-14T17:00:00Z" : row.stage === "recent-a" ? "2026-01-25T17:00:00Z" : row.stage === "recent-b" ? "2026-01-20T17:00:00Z" : row.stage === "aging-active" ? "2026-01-01T17:00:00Z" : "2025-11-30T17:00:00Z";
+    addReporter({ id: reporterId, name, market, createdAt: openedAt, capabilities: [capabilityCode], attendanceModes: row.offset % 3 === 0 ? ["remote"] : ["remote", "in-person"], proceedingTypes: row.offset % 2 === 0 ? ["deposition", "hearing"] : ["deposition"], serviceMarkets: [market], sourceId: "source-community-event" });
+    const lifecycle: readonly [LifecycleEvent["eventType"], string][] = [
+      ["sourced", openedAt], ["contacted", `2026-02-${entryDay}T19:00:00Z`], ["responded", `2026-02-${entryDay}T21:00:00Z`],
+    ];
+    for (const [eventType, occurredAt] of lifecycle) addLifecycle(reporterId, market, eventType, occurredAt, `p4-${eventType}`);
+    if (row.stage !== "applicant") addLifecycle(reporterId, market, "screening-started", `2026-02-${entryDay}T22:00:00Z`, "p4-screening-started");
+    if (["approved", "onboarding", "onboarding-bottleneck", "starting-soon", "recent-a", "recent-b", "aging-active", "inactive"].includes(row.stage)) addLifecycle(reporterId, market, "qualified", `2026-02-${entryDay}T23:00:00Z`, "p4-qualified");
+    const hasOnboarding = ["onboarding", "onboarding-bottleneck", "starting-soon", "recent-a", "recent-b", "aging-active", "inactive"].includes(row.stage);
+    if (hasOnboarding) addLifecycle(reporterId, market, "onboarding-started", isReady ? readyAt : `2026-02-${String(Math.min(baseDay + row.offset + 1, 12)).padStart(2, "0")}T17:00:00Z`, "p4-onboarding-started");
+    if (isReady) {
+      addLifecycle(reporterId, market, "ready", readyAt, "p4-ready");
+      const capability = addVerifiedCapability(reporterId, capabilityCode, readyAt, "p4-capability");
+      const stepId = asId(`step-p4-${market.toLowerCase()}-${suffix}`);
+      addReadiness(reporterId, readyAt, capability.id, stepId);
+      const readyIndex = row.offset - 5;
+      const credentialStatus: CredentialRecord["verificationStatus"] = readyIndex === 4 ? "needs-information" : "verified";
+      const expires = readyIndex === 3 ? "2026-02-20T00:00:00Z" : readyIndex === 4 ? null : "2027-02-01T00:00:00Z";
+      addP4Credential(reporterId, p4StateCredential[market], market, credentialStatus, expires, readyAt);
+      if (readyIndex % 2 === 0) addP4Credential(reporterId, readyIndex === 0 ? "RPR" : "CRR", market, "verified", "2027-01-01T00:00:00Z", readyAt);
+    }
+    if (row.stage === "screening" || row.stage === "screening-bottleneck" || hasOnboarding) {
+      const pending = row.stage === "screening-bottleneck";
+      screeningReviews.push({ id: asId(`screening-p4-${market.toLowerCase()}-${suffix}`), reporterId: asId(reporterId), acquisitionCaseId: asId(caseId), checks: [{ checkCode: "p4-capability", required: true, status: pending ? "needs-information" : "complete", evidenceRef: pending ? null : { kind: "reporter", id: reporterId }, note: pending ? "Fictional capability evidence remains unrecorded." : "Fictional screening evidence recorded." }], outcome: pending ? "needs-information" : "verified", unresolvedInformation: pending ? ["p4-capability"] : [], reviewerId: asId("team-1"), reviewedAt: utc(`2026-02-${entryDay}T23:30:00Z`), recordedAt: utc(`2026-02-${entryDay}T23:30:00Z`), reason: pending ? "Awaiting defined fictional evidence." : "Fictional screening review completed.", provenance });
+    }
+    if (hasOnboarding) {
+      const blocked = row.stage === "onboarding-bottleneck";
+      onboardingSteps.push({ id: asId(`step-p4-${market.toLowerCase()}-${suffix}`), acquisitionCaseId: asId(caseId), stepDefinitionId: "p4-requirements", required: true, state: blocked ? "blocked" : "completed", assignedTo: asId("team-1"), dueAt: utc(isReady ? readyAt : "2026-02-15T17:00:00Z"), completedAt: blocked ? null : utc(isReady ? readyAt : `2026-02-${String(Math.min(baseDay + row.offset + 1, 12)).padStart(2, "0")}T17:00:00Z`), completedBy: blocked ? null : asId("team-1"), evidenceRef: blocked ? null : { kind: "reporter", id: reporterId }, blockerCode: blocked ? "p4-required-evidence-missing" : null, recordedAt: utc(isReady ? readyAt : `2026-02-${entryDay}T23:45:00Z`), provenance });
+    }
+    if (isReady) {
+      const activityDay = row.stage === "recent-a" ? "2026-02-10" : row.stage === "recent-b" ? "2026-02-05" : row.stage === "aging-active" ? "2026-01-10" : row.stage === "inactive" ? "2025-12-15" : null;
+      if (activityDay) {
+        const requestId = `req-p4-${market.toLowerCase()}-${suffix}`;
+        const startAt = `${activityDay}T18:00:00Z`; const endAt = `${activityDay}T21:00:00Z`; const assignmentId = `assignment-${requestId}`;
+        demandRequests.push({ id: asId(requestId), marketId: market, createdAt: utc(`${activityDay}T12:00:00Z`), recordedAt: utc(`${activityDay}T12:00:00Z`), startAt: utc(startAt), endAt: utc(endAt), timeZone: p4MarketTimeZone[market], proceedingType: asId("deposition"), attendanceMode: "remote", requiredCapabilityCodes: [asId(capabilityCode)], sampleCredentialRequirements: [], requirementsVersion: "p4-synthetic-v1", status: "concluded", canceledAt: null, cancellationReason: null, agreedDeliveryAt: utc(endAt), provenance });
+        availabilityWindows.push({ id: asId(`availability-p4-${market.toLowerCase()}-${suffix}`), reporterId: asId(reporterId), startAt: utc(startAt), endAt: utc(endAt), status: "available", serviceMarketIds: [market], attendanceModes: ["remote"], recordedAt: utc(`${activityDay}T12:00:00Z`), confirmationExpiresAt: utc(endAt), source: "synthetic-seed", actorId: asId("actor-team-3"), provenance });
+        assignmentEvents.push({ id: asId(assignmentId), requestId: asId(requestId), reporterId: asId(reporterId), state: "accepted", occurredAt: utc(`${activityDay}T13:00:00Z`), recordedAt: utc(`${activityDay}T13:00:00Z`), actorId: asId("actor-team-3"), source: "synthetic-seed", reason: "Fictional completed activity history.", provenance });
+        jobOutcomes.push({ id: asId(`job-p4-${market.toLowerCase()}-${suffix}`), requestId: asId(requestId), reporterId: asId(reporterId), acceptedAssignmentEventId: asId(assignmentId), outcome: "completed", startedAt: utc(startAt), completedAt: utc(endAt), deliveryAt: utc(endAt), recordedAt: utc(endAt), provenance });
+      } else {
+        availabilityWindows.push({ id: asId(`availability-p4-${market.toLowerCase()}-${suffix}`), reporterId: asId(reporterId), startAt: utc("2026-02-16T18:00:00Z"), endAt: utc("2026-02-16T21:00:00Z"), status: "available", serviceMarketIds: [market], attendanceModes: ["remote"], recordedAt: utc("2026-02-14T17:00:00Z"), confirmationExpiresAt: utc("2026-02-17T00:00:00Z"), source: "reporter-confirmed", actorId: asId("actor-team-3"), provenance });
+      }
+    }
+  }
 }
 
 const mainRequestTimes = [
@@ -678,12 +771,12 @@ export const DEMO_SNAPSHOT_V2: DemoSnapshotV2 = {
   reporters,
   acquisitionCases,
   lifecycleEvents,
-  credentialRecords: [],
-  capabilityVerifications,
+  credentialRecords,
+  capabilityVerifications: [...capabilityVerifications.filter((item) => !String(item.id).startsWith("cap-person-p4-")), ...capabilityVerifications.filter((item) => String(item.id).startsWith("cap-person-p4-"))],
   screeningReviews,
   onboardingSteps,
   readinessEvents,
-  availabilityWindows,
+  availabilityWindows: [...availabilityWindows.filter((item) => !String(item.id).startsWith("availability-p4-")), ...availabilityWindows.filter((item) => String(item.id).startsWith("availability-p4-"))],
   demandRequests,
   assignmentEvents,
   jobOutcomes,

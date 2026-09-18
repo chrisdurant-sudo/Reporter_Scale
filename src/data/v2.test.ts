@@ -12,6 +12,31 @@ import {
 const laxMainIds = Array.from({ length: 10 }, (_, index) => `req-lax-${101 + index}`);
 
 describe("V2 synthetic records and repository", () => {
+  it("SD01-SD05 provides the balanced P4 source graph without stored conclusions", () => {
+    const added = DEMO_SNAPSHOT_V2.reporters.filter((item) => String(item.id).startsWith("person-p4-"));
+    expect(added).toHaveLength(50);
+    expect(DEMO_SNAPSHOT_V2.acquisitionCases.filter((item) => String(item.id).startsWith("case-p4-"))).toHaveLength(50);
+    for (const market of ["LAX", "SFO", "DFW", "ORD", "ATL"] as const) {
+      const people = added.filter((item) => item.recruitingMarketId === market);
+      expect(people).toHaveLength(10);
+      expect(new Set(people.map((item) => item.id)).size).toBe(10);
+      expect(people.every((person) => DEMO_SNAPSHOT_V2.acquisitionCases.some((item) => item.reporterId === person.id && item.purpose === "first-time"))).toBe(true);
+      expect(people.filter((person) => DEMO_SNAPSHOT_V2.lifecycleEvents.some((event) => event.reporterId === person.id && event.eventType === "ready"))).toHaveLength(5);
+      expect(people.filter((person) => !DEMO_SNAPSHOT_V2.lifecycleEvents.some((event) => event.reporterId === person.id && event.eventType === "ready"))).toHaveLength(5);
+      expect(people.filter((person) => DEMO_SNAPSHOT_V2.jobOutcomes.some((job) => job.reporterId === person.id))).toHaveLength(4);
+      const ready = people.filter((person) => DEMO_SNAPSHOT_V2.readinessEvents.some((event) => event.reporterId === person.id));
+      expect(ready).toHaveLength(5);
+      expect(ready.every((person) => DEMO_SNAPSHOT_V2.credentialRecords.some((record) => record.reporterId === person.id && record.jurisdictionScope === (market === "LAX" || market === "SFO" ? "CA" : market)))).toBe(true);
+      expect(ready.every((person) => DEMO_SNAPSHOT_V2.availabilityWindows.some((window) => window.reporterId === person.id))).toBe(true);
+    }
+    expect(DEMO_SNAPSHOT_V2.reporters.filter((item) => String(item.id).startsWith("person-p4-")).every((person) => person.provenance === "synthetic-demo")).toBe(true);
+    expect(DEMO_SNAPSHOT_V2.lifecycleEvents.filter((item) => String(item.reporterId).startsWith("person-p4-")).every((event) => event.provenance === "synthetic-demo")).toBe(true);
+    expect("sla" in DEMO_SNAPSHOT_V2.reporters[0]!).toBe(false);
+    expect("churn" in DEMO_SNAPSHOT_V2.reporters[0]!).toBe(false);
+    expect(validateDemoSnapshot(DEMO_SNAPSHOT_V2).ok).toBe(true);
+    expect(createDemoRepositoryV2).toBeTypeOf("function");
+  });
+
   it("D01 resolves the complete seed graph without duplicate canonical identities", () => {
     const checked = validateDemoSnapshot(DEMO_SNAPSHOT_V2);
     expect(checked.ok).toBe(true);
