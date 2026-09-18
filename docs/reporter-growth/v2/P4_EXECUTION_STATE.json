@@ -24,10 +24,10 @@
   "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",
   "implementation_active": true,
   "fanout_authorized": false,
-  "current_phase": "P4.0b_serial_sample_expansion",
+  "current_phase": "P4.1_visual_proof_repair",
   "current_candidate": {
-    "commit": "46f143682d06ac37ef211db237944d5a20b13a80",
-    "status": "invalidated_pending_data_repair",
+    "commit": "095170a96d86a791e65a34ea10fb50793c357adc",
+    "status": "not_accepted_pending_visual_reproof",
     "preview_url": "http://127.0.0.1:5174/",
     "preview_status": "blocked_environment",
     "preview_failure": "The prior preview process stopped, and the managed command environment denied a replacement Vite listener on 127.0.0.1:5174 with EPERM.",
@@ -35,9 +35,9 @@
   },
   "gates": {
     "data": {
-      "status": "repair_authorized_pending",
+      "status": "passed",
       "required_acceptance_ids": ["SD01", "SD02", "SD03", "SD04", "SD05", "SD06", "SD07"],
-      "evidence": "SD01-SD05 passed on the assembled candidate. SD06 trend variation and SD07 human-readable dummy names remain pending until the serial Data handoff is integrated and verified."
+      "evidence": "Integrated Data commit 095170a passes SD01-SD07: 50 canonical P4 identities, 10 per market, 50 unique natural-looking names, source-derived rise/fall/recovery in Overview and lifecycle-driven R28 reversals for All plus every market. The independent coordinator run passed 11 focused data tests and the 116-test full baseline."
     },
     "baseline": {
       "status": "passed",
@@ -45,7 +45,7 @@
       "passed": [
         "lint",
         "typecheck",
-        "unit: 21 files / 114 tests",
+        "unit: 21 files / 116 tests",
         "production build",
         "acceptance reconciliation: 4 tests"
       ],
@@ -64,7 +64,7 @@
     },
     "visual_proof": {
       "status": "repair_required",
-      "candidate_commit": "46f143682d06ac37ef211db237944d5a20b13a80",
+      "candidate_commit": "095170a96d86a791e65a34ea10fb50793c357adc",
       "accepted_commit": null,
       "required_artifact_ids": [
         "overview_1440x900",
@@ -83,7 +83,7 @@
       ],
       "candidate_artifacts": [],
       "blocking_conditions": [
-        "The user-authorized SD06 source-data repair must integrate and pass before visual proof is recaptured.",
+        "SD06 and SD07 are integrated and passed, so all prior candidate screenshots are invalid and visual proof must be recaptured from commit 095170a or a descendant with identical data.",
         "The current candidate has no versioned candidate screenshot matrix.",
         "The repaired shell, Overview, and Funnel have not yet been directly compared against the fixed screenshots in a runnable browser.",
         "Interactive controls and filters pass focused component and integrated app tests, but have not been proven legible at every required viewport.",
@@ -105,6 +105,14 @@
     }
   },
   "lane_audits": {
+    "data": {
+      "base_commit": "04cf0497845ed28e7121f0d3dd648623929902c5",
+      "handoff_commit": "a9be9deeeafb941f5c38b39817227f37b1e7d388",
+      "integrated_commit": "095170a96d86a791e65a34ea10fb50793c357adc",
+      "boundary_status": "passed",
+      "acceptance_evidence_status": "passed_sd01_sd07",
+      "disposition": "integrated"
+    },
     "experience": {
       "base_commit": "dd1e9df458fc8c84d248d040d78d3628938e6c0a",
       "handoff_commit": "5d632ea0aef5852935d458cd48e4a1d3eafa303f",

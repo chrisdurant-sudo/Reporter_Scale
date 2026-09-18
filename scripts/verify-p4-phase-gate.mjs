@@ -185,9 +185,17 @@ if (state.fanout_authorized || visual?.status === "accepted") {
 }
 
 const phaseIndex = legalPhases.indexOf(state.current_phase);
+const visualProofIndex = legalPhases.indexOf("P4.1_visual_proof_repair");
 const workspaceIndex = legalPhases.indexOf("P4.2_workspace_wave");
 const qualityIndex = legalPhases.indexOf("P4.4_quality");
 const reviewerIndex = legalPhases.indexOf("P4.5_reviewer");
+if (phaseIndex >= visualProofIndex) {
+  const dataAudit = state.lane_audits?.data;
+  check(state.gates?.data?.status === "passed", "P4.1 or later requires a passed Data gate.");
+  check(Array.isArray(state.gates?.data?.required_acceptance_ids) && state.gates.data.required_acceptance_ids.join(",") === "SD01,SD02,SD03,SD04,SD05,SD06,SD07", "The Data gate must require SD01-SD07.");
+  check(dataAudit?.boundary_status === "passed", "P4.1 or later requires a passed Data lane-boundary audit.");
+  check(dataAudit?.acceptance_evidence_status === "passed_sd01_sd07", "P4.1 or later requires recorded SD01-SD07 evidence.");
+}
 if (phaseIndex >= workspaceIndex) check(visual?.status === "accepted", "P4.2 or later requires accepted visual proof.");
 if (phaseIndex >= qualityIndex) check(workspace?.status === "passed", "Quality requires a passed workspace-wave integration gate.");
 if (phaseIndex >= reviewerIndex) check(quality?.status === "passed", "Reviewer requires a waiver-free Quality pass.");
