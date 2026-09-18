@@ -1,13 +1,42 @@
 # P4 implementation readiness
 
-Status: **ROUTING READY — IMPLEMENTATION INACTIVE PENDING EXPLICIT USER AUTHORIZATION**
+Status: **IMPLEMENTATION ACTIVE — P4.1 VISUAL PROOF REPAIR; FAN-OUT BLOCKED**
 
 Prepared: September 17, 2026
 
 Production/source baseline reviewed: `c4f304c376ca631d88c694f519f76ec316f12a13`
 
-This packet converts the approved P4 design into enforceable agent routing. It does not authorize
-production implementation, dependency changes, deployment, or external writes.
+This packet converts the approved P4 design into enforceable agent routing. The user activated the
+scoped P4 implementation on September 17, 2026 and directed the coordinator to repair the process
+gaps before continuing presentation work. That authorization does not include dependency changes,
+deployment, external writes, or unrelated product work.
+
+## September 17 takeover correction
+
+The candidate at `2d1789b92ea6a14842b50e1709511dbf405f3599` reached a local preview without the
+required exact-commit screenshot matrix or a recorded visual-proof acceptance. Static readiness
+still reported implementation as inactive, so the repository contained two contradictory truths:
+active source work and an inactive routing registry. Functional tests also passed without asserting
+the locked visual composition or real state changes for every visible control.
+
+The correction is now explicit:
+
+- `P4_EXECUTION_STATE.json` is the live gate ledger and marks the current candidate not accepted.
+- `P4_VISUAL_PROOF_DEFECTS.md` turns the observed canvas deviations into blocking defects.
+- `P4_VISUAL_PROOF_GATE.md` defines the exact-commit screenshot and interaction evidence required.
+- `scripts/verify-p4-phase-gate.mjs` prevents P4.2, Quality, or Reviewer from starting early.
+- `scripts/verify-p4-lane-boundary.mjs` rejects handoffs that cross a lane's registered write paths.
+- `npm run verify:p4:governance` checks static and live state during repair; the full
+  `npm run verify:p4` also runs lint, types, unit, build, acceptance, and browser suites.
+
+The takeover recheck confirmed the need for the full command: lint, types, 114 unit tests, and the
+build passed, while all five cross-workspace integration tests failed because they still waited for
+an obsolete Overview heading. The former routine command did not run that suite, so it could report
+green while the acceptance baseline was unusable. That failure is now recorded in the execution
+ledger and blocks phase transition.
+
+The preview is therefore a repair candidate. It must not be represented as P4-complete, and its
+existence does not authorize specialist fan-out.
 
 ## Readiness decision
 
@@ -81,8 +110,8 @@ switch to Fast, Priority, or Ultrafast.
 
 ## Mandatory gates
 
-- `implementation_active` and `fanout_authorized` remain false until the user explicitly authorizes
-  P4 implementation.
+- `implementation_active` mirrors the recorded user authorization in `P4_EXECUTION_STATE.json`.
+  `fanout_authorized` remains false until exact-commit Overview/Funnel visual proof is accepted.
 - Zero inheritance is mandatory for every routing probe and worker: each spawn must use
   `fork_turns="none"`; `all` and bounded-history forks are forbidden. A child receives only its
   explicit dispatch packet plus repository instructions, never the coordinator conversation.
@@ -100,19 +129,26 @@ switch to Fast, Priority, or Ultrafast.
   request.
 - Quality must pass without a visual, responsive, source-record, keyboard, or data waiver.
 - Any production repair invalidates the prior Quality result and requires a rerun before Reviewer.
+- Each incoming lane commit must pass the exact-base/exact-candidate boundary audit in
+  `P4_LANE_HANDOFF_CONTRACT.md`; Quality independently replays the evidence before closeout.
 
 ## Static verification
 
 Run from the repository root:
 
+During an active repair, run `npm run verify:p4:governance`. Before any phase transition, run the
+complete gate:
+
 ```bash
-node scripts/verify-p4-readiness.mjs
+npm run verify:p4
 ```
 
-The verifier fails if zero inheritance is removed, parallelism can begin before the proof, the P4.2
-limit exceeds four, paths overlap, a specialist can change shared UI, Lead review disappears, a
-domain role regains a feature path, Standard/default processing changes, required packet files are
-untracked, the visual bundle drifts, or the locked screenshots are incomplete.
+The static verifier fails if zero inheritance is removed, the P4.2 limit exceeds four, paths
+overlap, a specialist can change shared UI, Lead review disappears, a domain role regains a feature
+path, Standard/default processing changes, required packet files are untracked, the visual bundle
+drifts, or the locked screenshots are incomplete. The phase verifier separately fails when live
+authorization and routing disagree, a phase is skipped, fan-out is attempted without accepted proof,
+candidate evidence is incomplete or checksum-invalid, or P4.2 feature paths change before approval.
 
 Baseline verification for this readiness packet:
 

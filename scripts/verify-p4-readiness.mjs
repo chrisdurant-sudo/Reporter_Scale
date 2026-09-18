@@ -22,13 +22,23 @@ function includesAll(text, values) {
 
 const registryPath = "docs/reporter-growth/v2/lanes.v2.json";
 const registry = JSON.parse(read(registryPath));
+const executionStatePath = "docs/reporter-growth/v2/P4_EXECUTION_STATE.json";
+const executionState = JSON.parse(read(executionStatePath));
 const lanes = new Map(registry.lanes.map((lane) => [lane.id, lane]));
 
 check(registry.routing_active === true, "P4 routing must be active as configuration.");
-check(registry.implementation_active === false, "Readiness must not activate implementation.");
-check(registry.fanout_authorized === false, "The configured P4 wave must remain inactive until authorization and proof.");
-check(registry.current_phase === "P4_ready_awaiting_explicit_implementation_authorization", "Registry phase must be P4 ready/awaiting authorization.");
+check(registry.execution_state === executionStatePath, "The registry must point to the authoritative P4 execution state.");
+check(executionState.authorization?.status === "active", "Active implementation requires a recorded user authorization.");
+check(registry.implementation_active === executionState.implementation_active, "Registry and execution state must agree on implementation activation.");
+check(registry.fanout_authorized === executionState.fanout_authorized, "Registry and execution state must agree on fan-out authorization.");
+check(registry.current_phase === executionState.current_phase, "Registry and execution state must agree on the current phase.");
+check(registry.fanout_authorized === false || executionState.gates?.visual_proof?.status === "accepted", "P4 fan-out requires accepted visual proof.");
 check(registry.execution_model === "serial_gates_with_bounded_parallel_workspace_wave", "P4 must use serial gates with one bounded workspace wave.");
+check(registry.transition_control?.kind === "read_only_phase_auditor", "P4 must declare a read-only transition auditor.");
+check(registry.transition_control?.writes_allowed === false, "The transition auditor must not write production code.");
+check(registry.transition_control?.full_transition_command === "npm run verify:p4", "P4 phase transitions must use the full verification command.");
+check(registry.transition_control?.required_before?.includes("worker_handoff_acceptance"), "Lane handoffs must be audited before acceptance.");
+check(registry.transition_control?.required_before?.includes("phase_transition"), "Every P4 phase transition must be audited.");
 check(registry.spawn_context_policy?.name === "zero_inheritance", "P4 must declare a zero-inheritance spawn policy.");
 check(registry.spawn_context_policy?.required_fork_turns === "none", "Every P4 spawn must require fork_turns=none.");
 check(JSON.stringify(registry.spawn_context_policy?.forbidden_fork_turns) === JSON.stringify(["all", "bounded_history"]), "Full and bounded-history forks must be forbidden.");
@@ -159,6 +169,10 @@ check(includesAll(laneDocs, ["bounded parallel presentation wave", "experience_r
 const requiredFiles = [
   "AGENTS.md",
   "docs/reporter-growth/v2/P4_READINESS.md",
+  executionStatePath,
+  "docs/reporter-growth/v2/P4_VISUAL_PROOF_GATE.md",
+  "docs/reporter-growth/v2/P4_VISUAL_PROOF_DEFECTS.md",
+  "docs/reporter-growth/v2/P4_LANE_HANDOFF_CONTRACT.md",
   "docs/reporter-growth/v2/P4_DESIGN_LOCK.md",
   "docs/reporter-growth/v2/P4_SYNTHETIC_SAMPLE_EXPANSION.md",
   "docs/reporter-growth/v2/P4_EXPERIENCE_REDESIGN.md",
@@ -177,6 +191,8 @@ const requiredFiles = [
   ".codex/agents/experience_programs.toml",
   registryPath,
   "scripts/verify-p4-readiness.mjs",
+  "scripts/verify-p4-phase-gate.mjs",
+  "scripts/verify-p4-lane-boundary.mjs",
 ];
 
 for (const relativePath of requiredFiles) {

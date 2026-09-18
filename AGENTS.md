@@ -1,9 +1,11 @@
 # Reporter Growth
 
-> **Current phase:** Reporter Growth v2 P4 has a user-approved design lock and a completed static
-> readiness packet, but production implementation is not authorized. P4 routing uses serial Data and
-> visual-proof gates followed by one bounded Experience workspace wave; it remains inactive until a
-> separate explicit user gate. The reviewed source baseline is
+> **Current phase:** Reporter Growth v2 P4 implementation is authorized, but the candidate at
+> `2d1789b92ea6a14842b50e1709511dbf405f3599` is **not accepted**. The active phase is
+> `P4.1_visual_proof_repair`; the preview at `http://127.0.0.1:5174/` is repair evidence, not a
+> completed P4 experience. P4.2 specialist work, Quality, and Reviewer remain blocked until the
+> exact-commit screenshot and interaction gate in `P4_VISUAL_PROOF_GATE.md` passes. The authoritative
+> live state is `docs/reporter-growth/v2/P4_EXECUTION_STATE.json`. The reviewed source baseline is
 > `c4f304c376ca631d88c694f519f76ec316f12a13`. P3 LAX Vertical Integration remains the live production baseline. P3 started from integration baseline
 > `97f3ed4606f62dddcf86d5ad261b77dcf1f17ed5`, using source freeze
 > `19f7df98000e346a5b4ff32e00b699276c3f62fb`, the approved
@@ -14,8 +16,9 @@
 > browser tests after that closeout, but no Quality closeout or Reviewer result is recorded and those
 > tests did not validate the missing visual/product experience. The corrected next-phase packet is
 > `docs/reporter-growth/v2/P4_READINESS.md`, `P4_DESIGN_LOCK.md`, `P4_SYNTHETIC_SAMPLE_EXPANSION.md`,
-> `design-lock/reference-manifest.md`, `P4_EXPERIENCE_REDESIGN.md`, and `P4_ACCEPTANCE.md`. P4 production edits,
-> new dependencies, deployment, external writes, and unrelated product work require a separate user gate.
+> `design-lock/reference-manifest.md`, `P4_EXPERIENCE_REDESIGN.md`, and `P4_ACCEPTANCE.md`. The active
+> authorization covers the scoped P4 repair and implementation sequence; new dependencies,
+> deployment, external writes, and unrelated product work require a separate user gate.
 
 The independent synthetic-data application currently in `src/` implements the version 1
 scope defined in `docs/reporter-growth/PRODUCT.md`. The original v1 repository packet began
@@ -37,7 +40,8 @@ For v2 work, read the packet for the explicitly authorized phase, then
 `lanes.v2.json`, and the relevant v2 product/data/metrics/screen/acceptance contracts.
 For P4 planning or implementation, read `P4_READINESS.md`, `P4_DESIGN_LOCK.md`,
 `P4_SYNTHETIC_SAMPLE_EXPANSION.md`, `design-lock/reference-manifest.md`,
-`P4_EXPERIENCE_REDESIGN.md`, and `P4_ACCEPTANCE.md` before the earlier contracts. The readiness packet
+`P4_EXPERIENCE_REDESIGN.md`, `P4_ACCEPTANCE.md`, `P4_EXECUTION_STATE.json`,
+`P4_VISUAL_PROOF_GATE.md`, and `P4_VISUAL_PROOF_DEFECTS.md` before the earlier contracts. The readiness packet
 and `lanes.v2.json` govern sequencing and ownership; the design lock and versioned
 interactive/screenshot package govern presentation; the sample addendum governs the approved
 population expansion; the plan and acceptance files govern the quality loop. They supersede P2/P3
@@ -91,8 +95,18 @@ inactive; they do not authorize dispatch or source work.
   Before P4.2, separately verify the Lead and all three specialist role/model/reasoning assignments.
 - Lead and specialist messages are required for component-contract questions, shared-change broadcasts,
   and screenshot review. Communication does not expand write authority or replace exact-commit handoff.
-- Run `node scripts/verify-p4-readiness.mjs` before the routing probe and again before each P4 phase
-  transition. A failure blocks dispatch.
+- Every lane handoff must declare an exact base and candidate commit, then pass
+  `npm run verify:p4:lane -- --lane <lane> --base <base> --candidate <candidate>` before integration.
+  Record the result in `P4_EXECUTION_STATE.json`; a narrative `REVIEW_READY` claim cannot override a
+  failed boundary, missing acceptance evidence, or missing screenshots.
+- Run `npm run verify:p4:governance` during repair and before every integration. Run the full
+  `npm run verify:p4` before each P4 phase transition; it includes governance, lint, typecheck, unit,
+  build, cross-workspace acceptance, and browser suites. Any failure blocks dispatch.
+- A local preview, passing DOM tests, or a compiling build is never visual-proof acceptance. Candidate
+  screenshots must use the exact clean commit, all required viewports, checksums, and interaction states
+  defined by `P4_VISUAL_PROOF_GATE.md`.
+- Do not describe an unaccepted preview as P4-complete. Record its candidate commit and disposition in
+  `P4_EXECUTION_STATE.json`, and keep `fanout_authorized` false until visual proof is accepted.
 - One worker, one assigned lane, one verified Git worktree and branch. A separate chat is not a separate checkout.
 - Coordinator alone owns shared contracts, dependencies, configuration, integration, governance, and merges.
 - Feature screens consume prepared data and callbacks. They do not import sibling features, storage, or canonical calculations.

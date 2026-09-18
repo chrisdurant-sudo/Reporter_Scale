@@ -3,9 +3,24 @@
   "packet_kind": "routing_registry",
   "routing_active": true,
   "fanout_authorized": false,
-  "implementation_active": false,
-  "current_phase": "P4_ready_awaiting_explicit_implementation_authorization",
+  "implementation_active": true,
+  "current_phase": "P4.1_visual_proof_repair",
+  "execution_state": "docs/reporter-growth/v2/P4_EXECUTION_STATE.json",
   "execution_model": "serial_gates_with_bounded_parallel_workspace_wave",
+  "transition_control": {
+    "kind": "read_only_phase_auditor",
+    "writes_allowed": false,
+    "governance_command": "npm run verify:p4:governance",
+    "full_transition_command": "npm run verify:p4",
+    "lane_boundary_command": "npm run verify:p4:lane -- --lane <lane> --base <base> --candidate <candidate>",
+    "required_before": [
+      "worker_handoff_acceptance",
+      "coordinator_integration",
+      "phase_transition",
+      "quality_dispatch",
+      "reviewer_dispatch"
+    ]
+  },
   "spawn_context_policy": {
     "name": "zero_inheritance",
     "required_fork_turns": "none",
@@ -15,7 +30,7 @@
     ],
     "applies_to": "every_routed_probe_and_worker_spawn"
   },
-  "routing_verification_status": "static_readiness_verified_runtime_probe_required_at_dispatch",
+  "routing_verification_status": "authorized_active_visual_proof_repair",
   "source_contract_commit": "19f7df98000e346a5b4ff32e00b699276c3f62fb",
   "prepared_against_commit": "c4f304c376ca631d88c694f519f76ec316f12a13",
   "implementation_requires": [

@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "kind": "p4_execution_state",
+  "updated_at": "2026-09-17",
+  "authorization": {
+    "status": "active",
+    "authorized_at": "2026-09-17",
+    "scope": "Coordinator takeover, process repair, and P4 visual-proof repair before any P4.2 presentation fan-out.",
+    "source": "Explicit user instruction in the active coordinator task"
+  },
+  "implementation_base_commit": "8b85d4aafa2317be848e01caf47d8b6f92efa674",
+  "implementation_active": true,
+  "fanout_authorized": false,
+  "current_phase": "P4.1_visual_proof_repair",
+  "current_candidate": {
+    "commit": "2d1789b92ea6a14842b50e1709511dbf405f3599",
+    "status": "not_accepted",
+    "served_preview": "http://127.0.0.1:5174/",
+    "defect_register": "docs/reporter-growth/v2/P4_VISUAL_PROOF_DEFECTS.md"
+  },
+  "gates": {
+    "data": {
+      "status": "source_checks_passed",
+      "required_acceptance_ids": ["SD01", "SD02", "SD03", "SD04", "SD05"],
+      "evidence": "The takeover run passed 21 unit-test files / 114 tests, including 9 deterministic v2 data tests."
+    },
+    "baseline": {
+      "status": "failed",
+      "verified_at": "2026-09-17",
+      "passed": [
+        "lint",
+        "typecheck",
+        "unit: 21 files / 114 tests",
+        "production build"
+      ],
+      "failed": [
+        "cross-workspace acceptance: 5 of 5 integration tests failed before their first assertion because the suite waits for an obsolete Overview heading"
+      ],
+      "blocking_reason": "The routine check command excluded acceptance and browser suites, allowing a green build to mask a broken cross-workspace baseline."
+    },
+    "visual_proof": {
+      "status": "repair_required",
+      "candidate_commit": "2d1789b92ea6a14842b50e1709511dbf405f3599",
+      "accepted_commit": null,
+      "required_artifact_ids": [
+        "overview_1440x900",
+        "overview_1024x768",
+        "overview_768x1024",
+        "overview_390x844",
+        "funnel_people_1440x900",
+        "funnel_people_1024x768",
+        "funnel_people_768x1024",
+        "funnel_people_390x844",
+        "funnel_bottlenecks_1440x900",
+        "funnel_bottlenecks_1024x768",
+        "funnel_bottlenecks_768x1024",
+        "funnel_bottlenecks_390x844",
+        "funnel_sla_editor"
+      ],
+      "candidate_artifacts": [],
+      "blocking_conditions": [
+        "The current candidate has no versioned candidate screenshot matrix.",
+        "The current candidate materially differs from the locked shell, Overview, and Funnel references.",
+        "Interactive controls and filters have not been proven to change state and remain legible at every required viewport.",
+        "The legacy 390px browser-test waiver has not been replaced by a real mobile assertion."
+      ]
+    },
+    "workspace_wave": {
+      "status": "blocked",
+      "reason": "P4_VISUAL_PROOF_READY has not been accepted for an exact commit."
+    },
+    "quality": {
+      "status": "blocked",
+      "reason": "The visual-proof gate and P4.2 integration are incomplete."
+    },
+    "reviewer": {
+      "status": "blocked",
+      "reason": "Quality has not passed an exact integrated commit."
+    }
+  },
+  "lane_audits": {
+    "experience": {
+      "base_commit": "410f0fdfe01fa5f190eef42c8247e413ab4465e2",
+      "handoff_commit": "f60a02dddb697e7af4d478dd88f9cea16e59c4f4",
+      "boundary_status": "passed",
+      "acceptance_evidence_status": "missing",
+      "visual_evidence_status": "missing",
+      "disposition": "repair_required"
+    }
+  },
+  "known_ownership_exceptions": [
+    {
+      "path": "tests/acceptance/reporter-growth.integration.test.tsx",
+      "status": "requires_quality_adoption_or_replacement",
+      "reason": "The file changed before the Quality phase even though cross-feature acceptance tests are Quality-owned."
+    }
+  ],
+  "phase_allowed_prefixes": [
+    "AGENTS.md",
+    "docs/reporter-growth/v2/",
+    "package.json",
+    "scripts/",
+    "src/features/markets/",
+    "src/features/recruiting/",
+    "src/integration/",
+    "src/logic/capacity/",
+    "src/logic/recruiting/",
+    "src/shell/",
+    "src/styles/",
+    "tests/acceptance/"
+  ]
+}
