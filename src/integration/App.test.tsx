@@ -44,14 +44,14 @@ describe("P4 integrated V2 experience", () => {
     expect(marketButton("SFO")).toHaveAttribute("aria-pressed", "true");
 
     await user.click(screen.getByRole("button", { name: "Reporters" }));
-    expect(await screen.findByRole("heading", { name: "What can our network support?" })).toBeInTheDocument();
+    expect(await screen.findByRole("main", { name: "Reporters" })).toBeInTheDocument();
     expect(marketButton("SFO")).toHaveAttribute("aria-pressed", "true");
 
     await user.click(screen.getByRole("button", { name: "Team" }));
-    expect(await screen.findByRole("heading", { name: "What is holding up the team's work?" })).toBeInTheDocument();
+    expect(await screen.findByRole("main", { name: "Team" })).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Programs" }));
-    expect(await screen.findByRole("heading", { name: "Which growth efforts should we keep?" })).toBeInTheDocument();
+    expect(await screen.findByRole("main", { name: "Programs" })).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Overview" }));
     expect(await screen.findByRole("main", { name: "Overview" })).toBeInTheDocument();
@@ -131,19 +131,16 @@ describe("P4 integrated V2 experience", () => {
     const user = await renderApp();
     await user.click(screen.getByRole("button", { name: "Programs" }));
 
-    expect(await screen.findByText(/6 of 20 within the identical declared horizon/i)).toBeInTheDocument();
-    expect(screen.getByText(/11 of 20 within the identical declared horizon/i)).toBeInTheDocument();
+    expect(await screen.findByRole("img", { name: /6 of 20 timely first jobs.*11 of 20 timely first jobs/i })).toBeInTheDocument();
 
     await user.click(marketButton("LAX"));
     await waitFor(() => {
-      expect(screen.getByText(/3 of 10 within the identical declared horizon/i)).toBeInTheDocument();
-      expect(screen.getByText(/6 of 10 within the identical declared horizon/i)).toBeInTheDocument();
+      expect(screen.getByRole("img", { name: /3 of 10 timely first jobs.*6 of 10 timely first jobs/i })).toBeInTheDocument();
     });
 
     await user.click(marketButton("SFO"));
     await waitFor(() => {
-      expect(screen.getByText(/3 of 10 within the identical declared horizon/i)).toBeInTheDocument();
-      expect(screen.getByText(/5 of 10 within the identical declared horizon/i)).toBeInTheDocument();
+      expect(screen.getByRole("img", { name: /3 of 10 timely first jobs.*5 of 10 timely first jobs/i })).toBeInTheDocument();
     });
   });
 
@@ -151,21 +148,61 @@ describe("P4 integrated V2 experience", () => {
     const user = await renderApp();
     await user.click(screen.getByRole("button", { name: "Programs" }));
     const feedback = await openDemoControls(user);
+    await user.click(screen.getByRole("button", { name: "Results" }));
 
     await user.click(screen.getByRole("button", { name: "Expand" }));
     await waitFor(() => expect(feedback).toHaveTextContent(/Saved the expand decision with its current evidence/i));
     expect(feedback).toHaveTextContent(/No participant, readiness, acceptance, job outcome, frozen cohort, or other market changed/i);
 
-    await user.click(screen.getByRole("button", { name: "Save as process draft" }));
+    await user.click(screen.getByRole("button", { name: "Save process draft" }));
     await waitFor(() => expect(feedback).toHaveTextContent(/Saved a new versioned process draft/i));
     expect(feedback).toHaveTextContent(/No rollout, enrollment, readiness, acceptance, outcome, or other market changed/i);
 
-    await user.click(screen.getByRole("button", { name: "Create Team partner task" }));
+    await user.click(screen.getByRole("button", { name: "Create partner task" }));
     await waitFor(() => expect(feedback).toHaveTextContent(/Created one canonical Team partner task/i));
     expect(feedback).toHaveTextContent(/No program result, rollout, readiness, acceptance, or job outcome changed/i);
 
     await user.click(screen.getByRole("button", { name: "Overview" }));
     expect(await screen.findByRole("main", { name: "Overview" })).toBeInTheDocument();
     expect(metric("Overview metrics", "Available reporters")).toHaveTextContent("0");
+  });
+
+  it("creates canonical Team work from the locked Add work form", async () => {
+    const user = await renderApp();
+    await user.click(screen.getByRole("button", { name: "Team" }));
+    await screen.findByRole("main", { name: "Team" });
+
+    await user.click(screen.getByRole("button", { name: "Add work" }));
+    const form = screen.getByRole("form", { name: "Add work" });
+    await user.type(within(form).getByRole("textbox", { name: "Work title" }), "Review partner handoff");
+    await user.selectOptions(within(form).getByRole("combobox", { name: "Status" }), "in-progress");
+    await user.selectOptions(within(form).getByRole("combobox", { name: "Domain" }), "program");
+    await user.click(within(form).getByRole("button", { name: "Add" }));
+
+    expect(await screen.findByText("Review partner handoff")).toBeInTheDocument();
+    expect(screen.getByText("Work added.")).toBeInTheDocument();
+    const feedback = await openDemoControls(user);
+    expect(feedback).toHaveTextContent("Created canonical Team work: Review partner handoff.");
+    expect(feedback).toHaveTextContent("Readiness, acceptance, jobs, and program outcomes did not change.");
+  });
+
+  it("persists Programs notes and next steps without changing outcomes", async () => {
+    const user = await renderApp();
+    await user.click(screen.getByRole("button", { name: "Programs" }));
+    await screen.findByRole("main", { name: "Programs" });
+    const notes = screen.getAllByRole("textbox", { name: /Notes for/ });
+    const nextSteps = screen.getAllByRole("textbox", { name: /Next step for/ });
+
+    await user.clear(notes[0]!);
+    await user.type(notes[0]!, "Check the synthetic cohort evidence.");
+    await user.tab();
+    const feedback = await openDemoControls(user);
+    await waitFor(() => expect(feedback).toHaveTextContent("Saved the program note."));
+    expect(feedback).toHaveTextContent("Program results, stage, enrollment, rollout, readiness, acceptance, and jobs did not change.");
+
+    await user.clear(nextSteps[0]!);
+    await user.type(nextSteps[0]!, "Review again next week.");
+    await user.tab();
+    await waitFor(() => expect(feedback).toHaveTextContent("Saved the program next step."));
   });
 });

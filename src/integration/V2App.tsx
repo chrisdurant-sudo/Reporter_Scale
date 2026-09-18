@@ -6,6 +6,7 @@ import type {
   EvidenceBundle,
   MarketId,
   MetricDefinitionRef,
+  ProgramNote,
   ProcessVersion,
   ProgramDecision,
   ReporterId,
@@ -543,6 +544,54 @@ export function V2App() {
     }} />;
     if (activeWorkspace === "team") return <TeamScreen view={teamView} actions={{
       onOpenEvidence: (id) => openEvidence(findEvidence(String(id))),
+      onCreateWork: async (payload) => {
+        await saveMutation(
+          `Created canonical Team work: ${payload.title}.`,
+          "Readiness, acceptance, jobs, and program outcomes did not change.",
+          (current) => {
+            const id = `work-team-${current.revision + 1}` as never;
+            const kind: WorkItem["kind"] = payload.domain === "sourcing"
+              ? "source"
+              : payload.domain === "screening"
+                ? "screen"
+                : payload.domain === "onboarding"
+                  ? "onboard"
+                  : payload.domain === "program"
+                    ? "partner-task"
+                    : "first-opportunity";
+            const item: WorkItem = {
+              id,
+              title: payload.title,
+              kind,
+              primaryEntityRef: payload.programId
+                ? { kind: "program", id: payload.programId }
+                : payload.ownerId
+                  ? { kind: "team-member", id: payload.ownerId }
+                  : { kind: "work-item", id },
+              relatedRequestIds: [],
+              programId: payload.programId,
+              createdAt: current.currentAsOfAt,
+              ownerHistory: [{
+                ownerId: payload.ownerId,
+                occurredAt: current.currentAsOfAt,
+                actorId: "actor-team-1" as never,
+                reason: "Created from the Team work board.",
+              }],
+              dueAt: null,
+              statusHistory: [{
+                status: payload.status,
+                occurredAt: current.currentAsOfAt,
+                actorId: "actor-team-1" as never,
+                reason: "Initial Team board status.",
+              }],
+              blockerCode: null,
+              completionEvidenceRefs: [],
+              provenance: "demo-simulation",
+            };
+            return { ...current, workItems: [...current.workItems, item] };
+          },
+        );
+      },
       onReassignWork: async (payload) => {
         await saveMutation(
           "Reassigned the canonical work item.",
@@ -579,6 +628,27 @@ export function V2App() {
     }} />;
     return <ProgramsScreen view={programsView} actions={{
       onEditProgram: (programId, field, value) => saveMutation(`Updated the program ${field}.`, "Program results, enrollments, readiness, acceptance, and jobs did not change.", (current) => ({ ...current, programs: current.programs.map((program) => program.id === programId ? { ...program, [field]: value } as typeof program : program) })),
+      onSaveProgramText: (payload) => {
+        const row = programsView.rows.find((item) => item.id === payload.programId);
+        const savedText = payload.field === "note" ? row?.latestNote ?? "" : row?.latestNextStep ?? row?.nextStep ?? "";
+        if (payload.text === savedText) return Promise.resolve();
+        return saveMutation(
+          `Saved the program ${payload.field === "note" ? "note" : "next step"}.`,
+          "Program results, stage, enrollment, rollout, readiness, acceptance, and jobs did not change.",
+          (current) => {
+            const note: ProgramNote = {
+              id: `program-${payload.field}-${payload.programId}-${current.revision + 1}` as never,
+              programId: payload.programId,
+              authorId: "actor-team-2" as never,
+              kind: payload.field,
+              text: payload.text,
+              createdAt: current.currentAsOfAt,
+              provenance: "demo-simulation",
+            };
+            return { ...current, programNotes: [...current.programNotes, note] };
+          },
+        );
+      },
       onRecordDecision: recordProgramDecision,
       onSaveProcessDraft: saveProcessDraft,
       onCreatePartnerTask: createPartnerTask,
