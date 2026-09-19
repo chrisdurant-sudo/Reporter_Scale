@@ -129,12 +129,14 @@ describe("P4 integrated V2 experience", () => {
   it("opens contextual evidence, closes on Escape with focus return, and carries exact context into work", async () => {
     const user = await renderApp();
     await user.click(marketButton("LAX"));
-    const trigger = screen.getByRole("button", { name: "Inspect the affected requests and missing readiness evidence." });
+    const attentionRow = screen.getByText("2 request slots: no verified ready match.").closest("li")!;
+    const trigger = within(attentionRow).getByRole("button", { name: "Why this?" });
 
     await user.click(trigger);
     const dialog = await screen.findByRole("dialog", { name: "Why this?" });
     expect(dialog).toHaveTextContent(/2 request slots: no verified ready match/i);
-    expect(dialog).toHaveTextContent(/Window:/i);
+    expect(dialog).toHaveTextContent("Feb 23, 2026 – Mar 2, 2026 (end exclusive)");
+    expect(dialog).toHaveTextContent("As of Feb 16, 2026");
 
     await user.keyboard("{Escape}");
     await waitFor(() => expect(screen.queryByRole("dialog", { name: "Why this?" })).not.toBeInTheDocument());
