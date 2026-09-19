@@ -649,6 +649,25 @@
         "file": "docs/reporter-growth/v2/evidence/740a1cbfadf8f8f1959e6fbaa85d252654594d45-ip1-team-verification.json",
         "sha256": "04167b52103b1b958a423844a06d0de0a1d92b9ca65393d6bf7a041cd13243ec"
       }
+    },
+    "ip1_programs": {
+      "lane": "programs",
+      "base_commit": "40c3cfe2c8ac87806c333348e981a6ddd4b2f0a4",
+      "candidate_commit": "fe25433912f5b380eacf958c776e1f2095dafcc6",
+      "status": "boundary_passed_pending_integration",
+      "changed_paths": [
+        "src/logic/programs/commands.ts",
+        "src/logic/programs/index.test.ts",
+        "src/logic/programs/index.ts",
+        "src/logic/programs/interview.test.ts",
+        "src/logic/programs/measurement.ts"
+      ],
+      "boundary_exit_code": 0,
+      "worker_full_unit_tests": 296,
+      "worker_governance_exit_code": 1,
+      "worker_governance_limitation": "Static 203 checks pass; phase check requires recorded coordinator checkout. Coordinator governance passes before integration.",
+      "acceptance_scope": "IC05/IC06 prepared logic; typed command wiring, IP10/IP11 presentation and independent Quality remain pending",
+      "handoff": "docs/reporter-growth/v2/IP1_PROGRAMS_HANDOFF.md"
     }
   },
   "known_ownership_exceptions": [],
@@ -901,10 +920,11 @@
       "IC05",
       "IC06"
     ],
-    "status": "running",
+    "status": "review_ready",
     "runtime_evidence": {
       "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-programs-worker-runtime.json",
       "sha256": "f778fbe7e3fb3cd23436c845f5989db31a236cb435d979c853c07174ba5d0e93"
-    }
+    },
+    "candidate_commit": "fe25433912f5b380eacf958c776e1f2095dafcc6"
   }
 }
