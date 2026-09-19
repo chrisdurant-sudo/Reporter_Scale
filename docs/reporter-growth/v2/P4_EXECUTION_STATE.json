@@ -300,10 +300,10 @@
       }
     ],
     "latest_coordinator_verification": {
-      "candidate_commit": "f1d053a1026158e0eb12dc38925c1cdef8e699f8",
+      "candidate_commit": "662e7de0e3b87305a22f8a56ac67c2b2a48004cf",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/f1d053a1026158e0eb12dc38925c1cdef8e699f8-ip1-capacity-verification.json",
-        "sha256": "e10b8b937bccf1f41942bbc07f766b5a5ff6c22b23121fc65005388223ee011b"
+        "file": "docs/reporter-growth/v2/evidence/662e7de0e3b87305a22f8a56ac67c2b2a48004cf-ip1-shared-history-verification.json",
+        "sha256": "c64adac4be8ba400047a53898052e462e33fce73505d2b0d44d57d7193bf2d85"
       }
     },
     "continuation_authorization": {
@@ -349,7 +349,9 @@
       "sha256": "8846c7166af1719441f0a98ebd7347aa3226f01a0e491f9382ef2cd450220115"
     },
     "empty_selection_contract_commit": "637535208f12e702f117b1f16e3f172b580c2e49",
-    "composition_contract_commit": "348a8f4c4522478ac07d455bb47cf2718a595e91"
+    "composition_contract_commit": "348a8f4c4522478ac07d455bb47cf2718a595e91",
+    "availability_command_contract_commit": "dbae7f46bec7dbfad049d82df9332099fd46dad0",
+    "historical_work_contract_commit": "662e7de0e3b87305a22f8a56ac67c2b2a48004cf"
   },
   "implementation_base_commit": "6e7ea99e2358e497b8a6d4331a6cc8513e668501",
   "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",
@@ -401,10 +403,10 @@
     },
     "baseline": {
       "status": "passed",
-      "candidate_commit": "f1d053a1026158e0eb12dc38925c1cdef8e699f8",
+      "candidate_commit": "662e7de0e3b87305a22f8a56ac67c2b2a48004cf",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/f1d053a1026158e0eb12dc38925c1cdef8e699f8-ip1-capacity-verification.json",
-        "sha256": "e10b8b937bccf1f41942bbc07f766b5a5ff6c22b23121fc65005388223ee011b"
+        "file": "docs/reporter-growth/v2/evidence/662e7de0e3b87305a22f8a56ac67c2b2a48004cf-ip1-shared-history-verification.json",
+        "sha256": "c64adac4be8ba400047a53898052e462e33fce73505d2b0d44d57d7193bf2d85"
       }
     },
     "visual_proof": {
@@ -643,6 +645,17 @@
         "evidence": {
           "file": "docs/reporter-growth/v2/evidence/2abb25ed7246bb806dd992319e71c9b0ceb344fa-ip1-empty-contract-verification.json",
           "sha256": "63175b8aa292a6452c1ea6addc871b75143c24c43fa3cfbb0091ba6355a4a890"
+        }
+      }
+    },
+    {
+      "gate": "baseline",
+      "record": {
+        "status": "passed",
+        "candidate_commit": "f1d053a1026158e0eb12dc38925c1cdef8e699f8",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/f1d053a1026158e0eb12dc38925c1cdef8e699f8-ip1-capacity-verification.json",
+          "sha256": "e10b8b937bccf1f41942bbc07f766b5a5ff6c22b23121fc65005388223ee011b"
         }
       }
     }
