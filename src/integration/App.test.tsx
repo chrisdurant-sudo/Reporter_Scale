@@ -112,11 +112,11 @@ describe("P4 integrated V2 experience", () => {
   it("opens contextual evidence, closes on Escape with focus return, and carries exact context into work", async () => {
     const user = await renderApp();
     await user.click(marketButton("LAX"));
-    const trigger = screen.getByRole("button", { name: "Inspect the affected request slots." });
+    const trigger = screen.getByRole("button", { name: "Inspect the affected requests and missing readiness evidence." });
 
     await user.click(trigger);
     const dialog = await screen.findByRole("dialog", { name: "Why this?" });
-    expect(dialog).toHaveTextContent(/distinct non-canceled request slots/i);
+    expect(dialog).toHaveTextContent(/non-canceled upcoming request slots/i);
     expect(dialog).toHaveTextContent(/Window:/i);
 
     await user.keyboard("{Escape}");
