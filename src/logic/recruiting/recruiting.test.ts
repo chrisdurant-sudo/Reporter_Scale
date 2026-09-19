@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import type { DemoSnapshotV2, UtcTimestamp } from "../../contracts/v2";
+import type { DemoSnapshotV2, UtcTimestamp, WorkspaceQueryContext } from "../../contracts/v2";
 import { validateEvidenceBundle } from "../shared/evidence";
-import { applyRecruitingLocalNoteCommand, funnelWaitTimeTrends, globallyEarliestCompletedOutcomes, onboardingOutcomes, prepareRecruitingWorkspace, projectCurrentCases, resolveFunnelSlaConfiguration, sourceOutcomes } from "./recruiting";
+import { applyRecruitingLocalNoteCommand, filterRecruitingCases, funnelProgression, funnelWaitTimeTrends, globallyEarliestCompletedOutcomes, onboardingOutcomes, prepareRecruitingWorkspace, projectCurrentCases, resolveFunnelSlaConfiguration, sourceOutcomes } from "./recruiting";
 
 const utc = (value: string) => value as UtcTimestamp;
 const asOf = utc("2026-03-20T00:00:00Z");
@@ -16,6 +16,8 @@ function snapshot(overrides: Record<string, unknown> = {}): DemoSnapshotV2 {
     jobOutcomes: [], teamMembers: [], workItems: [], teamTargets: [], workQualityChecks: [], coachingActions: [], sources: [{ id: "source-a", label: "Referral", kind: "referral", description: "", provenance: "synthetic-demo" }], sourceSpend: [], programs: [], programEnrollments: [], programNotes: [], programDecisions: [], goalRevisions: [], workaroundExamples: [], processVersions: [], commandRecords: [], ...overrides,
   } as unknown as DemoSnapshotV2;
 }
+const contact = { ...snapshot().lifecycleEvents[0]!, id: "contact-a", eventType: "contacted", occurredAt: utc("2026-02-01T00:00:00Z"), recordedAt: utc("2026-02-01T00:00:00Z") } as DemoSnapshotV2["lifecycleEvents"][number];
+function contactedSnapshot(overrides: Record<string, unknown> = {}) { return snapshot({ lifecycleEvents: [contact, ...snapshot().lifecycleEvents], ...overrides }); }
 const window = { startAt: utc("2026-02-01T00:00:00Z"), endAt: utc("2026-03-01T00:00:00Z"), boundary: "[start,end)" as const };
 const context = (selectedMarket: "ALL" | "LAX" | "SFO" = "ALL") => ({ workspace: "recruiting", evaluation: { asOfAt: asOf, snapshotRevision: 7, reportingTimeZone: "America/Los_Angeles" }, filters: { selectedMarket, marketBasis: "recruiting-market-at-entry", marketIds: [], reporterIds: [], acquisitionCaseIds: [], requestIds: [], workItemIds: [], programIds: [], programEnrollmentIds: [], sourceIds: [], jobOutcomeIds: [], capabilityCodes: [], attendanceModes: [], recordRefs: [], window } } as never);
 
@@ -50,13 +52,13 @@ describe("recruiting calculations", () => {
   });
 
   it("never turns positive recorded spend with zero first jobs into a zero cost rate", () => {
-    const outcomes = sourceOutcomes(snapshot({ sourceSpend: [{ id: "spend", sourceId: "source-a", programId: null, cohortRef: null, attributableWindow: null, amountMinor: 5000, currency: "USD", occurredAt: utc("2026-02-12T00:00:00Z"), allocationNote: "direct", provenance: "synthetic-demo" }] }), asOf, window);
+    const outcomes = sourceOutcomes(contactedSnapshot({ sourceSpend: [{ id: "spend", sourceId: "source-a", programId: null, cohortRef: null, attributableWindow: window, amountMinor: 5000, currency: "USD", occurredAt: utc("2026-02-12T00:00:00Z"), allocationNote: "direct", provenance: "synthetic-demo" }] }), asOf, window);
     expect(outcomes[0]?.spend.display).toBe("No first jobs yet; 5000 minor USD spent");
   });
 
   it("uses only declared cohort/window spend once and emits valid unavailable zero-denominator evidence", () => {
     const spend = { id: "included", sourceId: "source-a", programId: null, cohortRef: `${window.startAt}/${window.endAt}`, attributableWindow: window, amountMinor: 5000, currency: "USD", occurredAt: utc("2026-02-12T00:00:00Z"), allocationNote: "direct", provenance: "synthetic-demo" };
-    const outcomes = sourceOutcomes(snapshot({ sourceSpend: [spend, { ...spend, id: "outside", amountMinor: 9000, attributableWindow: { ...window, endAt: utc("2026-03-02T00:00:00Z") } }, { ...spend, id: "other-cohort", amountMinor: 7000, cohortRef: "another-cohort" }] }), asOf, window);
+    const outcomes = sourceOutcomes(contactedSnapshot({ sourceSpend: [spend, { ...spend, id: "outside", amountMinor: 9000, attributableWindow: { ...window, endAt: utc("2026-03-02T00:00:00Z") } }, { ...spend, id: "other-cohort", amountMinor: 7000, cohortRef: "another-cohort" }] }), asOf, window);
     expect(outcomes[0]?.spend).toMatchObject({ status: "recorded", amountMinor: 5000 });
     const empty = prepareRecruitingWorkspace(snapshot({ lifecycleEvents: [] }), { workspace: "recruiting", evaluation: { asOfAt: asOf, snapshotRevision: 7, reportingTimeZone: "America/Los_Angeles" }, filters: { selectedMarket: "ALL", marketBasis: "recruiting-market-at-entry", marketIds: [], reporterIds: [], acquisitionCaseIds: [], requestIds: [], workItemIds: [], programIds: [], programEnrollmentIds: [], sourceIds: [], jobOutcomeIds: [], capabilityCodes: [], attendanceModes: [], recordRefs: [], window } } as never);
     expect(empty.evidence.filter((item) => item.metric.id === "M07" || item.metric.id === "M08").map((item) => item.computation.status)).toEqual(["unavailable", "unavailable"]);
@@ -66,7 +68,7 @@ describe("recruiting calculations", () => {
   it("excludes future acquisition cases and chooses timestamp-latest histories, not array-last histories", () => {
     const future = { ...snapshot().acquisitionCases[0]!, id: "case-future", openedAt: utc("2026-04-01T00:00:00Z"), recordedAt: utc("2026-04-01T00:00:00Z") };
     expect(projectCurrentCases(snapshot({ acquisitionCases: [...snapshot().acquisitionCases, future] }), asOf).map((item) => item.acquisitionCaseId)).toEqual(["case-a"]);
-    expect(sourceOutcomes(snapshot({ acquisitionCases: [...snapshot().acquisitionCases, future] }), asOf, { ...window, endAt: utc("2026-05-01T00:00:00Z") })[0]?.caseIds).toEqual(["case-a"]);
+    expect(sourceOutcomes(contactedSnapshot({ acquisitionCases: [...snapshot().acquisitionCases, future] }), asOf, { ...window, endAt: utc("2026-05-01T00:00:00Z") })[0]?.caseIds).toEqual(["case-a"]);
     const work = { id: "work", kind: "screen", primaryEntityRef: { kind: "acquisition-case", id: "case-a" }, relatedRequestIds: [], programId: null, createdAt: utc("2026-02-01T00:00:00Z"), ownerHistory: [{ ownerId: "early-owner", occurredAt: utc("2026-02-10T00:00:00Z"), actorId: "actor", reason: "early" }, { ownerId: "late-owner", occurredAt: utc("2026-02-20T00:00:00Z"), actorId: "actor", reason: "late" }], dueAt: null, statusHistory: [{ status: "completed", occurredAt: utc("2026-02-25T00:00:00Z"), actorId: "actor", reason: "complete" }, { status: "open", occurredAt: utc("2026-02-15T00:00:00Z"), actorId: "actor", reason: "open" }], blockerCode: null, completionEvidenceRefs: [], provenance: "synthetic-demo" };
     expect(projectCurrentCases(snapshot({ workItems: [work] }), asOf)[0]?.openActions).toEqual([]);
     expect(projectCurrentCases(snapshot({ workItems: [{ ...work, statusHistory: [work.statusHistory[0]!, { ...work.statusHistory[1]!, occurredAt: utc("2026-02-26T00:00:00Z") }] }] }), asOf)[0]?.openActions[0]?.assignedTo).toBe("late-owner");
@@ -83,7 +85,7 @@ describe("recruiting calculations", () => {
 
   it("keeps late first jobs out of M09's fully observed cohort horizon", () => {
     const job = { id: "late", requestId: "request-1", reporterId: "reporter-a", acceptedAssignmentEventId: "assignment-1", outcome: "completed", startedAt: null, completedAt: utc("2026-03-04T00:00:00Z"), deliveryAt: null, recordedAt: utc("2026-03-04T00:00:00Z"), provenance: "synthetic-demo" };
-    const outcomes = sourceOutcomes(snapshot({ jobOutcomes: [job], sourceSpend: [{ id: "spend", sourceId: "source-a", programId: null, cohortRef: null, attributableWindow: null, amountMinor: 5000, currency: "USD", occurredAt: utc("2026-02-12T00:00:00Z"), allocationNote: "direct", provenance: "synthetic-demo" }] }), asOf, window);
+    const outcomes = sourceOutcomes(contactedSnapshot({ jobOutcomes: [job], sourceSpend: [{ id: "spend", sourceId: "source-a", programId: null, cohortRef: null, attributableWindow: window, amountMinor: 5000, currency: "USD", occurredAt: utc("2026-02-12T00:00:00Z"), allocationNote: "direct", provenance: "synthetic-demo" }] }), asOf, window);
     expect(outcomes[0]?.firstJobCaseIds).toEqual([]);
     expect(outcomes[0]?.spend.display).toBe("No first jobs yet; 5000 minor USD spent");
   });
@@ -148,7 +150,7 @@ describe("recruiting calculations", () => {
     const completed = { id: "completed-c", requestId: "request-c", reporterId: "reporter-c", acceptedAssignmentEventId: "accepted-c", outcome: "completed", startedAt: null, completedAt: utc("2026-03-02T00:00:00Z"), deliveryAt: null, recordedAt: utc("2026-03-02T00:00:00Z"), provenance: "synthetic-demo" };
     const view = prepareRecruitingWorkspace(snapshot({ reporters: [...snapshot().reporters, reporterB, reporterC], acquisitionCases: [...snapshot().acquisitionCases, caseB, caseC], lifecycleEvents: [...snapshot().lifecycleEvents, closed], assignmentEvents: [...snapshot().assignmentEvents, accepted], jobOutcomes: [completed] }), context());
     expect(view.kpis.activePeopleInFunnel).toMatchObject({ value: 1, acquisitionCaseIds: ["case-a"] });
-    expect(view.kpis.percentStartedWork).toMatchObject({ numerator: 1, denominator: 3, value: 1 / 3, numeratorCaseIds: ["case-c"], denominatorCaseIds: ["case-a", "case-b", "case-c"] });
+    expect(view.kpis.percentStartedWork).toMatchObject({ numerator: 0, denominator: 1, value: 0, numeratorCaseIds: [], denominatorCaseIds: ["case-a"], horizonDays: 14, entryBasis: "first-onboarding-entry" });
   });
 
   it("selects the default SLA for All and the explicit market override for a market scope", () => {
@@ -162,9 +164,162 @@ describe("recruiting calculations", () => {
     const step = { id: "step-a", acquisitionCaseId: "case-a", stepDefinitionId: "orientation", required: true, state: "blocked", assignedTo: null, dueAt: utc("2026-03-10T00:00:00Z"), completedAt: null, completedBy: null, evidenceRef: null, blockerCode: "missing-evidence", recordedAt: utc("2026-02-10T00:00:00Z"), provenance: "synthetic-demo" };
     const view = prepareRecruitingWorkspace(snapshot({ onboardingSteps: [step] }), context("LAX"));
     expect(view.statusFilterCounts.find((item) => item.status === "Onboarding")).toMatchObject({ count: 1, acquisitionCaseIds: ["case-a"] });
-    expect(view.waitingOnFilterOptions).toEqual([{ key: "unowned", label: "Unowned action", count: 1, acquisitionCaseIds: ["case-a"], actionRecords: [{ kind: "onboarding-step", id: "step-a" }] }]);
+    expect(view.waitingOnFilterOptions).toEqual([{ key: "blocker:missing-evidence", label: "Blocked: missing-evidence", count: 1, acquisitionCaseIds: ["case-a"], actionRecords: [{ kind: "onboarding-step", id: "step-a" }] }]);
     expect(view.attentionItems).toHaveLength(1);
     expect(view.attentionItems[0]).toMatchObject({ acquisitionCaseId: "case-a", nextAction: "Complete orientation: Blocked: missing-evidence", contributingRecords: [{ kind: "acquisition-case", id: "case-a" }, { kind: "lifecycle-event", id: "event-onboard" }, { kind: "onboarding-step", id: "step-a" }] });
     expect(view.focusCondition).toBe(view.attentionItems[0]!.finding);
+  });
+});
+
+
+describe("IC02 cohort and exact scope contracts", () => {
+  const query = (filters: Partial<WorkspaceQueryContext<"recruiting">["filters"]> = {}): WorkspaceQueryContext<"recruiting"> => {
+    const base = context() as WorkspaceQueryContext<"recruiting">;
+    return { ...base, filters: { ...base.filters, ...filters } };
+  };
+  it("selects first contact before the half-open window and never re-enrolls repeat outreach", () => {
+    const earlier = { ...contact, id: "earlier", occurredAt: utc("2026-01-31T23:59:59Z"), recordedAt: utc("2026-01-31T23:59:59Z") };
+    const repeat = contactedSnapshot({ acquisitionCases: [{ ...snapshot().acquisitionCases[0]!, openedAt: utc("2026-01-01T00:00:00Z"), recordedAt: utc("2026-01-01T00:00:00Z") }], lifecycleEvents: [contact, earlier] });
+    expect(funnelProgression(repeat, asOf, window).members).toEqual([]);
+    expect(sourceOutcomes(repeat, asOf, window)).toEqual([]);
+    const end = { ...contact, occurredAt: window.endAt, recordedAt: window.endAt };
+    expect(funnelProgression(contactedSnapshot({ lifecycleEvents: [end] }), asOf, window).members).toEqual([]);
+    expect(funnelProgression(contactedSnapshot(), asOf, window).matureCaseIds).toEqual(["case-a"]);
+  });
+
+  it("finalizes exactly at 30 elapsed days, exposes observing members and never backfills late reaches", () => {
+    const deadline = utc("2026-03-03T00:00:00Z");
+    const ready = { ...contact, id: "ready", eventType: "ready", occurredAt: deadline, recordedAt: deadline };
+    const source = contactedSnapshot({ lifecycleEvents: [contact, ready] });
+    const observing = funnelProgression(source, utc("2026-03-02T23:59:59.999Z"), window);
+    expect(observing).toMatchObject({ horizonDays: 30, entryBasis: "first-outbound-contact", matureCaseIds: [], observingCaseIds: ["case-a"] });
+    expect(observing.stages.at(-1)?.conversion).toMatchObject({ value: null, numerator: 0, denominator: 0 });
+    const finalized = funnelProgression(source, deadline, window);
+    expect(finalized.stages.at(-1)?.conversion).toMatchObject({ value: 1, numerator: 1, denominator: 1 });
+    expect(finalized.members[0]).toMatchObject({ observationDeadlineAt: "2026-03-03T00:00:00.000Z", observationEndAt: "2026-03-03T00:00:00.000Z", entryRecord: { id: "contact-a" } });
+    const late = funnelProgression(contactedSnapshot({ lifecycleEvents: [contact, { ...ready, occurredAt: utc("2026-03-03T00:00:00.001Z"), recordedAt: utc("2026-03-03T00:00:00.001Z") }] }), asOf, window);
+    expect(late.stages.at(-1)?.conversion.value).toBe(0);
+    expect(late.stages.at(-1)?.notReachedCaseIds).toEqual(["case-a"]);
+  });
+
+  it("uses one first-contact cohort and horizon for every source outcome even after the entry window ends", () => {
+    const ready = { ...contact, id: "ready", eventType: "ready", occurredAt: utc("2026-03-02T00:00:00Z"), recordedAt: utc("2026-03-02T00:00:00Z") };
+    const base = contactedSnapshot({ lifecycleEvents: [contact, ready] });
+    const outcomes = sourceOutcomes(base, asOf, window)[0]!;
+    expect(outcomes.caseIds).toEqual(funnelProgression(base, asOf, window).members.map((item) => item.acquisitionCaseId));
+    expect(outcomes.conversions.ready).toMatchObject({ value: 1, numeratorCaseIds: ["case-a"], denominatorCaseIds: ["case-a"] });
+    expect(outcomes).toMatchObject({ horizonDays: 30, entryBasis: "first-outbound-contact" });
+    const late = sourceOutcomes(contactedSnapshot({ lifecycleEvents: [contact, { ...ready, occurredAt: utc("2026-03-04T00:00:00Z") }] }), asOf, window)[0]!;
+    expect(late.conversions.ready.value).toBe(0);
+  });
+
+  it("does not infer spend attribution, combine currencies, or allocate a global cost to one market", () => {
+    const spend = { id: "spend", sourceId: "source-a", programId: null, cohortRef: null, attributableWindow: null, amountMinor: 5000, currency: "USD", occurredAt: utc("2026-02-12T00:00:00Z"), allocationNote: "direct", provenance: "synthetic-demo" };
+    const unknown = sourceOutcomes(contactedSnapshot({ sourceSpend: [spend] }), asOf, window)[0]!;
+    expect(unknown.spendAttribution).toMatchObject({ status: "unattributed", costPerFirstJobMinor: null, unattributedSourceSpendIds: ["spend"] });
+    const mixed = sourceOutcomes(contactedSnapshot({ sourceSpend: [{ ...spend, attributableWindow: window }, { ...spend, id: "eur", attributableWindow: window, currency: "EUR" }] }), asOf, window)[0]!;
+    expect(mixed.spendAttribution).toMatchObject({ status: "mixed-currencies", costPerFirstJobMinor: null });
+    const caseB = { ...snapshot().acquisitionCases[0]!, id: "case-b", reporterId: "reporter-b", ownerMarketId: "SFO" };
+    const scoped = sourceOutcomes(contactedSnapshot({ acquisitionCases: [...snapshot().acquisitionCases, caseB], lifecycleEvents: [contact, { ...contact, id: "contact-b", acquisitionCaseId: "case-b", reporterId: "reporter-b" }], sourceSpend: [{ ...spend, attributableWindow: window }] }), asOf, window, "LAX")[0]!;
+    expect(scoped.spendAttribution).toMatchObject({ status: "subset-not-allocatable", costPerFirstJobMinor: null });
+  });
+
+  it("honors exact empty and conjunctive case/person/source constraints for every prepared population", () => {
+    for (const filters of [{ matchNone: true }, { acquisitionCaseIds: ["unknown" as never] }, { acquisitionCaseIds: ["case-a" as never], reporterIds: ["other" as never] }, { sourceIds: ["other-source" as never] }]) {
+      const view = prepareRecruitingWorkspace(contactedSnapshot(), query(filters));
+      expect(view.currentCases).toEqual([]);
+      expect(view.funnel.members).toEqual([]);
+      expect(view.onboarding.members).toEqual([]);
+      expect(view.sources).toEqual([]);
+      expect(view.attentionItems).toEqual([]);
+      expect(view.statusFilterCounts.every((item) => item.count === 0)).toBe(true);
+      expect(view.waitTimeTrends.R7.Onboarding.every((item) => item.acquisitionCaseIds.length === 0)).toBe(true);
+      expect(view.evidence.every((item) => item.filters.matchNone)).toBe(true);
+      expect(view.evidence.flatMap(validateEvidenceBundle)).toEqual([]);
+    }
+    expect(prepareRecruitingWorkspace(contactedSnapshot(), query()).currentCases).toHaveLength(1);
+  });
+
+  it("uses stable owner IDs separately from blocker keys and respects latest same-time appends", () => {
+    const now = utc("2026-03-01T00:00:00Z");
+    const work = { id: "work-a", kind: "onboard", primaryEntityRef: { kind: "acquisition-case", id: "case-a" }, relatedRequestIds: [], programId: null, createdAt: now, ownerHistory: [{ ownerId: "old", occurredAt: now, actorId: "actor", reason: "assign" }, { ownerId: "maya", occurredAt: now, actorId: "actor", reason: "reassign" }], dueAt: now, statusHistory: [{ status: "completed", occurredAt: now, actorId: "actor", reason: "done" }, { status: "open", occurredAt: now, actorId: "actor", reason: "reopen" }], blockerCode: "missing-form", completionEvidenceRefs: [], provenance: "synthetic-demo" };
+    const member = { id: "maya", fictionalName: "Maya Chen", actorId: "actor", focusRole: "Onboarding", activeFrom: now, activeTo: null, provenance: "synthetic-demo" };
+    const source = contactedSnapshot({ workItems: [work], teamMembers: [member] });
+    const view = prepareRecruitingWorkspace(source, query());
+    expect(view.ownerFilterOptions).toEqual([{ key: "maya", memberId: "maya", label: "Maya Chen", count: 1, acquisitionCaseIds: ["case-a"], actionRecords: [{ kind: "work-item", id: "work-a" }] }]);
+    const filters = { status: "Onboarding" as const, ownerId: "maya" as never, waitingOnKey: "blocker:missing-form", slaState: "over" as const, search: "Avery" };
+    expect(filterRecruitingCases(view.currentCases, filters)).toHaveLength(1);
+    const filtered = prepareRecruitingWorkspace(source, query({ acquisitionCaseIds: ["case-a" as never], reporterIds: ["reporter-a" as never], sourceIds: ["source-a" as never] }), { filters });
+    expect(filtered.currentCases.map((item) => item.acquisitionCaseId)).toEqual(["case-a"]);
+    expect(filtered.statusFilterCounts.find((item) => item.status === "Onboarding")?.count).toBe(1);
+    expect(filterRecruitingCases(view.currentCases, { waitingOnKey: "Maya Chen" })).toEqual([]);
+    expect(filterRecruitingCases(view.currentCases, { ...filters, status: "Applicant" })).toEqual([]);
+    const completed = prepareRecruitingWorkspace(contactedSnapshot({ workItems: [{ ...work, statusHistory: [...work.statusHistory, { ...work.statusHistory[0] }] }] }), query());
+    expect(completed.ownerFilterOptions).toEqual([]);
+  });
+
+  it("exposes ambiguous responsibilities and unassigned actions without inventing one case owner", () => {
+    const step = { id: "step", acquisitionCaseId: "case-a", stepDefinitionId: "orientation", required: true, state: "blocked", assignedTo: "maya", dueAt: null, completedAt: null, completedBy: null, evidenceRef: null, blockerCode: "orientation", recordedAt: utc("2026-02-10T00:00:00Z"), provenance: "synthetic-demo" };
+    const view = prepareRecruitingWorkspace(contactedSnapshot({ onboardingSteps: [step, { ...step, id: "other", assignedTo: "quinn" }, { ...step, id: "unowned", assignedTo: null }] }), query());
+    expect(view.currentCases[0]?.responsibility).toMatchObject({ memberIds: ["maya", "quinn"], hasUnassignedActions: true, state: "multiple-responsibilities" });
+    expect(view.ownerFilterOptions.map((item) => item.count)).toEqual([1, 1, 1]);
+    expect(filterRecruitingCases(view.currentCases, { ownerId: "unassigned" })).toHaveLength(1);
+    expect(view.waitingOnFilterOptions[0]?.count).toBe(1);
+  });
+
+  it("routes attention to its own market and exact canonical task, clearing unrelated demand selections", () => {
+    const work = { id: "work-a", kind: "onboard", primaryEntityRef: { kind: "acquisition-case", id: "case-a" }, relatedRequestIds: [], programId: null, createdAt: utc("2026-02-01T00:00:00Z"), ownerHistory: [], dueAt: utc("2026-02-02T00:00:00Z"), statusHistory: [{ status: "open", occurredAt: utc("2026-02-01T00:00:00Z"), actorId: "actor", reason: "follow up" }], blockerCode: null, completionEvidenceRefs: [], provenance: "synthetic-demo" };
+    const view = prepareRecruitingWorkspace(contactedSnapshot({ workItems: [work] }), query({ requestIds: ["unrelated-request" as never], capabilityCodes: ["REALTIME" as never], attendanceModes: ["in-person"] }));
+    const attention = view.attentionItems[0]!;
+    expect(attention).toMatchObject({ marketId: "LAX", reporterId: "reporter-a", actionRecord: { id: "work-a" }, navigationTarget: { workspace: "team", intent: "record-detail", filters: { selectedMarket: "LAX", acquisitionCaseIds: ["case-a"], reporterIds: ["reporter-a"], workItemIds: ["work-a"], requestIds: [], capabilityCodes: [], attendanceModes: [], window: null } } });
+    expect(view.evidence.find((item) => item.id === attention.evidence.id)).toBe(attention.evidence);
+    expect(validateEvidenceBundle(attention.evidence)).toEqual([]);
+    const exact = prepareRecruitingWorkspace(contactedSnapshot({ workItems: [work] }), { ...query(), filters: attention.navigationTarget.filters });
+    expect(exact.currentCases.map((item) => item.acquisitionCaseId)).toEqual(["case-a"]);
+  });
+
+  it("keeps cohort scope independent of operational status filtering and explains the distinction", () => {
+    const base = prepareRecruitingWorkspace(contactedSnapshot(), query());
+    const filtered = prepareRecruitingWorkspace(contactedSnapshot(), query(), { filters: { status: "Applicant" } });
+    expect(filtered.currentCases).toEqual([]);
+    expect(filtered.funnel).toEqual(base.funnel);
+    expect(filtered.onboarding).toEqual(base.onboarding);
+    expect(filtered.filterScope.cohorts).toContain("excludes-operational-filters");
+    expect(filtered.filterScope.counts).toBe("same-filtered-records");
+  });
+});
+
+describe("IC02 wait and finalized source measures", () => {
+  it("labels median separately from mean with exact current waiting members", () => {
+    const source = snapshot();
+    const cases = [1, 2, 30].map((days, index) => {
+      const id = `case-${index}`, reporterId = `reporter-${index}`;
+      const enteredAt = new Date(Date.parse(asOf) - days * 86_400_000).toISOString() as UtcTimestamp;
+      return { reporter: { ...source.reporters[0]!, id: reporterId }, acq: { ...source.acquisitionCases[0]!, id, reporterId }, event: { ...source.lifecycleEvents[0]!, id: `event-${index}`, acquisitionCaseId: id, reporterId, occurredAt: enteredAt, recordedAt: enteredAt } };
+    });
+    const view = prepareRecruitingWorkspace(snapshot({ reporters: cases.map((item) => item.reporter), acquisitionCases: cases.map((item) => item.acq), lifecycleEvents: cases.map((item) => item.event) }), context());
+    expect(view.waitByStatus.find((item) => item.status === "Onboarding")).toMatchObject({ medianElapsedDays: 2, meanElapsedDays: 11, acquisitionCaseIds: ["case-2", "case-1", "case-0"], basis: "current-status-elapsed-time-not-completed-stage-duration" });
+    expect(view.kpis.slowestStep?.meanElapsedDays).toBe(11);
+  });
+
+  it("withholds cost until the whole source cohort matures, then recomputes after source-backed completion", () => {
+    const spend = { id: "spend", sourceId: "source-a", programId: null, cohortRef: null, attributableWindow: window, amountMinor: 5000, currency: "USD", occurredAt: utc("2026-02-12T00:00:00Z"), allocationNote: "direct", provenance: "synthetic-demo" };
+    const completed = { id: "completed", requestId: "request-1", reporterId: "reporter-a", acceptedAssignmentEventId: "assignment-1", outcome: "completed", startedAt: null, completedAt: utc("2026-02-15T00:00:00Z"), deliveryAt: null, recordedAt: utc("2026-02-15T00:00:00Z"), provenance: "synthetic-demo" };
+    const source = contactedSnapshot({ sourceSpend: [spend], jobOutcomes: [completed] });
+    const early = sourceOutcomes(source, utc("2026-02-16T00:00:00Z"), window)[0]!;
+    expect(early).toMatchObject({ observingCaseIds: ["case-a"], conversions: { firstJob: { value: null, denominator: 0 } }, spendAttribution: { costPerFirstJobMinor: null } });
+    const mature = sourceOutcomes(source, asOf, window)[0]!;
+    expect(mature.conversions.firstJob).toMatchObject({ value: 1, numerator: 1, denominator: 1 });
+    expect(mature.spendAttribution).toMatchObject({ costPerFirstJobMinor: 5000, outcomeDenominatorCaseIds: ["case-a"] });
+    const noJob = sourceOutcomes(contactedSnapshot({ sourceSpend: [spend] }), asOf, window)[0]!;
+    expect(noJob.conversions.firstJob.value).toBe(0);
+    expect(noJob.spendAttribution.costPerFirstJobMinor).toBeNull();
+  });
+
+  it("keeps first-job completions out of historical waiting populations from their actual completion onward", () => {
+    const completed = { id: "completed", requestId: "request-1", reporterId: "reporter-a", acceptedAssignmentEventId: "assignment-1", outcome: "completed", startedAt: null, completedAt: utc("2026-03-18T00:00:00Z"), deliveryAt: null, recordedAt: utc("2026-03-18T00:00:00Z"), provenance: "synthetic-demo" };
+    const trend = funnelWaitTimeTrends(contactedSnapshot({ jobOutcomes: [completed] }), asOf).R7.Onboarding;
+    expect(trend.filter((item) => item.asOfAt < "2026-03-18T00:00:00.000Z").every((item) => item.acquisitionCaseIds.includes("case-a" as never))).toBe(true);
+    expect(trend.filter((item) => item.asOfAt >= "2026-03-18T00:00:00.000Z").every((item) => item.acquisitionCaseIds.length === 0)).toBe(true);
   });
 });
