@@ -274,10 +274,10 @@
       }
     ],
     "latest_coordinator_verification": {
-      "candidate_commit": "30a1aca9fbee1b1c4e81a5e6841fbd8b81a81b1a",
+      "candidate_commit": "1f5250251eabb33c438c793cbf5f6296bbe017da",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/30a1aca9fbee1b1c4e81a5e6841fbd8b81a81b1a-ip0-repaired-verification.json",
-        "sha256": "4b78a3a3258196c179f7586abdfbac47280359149372b7ac7cf0bd86aff9bd57"
+        "file": "docs/reporter-growth/v2/evidence/1f5250251eabb33c438c793cbf5f6296bbe017da-ip1-data-verification.json",
+        "sha256": "feb50b82f509d7acd9c846654e068f4aa5fe7a08ad14cc13c9acb1c25850b48f"
       }
     },
     "continuation_authorization": {
@@ -325,8 +325,8 @@
   "fanout_authorized": false,
   "current_phase": "IP1_serial_data_logic",
   "current_candidate": {
-    "commit": "ccbdd5b1736bafb5ab67d23aea54c2b444e116ae",
-    "status": "serial_data_logic_in_progress_transaction_boundary_focused_checks_passed",
+    "commit": "1f5250251eabb33c438c793cbf5f6296bbe017da",
+    "status": "data_integrated_full_suite_passed_remaining_logic_pending",
     "defect_register": "docs/reporter-growth/v2/INTERVIEW_PRODUCT_REVIEW_2026-09-18.md"
   },
   "gates": {
@@ -362,14 +362,16 @@
         "team",
         "programs"
       ],
-      "completed_roles": []
+      "completed_roles": [
+        "data"
+      ]
     },
     "baseline": {
       "status": "passed",
-      "candidate_commit": "30a1aca9fbee1b1c4e81a5e6841fbd8b81a81b1a",
+      "candidate_commit": "1f5250251eabb33c438c793cbf5f6296bbe017da",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/30a1aca9fbee1b1c4e81a5e6841fbd8b81a81b1a-ip0-repaired-verification.json",
-        "sha256": "4b78a3a3258196c179f7586abdfbac47280359149372b7ac7cf0bd86aff9bd57"
+        "file": "docs/reporter-growth/v2/evidence/1f5250251eabb33c438c793cbf5f6296bbe017da-ip1-data-verification.json",
+        "sha256": "feb50b82f509d7acd9c846654e068f4aa5fe7a08ad14cc13c9acb1c25850b48f"
       }
     },
     "visual_proof": {
@@ -401,6 +403,31 @@
         "sha256": "4b78a3a3258196c179f7586abdfbac47280359149372b7ac7cf0bd86aff9bd57"
       },
       "scope": "User-approved prerequisite test repair only; independent IP5 Quality remains pending."
+    },
+    "ip1_data": {
+      "lane": "data",
+      "base_commit": "a772282a7d7acb74d8a09ab1786ca6b3de9c51ae",
+      "candidate_commit": "9fe8764d42f5159b8ade12df0ee196425ff222c7",
+      "integrated_commit": "a2ba37a",
+      "status": "passed",
+      "changed_paths": [
+        "src/data/v2.ts",
+        "src/data/v2InterviewSeed.ts",
+        "src/data/v2Validation.ts",
+        "src/data/v2Interview.test.ts"
+      ],
+      "boundary_exit_code": 0,
+      "full_verification": {
+        "file": "docs/reporter-growth/v2/evidence/1f5250251eabb33c438c793cbf5f6296bbe017da-ip1-data-verification.json",
+        "sha256": "feb50b82f509d7acd9c846654e068f4aa5fe7a08ad14cc13c9acb1c25850b48f"
+      },
+      "acceptance_scope": "IC07/IC08 repository and linked seed; browser refresh/UI acceptance remains pending",
+      "worker_checks": {
+        "focused_tests": 36,
+        "unit_passed": 149,
+        "unit_failed": 1,
+        "resolved_gap": "Coordinator fixture assertion updated at 1f5250251eabb33c438c793cbf5f6296bbe017da; full suite passed 153 unit/integration, 9 acceptance, 8 browser."
+      }
     }
   },
   "known_ownership_exceptions": [],
@@ -482,6 +509,17 @@
         },
         "reason": "Browser launch recovered; full run now reaches assertions: two browser cases pass, six fail on stale navigation/feedback selectors. Additional unsupported getByDisplayValue call identified. Quality-owned suite repair is required; no waiver."
       }
+    },
+    {
+      "gate": "baseline",
+      "record": {
+        "status": "passed",
+        "candidate_commit": "30a1aca9fbee1b1c4e81a5e6841fbd8b81a81b1a",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/30a1aca9fbee1b1c4e81a5e6841fbd8b81a81b1a-ip0-repaired-verification.json",
+          "sha256": "4b78a3a3258196c179f7586abdfbac47280359149372b7ac7cf0bd86aff9bd57"
+        }
+      }
     }
   ],
   "active_lane": {
@@ -495,7 +533,7 @@
       "IC07",
       "IC08"
     ],
-    "status": "running",
+    "status": "integrated_verified",
     "runtime_evidence": {
       "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-data-worker-runtime.json",
       "sha256": "18a0eb4b8a8114f1742f1d49ab62f9ac5d71b4208e4d9e71bcd861cc09d0c411"
