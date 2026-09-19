@@ -57,7 +57,7 @@ describe("P4 integrated V2 experience", () => {
 
     await user.click(screen.getByRole("button", { name: "Team" }));
     expect(await screen.findByRole("main", { name: "Team" })).toBeInTheDocument();
-    expect(screen.getByText("5 tasks need an owner")).toBeInTheDocument();
+    expect(screen.getByText("1 task needs an owner")).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Programs" }));
     expect(await screen.findByRole("main", { name: "Programs" })).toBeInTheDocument();

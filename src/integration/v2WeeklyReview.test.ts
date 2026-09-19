@@ -4,7 +4,7 @@ import { REPORTING_TIME_ZONE } from "../contracts/v2";
 import { applyScenarioCheckpoint, DEMO_SNAPSHOT_V2, V2_MAIN_REQUEST_WINDOW } from "../data/v2";
 import { prepareMarketsWorkspace } from "../logic/capacity";
 import { prepareRecruitingWorkspace } from "../logic/recruiting";
-import { prepareWeeklyReviewFoundation } from "./v2WeeklyReview";
+import { prepareWeeklyReviewFoundation, prepareWeeklyTeamReview } from "./v2WeeklyReview";
 
 const contexts = (snapshot: DemoSnapshotV2) => {
   const capacity: WorkspaceQueryContext<"markets"> = {
@@ -64,5 +64,49 @@ describe("weekly review source composition", () => {
     expect(() => prepareWeeklyReviewFoundation(capacity, { ...recruiting, evaluation: { ...recruiting.evaluation, snapshotRevision: 1 } })).toThrow("same market, as-of time and snapshot revision");
     expect(() => prepareWeeklyReviewFoundation(capacity, { ...recruiting, evaluation: { ...recruiting.evaluation, asOfAt: "2026-02-17T17:00:00Z" as UtcTimestamp } })).toThrow();
     expect(() => prepareWeeklyReviewFoundation(capacity, { ...recruiting, appliedFilters: { ...recruiting.appliedFilters, selectedMarket: "SFO" } })).toThrow();
+  });
+});
+
+
+describe("weekly Team composition", () => {
+  const teamContext = (selectedMarket: "ALL" | "LAX"): WorkspaceQueryContext<"team"> => ({
+    ...contexts(DEMO_SNAPSHOT_V2).capacity, workspace: "team",
+    filters: { ...contexts(DEMO_SNAPSHOT_V2).capacity.filters, selectedMarket, marketBasis: "all-markets", marketIds: selectedMarket === "ALL" ? [] : [selectedMarket],
+      window: { startAt: "2026-02-09T08:00:00Z" as UtcTimestamp, endAt: "2026-02-16T08:00:00Z" as UtcTimestamp, boundary: "[start,end)" } },
+  });
+  const metric = DEMO_SNAPSHOT_V2.teamTargets[0]!.metric;
+
+  it("retains member targets, completion-event comparisons and distinct exact evidence", () => {
+    const review = prepareWeeklyTeamReview(DEMO_SNAPSHOT_V2, teamContext("ALL"), metric);
+    expect(review.measures).toHaveLength(3);
+    expect(review.partialPeriod).toBe(false);
+    expect(review.measures.map((item) => item.target?.value)).toEqual([4, 1, 3]);
+    const ids = review.measures.flatMap((item) => item.comparison.status === "available" ? item.comparison.evidence.map((evidence) => evidence.id) : []);
+    expect(new Set(ids).size).toBe(6);
+    for (const measure of review.measures) {
+      expect(measure.comparison.status).toBe("available");
+      if (measure.comparison.status !== "available") continue;
+      expect(measure.actual).toBe(measure.comparison.current);
+      expect(measure.comparison.change).toBe(measure.comparison.current - measure.comparison.prior);
+      for (const evidence of measure.comparison.evidence) {
+        expect(evidence.filters.workItemIds).toEqual(evidence.contributingRecords.map((record) => record.id));
+        expect(evidence.navigationTarget.filters).toEqual(evidence.filters);
+      }
+    }
+  });
+
+  it("withholds whole-member targets for a market subset and preserves actual coaching review dates", () => {
+    const review = prepareWeeklyTeamReview(DEMO_SNAPSHOT_V2, teamContext("LAX"), metric);
+    expect(review.measures.every((measure) => measure.target === null && measure.targetUnavailableReason)).toBe(true);
+    expect(review.actions).toHaveLength(0); // Recorded seed coaching belongs to DFW, ORD and ATL.
+    const nationwide = prepareWeeklyTeamReview(DEMO_SNAPSHOT_V2, teamContext("ALL"), metric);
+    expect(nationwide.actions).toHaveLength(3);
+    for (const action of nationwide.actions) {
+      const source = DEMO_SNAPSHOT_V2.coachingActions.find((item) => item.id === action.source.id)!;
+      expect(action.reviewAt).toBe(source.reviewAt);
+      expect(action.dueAt).toBe(source.dueAt);
+      expect(action.owner?.id).toBe(source.teamMemberId);
+      expect(action.navigationTarget.filters.recordRefs).toContainEqual(action.source);
+    }
   });
 });

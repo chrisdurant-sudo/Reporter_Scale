@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type {
+  ActorId,
   AttendanceMode,
   CapabilityCode,
   DemoSnapshotV2,
@@ -10,6 +11,7 @@ import type {
   ProcessVersion,
   ProgramDecision,
   ReporterId,
+  TeamCommandEnvelope,
   UtcTimestamp,
   WorkspaceFilterPayload,
   WorkspaceId,
@@ -40,12 +42,13 @@ import type {
   RecruitingLocalNoteCommand,
   RecruitingLocalNoteState,
 } from "../logic/recruiting";
-import { prepareTeamView } from "../logic/team";
+import { prepareTeamCommand, prepareTeamView } from "../logic/team";
 import { V2AppShell } from "../shell";
 import type { V2GlobalFilters } from "../shell/V2AppShell";
 import { ErrorState, LoadingState } from "../ui/v2";
 import { v2BrowserStorage } from "./v2BrowserStorage";
 import { prepareInterviewOverview } from "./v2Overview";
+import { commitV2Command } from "./v2CommandTransaction";
 
 const RECRUITING_ENTRY_WINDOW = {
   startAt: "2026-02-01T00:00:00Z" as UtcTimestamp,
@@ -65,6 +68,9 @@ const ATTENDANCE_OPTIONS = [
   { value: "remote" as AttendanceMode, label: "Remote" },
   { value: "in-person" as AttendanceMode, label: "In person" },
 ] as const;
+
+type CommandInput<T> = T extends { readonly context: unknown } ? Omit<T, "context"> : never;
+type TeamCommandInput = CommandInput<TeamCommandEnvelope>;
 
 interface ActionFeedback {
   readonly changed: string;
@@ -237,6 +243,40 @@ export function V2App() {
         changed: "Nothing was saved.",
         notChanged: error instanceof Error ? error.message : "The requested demo action failed.",
       });
+    } finally {
+      setBusy(false);
+    }
+  }), [acceptSnapshot, enqueue, repository]);
+
+  // A rejected save remains rejected so forms cannot acknowledge unsaved work.
+  const submitTeamCommand = useCallback((
+    input: TeamCommandInput,
+    changed: string,
+    notChanged: string,
+    actorId: ActorId = "actor-team-1" as ActorId,
+  ): Promise<void> => enqueue(async () => {
+    const current = snapshotRef.current;
+    if (!current) throw new Error("Wait for the demo snapshot to load.");
+    setBusy(true);
+    try {
+      const command: TeamCommandEnvelope = {
+        ...input,
+        context: {
+          commandId: `team-${crypto.randomUUID()}` as TeamCommandEnvelope["context"]["commandId"],
+          expectedRevision: current.revision,
+          actorId,
+          occurredAt: current.currentAsOfAt,
+        },
+      };
+      const result = await commitV2Command(repository, command, prepareTeamCommand);
+      if (!result.ok) throw new Error(result.message);
+      acceptSnapshot(result.value);
+      setSelectedEvidence(null);
+      setDrillDown(null);
+      setFeedback({ changed: result.replayed ? result.message : changed, notChanged });
+    } catch (error) {
+      setFeedback({ changed: "Nothing was saved.", notChanged: error instanceof Error ? error.message : "The Team action failed." });
+      throw error;
     } finally {
       setBusy(false);
     }
@@ -551,87 +591,36 @@ export function V2App() {
     }} />;
     if (activeWorkspace === "team") return <TeamScreen view={teamView} actions={{
       onOpenEvidence: (id) => openEvidence(findEvidence(String(id))),
-      onCreateWork: async (payload) => {
-        await saveMutation(
-          `Created canonical Team work: ${payload.title}.`,
-          "Readiness, acceptance, jobs, and program outcomes did not change.",
-          (current) => {
-            const id = `work-team-${current.revision + 1}` as never;
-            const kind: WorkItem["kind"] = payload.domain === "sourcing"
-              ? "source"
-              : payload.domain === "screening"
-                ? "screen"
-                : payload.domain === "onboarding"
-                  ? "onboard"
-                  : payload.domain === "program"
-                    ? "partner-task"
-                    : "first-opportunity";
-            const item: WorkItem = {
-              id,
-              title: payload.title,
-              kind,
-              primaryEntityRef: payload.programId
-                ? { kind: "program", id: payload.programId }
-                : payload.ownerId
-                  ? { kind: "team-member", id: payload.ownerId }
-                  : { kind: "work-item", id },
-              relatedRequestIds: [],
-              programId: payload.programId,
-              createdAt: current.currentAsOfAt,
-              ownerHistory: [{
-                ownerId: payload.ownerId,
-                occurredAt: current.currentAsOfAt,
-                actorId: "actor-team-1" as never,
-                reason: "Created from the Team work board.",
-              }],
-              dueAt: null,
-              statusHistory: [{
-                status: payload.status,
-                occurredAt: current.currentAsOfAt,
-                actorId: "actor-team-1" as never,
-                reason: "Initial Team board status.",
-              }],
-              blockerCode: null,
-              completionEvidenceRefs: [],
-              provenance: "demo-simulation",
-            };
-            return { ...current, workItems: [...current.workItems, item] };
-          },
-        );
-      },
-      onReassignWork: async (payload) => {
-        await saveMutation(
-          "Reassigned the canonical work item.",
-          "Historic completion credit, readiness, acceptance, and outcomes did not change.",
-          (current) => ({
-            ...current,
-            workItems: current.workItems.map((item) => item.id === payload.workItemId ? {
-              ...item,
-              ownerHistory: [...item.ownerHistory, {
-                ownerId: payload.ownerId,
-                occurredAt: current.currentAsOfAt,
-                actorId: "actor-team-1" as never,
-                reason: payload.reason,
-              }],
-            } : item),
-          }),
-        );
-      },
-      onSaveTargetRevision: async (payload) => {
-        await saveMutation("Saved a role-target revision.", "Observed work, readiness, acceptance, and outcomes did not change.", (current) => ({ ...current, teamTargets: [...current.teamTargets, payload.target] }));
-      },
-      onRecordQuality: async (payload) => {
-        await saveMutation("Recorded one inspected quality sample.", "Uninspected work and operational outcomes did not change.", (current) => ({ ...current, workQualityChecks: [...current.workQualityChecks, payload.qualityCheck] }));
-      },
-      onRecordCoaching: async (payload) => {
-        await saveMutation("Recorded a coaching action and review date.", "No automatic score, readiness, acceptance, or outcome was created.", (current) => ({ ...current, coachingActions: [...current.coachingActions, payload.coachingAction] }));
-      },
-      onReviewCoaching: async (payload) => {
-        await saveMutation("Recorded the coaching follow-up review.", "No automatic ranking or operational outcome changed.", (current) => ({ ...current, coachingActions: current.coachingActions.map((item) => item.id === payload.coachingActionId ? { ...item, outcomeNote: payload.outcomeNote, updatedAt: payload.reviewedAt } : item) }));
-      },
-      onSharePractice: async (payload) => {
-        await saveMutation("Saved a positive practice-sharing action.", "No automatic score or operational outcome changed.", (current) => ({ ...current, coachingActions: [...current.coachingActions, payload.coachingAction] }));
-      },
+      onCreateWork: (payload) => submitTeamCommand(
+        { type: "work.create", payload },
+        `Created canonical Team work: ${payload.title}.`,
+        "Readiness, acceptance, jobs, and program outcomes did not change.",
+      ),
+      onReassignWork: (payload) => submitTeamCommand(
+        { type: "work.assign", payload }, "Reassigned the canonical work item.",
+        "Historic completion credit, readiness, acceptance, and outcomes did not change.",
+      ),
+      onSaveTargetRevision: (payload) => submitTeamCommand(
+        { type: "team.target.save-revision", payload }, "Saved a role-target revision.",
+        "Observed work, readiness, acceptance, and outcomes did not change.",
+      ),
+      onRecordQuality: (payload) => submitTeamCommand(
+        { type: "team.quality.record", payload }, "Recorded one inspected quality sample.",
+        "Uninspected work and operational outcomes did not change.",
+        snapshot.teamMembers.find((member) => member.id === payload.qualityCheck.checkedBy)?.actorId,
+      ),
+      onRecordCoaching: (payload) => submitTeamCommand(
+        { type: "team.coaching.record", payload }, "Recorded a coaching action and review date.",
+        "No automatic score, readiness, acceptance, or outcome was created.", payload.coachingAction.authorId,
+      ),
+      onReviewCoaching: (payload) => submitTeamCommand(
+        { type: "team.coaching.review", payload }, "Recorded the coaching follow-up review.",
+        "No automatic ranking or operational outcome changed.",
+      ),
+      onSharePractice: (payload) => submitTeamCommand(
+        { type: "team.practice.share", payload }, "Saved a positive practice-sharing action.",
+        "No automatic score or operational outcome changed.", payload.coachingAction.authorId,
+      ),
     }} />;
     return <ProgramsScreen view={programsView} actions={{
       onEditProgram: (programId, field, value) => saveMutation(`Updated the program ${field}.`, "Program results, enrollments, readiness, acceptance, and jobs did not change.", (current) => ({ ...current, programs: current.programs.map((program) => program.id === programId ? { ...program, [field]: value } as typeof program : program) })),

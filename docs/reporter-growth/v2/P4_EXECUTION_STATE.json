@@ -603,7 +603,7 @@
       "lane": "team",
       "base_commit": "a4a765efab8fb8e2651b3ba871930f836ae6ecaa",
       "candidate_commit": "dfbff4a443e831ae4c154bbd0cae16503ff2dc7e",
-      "status": "boundary_passed_pending_integration",
+      "status": "integrated_pending_full_verification",
       "changed_paths": [
         "src/logic/team/commands.ts",
         "src/logic/team/evidence.ts",
@@ -628,7 +628,9 @@
           "Scenario test timeout passed unchanged in isolation; combined coordinator gate required."
         ]
       },
-      "acceptance_scope": "IC03 prepared logic; IP08/IP09 presentation and independent acceptance pending"
+      "acceptance_scope": "IC03 prepared logic; IP08/IP09 presentation and independent acceptance pending",
+      "integrated_commit": "ccb2973b5c1d642f699d823c4dbc6a857b173306",
+      "handoff": "docs/reporter-growth/v2/IP1_TEAM_HANDOFF.md"
     }
   },
   "known_ownership_exceptions": [],
@@ -845,7 +847,7 @@
     "requests": [
       "IC03"
     ],
-    "status": "review_ready",
+    "status": "integrated_pending_full_verification",
     "runtime_evidence": {
       "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-team-worker-runtime.json",
       "sha256": "d4405f173f6aded6ae14beae28ff45eaeb761947027560cf644cef7c6164b1ff"

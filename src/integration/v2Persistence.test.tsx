@@ -62,6 +62,12 @@ describe("V2 browser storage integration", () => {
     await screen.findByText("Inspect the saved interview handoff");
     const saved = JSON.parse(localStorage.getItem(INTERVIEW_V2_STORAGE_KEY)!) as PersistedDemoSnapshotV2;
     expect(saved.snapshot.revision).toBe(2);
+    const created = saved.snapshot.workItems.find((item) => item.title === "Inspect the saved interview handoff")!;
+    const command = saved.snapshot.commandRecords.find((item) => item.commandType === "work.create")!;
+    expect(command.affectedRecords).toContainEqual({ kind: "work-item", id: created.id });
+    expect(saved.snapshot.appliedCommandIds).toContain(command.id);
+    expect(created.primaryEntityRef).toEqual({ kind: "work-item", id: created.id });
+    expect(created.ownerHistory[0]?.ownerId).toBeNull();
     expect(saved.snapshot.currentAsOfAt).not.toBe(DEMO_SNAPSHOT_V2.currentAsOfAt);
     mounted.unmount();
 
