@@ -536,20 +536,15 @@
     }
   ],
   "active_lane": {
-    "role": "data",
-    "task_name": "/root/ip1_data",
-    "worktree": "/private/tmp/steno-interview-ip1-data",
-    "branch": "codex/interview-ip1-data",
-    "base_commit": "a772282a7d7acb74d8a09ab1786ca6b3de9c51ae",
+    "role": "capacity",
+    "task_name": "/root/ip1_capacity",
+    "worktree": "/private/tmp/steno-interview-ip1-capacity",
+    "branch": "codex/interview-ip1-capacity",
+    "base_commit": "284d0956c45739e90863b209c43e0b23938c9422",
     "source_contract_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
     "requests": [
-      "IC07",
-      "IC08"
+      "IC01"
     ],
-    "status": "integrated_verified",
-    "runtime_evidence": {
-      "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-data-worker-runtime.json",
-      "sha256": "18a0eb4b8a8114f1742f1d49ab62f9ac5d71b4208e4d9e71bcd861cc09d0c411"
-    }
+    "status": "running"
   }
 }

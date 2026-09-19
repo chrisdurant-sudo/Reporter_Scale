@@ -2,8 +2,9 @@ import { cleanup, render, screen, waitFor, within } from "@testing-library/react
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it } from "vitest";
 import { App } from "./App";
+import { INTERVIEW_V2_STORAGE_KEY } from "../contracts/v2";
 
-afterEach(cleanup);
+afterEach(() => { cleanup(); localStorage.removeItem(INTERVIEW_V2_STORAGE_KEY); });
 
 async function renderApp() {
   const user = userEvent.setup();

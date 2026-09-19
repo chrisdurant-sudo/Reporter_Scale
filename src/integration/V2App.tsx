@@ -45,6 +45,7 @@ import { prepareTeamView } from "../logic/team";
 import { V2AppShell } from "../shell";
 import type { V2GlobalFilters } from "../shell/V2AppShell";
 import { ErrorState, LoadingState } from "../ui/v2";
+import { v2BrowserStorage } from "./v2BrowserStorage";
 
 const MAIN_REQUEST_IDS = Array.from({ length: 10 }, (_, index) => `req-lax-${101 + index}` as never);
 const RECRUITING_ENTRY_WINDOW = {
@@ -162,7 +163,7 @@ function asMetric(snapshot: DemoSnapshotV2, id: string): MetricDefinitionRef {
 }
 
 export function V2App() {
-  const [repository] = useState(createDemoRepositoryV2);
+  const [repository] = useState(() => createDemoRepositoryV2(undefined, { storage: v2BrowserStorage }));
   const [snapshot, setSnapshot] = useState<DemoSnapshotV2 | null>(null);
   const snapshotRef = useRef<DemoSnapshotV2 | null>(null);
   const queueRef = useRef<Promise<unknown>>(Promise.resolve());
@@ -186,6 +187,7 @@ export function V2App() {
   const acceptSnapshot = useCallback((next: DemoSnapshotV2) => {
     snapshotRef.current = next;
     setSnapshot(next);
+    setLoadError("");
   }, []);
 
   const enqueue = useCallback(<T,>(task: () => Promise<T>): Promise<T> => {
@@ -247,6 +249,7 @@ export function V2App() {
       const result = await repository.reset();
       if (!result.ok) {
         setFeedback({ changed: "Nothing was reset.", notChanged: result.message });
+        if (!snapshotRef.current) setLoadError(result.message);
         return;
       }
       acceptSnapshot(result.value);
