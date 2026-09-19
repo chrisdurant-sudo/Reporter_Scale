@@ -1,6 +1,8 @@
 # Interview amendment: coordinator contract preparation
 
-Status: AUTHORIZED — CONTRACT BOUNDARY PREPARED AT `dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333`; NO WORKER DISPATCH
+Status: AUTHORIZED — CONTRACT BOUNDARY PREPARED AT `dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333`; IP0 QUALITY-ONLY PREREQUISITE REPAIR
+
+Continuation: task `01a0b7df-3f9e-7c72-a35a-1a6ed497e596` verified the loaded Astra catalog and Data/Quality runtime probes. Chromium launches outside the sandbox; the unchanged full run reached six stale browser-test failures. The user approved the narrow Quality-owned test repair in `IP0_BROWSER_REPAIR_REQUEST.md`. Earlier stale-catalog statements below are historical; the active ledger governs.
 
 The user said “please start” in task `01a0b79d-03f1-7f60-9d63-681a9f9baef3` after the readiness review on September 18, 2026. This authorizes the implementation sequence in `P4_INTERVIEW_IMPROVEMENT_PLAN.md`; another start approval is not needed. Deployment, dependencies, external messages, credit resets and changes to the older main checkout remain outside scope.
 

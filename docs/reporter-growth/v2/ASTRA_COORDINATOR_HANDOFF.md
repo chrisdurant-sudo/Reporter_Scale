@@ -1,6 +1,6 @@
 # Astra coordinator handoff — September 18, 2026
 
-> Continuation update: the user has now explicitly authorized the improvement implementation in task `01a0b79d-03f1-7f60-9d63-681a9f9baef3`. Start from `P4_INTERVIEW_CONTRACT_DELTAS.md` and the active ledger. Coordinator preparation has begun; no worker has run. The task loaded stale Terra/Luna roles from the old checkout. A fresh task rooted at `/private/tmp/steno-p4-coordinator` must verify loaded Astra roles and zero-inheritance probes. Do not request another implementation start or repeat the 50-person expansion.
+> Continuation update: the user has now explicitly authorized the improvement implementation in task `01a0b79d-03f1-7f60-9d63-681a9f9baef3`. Start from `P4_INTERVIEW_CONTRACT_DELTAS.md` and the active ledger. Fresh coordinator task `01a0b7df-3f9e-7c72-a35a-1a6ed497e596` is rooted at `/private/tmp/steno-p4-coordinator` and has verified the loaded Astra catalog plus Data and Quality zero-inheritance probes. Chromium launch is recovered. A user-approved Quality-only IP0 browser-suite repair is in progress; the full baseline must pass before serial Data/logic implementation. Read the live ledger and `IP0_BROWSER_REPAIR_REQUEST.md` for exact evidence. Do not request another implementation start or repeat the 50-person expansion.
 
 ## Start in the correct checkout
 
