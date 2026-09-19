@@ -34,6 +34,8 @@ export type EvidenceUnit =
   | "hours";
 
 export interface WorkspaceFilterPayload {
+  /** True is an exact empty evidence selection; omitted/false retains normal scope filters. */
+  readonly matchNone?: boolean;
   readonly selectedMarket: SelectedMarket;
   readonly marketBasis: MarketBasis;
   readonly marketIds: readonly MarketId[];

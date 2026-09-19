@@ -484,7 +484,8 @@
     "src/styles/",
     "src/ui/",
     "tests/acceptance/",
-    "tests/e2e/"
+    "tests/e2e/",
+    "src/logic/shared/"
   ],
   "historical_p4": {
     "file": "docs/reporter-growth/v2/history/P4_PRE_INTERVIEW_STATE_2026-09-18.json",
@@ -583,10 +584,15 @@
     "requests": [
       "IC01"
     ],
-    "status": "running",
+    "status": "coordinator_review_repairs",
     "runtime_evidence": {
       "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-capacity-worker-runtime.json",
       "sha256": "5d49ad5c87aa798d569e6966fe113f2ba2e50264e93d58c4e6aed23dbf0152df"
-    }
+    },
+    "review_defects": [
+      "M02 confirmed-slot count reinterprets frozen ratio unit",
+      "Cross-market pre-ready person target must use acquisition owner market",
+      "Zero-result evidence needs explicit-empty shared filter and consuming query support"
+    ]
   }
 }

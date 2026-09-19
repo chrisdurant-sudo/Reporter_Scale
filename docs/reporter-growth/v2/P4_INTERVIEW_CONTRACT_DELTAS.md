@@ -46,6 +46,10 @@ Programs' typed command union now includes `ProgramDecisionSavePayload` (program
 
 `ProgramsCommandMutation` additionally returns `requestedWork` as typed `WorkCreatePayload` records. Programs must not maintain a private task store or bypass Team's command invariants. Integration composes these requests through Team's pure preparer and saves decision/evidence/work together in one repository revision. A failure in any preparer means no save. Network similarly prepares follow-up identity/inputs; integration opens an existing matching canonical task or uses Team's preparer before saving. Presentation never writes WorkItem objects directly. `WorkCreatePayload.kind` optionally preserves an explicit canonical task purpose, including re-engagement. Team validates the kind against the requested ownership domain (market permits first-opportunity or re-engage); omitted kinds retain the existing domain mapping. This closes the IC03/IC04 composition gap without a private Network WorkItem factory.
 
+### Exact empty evidence selections
+
+Coordinator review of IC01 found that empty ID arrays mean unfiltered scope, so zero-result goal evidence could open unrelated reporters. `WorkspaceFilterPayload.matchNone` is an additive explicit-empty flag: true always produces an empty operational population; omitted/false retains existing scope semantics. Evidence builders set it when an exact selected record set is empty. Navigation must preserve it, and shared evidence validation rejects claimed members on an exact-empty bundle. Each dispatched domain must honor the flag alongside conjunctive ID filters. This repairs IC01/IC02/IC04/IP06 without fabricated IDs or contradictory market filters. Capacity will receive this frozen prerequisite before its final repair; remaining serial lanes consume it from their bases.
+
 ## Serial execution and dispatch packet
 
 1. Finish coordinator-owned contract and integration boundaries with focused invariant checks; commit a compiling baseline. Keep the new data/logic and visual gates pending until their actual evidence exists.

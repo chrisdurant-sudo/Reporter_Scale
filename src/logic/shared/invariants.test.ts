@@ -76,6 +76,17 @@ function validEvidence(): EvidenceBundle {
 }
 
 describe("v2 shared invariants", () => {
+  it("preserves exact empty drilldowns and rejects population expansion in navigation", () => {
+    const initial = validEvidence();
+    const emptyFilters = { ...initial.filters, requestIds: [], recordRefs: [], matchNone: true };
+    const empty: EvidenceBundle = { ...initial, filters: emptyFilters, contributingRecords: [],
+      computation: { status: "available", value: 0, numerator: null, denominator: null },
+      navigationTarget: { ...initial.navigationTarget, filters: emptyFilters } };
+    expect(validateEvidenceBundle(empty)).toEqual([]);
+    expect(validateEvidenceBundle({ ...empty, navigationTarget: { ...empty.navigationTarget, filters: { ...emptyFilters, matchNone: false } } }).map((issue) => issue.code)).toContain("navigation-filter-mismatch");
+    expect(validateEvidenceBundle({ ...empty, contributingRecords: initial.contributingRecords }).map((issue) => issue.code)).toContain("empty-selection-members");
+  });
+
   it("accepts explicit UTC timestamps and rejects implicit local dates", () => {
     expect(isUtcTimestamp("2026-02-16T17:00:00Z")).toBe(true);
     expect(isUtcTimestamp("2026-02-16T17:00:00")).toBe(false);

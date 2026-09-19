@@ -29,6 +29,7 @@ function sameFilters(left: EvidenceBundle["filters"], right: EvidenceBundle["fil
       left.window.boundary === right.window.boundary);
 
   return (
+    Boolean(left.matchNone) === Boolean(right.matchNone) &&
     left.selectedMarket === right.selectedMarket &&
     left.marketBasis === right.marketBasis &&
     sameValues(left.marketIds, right.marketIds) &&
@@ -73,6 +74,9 @@ export function validateEvidenceBundle(bundle: EvidenceBundle): readonly Evidenc
   if (!bundle.explanation.trim()) add("missing-explanation", "Evidence must include a plain-language explanation.");
 
   const contributingKeys = bundle.contributingRecords.map(pointerKey);
+  if (bundle.filters.matchNone && (contributingKeys.length || bundle.numeratorMembers.length || bundle.denominatorMembers.length)) {
+    add("empty-selection-members", "An exact empty evidence selection cannot contain contributing or ratio members.");
+  }
   if (new Set(contributingKeys).size !== contributingKeys.length) {
     add("duplicate-contributing-record", "Contributing records must be distinct.");
   }
