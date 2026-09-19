@@ -1,0 +1,45 @@
+{
+  "kind": "implementation_runtime_observation",
+  "role": "team",
+  "session_id": "01a0b850-9768-7b52-813f-a0c4e67ed3ac",
+  "task_name": "/root/ip1_team",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "inherited_turns": 0,
+  "inheritance_evidence": "Explicit coordinator spawn fork_turns=none; no overrides",
+  "configured_service_tier": "default",
+  "resolved_service_tier": null,
+  "session_source": "/Users/pc/.codex/sessions/2026/09/18/rollout-2026-09-18T23-18-04-01a0b850-9768-7b52-813f-a0c4e67ed3ac.jsonl",
+  "session_source_sha256_at_observation": "9b12edeea92e2d9d3b26fea9794315dd946b17530e951ca50efda7916fef57bd",
+  "session_metadata": {
+    "id": "01a0b850-9768-7b52-813f-a0c4e67ed3ac",
+    "parent_thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+    "cwd": "/private/tmp/steno-p4-coordinator",
+    "source": {
+      "subagent": {
+        "thread_spawn": {
+          "parent_thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+          "depth": 1,
+          "agent_path": "/root/ip1_team",
+          "agent_nickname": "Anscombe",
+          "agent_role": "team"
+        }
+      }
+    },
+    "agent_role": "team",
+    "agent_path": "/root/ip1_team"
+  },
+  "turn_contexts": [
+    {
+      "line": 8,
+      "payload": {
+        "model": "gpt-6-astra",
+        "effort": "high",
+        "cwd": "/private/tmp/steno-p4-coordinator",
+        "service_tier": null
+      }
+    }
+  ],
+  "verified_at": "2026-09-19T06:18:28.697905+00:00"
+}
