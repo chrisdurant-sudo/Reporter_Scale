@@ -29,7 +29,6 @@ import { ProgramsScreen } from "../features/programs";
 import { RecruitingScreen } from "../features/recruiting";
 import { ReportersNetworkScreen } from "../features/reporters/network";
 import { TeamScreen } from "../features/team";
-import { prepareMarketsWorkspace } from "../logic/capacity";
 import { prepareNetworkView } from "../logic/network";
 import { prepareProgramsView } from "../logic/programs";
 import {
@@ -46,6 +45,7 @@ import { V2AppShell } from "../shell";
 import type { V2GlobalFilters } from "../shell/V2AppShell";
 import { ErrorState, LoadingState } from "../ui/v2";
 import { v2BrowserStorage } from "./v2BrowserStorage";
+import { prepareInterviewOverview } from "./v2Overview";
 
 const RECRUITING_ENTRY_WINDOW = {
   startAt: "2026-02-01T00:00:00Z" as UtcTimestamp,
@@ -284,7 +284,7 @@ export function V2App() {
   }, [saveMutation]);
 
   const marketsView = useMemo(() => snapshot
-    ? prepareMarketsWorkspace(snapshot, queryContext("markets", snapshot, globalFilters, drillDown))
+    ? prepareInterviewOverview(snapshot, queryContext("markets", snapshot, globalFilters, drillDown))
     : null, [drillDown, globalFilters, snapshot]);
   const recruitingView = useMemo(() => snapshot
     ? prepareRecruitingWorkspace(snapshot, queryContext("recruiting", snapshot, globalFilters, drillDown), { slaInput: funnelSlaInput })
