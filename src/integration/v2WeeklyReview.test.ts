@@ -45,6 +45,19 @@ describe("weekly review source composition", () => {
     expect(goal.evidence[0]).toBe(capacity.growthGoal!.evidence);
   });
 
+  it("keeps an immature cohort unavailable instead of turning it into zero conversion", () => {
+    const context = contexts(DEMO_SNAPSHOT_V2);
+    const recruiting = prepareRecruitingWorkspace(DEMO_SNAPSHOT_V2, { ...context.recruiting, filters: { ...context.recruiting.filters, window: {
+      startAt: "2026-02-01T00:00:00Z" as UtcTimestamp, endAt: "2026-03-01T00:00:00Z" as UtcTimestamp, boundary: "[start,end)",
+    } } });
+    const review = prepareWeeklyReviewFoundation(prepareMarketsWorkspace(DEMO_SNAPSHOT_V2, context.capacity), recruiting);
+    const outcome = review.measures.find((item) => item.id === "onboarding-first-job")!;
+    expect(outcome.actual).toBeNull();
+    expect(outcome.actualUnavailableReason).toBeTruthy();
+    expect(outcome.evidence[0]?.computation.status).toBe("unavailable");
+    expect(outcome.evidence[0]?.exclusions).toHaveLength(2);
+  });
+
   it("rejects mixing domain revisions, evaluation times or selected markets", () => {
     const context = contexts(DEMO_SNAPSHOT_V2), capacity = prepareMarketsWorkspace(DEMO_SNAPSHOT_V2, context.capacity);
     const recruiting = prepareRecruitingWorkspace(DEMO_SNAPSHOT_V2, context.recruiting);
