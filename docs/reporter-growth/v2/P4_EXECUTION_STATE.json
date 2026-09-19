@@ -75,7 +75,51 @@
     "runtime_probes": [],
     "new_visual_proof_required": true,
     "contract_packet": "docs/reporter-growth/v2/P4_INTERVIEW_CONTRACT_DELTAS.md",
-    "approved_contract_requests": []
+    "approved_contract_requests": [
+      {
+        "id": "IC01",
+        "role": "capacity",
+        "status": "approved",
+        "contract_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
+        "scope": "One scheduling window, exclusive slot partition, readiness goal and exact evidence destinations."
+      },
+      {
+        "id": "IC02",
+        "role": "recruiting",
+        "status": "approved",
+        "contract_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
+        "scope": "Stable Owner/Waiting-on options, declared cohorts/horizons and exact-record attention."
+      },
+      {
+        "id": "IC03",
+        "role": "team",
+        "status": "approved",
+        "contract_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
+        "scope": "Work edits, completion evidence, blocked condition, member workload and coaching views."
+      },
+      {
+        "id": "IC04",
+        "role": "network",
+        "status": "approved",
+        "contract_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
+        "scope": "Separate skills/preferences/availability/credentials and idempotent canonical follow-up."
+      },
+      {
+        "id": "IC05_IC06",
+        "role": "programs",
+        "status": "approved",
+        "contract_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
+        "scope": "Metric-specific outcomes, inspectable process, editable evidence-backed decisions."
+      },
+      {
+        "id": "IC07_IC08",
+        "role": "data",
+        "status": "approved",
+        "contract_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
+        "scope": "Versioned V2 local persistence, validation and linked work histories; no new 50-person expansion."
+      }
+    ],
+    "source_contract_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333"
   },
   "implementation_base_commit": "6e7ea99e2358e497b8a6d4331a6cc8513e668501",
   "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",
@@ -83,8 +127,8 @@
   "fanout_authorized": false,
   "current_phase": "IP0_contract_preparation",
   "current_candidate": {
-    "commit": "6e7ea99e2358e497b8a6d4331a6cc8513e668501",
-    "status": "interview_contract_preparation_runtime_blocked",
+    "commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
+    "status": "contract_boundary_prepared_runtime_and_browser_blocked",
     "defect_register": "docs/reporter-growth/v2/INTERVIEW_PRODUCT_REVIEW_2026-09-18.md"
   },
   "gates": {
@@ -102,13 +146,25 @@
       "evidence": "Integrated Data commit 29735a1 passes SD01-SD07: 50 canonical P4 additions remain balanced at 10 per market; Overview and Funnel retain source-derived rise/fall/recovery for All plus every market; and all 113 base-seed plus 1 scenario-added reporter identities have 114 unique natural-looking invented names. The independent coordinator run passed 12 focused data tests, the Data lane boundary, and the 117-test full baseline."
     },
     "contracts": {
-      "status": "pending"
+      "status": "passed",
+      "candidate_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
+      "evidence": {
+        "file": "docs/reporter-growth/v2/evidence/dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333-ip0-verification.json",
+        "sha256": "41b69e53b7646bc790d2bff50dde7da7eb44c32d58722b70ad5da84295e36621"
+      },
+      "scope": "Coordinator-owned additive types and bounded requests only; domain/storage implementations and presentation remain pending."
     },
     "data_logic": {
       "status": "blocked"
     },
     "baseline": {
-      "status": "pending"
+      "status": "failed",
+      "candidate_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
+      "evidence": {
+        "file": "docs/reporter-growth/v2/evidence/dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333-ip0-verification.json",
+        "sha256": "41b69e53b7646bc790d2bff50dde7da7eb44c32d58722b70ad5da84295e36621"
+      },
+      "reason": "Browser runtime permission denial prevented all eight browser cases; full verification failed. No waiver."
     },
     "visual_proof": {
       "status": "blocked"

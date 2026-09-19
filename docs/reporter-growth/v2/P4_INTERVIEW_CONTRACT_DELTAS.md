@@ -1,6 +1,6 @@
 # Interview amendment: coordinator contract preparation
 
-Status: AUTHORIZED — PREPARATION IN PROGRESS; NO WORKER DISPATCH
+Status: AUTHORIZED — CONTRACT BOUNDARY PREPARED AT `dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333`; NO WORKER DISPATCH
 
 The user said “please start” in task `01a0b79d-03f1-7f60-9d63-681a9f9baef3` after the readiness review on September 18, 2026. This authorizes the implementation sequence in `P4_INTERVIEW_IMPROVEMENT_PLAN.md`; another start approval is not needed. Deployment, dependencies, external messages, credit resets and changes to the older main checkout remain outside scope.
 
@@ -57,3 +57,9 @@ Current phases are IP0 contract preparation, IP1 serial data/logic, IP2 revised 
 A passed contract/data-logic/baseline gate names an exact candidate SHA and checksum-valid tracked evidence. Visual proof identifies an exact clean commit, versioned amendment reference and all Overview/Funnel 1440×900, 1024×768, 768×1024, 390×844 and SLA-editor states. Interaction evidence covers exact numbers with pointer/keyboard/touch, all markets, navigation, owner/waiting filters, capacity reconciliation, correct attention targets and SLA editing. No errors or waivers.
 
 Independent Quality records each IP01–IP12 result plus applicable XR01–XR41, SD01–SD07 and original V2 criteria against the fixed integrated candidate. Any production repair invalidates that result. A complete result names the same candidate for Quality and Reviewer. Hash checks and status fields verify an evidence record, not the truth of a screenshot comparison; independent inspection remains mandatory.
+
+## Preparation verification and continuation
+
+The source boundary and request packet are committed at `dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333`. Typecheck, lint, 131 unit/integration tests, 9 acceptance tests and build passed; 12 governance regression tests pass. Final static governance passes 203 checks and the interview IP0 gate. The full command failed because Chromium could not register its macOS Mach port (permission denied 1100/SIGTRAP), before any browser assertions ran. This is an environment failure with no waiver, not a product pass.
+
+The ledger names the exact verification JSON and complete log under `evidence/`. Runtime routing remains unverified; no worker has run. Continue in a fresh task rooted at the active checkout, using Astra/xhigh and Standard/default. Read this packet and the live ledger, preserve the explicit start authorization, verify actual loaded roles and zero-inheritance probes, and resolve the browser runner prerequisite before transitioning to serial implementation. Do not ask for another start. Model values in the TOMLs were not changed in this pass; the Data/support instruction text was updated for bounded pre-presentation repairs.

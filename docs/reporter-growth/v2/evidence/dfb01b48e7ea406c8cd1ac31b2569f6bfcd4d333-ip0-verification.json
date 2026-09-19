@@ -1,0 +1,56 @@
+{
+  "kind": "coordinator_contract_preparation_verification",
+  "candidate_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
+  "scope": "Shared contract additions and amendment gate implementation; no Data/domain/Experience implementation.",
+  "checks": [
+    {
+      "command": "npm run verify:p4:governance",
+      "exit_code": 0,
+      "result": "203 readiness checks; interview IP0 gate passed. Separate dispatch is blocked."
+    },
+    {
+      "command": "npm run test:p4:governance",
+      "exit_code": 0,
+      "result": "12 gate regression tests passed."
+    },
+    {
+      "command": "npm run typecheck",
+      "exit_code": 0,
+      "result": "Shared contract additions compile."
+    },
+    {
+      "command": "npm run verify:p4",
+      "exit_code": 1,
+      "result": "Lint, typecheck, 24 files/131 unit-integration tests, build, 2 files/9 acceptance tests passed. All 8 browser cases failed at Chromium launch before page assertions: macOS MachPortRendezvousServer bootstrap_check_in permission denied (1100), SIGTRAP. No waiver."
+    },
+    {
+      "command": "npm run verify:p4:dispatch -- --role data --kind probe",
+      "exit_code": 1,
+      "expected": "blocked",
+      "result": "Loaded data metadata is not verified; configuration text cannot authorize dispatch."
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "result": "No whitespace errors."
+    }
+  ],
+  "log": {
+    "file": "docs/reporter-growth/v2/evidence/dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333-ip0-full-verification.log",
+    "sha256": "bb095651a378a62682a9c9f0789ee6bb60e1618f2b5fffc1c65a29bb1efe444f",
+    "normalization": "Only trailing line whitespace removed for Git hygiene; complete command output retained."
+  },
+  "verification_note": "Application checks ran before the candidate commit on the same source files; final governance and gate tests ran after the final governance edits. No fresh visual acceptance or independent Quality/Reviewer is claimed.",
+  "runtime": {
+    "coordinator_model": "gpt-6-astra",
+    "coordinator_reasoning": "xhigh",
+    "worker_status": "stale_catalog_no_probes_no_workers",
+    "configured_service_tier": "default",
+    "resolved_service_tier": "not_exposed"
+  },
+  "blocked_on": [
+    "Fresh task context rooted at /private/tmp/steno-p4-coordinator to load named Astra roles and verify zero-inheritance probes.",
+    "A permitted browser runner for the mandatory full phase gate."
+  ],
+  "prohibited_actions_performed": []
+}
