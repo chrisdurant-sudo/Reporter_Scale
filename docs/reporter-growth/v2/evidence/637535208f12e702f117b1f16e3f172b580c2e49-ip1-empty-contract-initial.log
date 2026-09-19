@@ -1,0 +1,116 @@
+
+> reporter-growth@0.1.0 verify:p4
+> npm run verify:p4:governance && npm run check && npm run test:acceptance && npm run test:e2e
+
+
+> reporter-growth@0.1.0 verify:p4:governance
+> node scripts/verify-p4-readiness.mjs && node scripts/verify-p4-phase-gate.mjs
+
+P4 readiness verification passed (203 checks).
+P4 interview phase verification passed for IP1_serial_data_logic; worker dispatch is checked separately.
+
+> reporter-growth@0.1.0 check
+> npm run lint && npm run typecheck && npm run test && npm run build
+
+
+> reporter-growth@0.1.0 lint
+> eslint . --max-warnings=0
+
+
+> reporter-growth@0.1.0 typecheck
+> tsc -b --pretty false
+
+
+> reporter-growth@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /private/tmp/steno-p4-coordinator
+
+ ✓ src/logic/capacity/index.test.ts (13 tests) 57ms
+ ✓ src/features/reporters/index.test.tsx (4 tests) 1752ms
+   ✓ ReportersScreen > filters work and opens a detail panel with local message preview  709ms
+   ✓ ReportersScreen > uses the first team member for an unsaved follow-up and marks rejected saves as dangerous  392ms
+   ✓ ReportersScreen > delegates screening, follow-up, and coaching saves to actions  525ms
+ ✓ src/integration/p2RecordsAndCalculations.test.ts (6 tests) 2300ms
+   ✓ P2 source → calculation → EvidenceBundle reconciliation > derives every frozen LAX capacity checkpoint from cumulative source events  1826ms
+ ✓ src/features/improvements/index.test.tsx (5 tests) 1743ms
+   ✓ ImprovementsScreen > shows descriptive limits and requires a rationale before recording a decision  896ms
+   ✓ ImprovementsScreen > creates an editable draft only for a recorded Continue decision  396ms
+ ✓ src/data/v2.test.ts (12 tests) 4107ms
+   ✓ V2 synthetic records and repository > SD06 derives varied Overview and Funnel trends from canonical records  1701ms
+   ✓ V2 synthetic records and repository > D05 rejects broken outcome references, double acceptance, overlap, and invalid intervals  921ms
+   ✓ V2 synthetic records and repository > D06 applies cumulative checkpoints once and keeps dependent records ordered  847ms
+ ✓ src/data/v2Interview.test.ts (19 tests) 5267ms
+   ✓ IC07 durable injected repository > retains revision, exact note whitespace, commands and scenario clock across reconstruction  518ms
+   ✓ IC07 durable injected repository > rejects cross-instance stale saves and permits a fresh reload  496ms
+   ✓ IC07 durable injected repository > preserves incompatible/invalid bytes until explicit namespace reset (5)  355ms
+   ✓ IC07 durable injected repository > surfaces read and write failures without acknowledging or losing the prior saved state  517ms
+   ✓ IC07 durable injected repository > resets clock, commands, edits and scenario deterministically in the injected namespace only  406ms
+   ✓ IC07 durable injected repository > rejects record corruption and rewrites of saved work/replay history  703ms
+ ✓ src/features/programs/index.test.tsx (2 tests) 1513ms
+   ✓ ProgramsScreen > filters prepared rows and saves note text through the canonical callback  991ms
+   ✓ ProgramsScreen > opens the Results view and routes the selected record through shared evidence  518ms
+ ✓ src/features/markets/index.test.tsx (4 tests) 2490ms
+   ✓ MarketsScreen > shows five prepared market records with record support and actions  861ms
+   ✓ MarketsScreen > delegates a hypothetical plan preview and saves the edited draft without changing actuals  1015ms
+   ✓ MarketsScreen > shows rejected saves as an error with the returned validation message  427ms
+ ✓ src/shell/V2AppShell.test.tsx (4 tests) 779ms
+   ✓ V2AppShell > offers five controlled workspaces and preserves the supplied shared filters across navigation  697ms
+ ✓ src/integration/v2CommandTransaction.test.ts (3 tests) 504ms
+ ✓ src/features/recruiting/index.test.tsx (2 tests) 373ms
+   ✓ RecruitingScreen > renders concise Funnel values and preserves unknown wait-time gaps  314ms
+ ✓ src/features/markets/MarketsV2Screen.test.tsx (1 test) 366ms
+   ✓ MarketsV2Screen > uses stateful controls and deterministic summary-card navigation without a growth-goal panel  365ms
+ ✓ src/ui/v2.test.tsx (2 tests) 310ms
+ ✓ src/features/reporters/network.test.tsx (1 test) 392ms
+   ✓ ReportersNetworkScreen > changes the visible grid scope and uses prepared attention and compliance  391ms
+ ✓ src/ui/index.test.tsx (2 tests) 268ms
+ ✓ src/logic/recruiting/recruiting.test.ts (16 tests) 11ms
+ ✓ src/logic/programs/index.test.ts (12 tests) 33ms
+ ❯ src/integration/v2Persistence.test.tsx (4 tests | 1 failed) 7807ms
+   ✓ V2 browser storage integration > keeps a market selection open to all canonical requests in its scheduling window  1984ms
+   × V2 browser storage integration > reloads saved work and the scenario clock on remount, then explicitly restores the seed 5111ms
+     → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+   ✓ V2 browser storage integration > preserves malformed bytes and unrelated data until explicit namespace reset  586ms
+   ✓ V2 browser storage integration > reports denied browser storage without crashing or claiming a reset succeeded 118ms
+ ✓ src/logic/index.test.ts (6 tests) 20ms
+ ✓ src/shell/AppShell.test.tsx (1 test) 274ms
+ ✓ src/logic/network/index.test.ts (10 tests) 43ms
+ ✓ src/logic/team/index.test.ts (5 tests) 16ms
+ ✓ src/data/index.test.ts (5 tests) 29ms
+ ✓ src/integration/v2Compatibility.test.ts (2 tests) 3ms
+ ✓ src/logic/shared/invariants.test.ts (6 tests) 4ms
+ ✓ src/contracts/v2/contracts.test.ts (3 tests) 5ms
+ ✓ src/integration/App.test.tsx (8 tests) 14329ms
+   ✓ P4 integrated V2 experience > renders all five workspaces, keeps the market across navigation, and retains the synthetic disclosure  3000ms
+   ✓ P4 integrated V2 experience > uses the locked Overview composition without restoring the superseded growth-goal panel  2447ms
+   ✓ P4 integrated V2 experience > keeps planning, readiness, acceptance, and delivery as separate replayable checkpoints  4190ms
+   ✓ P4 integrated V2 experience > opens contextual evidence, closes on Escape with focus return, and carries exact context into work  648ms
+   ✓ P4 integrated V2 experience > reconciles program membership for LAX, All, and SFO without averaging percentages  521ms
+   ✓ P4 integrated V2 experience > persists program commands without manufacturing operational outcomes  1198ms
+   ✓ P4 integrated V2 experience > creates canonical Team work from the locked Add work form  741ms
+   ✓ P4 integrated V2 experience > persists Programs notes and next steps without changing outcomes  1578ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/integration/v2Persistence.test.tsx > V2 browser storage integration > reloads saved work and the scenario clock on remount, then explicitly restores the seed
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/integration/v2Persistence.test.tsx:28:3
+     26|   });
+     27|
+     28|   it("reloads saved work and the scenario clock on remount, then expli…
+       |   ^
+     29|     const user = userEvent.setup();
+     30|     const mounted = render(<App />);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 26 passed (27)
+      Tests  1 failed | 157 passed (158)
+   Start at  22:05:26
+   Duration  16.16s (transform 1.58s, setup 2.37s, collect 6.07s, tests 44.79s, environment 17.55s, prepare 2.12s)
+

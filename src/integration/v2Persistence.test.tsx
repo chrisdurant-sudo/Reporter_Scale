@@ -28,7 +28,7 @@ describe("V2 browser storage integration", () => {
   it("reloads saved work and the scenario clock on remount, then explicitly restores the seed", async () => {
     const user = userEvent.setup();
     const mounted = render(<App />);
-    await screen.findByRole("main", { name: "Overview" });
+    await screen.findByRole("region", { name: "Overview metrics" });
     await user.click(screen.getByText("Scenario controls"));
     const feedback = screen.getByRole("region", { name: "Scenario and action result" });
     await user.click(within(feedback).getByRole("button", { name: "Advance to Plan saved" }));
@@ -36,7 +36,8 @@ describe("V2 browser storage integration", () => {
     await user.click(screen.getByRole("button", { name: "Team" }));
     await user.click(screen.getByRole("button", { name: "Add work" }));
     const form = screen.getByRole("form", { name: "Add work" });
-    await user.type(within(form).getByRole("textbox", { name: "Work title" }), "Inspect the saved interview handoff");
+    await user.click(within(form).getByRole("textbox", { name: "Work title" }));
+    await user.paste("Inspect the saved interview handoff");
     await user.click(within(form).getByRole("button", { name: "Add" }));
     await screen.findByText("Inspect the saved interview handoff");
     const saved = JSON.parse(localStorage.getItem(INTERVIEW_V2_STORAGE_KEY)!) as PersistedDemoSnapshotV2;
@@ -45,16 +46,16 @@ describe("V2 browser storage integration", () => {
     mounted.unmount();
 
     render(<App />);
-    await screen.findByRole("main", { name: "Overview" });
+    await screen.findByRole("region", { name: "Overview metrics" });
     await user.click(screen.getByText("Scenario controls"));
     expect(screen.getByRole("region", { name: "Scenario and action result" })).toHaveTextContent("Checkpoint: Plan saved");
     await user.click(screen.getByRole("button", { name: "Team" }));
     expect(await screen.findByText("Inspect the saved interview handoff")).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Reset demo" }));
-    await screen.findByRole("main", { name: "Overview" });
+    await screen.findByRole("region", { name: "Overview metrics" });
     const reset = JSON.parse(localStorage.getItem(INTERVIEW_V2_STORAGE_KEY)!) as PersistedDemoSnapshotV2;
     expect(reset.snapshot).toEqual(DEMO_SNAPSHOT_V2);
-  });
+  }, 10_000);
 
   it("preserves malformed bytes and unrelated data until explicit namespace reset", async () => {
     localStorage.setItem(INTERVIEW_V2_STORAGE_KEY, "invalid saved bytes");

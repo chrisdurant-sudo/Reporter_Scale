@@ -287,10 +287,10 @@
       }
     ],
     "latest_coordinator_verification": {
-      "candidate_commit": "b83552439621d107dc81836acb355d05f79555c4",
+      "candidate_commit": "637535208f12e702f117b1f16e3f172b580c2e49",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/b83552439621d107dc81836acb355d05f79555c4-ip1-market-scope-verification.json",
-        "sha256": "2eb3f3e3a6af281d8421547ab5ff3b76c74015a10e44e2cf199e0b89f5d2afbb"
+        "file": "docs/reporter-growth/v2/evidence/637535208f12e702f117b1f16e3f172b580c2e49-ip1-empty-contract-initial.json",
+        "sha256": "f06c0c19bb3b4513d82d266ad8be7d4ca45064e9208859d3f1c7c24e7be6e576"
       }
     },
     "continuation_authorization": {
@@ -384,11 +384,11 @@
       ]
     },
     "baseline": {
-      "status": "passed",
-      "candidate_commit": "b83552439621d107dc81836acb355d05f79555c4",
+      "status": "failed",
+      "candidate_commit": "637535208f12e702f117b1f16e3f172b580c2e49",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/b83552439621d107dc81836acb355d05f79555c4-ip1-market-scope-verification.json",
-        "sha256": "2eb3f3e3a6af281d8421547ab5ff3b76c74015a10e44e2cf199e0b89f5d2afbb"
+        "file": "docs/reporter-growth/v2/evidence/637535208f12e702f117b1f16e3f172b580c2e49-ip1-empty-contract-initial.json",
+        "sha256": "f06c0c19bb3b4513d82d266ad8be7d4ca45064e9208859d3f1c7c24e7be6e576"
       }
     },
     "visual_proof": {
@@ -571,6 +571,17 @@
           "sha256": "82619b820e0f34720906e85682803cc3983a6b9463a7d495d4cea304c76dc84f"
         },
         "reason": "Test-only Testing Library exact option was rejected by TypeScript; corrected at b835524, full rerun in progress."
+      }
+    },
+    {
+      "gate": "baseline",
+      "record": {
+        "status": "passed",
+        "candidate_commit": "b83552439621d107dc81836acb355d05f79555c4",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/b83552439621d107dc81836acb355d05f79555c4-ip1-market-scope-verification.json",
+          "sha256": "2eb3f3e3a6af281d8421547ab5ff3b76c74015a10e44e2cf199e0b89f5d2afbb"
+        }
       }
     }
   ],
