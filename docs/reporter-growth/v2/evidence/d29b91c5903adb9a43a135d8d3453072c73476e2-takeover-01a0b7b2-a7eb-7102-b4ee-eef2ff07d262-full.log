@@ -1,0 +1,463 @@
+
+> reporter-growth@0.1.0 verify:p4
+> npm run verify:p4:governance && npm run check && npm run test:acceptance && npm run test:e2e
+
+
+> reporter-growth@0.1.0 verify:p4:governance
+> node scripts/verify-p4-readiness.mjs && node scripts/verify-p4-phase-gate.mjs
+
+P4 readiness verification passed (203 checks).
+P4 interview phase verification passed for IP0_contract_preparation; worker dispatch is checked separately.
+
+> reporter-growth@0.1.0 check
+> npm run lint && npm run typecheck && npm run test && npm run build
+
+
+> reporter-growth@0.1.0 lint
+> eslint . --max-warnings=0
+
+
+> reporter-growth@0.1.0 typecheck
+> tsc -b --pretty false
+
+
+> reporter-growth@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /private/tmp/steno-p4-coordinator
+
+ ✓ src/shell/V2AppShell.test.tsx (4 tests) 453ms
+ ✓ src/features/markets/index.test.tsx (4 tests) 887ms
+   ✓ MarketsScreen > shows five prepared market records with record support and actions  425ms
+ ✓ src/features/improvements/index.test.tsx (5 tests) 1125ms
+   ✓ ImprovementsScreen > shows descriptive limits and requires a rationale before recording a decision  677ms
+ ✓ src/features/reporters/index.test.tsx (4 tests) 1197ms
+   ✓ ReportersScreen > filters work and opens a detail panel with local message preview  580ms
+   ✓ ReportersScreen > delegates screening, follow-up, and coaching saves to actions  392ms
+ ✓ src/integration/p2RecordsAndCalculations.test.ts (6 tests) 1403ms
+   ✓ P2 source → calculation → EvidenceBundle reconciliation > derives every frozen LAX capacity checkpoint from cumulative source events  1099ms
+ ✓ src/features/programs/index.test.tsx (2 tests) 565ms
+   ✓ ProgramsScreen > filters prepared rows and saves note text through the canonical callback  433ms
+ ✓ src/data/v2.test.ts (12 tests) 1730ms
+   ✓ V2 synthetic records and repository > SD06 derives varied Overview and Funnel trends from canonical records  1001ms
+   ✓ V2 synthetic records and repository > D06 applies cumulative checkpoints once and keeps dependent records ordered  320ms
+ ✓ src/features/markets/MarketsV2Screen.test.tsx (1 test) 272ms
+ ✓ src/features/reporters/network.test.tsx (1 test) 275ms
+ ✓ src/ui/v2.test.tsx (2 tests) 266ms
+ ✓ src/ui/index.test.tsx (2 tests) 252ms
+ ✓ src/features/recruiting/index.test.tsx (2 tests) 271ms
+ ✓ src/shell/AppShell.test.tsx (1 test) 248ms
+ ✓ src/logic/capacity/index.test.ts (13 tests) 52ms
+ ✓ src/logic/programs/index.test.ts (12 tests) 24ms
+ ✓ src/logic/network/index.test.ts (10 tests) 10ms
+ ✓ src/logic/index.test.ts (6 tests) 49ms
+ ✓ src/logic/recruiting/recruiting.test.ts (16 tests) 10ms
+ ✓ src/data/index.test.ts (5 tests) 17ms
+ ✓ src/logic/shared/invariants.test.ts (5 tests) 3ms
+ ✓ src/contracts/v2/contracts.test.ts (3 tests) 2ms
+ ✓ src/logic/team/index.test.ts (5 tests) 5ms
+ ✓ src/integration/v2Compatibility.test.ts (2 tests) 5ms
+ ✓ src/integration/App.test.tsx (8 tests) 8436ms
+   ✓ P4 integrated V2 experience > renders all five workspaces, keeps the market across navigation, and retains the synthetic disclosure  1750ms
+   ✓ P4 integrated V2 experience > uses the locked Overview composition without restoring the superseded growth-goal panel  874ms
+   ✓ P4 integrated V2 experience > keeps planning, readiness, acceptance, and delivery as separate replayable checkpoints  2093ms
+   ✓ P4 integrated V2 experience > opens contextual evidence, closes on Escape with focus return, and carries exact context into work  543ms
+   ✓ P4 integrated V2 experience > reconciles program membership for LAX, All, and SFO without averaging percentages  471ms
+   ✓ P4 integrated V2 experience > persists program commands without manufacturing operational outcomes  1059ms
+   ✓ P4 integrated V2 experience > creates canonical Team work from the locked Add work form  620ms
+   ✓ P4 integrated V2 experience > persists Programs notes and next steps without changing outcomes  1024ms
+
+ Test Files  24 passed (24)
+      Tests  131 passed (131)
+   Start at  20:27:24
+   Duration  10.24s (transform 1.28s, setup 1.32s, collect 4.15s, tests 17.56s, environment 10.91s, prepare 1.42s)
+
+
+> reporter-growth@0.1.0 build
+> tsc -b && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 73 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.53 kB │ gzip:   0.33 kB
+dist/assets/index-BhEKzEhF.css   30.39 kB │ gzip:   5.75 kB
+dist/assets/index-CZS0fUmo.js   413.97 kB │ gzip: 119.23 kB
+✓ built in 587ms
+
+> reporter-growth@0.1.0 test:acceptance
+> vitest run --config vite.acceptance.config.ts
+
+
+ RUN  v3.2.7 /private/tmp/steno-p4-coordinator
+
+ ✓ tests/acceptance/reporter-growth.reconciliation.test.ts (4 tests) 511ms
+ ✓ tests/acceptance/reporter-growth.integration.test.tsx (5 tests) 3874ms
+   ✓ P4 cross-workspace acceptance > XR01-XR08/XR31-XR36 keeps the locked shell, concise hierarchy, and source-backed Overview controls  724ms
+   ✓ P4 cross-workspace acceptance > XR09-XR10/XR15-XR18/XR37 exercises Funnel controls, notes, SLA isolation, evidence, and focus return  1073ms
+   ✓ P4 cross-workspace acceptance > XR11/XR15/XR17/XR38 preserves market scope and exposes reporter readiness, compliance, and bounded follow-up  593ms
+   ✓ P4 cross-workspace acceptance > XR12/XR17/XR39 creates Team work through the real form and retains the required board semantics  651ms
+   ✓ P4 cross-workspace acceptance > XR13/XR15-XR18/XR40 keeps Programs results, filters, target-met evidence, and text persistence source-safe  833ms
+
+ Test Files  2 passed (2)
+      Tests  9 passed (9)
+   Start at  20:27:38
+   Duration  4.52s (transform 225ms, setup 53ms, collect 379ms, tests 4.39s, environment 438ms, prepare 61ms)
+
+
+> reporter-growth@0.1.0 test:e2e
+> npm run build && playwright test --config=playwright.config.mjs
+
+
+> reporter-growth@0.1.0 build
+> tsc -b && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 73 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.53 kB │ gzip:   0.33 kB
+dist/assets/index-BhEKzEhF.css   30.39 kB │ gzip:   5.75 kB
+dist/assets/index-CZS0fUmo.js   413.97 kB │ gzip: 119.23 kB
+✓ built in 573ms
+
+Running 8 tests using 2 workers
+
+(node:63003) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:63002) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 [mobile] › tests/e2e/reporter-growth.browser.spec.ts:27:3 › P4 browser acceptance › XR01-XR08/XR22 keeps every workspace reachable without page overflow at the active viewport (1ms)
+(node:63007) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [desktop] › tests/e2e/reporter-growth.browser.spec.ts:27:3 › P4 browser acceptance › XR01-XR08/XR22 keeps every workspace reachable without page overflow at the active viewport (1ms)
+(node:63008) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 [mobile] › tests/e2e/reporter-growth.browser.spec.ts:39:3 › P4 browser acceptance › XR09-XR10/XR15/XR37 changes Funnel range, status, filters, and a market-specific SLA without lifecycle leakage (0ms)
+(node:63011) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  4 [desktop] › tests/e2e/reporter-growth.browser.spec.ts:39:3 › P4 browser acceptance › XR09-XR10/XR15/XR37 changes Funnel range, status, filters, and a market-specific SLA without lifecycle leakage (1ms)
+(node:63013) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  5 [mobile] › tests/e2e/reporter-growth.browser.spec.ts:62:3 › P4 browser acceptance › XR16/XR19-XR25 keeps the evidence drawer keyboard-operable and full-screen at 390px (0ms)
+  ✘  6 [desktop] › tests/e2e/reporter-growth.browser.spec.ts:62:3 › P4 browser acceptance › XR16/XR19-XR25 keeps the evidence drawer keyboard-operable and full-screen at 390px (0ms)
+(node:63019) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:63020) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  7 [mobile] › tests/e2e/reporter-growth.browser.spec.ts:80:3 › P4 browser acceptance › XR11-XR13/XR17/XR38-XR40 performs reporter, Team, and Programs working actions (0ms)
+  ✘  8 [desktop] › tests/e2e/reporter-growth.browser.spec.ts:80:3 › P4 browser acceptance › XR11-XR13/XR17/XR38-XR40 performs reporter, Team, and Programs working actions (0ms)
+
+
+  1) [desktop] › tests/e2e/reporter-growth.browser.spec.ts:27:3 › P4 browser acceptance › XR01-XR08/XR22 keeps every workspace reachable without page overflow at the active viewport
+
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+
+    <launching> /Users/pc/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/9m/1rf54ldd0698b2vyjb2dclqm0000gn/T/playwright_chromiumdev_profile-T1skDf --remote-debugging-pipe --no-startup-window
+    <launched> pid=63004
+    [pid=63004][err] [0918/202747.068489:ERROR:base/power_monitor/thermal_state_observer_mac.mm:140] ThermalStateObserverMac unable to register to power notifications. Result: 9
+    [pid=63004][err] [0918/202747.091714:ERROR:net/dns/dns_config_service_posix.cc:138] DNS config watch failed to start.
+    [pid=63004][err] [0918/202747.093550:WARNING:net/dns/dns_config_service_posix.cc:197] Failed to read DnsConfig.
+    [pid=63004][err] [0918/202747.102090:FATAL:base/apple/mach_port_rendezvous_mac.cc:159] Check failed: kr == KERN_SUCCESS. bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.63004: Permission denied (1100)
+    Call log:
+      - <launching> /Users/pc/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/9m/1rf54ldd0698b2vyjb2dclqm0000gn/T/playwright_chromiumdev_profile-T1skDf --remote-debugging-pipe --no-startup-window
+      - <launched> pid=63004
+      - [pid=63004][err] [0918/202747.068489:ERROR:base/power_monitor/thermal_state_observer_mac.mm:140] ThermalStateObserverMac unable to register to power notifications. Result: 9
+      - [pid=63004][err] [0918/202747.091714:ERROR:net/dns/dns_config_service_posix.cc:138] DNS config watch failed to start.
+      - [pid=63004][err] [0918/202747.093550:WARNING:net/dns/dns_config_service_posix.cc:197] Failed to read DnsConfig.
+      - [pid=63004][err] [0918/202747.102090:FATAL:base/apple/mach_port_rendezvous_mac.cc:159] Check failed: kr == KERN_SUCCESS. bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.63004: Permission denied (1100)
+      - [pid=63004] <gracefully close start>
+      - [pid=63004] <kill>
+      - [pid=63004] <will force kill>
+      - [pid=63004] exception while trying to kill process: Error: kill EPERM
+      - [pid=63004] <process did exit: exitCode=null, signal=SIGTRAP>
+      - [pid=63004] starting temporary directories cleanup
+      - [pid=63004] finished temporary directories cleanup
+      - [pid=63004] <gracefully close end>
+
+
+    Error Context: test-results/reporter-growth.browser-P4-688c1-flow-at-the-active-viewport-desktop/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/reporter-growth.browser-P4-688c1-flow-at-the-active-viewport-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/reporter-growth.browser-P4-688c1-flow-at-the-active-viewport-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [desktop] › tests/e2e/reporter-growth.browser.spec.ts:39:3 › P4 browser acceptance › XR09-XR10/XR15/XR37 changes Funnel range, status, filters, and a market-specific SLA without lifecycle leakage
+
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+
+    <launching> /Users/pc/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/9m/1rf54ldd0698b2vyjb2dclqm0000gn/T/playwright_chromiumdev_profile-acEmYZ --remote-debugging-pipe --no-startup-window
+    <launched> pid=63010
+    [pid=63010][err] [0918/202747.982602:ERROR:base/power_monitor/thermal_state_observer_mac.mm:140] ThermalStateObserverMac unable to register to power notifications. Result: 9
+    [pid=63010][err] [0918/202747.984088:ERROR:net/dns/dns_config_service_posix.cc:138] DNS config watch failed to start.
+    [pid=63010][err] [0918/202747.984559:WARNING:net/dns/dns_config_service_posix.cc:197] Failed to read DnsConfig.
+    [pid=63010][err] [0918/202747.984596:FATAL:base/apple/mach_port_rendezvous_mac.cc:159] Check failed: kr == KERN_SUCCESS. bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.63010: Permission denied (1100)
+    Call log:
+      - <launching> /Users/pc/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/9m/1rf54ldd0698b2vyjb2dclqm0000gn/T/playwright_chromiumdev_profile-acEmYZ --remote-debugging-pipe --no-startup-window
+      - <launched> pid=63010
+      - [pid=63010][err] [0918/202747.982602:ERROR:base/power_monitor/thermal_state_observer_mac.mm:140] ThermalStateObserverMac unable to register to power notifications. Result: 9
+      - [pid=63010][err] [0918/202747.984088:ERROR:net/dns/dns_config_service_posix.cc:138] DNS config watch failed to start.
+      - [pid=63010][err] [0918/202747.984559:WARNING:net/dns/dns_config_service_posix.cc:197] Failed to read DnsConfig.
+      - [pid=63010][err] [0918/202747.984596:FATAL:base/apple/mach_port_rendezvous_mac.cc:159] Check failed: kr == KERN_SUCCESS. bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.63010: Permission denied (1100)
+      - [pid=63010] <gracefully close start>
+      - [pid=63010] <kill>
+      - [pid=63010] <will force kill>
+      - [pid=63010] exception while trying to kill process: Error: kill EPERM
+      - [pid=63010] <process did exit: exitCode=null, signal=SIGTRAP>
+      - [pid=63010] starting temporary directories cleanup
+      - [pid=63010] finished temporary directories cleanup
+      - [pid=63010] <gracefully close end>
+
+
+    Error Context: test-results/reporter-growth.browser-P4-0eadf-A-without-lifecycle-leakage-desktop/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/reporter-growth.browser-P4-0eadf-A-without-lifecycle-leakage-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/reporter-growth.browser-P4-0eadf-A-without-lifecycle-leakage-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [desktop] › tests/e2e/reporter-growth.browser.spec.ts:62:3 › P4 browser acceptance › XR16/XR19-XR25 keeps the evidence drawer keyboard-operable and full-screen at 390px
+
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+
+    <launching> /Users/pc/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/9m/1rf54ldd0698b2vyjb2dclqm0000gn/T/playwright_chromiumdev_profile-FV8nu7 --remote-debugging-pipe --no-startup-window
+    <launched> pid=63015
+    [pid=63015][err] [0918/202748.688028:ERROR:base/power_monitor/thermal_state_observer_mac.mm:140] ThermalStateObserverMac unable to register to power notifications. Result: 9
+    [pid=63015][err] [0918/202748.689782:ERROR:net/dns/dns_config_service_posix.cc:138] DNS config watch failed to start.
+    [pid=63015][err] [0918/202748.690126:FATAL:base/apple/mach_port_rendezvous_mac.cc:159] Check failed: kr == KERN_SUCCESS. bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.63015: Permission denied (1100)
+    Call log:
+      - <launching> /Users/pc/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/9m/1rf54ldd0698b2vyjb2dclqm0000gn/T/playwright_chromiumdev_profile-FV8nu7 --remote-debugging-pipe --no-startup-window
+      - <launched> pid=63015
+      - [pid=63015][err] [0918/202748.688028:ERROR:base/power_monitor/thermal_state_observer_mac.mm:140] ThermalStateObserverMac unable to register to power notifications. Result: 9
+      - [pid=63015][err] [0918/202748.689782:ERROR:net/dns/dns_config_service_posix.cc:138] DNS config watch failed to start.
+      - [pid=63015][err] [0918/202748.690126:FATAL:base/apple/mach_port_rendezvous_mac.cc:159] Check failed: kr == KERN_SUCCESS. bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.63015: Permission denied (1100)
+      - [pid=63015] <gracefully close start>
+      - [pid=63015] <kill>
+      - [pid=63015] <will force kill>
+      - [pid=63015] exception while trying to kill process: Error: kill EPERM
+      - [pid=63015] <process did exit: exitCode=null, signal=SIGTRAP>
+      - [pid=63015] starting temporary directories cleanup
+      - [pid=63015] finished temporary directories cleanup
+      - [pid=63015] <gracefully close end>
+
+
+    Error Context: test-results/reporter-growth.browser-P4-612bf-le-and-full-screen-at-390px-desktop/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/reporter-growth.browser-P4-612bf-le-and-full-screen-at-390px-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/reporter-growth.browser-P4-612bf-le-and-full-screen-at-390px-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [desktop] › tests/e2e/reporter-growth.browser.spec.ts:80:3 › P4 browser acceptance › XR11-XR13/XR17/XR38-XR40 performs reporter, Team, and Programs working actions
+
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+
+    <launching> /Users/pc/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/9m/1rf54ldd0698b2vyjb2dclqm0000gn/T/playwright_chromiumdev_profile-Umad0o --remote-debugging-pipe --no-startup-window
+    <launched> pid=63022
+    [pid=63022][err] [0918/202749.367761:ERROR:base/power_monitor/thermal_state_observer_mac.mm:140] ThermalStateObserverMac unable to register to power notifications. Result: 9
+    [pid=63022][err] [0918/202749.369134:ERROR:net/dns/dns_config_service_posix.cc:138] DNS config watch failed to start.
+    [pid=63022][err] [0918/202749.369592:FATAL:base/apple/mach_port_rendezvous_mac.cc:159] Check failed: kr == KERN_SUCCESS. bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.63022: Permission denied (1100)
+    Call log:
+      - <launching> /Users/pc/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/9m/1rf54ldd0698b2vyjb2dclqm0000gn/T/playwright_chromiumdev_profile-Umad0o --remote-debugging-pipe --no-startup-window
+      - <launched> pid=63022
+      - [pid=63022][err] [0918/202749.367761:ERROR:base/power_monitor/thermal_state_observer_mac.mm:140] ThermalStateObserverMac unable to register to power notifications. Result: 9
+      - [pid=63022][err] [0918/202749.369134:ERROR:net/dns/dns_config_service_posix.cc:138] DNS config watch failed to start.
+      - [pid=63022][err] [0918/202749.369592:FATAL:base/apple/mach_port_rendezvous_mac.cc:159] Check failed: kr == KERN_SUCCESS. bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.63022: Permission denied (1100)
+      - [pid=63022] <gracefully close start>
+      - [pid=63022] <kill>
+      - [pid=63022] <will force kill>
+      - [pid=63022] exception while trying to kill process: Error: kill EPERM
+      - [pid=63022] <process did exit: exitCode=null, signal=SIGTRAP>
+      - [pid=63022] starting temporary directories cleanup
+      - [pid=63022] finished temporary directories cleanup
+      - [pid=63022] <gracefully close end>
+
+
+    Error Context: test-results/reporter-growth.browser-P4-2ff7e-nd-Programs-working-actions-desktop/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/reporter-growth.browser-P4-2ff7e-nd-Programs-working-actions-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/reporter-growth.browser-P4-2ff7e-nd-Programs-working-actions-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) [mobile] › tests/e2e/reporter-growth.browser.spec.ts:27:3 › P4 browser acceptance › XR01-XR08/XR22 keeps every workspace reachable without page overflow at the active viewport
+
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+
+    <launching> /Users/pc/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/9m/1rf54ldd0698b2vyjb2dclqm0000gn/T/playwright_chromiumdev_profile-N9uy88 --remote-debugging-pipe --no-startup-window
+    <launched> pid=63005
+    [pid=63005][err] [0918/202747.068489:ERROR:base/power_monitor/thermal_state_observer_mac.mm:140] ThermalStateObserverMac unable to register to power notifications. Result: 9
+    [pid=63005][err] [0918/202747.091714:ERROR:net/dns/dns_config_service_posix.cc:138] DNS config watch failed to start.
+    [pid=63005][err] [0918/202747.093551:WARNING:net/dns/dns_config_service_posix.cc:197] Failed to read DnsConfig.
+    [pid=63005][err] [0918/202747.102090:FATAL:base/apple/mach_port_rendezvous_mac.cc:159] Check failed: kr == KERN_SUCCESS. bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.63005: Permission denied (1100)
+    Call log:
+      - <launching> /Users/pc/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/9m/1rf54ldd0698b2vyjb2dclqm0000gn/T/playwright_chromiumdev_profile-N9uy88 --remote-debugging-pipe --no-startup-window
+      - <launched> pid=63005
+      - [pid=63005][err] [0918/202747.068489:ERROR:base/power_monitor/thermal_state_observer_mac.mm:140] ThermalStateObserverMac unable to register to power notifications. Result: 9
+      - [pid=63005][err] [0918/202747.091714:ERROR:net/dns/dns_config_service_posix.cc:138] DNS config watch failed to start.
+      - [pid=63005][err] [0918/202747.093551:WARNING:net/dns/dns_config_service_posix.cc:197] Failed to read DnsConfig.
+      - [pid=63005][err] [0918/202747.102090:FATAL:base/apple/mach_port_rendezvous_mac.cc:159] Check failed: kr == KERN_SUCCESS. bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.63005: Permission denied (1100)
+      - [pid=63005] <gracefully close start>
+      - [pid=63005] <kill>
+      - [pid=63005] <will force kill>
+      - [pid=63005] exception while trying to kill process: Error: kill EPERM
+      - [pid=63005] <process did exit: exitCode=null, signal=SIGTRAP>
+      - [pid=63005] starting temporary directories cleanup
+      - [pid=63005] finished temporary directories cleanup
+      - [pid=63005] <gracefully close end>
+
+
+    Error Context: test-results/reporter-growth.browser-P4-688c1-flow-at-the-active-viewport-mobile/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/reporter-growth.browser-P4-688c1-flow-at-the-active-viewport-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/reporter-growth.browser-P4-688c1-flow-at-the-active-viewport-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6) [mobile] › tests/e2e/reporter-growth.browser.spec.ts:39:3 › P4 browser acceptance › XR09-XR10/XR15/XR37 changes Funnel range, status, filters, and a market-specific SLA without lifecycle leakage
+
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+
+    <launching> /Users/pc/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/9m/1rf54ldd0698b2vyjb2dclqm0000gn/T/playwright_chromiumdev_profile-zT9aZE --remote-debugging-pipe --no-startup-window
+    <launched> pid=63009
+    [pid=63009][err] [0918/202747.748374:ERROR:base/power_monitor/thermal_state_observer_mac.mm:140] ThermalStateObserverMac unable to register to power notifications. Result: 9
+    [pid=63009][err] [0918/202747.749736:ERROR:net/dns/dns_config_service_posix.cc:138] DNS config watch failed to start.
+    [pid=63009][err] [0918/202747.750159:WARNING:net/dns/dns_config_service_posix.cc:197] Failed to read DnsConfig.
+    [pid=63009][err] [0918/202747.750204:FATAL:base/apple/mach_port_rendezvous_mac.cc:159] Check failed: kr == KERN_SUCCESS. bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.63009: Permission denied (1100)
+    Call log:
+      - <launching> /Users/pc/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/9m/1rf54ldd0698b2vyjb2dclqm0000gn/T/playwright_chromiumdev_profile-zT9aZE --remote-debugging-pipe --no-startup-window
+      - <launched> pid=63009
+      - [pid=63009][err] [0918/202747.748374:ERROR:base/power_monitor/thermal_state_observer_mac.mm:140] ThermalStateObserverMac unable to register to power notifications. Result: 9
+      - [pid=63009][err] [0918/202747.749736:ERROR:net/dns/dns_config_service_posix.cc:138] DNS config watch failed to start.
+      - [pid=63009][err] [0918/202747.750159:WARNING:net/dns/dns_config_service_posix.cc:197] Failed to read DnsConfig.
+      - [pid=63009][err] [0918/202747.750204:FATAL:base/apple/mach_port_rendezvous_mac.cc:159] Check failed: kr == KERN_SUCCESS. bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.63009: Permission denied (1100)
+      - [pid=63009] <gracefully close start>
+      - [pid=63009] <kill>
+      - [pid=63009] <will force kill>
+      - [pid=63009] exception while trying to kill process: Error: kill EPERM
+      - [pid=63009] <process did exit: exitCode=null, signal=SIGTRAP>
+      - [pid=63009] starting temporary directories cleanup
+      - [pid=63009] finished temporary directories cleanup
+      - [pid=63009] <gracefully close end>
+
+
+    Error Context: test-results/reporter-growth.browser-P4-0eadf-A-without-lifecycle-leakage-mobile/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/reporter-growth.browser-P4-0eadf-A-without-lifecycle-leakage-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/reporter-growth.browser-P4-0eadf-A-without-lifecycle-leakage-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  7) [mobile] › tests/e2e/reporter-growth.browser.spec.ts:62:3 › P4 browser acceptance › XR16/XR19-XR25 keeps the evidence drawer keyboard-operable and full-screen at 390px
+
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+
+    <launching> /Users/pc/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/9m/1rf54ldd0698b2vyjb2dclqm0000gn/T/playwright_chromiumdev_profile-Fo76u5 --remote-debugging-pipe --no-startup-window
+    <launched> pid=63014
+    [pid=63014][err] [0918/202748.430056:ERROR:base/power_monitor/thermal_state_observer_mac.mm:140] ThermalStateObserverMac unable to register to power notifications. Result: 9
+    [pid=63014][err] [0918/202748.431219:ERROR:net/dns/dns_config_service_posix.cc:138] DNS config watch failed to start.
+    [pid=63014][err] [0918/202748.431630:WARNING:net/dns/dns_config_service_posix.cc:197] Failed to read DnsConfig.
+    [pid=63014][err] [0918/202748.431659:FATAL:base/apple/mach_port_rendezvous_mac.cc:159] Check failed: kr == KERN_SUCCESS. bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.63014: Permission denied (1100)
+    Call log:
+      - <launching> /Users/pc/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/9m/1rf54ldd0698b2vyjb2dclqm0000gn/T/playwright_chromiumdev_profile-Fo76u5 --remote-debugging-pipe --no-startup-window
+      - <launched> pid=63014
+      - [pid=63014][err] [0918/202748.430056:ERROR:base/power_monitor/thermal_state_observer_mac.mm:140] ThermalStateObserverMac unable to register to power notifications. Result: 9
+      - [pid=63014][err] [0918/202748.431219:ERROR:net/dns/dns_config_service_posix.cc:138] DNS config watch failed to start.
+      - [pid=63014][err] [0918/202748.431630:WARNING:net/dns/dns_config_service_posix.cc:197] Failed to read DnsConfig.
+      - [pid=63014][err] [0918/202748.431659:FATAL:base/apple/mach_port_rendezvous_mac.cc:159] Check failed: kr == KERN_SUCCESS. bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.63014: Permission denied (1100)
+      - [pid=63014] <gracefully close start>
+      - [pid=63014] <kill>
+      - [pid=63014] <will force kill>
+      - [pid=63014] exception while trying to kill process: Error: kill EPERM
+      - [pid=63014] <process did exit: exitCode=null, signal=SIGTRAP>
+      - [pid=63014] starting temporary directories cleanup
+      - [pid=63014] finished temporary directories cleanup
+      - [pid=63014] <gracefully close end>
+
+
+    Error Context: test-results/reporter-growth.browser-P4-612bf-le-and-full-screen-at-390px-mobile/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/reporter-growth.browser-P4-612bf-le-and-full-screen-at-390px-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/reporter-growth.browser-P4-612bf-le-and-full-screen-at-390px-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  8) [mobile] › tests/e2e/reporter-growth.browser.spec.ts:80:3 › P4 browser acceptance › XR11-XR13/XR17/XR38-XR40 performs reporter, Team, and Programs working actions
+
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+
+    <launching> /Users/pc/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/9m/1rf54ldd0698b2vyjb2dclqm0000gn/T/playwright_chromiumdev_profile-0IYVKA --remote-debugging-pipe --no-startup-window
+    <launched> pid=63021
+    [pid=63021][err] [0918/202749.138715:ERROR:base/power_monitor/thermal_state_observer_mac.mm:140] ThermalStateObserverMac unable to register to power notifications. Result: 9
+    [pid=63021][err] [0918/202749.142191:ERROR:net/dns/dns_config_service_posix.cc:138] DNS config watch failed to start.
+    [pid=63021][err] [0918/202749.142668:WARNING:net/dns/dns_config_service_posix.cc:197] Failed to read DnsConfig.
+    [pid=63021][err] [0918/202749.142752:FATAL:base/apple/mach_port_rendezvous_mac.cc:159] Check failed: kr == KERN_SUCCESS. bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.63021: Permission denied (1100)
+    Call log:
+      - <launching> /Users/pc/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/9m/1rf54ldd0698b2vyjb2dclqm0000gn/T/playwright_chromiumdev_profile-0IYVKA --remote-debugging-pipe --no-startup-window
+      - <launched> pid=63021
+      - [pid=63021][err] [0918/202749.138715:ERROR:base/power_monitor/thermal_state_observer_mac.mm:140] ThermalStateObserverMac unable to register to power notifications. Result: 9
+      - [pid=63021][err] [0918/202749.142191:ERROR:net/dns/dns_config_service_posix.cc:138] DNS config watch failed to start.
+      - [pid=63021][err] [0918/202749.142668:WARNING:net/dns/dns_config_service_posix.cc:197] Failed to read DnsConfig.
+      - [pid=63021][err] [0918/202749.142752:FATAL:base/apple/mach_port_rendezvous_mac.cc:159] Check failed: kr == KERN_SUCCESS. bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.63021: Permission denied (1100)
+      - [pid=63021] <gracefully close start>
+      - [pid=63021] <kill>
+      - [pid=63021] <will force kill>
+      - [pid=63021] exception while trying to kill process: Error: kill EPERM
+      - [pid=63021] <process did exit: exitCode=null, signal=SIGTRAP>
+      - [pid=63021] starting temporary directories cleanup
+      - [pid=63021] finished temporary directories cleanup
+      - [pid=63021] <gracefully close end>
+
+
+    Error Context: test-results/reporter-growth.browser-P4-2ff7e-nd-Programs-working-actions-mobile/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/reporter-growth.browser-P4-2ff7e-nd-Programs-working-actions-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/reporter-growth.browser-P4-2ff7e-nd-Programs-working-actions-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  8 failed
+    [desktop] › tests/e2e/reporter-growth.browser.spec.ts:27:3 › P4 browser acceptance › XR01-XR08/XR22 keeps every workspace reachable without page overflow at the active viewport
+    [desktop] › tests/e2e/reporter-growth.browser.spec.ts:39:3 › P4 browser acceptance › XR09-XR10/XR15/XR37 changes Funnel range, status, filters, and a market-specific SLA without lifecycle leakage
+    [desktop] › tests/e2e/reporter-growth.browser.spec.ts:62:3 › P4 browser acceptance › XR16/XR19-XR25 keeps the evidence drawer keyboard-operable and full-screen at 390px
+    [desktop] › tests/e2e/reporter-growth.browser.spec.ts:80:3 › P4 browser acceptance › XR11-XR13/XR17/XR38-XR40 performs reporter, Team, and Programs working actions
+    [mobile] › tests/e2e/reporter-growth.browser.spec.ts:27:3 › P4 browser acceptance › XR01-XR08/XR22 keeps every workspace reachable without page overflow at the active viewport
+    [mobile] › tests/e2e/reporter-growth.browser.spec.ts:39:3 › P4 browser acceptance › XR09-XR10/XR15/XR37 changes Funnel range, status, filters, and a market-specific SLA without lifecycle leakage
+    [mobile] › tests/e2e/reporter-growth.browser.spec.ts:62:3 › P4 browser acceptance › XR16/XR19-XR25 keeps the evidence drawer keyboard-operable and full-screen at 390px
+    [mobile] › tests/e2e/reporter-growth.browser.spec.ts:80:3 › P4 browser acceptance › XR11-XR13/XR17/XR38-XR40 performs reporter, Team, and Programs working actions

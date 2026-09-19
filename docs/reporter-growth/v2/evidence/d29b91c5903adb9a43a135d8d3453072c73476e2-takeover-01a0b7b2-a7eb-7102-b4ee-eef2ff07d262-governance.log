@@ -1,0 +1,6 @@
+
+> reporter-growth@0.1.0 verify:p4:governance
+> node scripts/verify-p4-readiness.mjs && node scripts/verify-p4-phase-gate.mjs
+
+P4 readiness verification passed (203 checks).
+P4 interview phase verification passed for IP0_contract_preparation; worker dispatch is checked separately.

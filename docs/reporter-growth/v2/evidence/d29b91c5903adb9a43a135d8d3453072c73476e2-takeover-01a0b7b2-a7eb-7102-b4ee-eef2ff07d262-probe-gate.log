@@ -1,0 +1,12 @@
+
+> reporter-growth@0.1.0 verify:p4:dispatch
+> npm run verify:p4:governance && node scripts/verify-p4-dispatch.mjs --role data --kind probe
+
+
+> reporter-growth@0.1.0 verify:p4:governance
+> node scripts/verify-p4-readiness.mjs && node scripts/verify-p4-phase-gate.mjs
+
+P4 readiness verification passed (203 checks).
+P4 interview phase verification passed for IP0_contract_preparation; worker dispatch is checked separately.
+P4 dispatch blocked (1 conditions):
+- Loaded data metadata is not verified; configuration text cannot authorize dispatch.

@@ -1,0 +1,223 @@
+{
+  "kind": "coordinator_takeover_runtime_observation",
+  "observed_at": "2026-09-19T03:29:53.428155+00:00",
+  "thread_id": "01a0b7b2-a7eb-7102-b4ee-eef2ff07d262",
+  "candidate_commit": "d29b91c5903adb9a43a135d8d3453072c73476e2",
+  "active_command_checkout": "/private/tmp/steno-p4-coordinator",
+  "session_source": "/Users/pc/.codex/sessions/2026/09/18/rollout-2026-09-18T20-25-34-01a0b7b2-a7eb-7102-b4ee-eef2ff07d262.jsonl",
+  "session_metadata_excerpts": [
+    {
+      "source_line": 1,
+      "source_line_sha256": "08ee61291d5a2c433e7e79401ff7031e4f39788119558fa30b125457d120320a",
+      "type": "session_meta",
+      "timestamp": "2026-09-19T03:25:36.987Z",
+      "fields": {
+        "id": "01a0b7b2-a7eb-7102-b4ee-eef2ff07d262",
+        "cwd": "/Users/pc/Desktop/STENO",
+        "originator": "Codex Desktop",
+        "source": "vscode",
+        "model_provider": "openai"
+      }
+    },
+    {
+      "source_line": 8,
+      "source_line_sha256": "62e30a43c0fd6032a585ad15624e13fb41156b80debfb8025c2023d0b7f8d84c",
+      "type": "turn_context",
+      "timestamp": "2026-09-19T03:25:37.239Z",
+      "fields": {
+        "cwd": "/Users/pc/Desktop/STENO",
+        "model": "gpt-6-astra",
+        "effort": "xhigh",
+        "approval_policy": "never",
+        "sandbox_policy": {
+          "type": "workspace-write",
+          "writable_roots": [
+            "/Users/pc/.codex/visualizations/2026/09/19/01a0b7b2-a7eb-7102-b4ee-eef2ff07d262"
+          ],
+          "network_access": false,
+          "exclude_tmpdir_env_var": false,
+          "exclude_slash_tmp": false
+        }
+      }
+    }
+  ],
+  "loaded_role_catalog": {
+    "source": "collaboration.spawn_agent tool declaration supplied to this task; coordinator observation, not a spawned-child session",
+    "roles": {
+      "capacity": {
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "high"
+      },
+      "data": {
+        "model": "gpt-5.6-luna",
+        "reasoning_effort": "medium"
+      },
+      "experience": {
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "medium"
+      },
+      "experience_reporters": {
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "medium"
+      },
+      "experience_team": {
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "medium"
+      },
+      "experience_programs": {
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "medium"
+      },
+      "network": {
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "medium"
+      },
+      "programs": {
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "medium"
+      },
+      "recruiting": {
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "medium"
+      },
+      "team": {
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "medium"
+      },
+      "quality": {
+        "model": "gpt-5.6-luna",
+        "reasoning_effort": "medium"
+      },
+      "reviewer": {
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "high"
+      }
+    },
+    "status": "stale"
+  },
+  "configured_role_catalog": {
+    "capacity": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
+      "service_tier": "default",
+      "config": {
+        "file": ".codex/agents/capacity.toml",
+        "sha256": "76bd621938d1bf6eb9e39821fff190a8017c4b188f090d056efb0f89238c011f"
+      }
+    },
+    "data": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
+      "service_tier": "default",
+      "config": {
+        "file": ".codex/agents/data.toml",
+        "sha256": "b7330693ad473d5b6c7cf13569dfac5ee54e19862508b70b4d12e371e04609f4"
+      }
+    },
+    "experience": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
+      "service_tier": "default",
+      "config": {
+        "file": ".codex/agents/experience.toml",
+        "sha256": "600e00212bd446ef8c06a7b93d89f1cc949a0e54ae6514ba18dceb59ffd801f3"
+      }
+    },
+    "experience_reporters": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
+      "service_tier": "default",
+      "config": {
+        "file": ".codex/agents/experience_reporters.toml",
+        "sha256": "c991627f2c96fe5434f57ca356709b0ec07025b94b5cbc2e72d6e8286af3690f"
+      }
+    },
+    "experience_team": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
+      "service_tier": "default",
+      "config": {
+        "file": ".codex/agents/experience_team.toml",
+        "sha256": "85b634ef4d50e0ab88729bbb07ddd827332aae53acfbde576d32e0ca1fb03036"
+      }
+    },
+    "experience_programs": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
+      "service_tier": "default",
+      "config": {
+        "file": ".codex/agents/experience_programs.toml",
+        "sha256": "56887ac0a3785690e78154f39ea117a904a20e82c29c827165566daae3b95170"
+      }
+    },
+    "network": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
+      "service_tier": "default",
+      "config": {
+        "file": ".codex/agents/network.toml",
+        "sha256": "6295c5f793748d923b60c3f41e50ffde2027130fb37b6aa85f306ad012e4f069"
+      }
+    },
+    "programs": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
+      "service_tier": "default",
+      "config": {
+        "file": ".codex/agents/programs.toml",
+        "sha256": "44dc478ea6f58f6a9968de384d9b8ac19622b8ef5ff2bdf0b0902315985fa791"
+      }
+    },
+    "recruiting": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
+      "service_tier": "default",
+      "config": {
+        "file": ".codex/agents/recruiting.toml",
+        "sha256": "bb74f1deffdac7e12a31ef39a76262e977810a54357c87460ab2751a00a8e04d"
+      }
+    },
+    "team": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
+      "service_tier": "default",
+      "config": {
+        "file": ".codex/agents/team.toml",
+        "sha256": "5d34e24a417867d9dc4ba66aa70015ec09d0c668ab85ae84543fadfb21f0271b"
+      }
+    },
+    "quality": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "service_tier": "default",
+      "config": {
+        "file": ".codex/agents/quality.toml",
+        "sha256": "7b66225614aa1bd22dac12779afcf9870e6907ef9ba4744f5c9f7906d83b716a"
+      }
+    },
+    "reviewer": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "service_tier": "default",
+      "config": {
+        "file": ".codex/agents/reviewer.toml",
+        "sha256": "33e21efe7875bd30016102b53cb934a09a2accd6a2d350652b53ab5a65931ebf"
+      }
+    }
+  },
+  "active_project_config": {
+    "file": ".codex/config.toml",
+    "sha256": "a81a6fdb0f33294a27860c3d314e87c29327e0574f2aca1d60a70626bbd8a866"
+  },
+  "coordinator": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "xhigh",
+    "session_cwd": "/Users/pc/Desktop/STENO",
+    "configured_service_tier": "default",
+    "resolved_service_tier": "not_exposed"
+  },
+  "probe_count": 0,
+  "implementation_worker_count": 0,
+  "fork_policy": "Every future probe/worker must use fork_turns=none; no spawn attempted.",
+  "conclusion": "Actual task root and loaded named roles do not match the requested active checkout. All 12 loaded role model assignments mismatch Astra. Shell workdir does not reload the task configuration. No named-role override or generic substitution is permitted."
+}

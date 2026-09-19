@@ -1,0 +1,72 @@
+{
+  "kind": "coordinator_takeover_verification",
+  "observed_at": "2026-09-19T03:29:53.428155+00:00",
+  "thread_id": "01a0b7b2-a7eb-7102-b4ee-eef2ff07d262",
+  "candidate_commit": "d29b91c5903adb9a43a135d8d3453072c73476e2",
+  "worktree": "/private/tmp/steno-p4-coordinator",
+  "branch": "codex/reporter-growth-p4-coordinator",
+  "worktree_clean_before_checks": true,
+  "contract_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
+  "scope": "Fresh coordinator runtime and unchanged-candidate checks. No lane or presentation implementation.",
+  "checks": [
+    {
+      "command": "npm run verify:p4:governance",
+      "exit_code": 0,
+      "result": "203 readiness checks and interview IP0 gate passed."
+    },
+    {
+      "command": "npm run test:p4:governance",
+      "exit_code": 0,
+      "result": "12 gate tests passed."
+    },
+    {
+      "command": "npm run verify:p4:dispatch -- --role data --kind probe",
+      "exit_code": 1,
+      "result": "Loaded data metadata is not verified; configuration text cannot authorize dispatch. No probe spawned."
+    },
+    {
+      "command": "npm run verify:p4",
+      "exit_code": 1,
+      "result": "Lint, typecheck, 24 files / 131 unit-integration tests, build and 2 files / 9 acceptance tests passed. All eight desktop/mobile browser cases failed at launch before assertions: Chromium MachPortRendezvousServer bootstrap_check_in permission denied (1100), SIGTRAP."
+    }
+  ],
+  "logs": {
+    "full": {
+      "file": "docs/reporter-growth/v2/evidence/d29b91c5903adb9a43a135d8d3453072c73476e2-takeover-01a0b7b2-a7eb-7102-b4ee-eef2ff07d262-full.log",
+      "sha256": "5f9c335d65229a49bcf56077e48fc0efc01cb4d50f31a2538f69207f78122913",
+      "normalization": "Trailing line whitespace removed only; complete command output retained."
+    },
+    "governance": {
+      "file": "docs/reporter-growth/v2/evidence/d29b91c5903adb9a43a135d8d3453072c73476e2-takeover-01a0b7b2-a7eb-7102-b4ee-eef2ff07d262-governance.log",
+      "sha256": "b6eb843b2fe6313c3a22d3b5d935194d8b034e93c97fe9edc73c2ca25fdbf977",
+      "normalization": "Trailing line whitespace removed only; complete command output retained."
+    },
+    "probe-gate": {
+      "file": "docs/reporter-growth/v2/evidence/d29b91c5903adb9a43a135d8d3453072c73476e2-takeover-01a0b7b2-a7eb-7102-b4ee-eef2ff07d262-probe-gate.log",
+      "sha256": "f4b1a91aa95ff2d0e7a7d6609348c8462ce05afdbccc8ea26c5c68caf8ebb733",
+      "normalization": "Trailing line whitespace removed only; complete command output retained."
+    }
+  },
+  "runtime_evidence": {
+    "file": "docs/reporter-growth/v2/evidence/d29b91c5903adb9a43a135d8d3453072c73476e2-takeover-01a0b7b2-a7eb-7102-b4ee-eef2ff07d262-runtime.json",
+    "sha256": "66ada05e0cfabba1c8a2a145f097dc0a83135ac2ab662a67c354be67f3bbd02d"
+  },
+  "browser_prerequisite": {
+    "installed_executable": "/Users/pc/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+    "status": "blocked_by_host_permission",
+    "approval_policy": "never",
+    "sandbox_changed": false,
+    "runner_configuration_changed": false,
+    "dependencies_installed": false,
+    "waivers": [],
+    "required_resolution": "An approved runner environment that permits Chromium startup must execute the same required suite. The current session cannot request an exception or weaken protections. Historical unrestricted-runner results do not satisfy this check."
+  },
+  "implementation_dispatch_gate": "Not run: prerequisite runtime catalog/probe verification failed.",
+  "new_visual_proof": false,
+  "independent_quality_or_reviewer": false,
+  "remaining_blockers": [
+    "Task configuration root is /Users/pc/Desktop/STENO; callable roles remain Terra/Luna. The active checkout must actually be loaded by the task host before zero-inheritance probes.",
+    "Chromium startup is denied in this session. Required browser assertions remain unexecuted."
+  ],
+  "authorization": "Implementation remains authorized. No additional start approval is required."
+}
