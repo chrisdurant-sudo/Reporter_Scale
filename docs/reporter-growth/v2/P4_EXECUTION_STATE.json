@@ -340,10 +340,10 @@
       }
     ],
     "latest_coordinator_verification": {
-      "candidate_commit": "8959780d38eefa9d0917e0bf181d3842c94835b6",
+      "candidate_commit": "ffe2bbd8f307b1444373af3bf8185fc94bc709c6",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/8959780d38eefa9d0917e0bf181d3842c94835b6-ip1-team-initial.json",
-        "sha256": "68f6a3ce1204002888b9a44df3675c65031e97a8e559f993defdd7c22778383c"
+        "file": "docs/reporter-growth/v2/evidence/ffe2bbd8f307b1444373af3bf8185fc94bc709c6-ip1-team-runtime-rerun.json",
+        "sha256": "72fa9fa39245d30a1d4251c94052e8c13a2e97d87e71faeb648b6483e9d01011"
       }
     },
     "continuation_authorization": {
@@ -445,12 +445,12 @@
     },
     "baseline": {
       "status": "failed",
-      "candidate_commit": "8959780d38eefa9d0917e0bf181d3842c94835b6",
+      "candidate_commit": "ffe2bbd8f307b1444373af3bf8185fc94bc709c6",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/8959780d38eefa9d0917e0bf181d3842c94835b6-ip1-team-initial.json",
-        "sha256": "68f6a3ce1204002888b9a44df3675c65031e97a8e559f993defdd7c22778383c"
+        "file": "docs/reporter-growth/v2/evidence/ffe2bbd8f307b1444373af3bf8185fc94bc709c6-ip1-team-runtime-rerun.json",
+        "sha256": "72fa9fa39245d30a1d4251c94052e8c13a2e97d87e71faeb648b6483e9d01011"
       },
-      "reason": "All 271 unit/integration and nine acceptance tests pass; six browser tests pass, two expose crypto.randomUUID being unavailable on the HTTP test origin. Coordinator command identity repair and full rerun required."
+      "reason": "The multi-checkpoint app test exceeded its default 5-second limit under full-suite load and continued into the next DOM test. Prior focused and full runs passed. Coordinator sets this seven-checkpoint integration case to 15 seconds without changing assertions; full rerun required."
     },
     "visual_proof": {
       "status": "blocked"
@@ -846,6 +846,18 @@
           "file": "docs/reporter-growth/v2/evidence/4e2a715041643c2c9ccc428086258e8f77fb894b-ip1-network-verification.json",
           "sha256": "bf0f59f52370c25d2af875ba50b9ac218ccb1a309def07461a1c41c9befe1e74"
         }
+      }
+    },
+    {
+      "gate": "baseline",
+      "record": {
+        "status": "failed",
+        "candidate_commit": "8959780d38eefa9d0917e0bf181d3842c94835b6",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/8959780d38eefa9d0917e0bf181d3842c94835b6-ip1-team-initial.json",
+          "sha256": "68f6a3ce1204002888b9a44df3675c65031e97a8e559f993defdd7c22778383c"
+        },
+        "reason": "All 271 unit/integration and nine acceptance tests pass; six browser tests pass, two expose crypto.randomUUID being unavailable on the HTTP test origin. Coordinator command identity repair and full rerun required."
       }
     }
   ],

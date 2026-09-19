@@ -113,7 +113,7 @@ describe("P4 integrated V2 experience", () => {
     expect(metric("Overview metrics", "Available reporters")).toHaveTextContent("0");
     expect(metric("Overview metrics", "Open jobs")).toHaveTextContent("11");
     expect(marketButton("All")).toHaveAttribute("aria-pressed", "true");
-  });
+  }, 15_000); // Multiple persisted checkpoints and reset must finish before the next DOM test.
 
   it("opens contextual evidence, closes on Escape with focus return, and carries exact context into work", async () => {
     const user = await renderApp();

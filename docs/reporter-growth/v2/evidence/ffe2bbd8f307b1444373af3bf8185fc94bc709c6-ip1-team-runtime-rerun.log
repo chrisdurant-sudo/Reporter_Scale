@@ -1,0 +1,3048 @@
+
+> reporter-growth@0.1.0 verify:p4
+> npm run verify:p4:governance && npm run check && npm run test:acceptance && npm run test:e2e
+
+
+> reporter-growth@0.1.0 verify:p4:governance
+> node scripts/verify-p4-readiness.mjs && node scripts/verify-p4-phase-gate.mjs
+
+P4 readiness verification passed (203 checks).
+P4 interview phase verification passed for IP1_serial_data_logic; worker dispatch is checked separately.
+
+> reporter-growth@0.1.0 check
+> npm run lint && npm run typecheck && npm run test && npm run build
+
+
+> reporter-growth@0.1.0 lint
+> eslint . --max-warnings=0
+
+
+> reporter-growth@0.1.0 typecheck
+> tsc -b --pretty false
+
+
+> reporter-growth@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /private/tmp/steno-p4-coordinator
+
+ ✓ src/logic/recruiting/recruiting.seed.test.ts (3 tests) 1863ms
+   ✓ IC02 frozen seed integration > filters Maya's actual seeded responsibilities by member ID and each waiting condition by key  1269ms
+   ✓ IC02 frozen seed integration > declares mature and observing populations for both explicit entry windows  346ms
+ ✓ src/data/v2.test.ts (12 tests) 1905ms
+   ✓ V2 synthetic records and repository > SD06 derives varied Overview and Funnel trends from canonical records  637ms
+   ✓ V2 synthetic records and repository > D05 rejects broken outcome references, double acceptance, overlap, and invalid intervals  523ms
+   ✓ V2 synthetic records and repository > D06 applies cumulative checkpoints once and keeps dependent records ordered  332ms
+ ✓ src/logic/capacity/index.test.ts (30 tests) 4994ms
+   ✓ IC01 scheduling-window prepared facts > reconciles all five markets to the same explicit window under conjunctive filters  679ms
+   ✓ IC01 scheduling-window prepared facts > retains LAX 10/6/4 anchors through planning, readiness, acceptance and completed-plan checkpoints  1092ms
+   ✓ IC01 scheduling-window prepared facts > preserves a saved goal scope in All and market views, and does not let target edits or unavailability erase readiness  479ms
+   ✓ IC01 coordinator review repairs > keeps all Capacity evidence units equal to frozen definitions and uses the M02 numerator for confirmed slots  1712ms
+   ✓ IC01 exact-empty queries and person destinations > honors matchNone across requests, people, series, goals and original-plan results  320ms
+   ✓ IC01 exact-empty queries and person destinations > marks zero-result goal, count and original-plan targets empty instead of broadening their population  525ms
+ ✓ src/integration/p2RecordsAndCalculations.test.ts (6 tests) 3490ms
+   ✓ P2 source → calculation → EvidenceBundle reconciliation > derives every frozen LAX capacity checkpoint from cumulative source events  1549ms
+   ✓ P2 source → calculation → EvidenceBundle reconciliation > keeps supporting-market situations and unknowns materially distinct  344ms
+   ✓ P2 source → calculation → EvidenceBundle reconciliation > reconciles Team and M13 weekly evidence without composite people scores  1275ms
+ ✓ src/integration/v2WeeklyReview.test.ts (6 tests) 3683ms
+   ✓ weekly review source composition > retains scheduling and cohort populations with their exact evidence and no invented prior-week result  323ms
+   ✓ weekly review source composition > uses the saved readiness revision without recasting its deadline as a review date  513ms
+   ✓ weekly review source composition > keeps an immature cohort unavailable instead of turning it into zero conversion  476ms
+   ✓ weekly review source composition > rejects mixing domain revisions, evaluation times or selected markets  310ms
+   ✓ weekly Team composition > withholds whole-member targets for a market subset and preserves actual coaching review dates  1782ms
+ ✓ src/data/v2Interview.test.ts (31 tests) 6939ms
+   ✓ IC07 durable injected repository > retains revision, exact note whitespace, commands and scenario clock across reconstruction  333ms
+   ✓ IC07 required work history values > rejects a missing previous blockerCode on load and preserves bytes until explicit reset  670ms
+   ✓ IC07 required work history values > rejects a proposed missing previous dueAt without changing acknowledged memory or storage  567ms
+   ✓ IC07 required work history values > rejects a proposed missing previous blockerCode without changing acknowledged memory or storage  359ms
+   ✓ IC07 required work history values > accepts an empty previous object when introducing only optional title and priority  1083ms
+   ✓ IC07 required work history values > round-trips explicit null clearing and preserves absent optional fields before their first edit  706ms
+ ✓ src/logic/team/interview.test.ts (24 tests) 7594ms
+   ✓ IC03 pure Team commands > keeps unlinked sourcing/program work explicitly self-linked and unscoped  321ms
+   ✓ IC03 pure Team commands > keeps Blocked orthogonal to Todo/In progress, including initially blocked work and clearing  574ms
+   ✓ IC03 pure Team commands > does not select future, other-metric, other-unit or other-window targets  302ms
+   ✓ Team prepared scope, inspection and weekly review > keeps M11 inspection evidence in tasks while exposing the inspected-only pass ratio separately  382ms
+   ✓ Team prepared scope, inspection and weekly review > round-trips coaching, target and inspection links into prepared details  828ms
+   ✓ Team prepared scope, inspection and weekly review > hides a future coaching review result while disclosing that earlier content is unavailable  387ms
+   ✓ Team prepared scope, inspection and weekly review > prepares equal-duration completed-week counts/delta and source event IDs without current-day leakage  2217ms
+   ✓ Team composition through the single repository > persists Team edits, reloads them, replays once, rejects stale commands and resets the seed  469ms
+   ✓ Team composition through the single repository > persists target, inspection, coaching and explicit completion with their original records intact  391ms
+ ✓ src/logic/network/index.test.ts (41 tests) 488ms
+ ✓ src/features/markets/index.test.tsx (4 tests) 738ms
+   ✓ MarketsScreen > shows five prepared market records with record support and actions  310ms
+ ✓ src/features/improvements/index.test.tsx (5 tests) 979ms
+   ✓ ImprovementsScreen > shows descriptive limits and requires a rationale before recording a decision  494ms
+ ✓ src/features/reporters/index.test.tsx (4 tests) 1085ms
+   ✓ ReportersScreen > filters work and opens a detail panel with local message preview  494ms
+   ✓ ReportersScreen > delegates screening, follow-up, and coaching saves to actions  328ms
+ ✓ src/integration/v2Overview.test.ts (2 tests) 540ms
+   ✓ Overview integration populations > keeps the frozen plan separate from additional current requests and delivered outcomes  382ms
+ ✓ src/features/programs/index.test.tsx (2 tests) 373ms
+ ✓ src/features/recruiting/index.test.tsx (2 tests) 260ms
+ ✓ src/shell/V2AppShell.test.tsx (4 tests) 381ms
+   ✓ V2AppShell > offers five controlled workspaces and preserves the supplied shared filters across navigation  311ms
+ ✓ src/integration/v2CommandTransaction.test.ts (3 tests) 306ms
+ ✓ src/features/reporters/network.test.tsx (1 test) 204ms
+ ✓ src/shell/AppShell.test.tsx (1 test) 239ms
+ ✓ src/features/markets/MarketsV2Screen.test.tsx (1 test) 304ms
+   ✓ MarketsV2Screen > uses stateful controls and deterministic summary-card navigation without a growth-goal panel  303ms
+ ✓ src/integration/v2ProgramComposition.test.ts (2 tests) 184ms
+ ✓ src/ui/v2.test.tsx (2 tests) 252ms
+ ✓ src/integration/v2Persistence.test.tsx (5 tests) 10484ms
+   ✓ V2 browser storage integration > opens a reporter's exact recruiting market instead of reusing the service-market filter  1912ms
+   ✓ V2 browser storage integration > keeps a market selection open to all canonical requests in its scheduling window  1942ms
+   ✓ V2 browser storage integration > reloads saved work and the scenario clock on remount, then explicitly restores the seed  5732ms
+   ✓ V2 browser storage integration > preserves malformed bytes and unrelated data until explicit namespace reset  752ms
+ ✓ src/ui/index.test.tsx (2 tests) 187ms
+ ✓ src/logic/programs/index.test.ts (12 tests) 22ms
+ ✓ src/logic/recruiting/recruiting.test.ts (29 tests) 39ms
+ ✓ src/logic/index.test.ts (6 tests) 42ms
+ ✓ src/data/index.test.ts (5 tests) 38ms
+ ✓ src/logic/team/index.test.ts (5 tests) 16ms
+ ✓ src/logic/shared/work.test.ts (2 tests) 3ms
+ ✓ src/logic/shared/invariants.test.ts (6 tests) 4ms
+ ✓ src/contracts/v2/contracts.test.ts (3 tests) 2ms
+ ✓ src/integration/v2Compatibility.test.ts (2 tests) 2ms
+ ❯ src/integration/App.test.tsx (8 tests | 2 failed) 16008ms
+   ✓ P4 integrated V2 experience > renders all five workspaces, keeps the market across navigation, and retains the synthetic disclosure  2100ms
+   ✓ P4 integrated V2 experience > uses the locked Overview composition without restoring the superseded growth-goal panel  2225ms
+   × P4 integrated V2 experience > keeps planning, readiness, acceptance, and delivery as separate replayable checkpoints 5577ms
+     → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+   × P4 integrated V2 experience > opens contextual evidence, closes on Escape with focus return, and carries exact context into work 1894ms
+     → Unable to find an accessible element with the role "button" and name "Inspect the affected requests and missing readiness evidence."
+
+Here are the accessible roles:
+
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"v2-shell__header"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<header />[39m
+
+  Name "":
+  [36m<header />[39m
+
+  Name "":
+  [36m<header />[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Provider growth command center":
+  [36m<h1 />[39m
+
+  Name "What needs attention":
+  [36m<h2 />[39m
+
+  Name "Wait time by status":
+  [36m<h2 />[39m
+
+  Name "Candidates":
+  [36m<h2 />[39m
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "Market":
+  [36m<section[39m
+    [33maria-label[39m=[32m"Market"[39m
+    [33mclass[39m=[32m"v2-market-switcher"[39m
+  [36m/>[39m
+
+  Name "Shared filters":
+  [36m<section[39m
+    [33maria-label[39m=[32m"Shared filters"[39m
+    [33mclass[39m=[32m"v2-filter-bar sr-only"[39m
+  [36m/>[39m
+
+  Name "Funnel metrics":
+  [36m<section[39m
+    [33maria-label[39m=[32m"Funnel metrics"[39m
+    [33mclass[39m=[32m"kpi-strip"[39m
+  [36m/>[39m
+
+  Name "Scenario and action result":
+  [36m<section[39m
+    [33maria-label[39m=[32m"Scenario and action result"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "All":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "LAX":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"is-active"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "SFO":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "DFW":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "ORD":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "ATL":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Overview":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Funnel":
+  [36m<button[39m
+    [33maria-current[39m=[32m"page"[39m
+    [33mclass[39m=[32m"is-active"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Reporters":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Team":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Programs":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "People":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"is-active"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Bottlenecks":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Edit SLAs":
+  [36m<button[39m
+    [33maria-expanded[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "R7":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"is-active"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "R28":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Applicant":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Screening":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Approved":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Onboarding":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"is-active"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Starting soon":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Applicant 2":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"is-active"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Screening 2":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"is-active"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Approved 2":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"is-active"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Onboarding 13":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"is-active"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Starting soon 1":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"is-active"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Why this?":
+  [36m<button[39m
+    [33mclass[39m=[32m"why-this"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Open the work":
+  [36m<button[39m
+    [33mclass[39m=[32m"quiet-action"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Advance to Plan saved":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Reset demo":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  combobox:
+
+  Name "Market":
+  [36m<select />[39m
+
+  Name "Waiting on":
+  [36m<select[39m
+    [33maria-label[39m=[32m"Waiting on"[39m
+  [36m/>[39m
+
+  Name "Sort":
+  [36m<select[39m
+    [33maria-label[39m=[32m"Sort"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  option:
+
+  Name "All":
+  [36m<option[39m
+    [33mvalue[39m=[32m"ALL"[39m
+  [36m/>[39m
+
+  Name "LAX":
+  [36m<option[39m
+    [33mvalue[39m=[32m"LAX"[39m
+  [36m/>[39m
+
+  Name "SFO":
+  [36m<option[39m
+    [33mvalue[39m=[32m"SFO"[39m
+  [36m/>[39m
+
+  Name "DFW":
+  [36m<option[39m
+    [33mvalue[39m=[32m"DFW"[39m
+  [36m/>[39m
+
+  Name "ORD":
+  [36m<option[39m
+    [33mvalue[39m=[32m"ORD"[39m
+  [36m/>[39m
+
+  Name "ATL":
+  [36m<option[39m
+    [33mvalue[39m=[32m"ATL"[39m
+  [36m/>[39m
+
+  Name "All waiting on":
+  [36m<option[39m
+    [33mvalue[39m=[32m"all"[39m
+  [36m/>[39m
+
+  Name "Blocked: missing-capability-evidence (1)":
+  [36m<option[39m
+    [33mvalue[39m=[32m"Blocked: missing-capability-evidence"[39m
+  [36m/>[39m
+
+  Name "Blocked: p4-capability (1)":
+  [36m<option[39m
+    [33mvalue[39m=[32m"Blocked: p4-capability"[39m
+  [36m/>[39m
+
+  Name "first opportunity (3)":
+  [36m<option[39m
+    [33mvalue[39m=[32m"first opportunity"[39m
+  [36m/>[39m
+
+  Name "No recorded open action (35)":
+  [36m<option[39m
+    [33mvalue[39m=[32m"No recorded open action"[39m
+  [36m/>[39m
+
+  Name "screen (1)":
+  [36m<option[39m
+    [33mvalue[39m=[32m"screen"[39m
+  [36m/>[39m
+
+  Name "Screening information (2)":
+  [36m<option[39m
+    [33mvalue[39m=[32m"Screening information"[39m
+  [36m/>[39m
+
+  Name "Longest waiting":
+  [36m<option[39m
+    [33mvalue[39m=[32m"time"[39m
+  [36m/>[39m
+
+  Name "Name":
+  [36m<option[39m
+    [33mvalue[39m=[32m"name"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  navigation:
+
+  Name "Reporter Growth workspaces":
+  [36m<nav[39m
+    [33maria-label[39m=[32m"Reporter Growth workspaces"[39m
+    [33mclass[39m=[32m"v2-shell__tabs"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  group:
+
+  Name "Capabilities":
+  [36m<fieldset />[39m
+
+  Name "Attendance":
+  [36m<fieldset />[39m
+
+  Name "":
+  [36m<details[39m
+    [33mclass[39m=[32m"v2-shell__scenario-controls"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  checkbox:
+
+  Name "Realtime transcription":
+  [36m<input[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  Name "Standard transcription":
+  [36m<input[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  Name "Remote":
+  [36m<input[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  Name "In person":
+  [36m<input[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  main:
+
+  Name "":
+  [36m<main[39m
+    [33mclass[39m=[32m"v2-shell__content"[39m
+  [36m/>[39m
+
+  Name "Funnel":
+  [36m<main[39m
+    [33maria-label[39m=[32m"Funnel"[39m
+    [33mclass[39m=[32m"workspace funnel"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  [36m<ol />[39m
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  [36m<li />[39m
+
+  Name "":
+  [36m<li />[39m
+
+  Name "":
+  [36m<li />[39m
+
+  --------------------------------------------------
+  figure:
+
+  Name "":
+  [36m<figure[39m
+    [33mclass[39m=[32m"rg-chart rg-chart--axis rg-chart--funnel"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"chart-summary"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  --------------------------------------------------
+  img:
+
+  Name "R7 wait time for Onboarding, scale zero to 30.4 days":
+  [36m<svg[39m
+    [33maria-label[39m=[32m"R7 wait time for Onboarding, scale zero to 30.4 days"[39m
+    [33mrole[39m=[32m"img"[39m
+    [33mviewBox[39m=[32m"0 0 100 100"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "Find candidate":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Find candidate"[39m
+    [33mplaceholder[39m=[32m"Find candidate…"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Felix Ames":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Felix Ames"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Greta Sloan":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Greta Sloan"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Hugo Lin":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Hugo Lin"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Damon Reese":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Damon Reese"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Imani Frost":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Imani Frost"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Elise Warren":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Elise Warren"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Jared Stone":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Jared Stone"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Quincy Lowe":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Quincy Lowe"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Rina Shaw":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Rina Shaw"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Sasha Bell":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Sasha Bell"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Tristan Gray":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Tristan Gray"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Marcus Wren":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Marcus Wren"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Elena Marlow":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Elena Marlow"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Noah Calder":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Noah Calder"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Priya Dalton":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Priya Dalton"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Jonah Mercer":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Jonah Mercer"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Amara Bell":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Amara Bell"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Avery Cole":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Avery Cole"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Della Quinn":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Della Quinn"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Milo Vance":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Milo Vance"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  table:
+
+  Name "":
+  [36m<table />[39m
+
+  --------------------------------------------------
+  rowgroup:
+
+  Name "":
+  [36m<thead />[39m
+
+  Name "":
+  [36m<tbody />[39m
+
+  --------------------------------------------------
+  row:
+
+  Name "Candidate Market Status Next step Waiting on Total in funnel Time in status Notes":
+  [36m<tr />[39m
+
+  Name "Felix Ames LAX Onboarding — — 58.0d · Over 42.0d · Over":
+  [36m<tr />[39m
+
+  Name "Greta Sloan LAX Onboarding — — 58.0d · Over 41.0d · Over":
+  [36m<tr />[39m
+
+  Name "Hugo Lin LAX Onboarding — — 58.0d · Over 40.0d · Over":
+  [36m<tr />[39m
+
+  Name "Damon Reese LAX Onboarding — — 58.0d · Over 39.0d · Over":
+  [36m<tr />[39m
+
+  Name "Imani Frost LAX Onboarding — — 58.0d · Over 39.0d · Over":
+  [36m<tr />[39m
+
+  Name "Elise Warren LAX Onboarding — — 58.0d · Over 38.0d · Over":
+  [36m<tr />[39m
+
+  Name "Jared Stone LAX Onboarding — — 58.0d · Over 38.0d · Over":
+  [36m<tr />[39m
+
+  Name "Quincy Lowe LAX Onboarding — — 58.0d · Over 27.0d · Over":
+  [36m<tr />[39m
+
+  Name "Rina Shaw LAX Onboarding — — 58.0d · Over 26.0d · Over":
+  [36m<tr />[39m
+
+  Name "Sasha Bell LAX Onboarding — — 58.0d · Over 25.0d · Over":
+  [36m<tr />[39m
+
+  Name "Tristan Gray LAX Onboarding — — 58.0d · Over 24.0d · Over":
+  [36m<tr />[39m
+
+  Name "Marcus Wren LAX Starting soon Review a first opportunity with the newly ready reporter Concrete work remains open 33.0d · Over 8.0d · Over":
+  [36m<tr />[39m
+
+  Name "Elena Marlow LAX Screening Resolve screening information p4-capability 33.0d · Over 7.0d · Over":
+  [36m<tr />[39m
+
+  Name "Noah Calder LAX Onboarding — — 32.0d · At 10.0d · At":
+  [36m<tr />[39m
+
+  Name "Priya Dalton LAX Approved — — 32.0d · At 5.0d · At":
+  [36m<tr />[39m
+
+  Name "Jonah Mercer LAX Screening Review the open realtime screening case Open work is overdue 31.0d · Under 5.0d · Under":
+  [36m<tr />[39m
+
+  Name "Amara Bell LAX Applicant — — 31.0d · Under 3.0d · Under":
+  [36m<tr />[39m
+
+  Name "Avery Cole LAX Onboarding Resolve screening information sample-realtime-verification 15.0d · Under 6.0d · Under":
+  [36m<tr />[39m
+
+  Name "Della Quinn LAX Approved — — 5.0d · Under 2.0d · Under":
+  [36m<tr />[39m
+
+  Name "Milo Vance LAX Applicant — — 4.0d · Under 3.0d · Under":
+  [36m<tr />[39m
+
+  --------------------------------------------------
+  columnheader:
+
+  Name "Candidate":
+  [36m<th />[39m
+
+  Name "Market":
+  [36m<th />[39m
+
+  Name "Status":
+  [36m<th />[39m
+
+  Name "Next step":
+  [36m<th />[39m
+
+  Name "Waiting on":
+  [36m<th />[39m
+
+  Name "Total in funnel":
+  [36m<th />[39m
+
+  Name "Time in status":
+  [36m<th />[39m
+
+  Name "Notes":
+  [36m<th />[39m
+
+  Name "Felix Ames":
+  [36m<th />[39m
+
+  Name "Greta Sloan":
+  [36m<th />[39m
+
+  Name "Hugo Lin":
+  [36m<th />[39m
+
+  Name "Damon Reese":
+  [36m<th />[39m
+
+  Name "Imani Frost":
+  [36m<th />[39m
+
+  Name "Elise Warren":
+  [36m<th />[39m
+
+  Name "Jared Stone":
+  [36m<th />[39m
+
+  Name "Quincy Lowe":
+  [36m<th />[39m
+
+  Name "Rina Shaw":
+  [36m<th />[39m
+
+  Name "Sasha Bell":
+  [36m<th />[39m
+
+  Name "Tristan Gray":
+  [36m<th />[39m
+
+  Name "Marcus Wren":
+  [36m<th />[39m
+
+  Name "Elena Marlow":
+  [36m<th />[39m
+
+  Name "Noah Calder":
+  [36m<th />[39m
+
+  Name "Priya Dalton":
+  [36m<th />[39m
+
+  Name "Jonah Mercer":
+  [36m<th />[39m
+
+  Name "Amara Bell":
+  [36m<th />[39m
+
+  Name "Avery Cole":
+  [36m<th />[39m
+
+  Name "Della Quinn":
+  [36m<th />[39m
+
+  Name "Milo Vance":
+  [36m<th />[39m
+
+  --------------------------------------------------
+  cell:
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "42.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "41.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "40.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "39.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "39.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "38.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "38.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "27.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "26.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "25.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "24.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Starting soon":
+  [36m<td />[39m
+
+  Name "Review a first opportunity with the newly ready reporter":
+  [36m<td />[39m
+
+  Name "Concrete work remains open":
+  [36m<td />[39m
+
+  Name "33.0d · Over":
+  [36m<td />[39m
+
+  Name "8.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Screening":
+  [36m<td />[39m
+
+  Name "Resolve screening information":
+  [36m<td />[39m
+
+  Name "p4-capability":
+  [36m<td />[39m
+
+  Name "33.0d · Over":
+  [36m<td />[39m
+
+  Name "7.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "32.0d · At":
+  [36m<td />[39m
+
+  Name "10.0d · At":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Approved":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "32.0d · At":
+  [36m<td />[39m
+
+  Name "5.0d · At":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Screening":
+  [36m<td />[39m
+
+  Name "Review the open realtime screening case":
+  [36m<td />[39m
+
+  Name "Open work is overdue":
+  [36m<td />[39m
+
+  Name "31.0d · Under":
+  [36m<td />[39m
+
+  Name "5.0d · Under":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Applicant":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "31.0d · Under":
+  [36m<td />[39m
+
+  Name "3.0d · Under":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "Resolve screening information":
+  [36m<td />[39m
+
+  Name "sample-realtime-verification":
+  [36m<td />[39m
+
+  Name "15.0d · Under":
+  [36m<td />[39m
+
+  Name "6.0d · Under":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Approved":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "5.0d · Under":
+  [36m<td />[39m
+
+  Name "2.0d · Under":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Applicant":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "4.0d · Under":
+  [36m<td />[39m
+
+  Name "3.0d · Under":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  contentinfo:
+
+  Name "":
+  [36m<footer[39m
+    [33mclass[39m=[32m"v2-shell__footer"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"v2-shell"[39m
+    [36m>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"v2-shell__header"[39m
+      [36m>[39m
+        [36m<h1>[39m
+          [0mProvider growth command center[0m
+        [36m</h1>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"v2-shell__focus"[39m
+        [36m>[39m
+          [0mFocus [0m
+          [36m<strong>[39m
+            [0mScreening is over SLA at 7 days.[0m
+          [36m</strong>[39m
+        [36m</span>[39m
+      [36m</header>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"Market"[39m
+        [33mclass[39m=[32m"v2-market-switcher"[39m
+      [36m>[39m
+        [36m<span>[39m
+          [0mMarket[0m
+        [36m</span>[39m
+        [36m<div>[39m
+          [36m<button[39m
+            [33maria-pressed[39m=[32m"false"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mAll[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33maria-pressed[39m=[32m"true"[39m
+            [33mclass[39m=[32m"is-active"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mLAX[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33maria-pressed[39m=[32m"false"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mSFO[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33maria-pressed[39m=[32m"false"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mDFW[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33maria-pressed[39m=[32m"false"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mORD[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33maria-pressed[39m=[32m"false"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mATL[0m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"sr-only"[39m
+        [36m>[39m
+          [0mMarket[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"ALL"[39m
+            [36m>[39m
+              [0mAll[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"LAX"[39m
+            [36m>[39m
+              [0mLAX[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"SFO"[39m
+            [36m>[39m
+              [0mSFO[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"DFW"[39m
+            [36m>[39m
+              [0mDFW[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"ORD"[39m
+            [36m>[39m
+              [0mORD[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"ATL"[39m
+            [36m>[39m
+              [0mATL[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+      [36m</section>[39m
+      [36m<nav[39m
+        [33maria-label[39m=[32m"Reporter Growth workspaces"[39m
+        [33mclass[39m=[32m"v2-shell__tabs"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mOverview[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33maria-current[39m=[32m"page"[39m
+          [33mclass[39m=[32m"is-active"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mFunnel[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mReporters[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mTeam[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mPrograms[0m
+        [36m</button>[39m
+      [36m</nav>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"Shared filters"[39m
+        [33mclass[39m=[32m"v2-filter-bar sr-only"[39m
+      [36m>[39m
+        [36m<fieldset>[39m
+          [36m<legend>[39m
+            [0mCapabilities[0m
+          [36m</legend>[39m
+          [36m<label>[39m
+            [36m<input[39m
+              [33mtype[39m=[32m"checkbox"[39m
+            [36m/>[39m
+            [0mRealtime transcription[0m
+          [36m</label>[39m
+          [36m<label>[39m
+            [36m<input[39m
+              [33mtype[39m=[32m"checkbox"[39m
+            [36m/>[39m
+            [0mStandard transcription[0m
+          [36m</label>[39m
+        [36m</fieldset>[39m
+        [36m<fieldset>[39m
+          [36m<legend>[39m
+            [0mAttendance[0m
+          [36m</legend>[39m
+          [36m<label>[39m
+            [36m<input[39m
+              [33mtype[39m=[32m"checkbox"[39m
+            [36m/>[39m
+            [0mRemote[0m
+          [36m</label>[39m
+          [36m<label>[39m
+            [36m<input[39m
+              [33mtype[39m=[32m"checkbox"[39m
+            [36m/>[39m
+            [0mIn person[0m
+          [36m</label>[39m
+        [36m</fieldset>[39m
+      [36m</section>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"v2-shell__content"[39m
+      [36m>[39m
+        [36m<main[39m
+          [33maria-label[39m=[32m"Funnel"[39m
+          [33mclass[39m=[32m"workspace funnel"[39m
+        [36m>[39m
+          [36m<section[39m
+            [33maria-label[39m=[32m"Funnel metrics"[39m
+            [33mclass[39m=[32m"kpi-strip"[39m
+          [36m>[39m
+            [36m<div>[39m
+              [36m<span>[39m
+                [0mPeople[0m
+              [36m</span>[39m
+              [36m<strong>[39m
+                [0m20[0m
+              [36m</strong>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<span>[39m
+                [0mNeed follow-up[0m
+              [36m</span>[39m
+              [36m<strong>[39m
+                [0m6[0m
+              [36m</strong>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<span>[39m
+                [0mSlowest step[0m
+              [36m</span>[39m
+              [36m<strong>[39m
+                [0m30 days[0m
+              [36m</strong>[39m
+              [36m<small>[39m
+                [0mOnboarding[0m
+              [36m</small>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<span>[39m
+                [0mStarted work[0m
+              [36m</span>[39m
+              [36m<strong>[39m
+      ...
+   ✓ P4 integrated V2 experience > reconciles program membership for LAX, All, and SFO without averaging percentages  622ms
+   ✓ P4 integrated V2 experience > persists program commands without manufacturing operational outcomes  1414ms
+   ✓ P4 integrated V2 experience > creates canonical Team work from the locked Add work form  837ms
+   ✓ P4 integrated V2 experience > persists Programs notes and next steps without changing outcomes  1337ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/integration/App.test.tsx > P4 integrated V2 experience > keeps planning, readiness, acceptance, and delivery as separate replayable checkpoints
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/integration/App.test.tsx:80:3
+     78|   });
+     79|
+     80|   it("keeps planning, readiness, acceptance, and delivery as separate …
+       |   ^
+     81|     const user = await renderApp();
+     82|     await user.click(marketButton("LAX"));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/integration/App.test.tsx > P4 integrated V2 experience > opens contextual evidence, closes on Escape with focus return, and carries exact context into work
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Inspect the affected requests and missing readiness evidence."
+
+Here are the accessible roles:
+
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"v2-shell__header"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<header />[39m
+
+  Name "":
+  [36m<header />[39m
+
+  Name "":
+  [36m<header />[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Provider growth command center":
+  [36m<h1 />[39m
+
+  Name "What needs attention":
+  [36m<h2 />[39m
+
+  Name "Wait time by status":
+  [36m<h2 />[39m
+
+  Name "Candidates":
+  [36m<h2 />[39m
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "Market":
+  [36m<section[39m
+    [33maria-label[39m=[32m"Market"[39m
+    [33mclass[39m=[32m"v2-market-switcher"[39m
+  [36m/>[39m
+
+  Name "Shared filters":
+  [36m<section[39m
+    [33maria-label[39m=[32m"Shared filters"[39m
+    [33mclass[39m=[32m"v2-filter-bar sr-only"[39m
+  [36m/>[39m
+
+  Name "Funnel metrics":
+  [36m<section[39m
+    [33maria-label[39m=[32m"Funnel metrics"[39m
+    [33mclass[39m=[32m"kpi-strip"[39m
+  [36m/>[39m
+
+  Name "Scenario and action result":
+  [36m<section[39m
+    [33maria-label[39m=[32m"Scenario and action result"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "All":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "LAX":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"is-active"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "SFO":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "DFW":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "ORD":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "ATL":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Overview":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Funnel":
+  [36m<button[39m
+    [33maria-current[39m=[32m"page"[39m
+    [33mclass[39m=[32m"is-active"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Reporters":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Team":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Programs":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "People":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"is-active"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Bottlenecks":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Edit SLAs":
+  [36m<button[39m
+    [33maria-expanded[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "R7":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"is-active"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "R28":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Applicant":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Screening":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Approved":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Onboarding":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"is-active"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Starting soon":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Applicant 2":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"is-active"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Screening 2":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"is-active"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Approved 2":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"is-active"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Onboarding 13":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"is-active"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Starting soon 1":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"is-active"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Why this?":
+  [36m<button[39m
+    [33mclass[39m=[32m"why-this"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Open the work":
+  [36m<button[39m
+    [33mclass[39m=[32m"quiet-action"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Advance to Plan saved":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Reset demo":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  combobox:
+
+  Name "Market":
+  [36m<select />[39m
+
+  Name "Waiting on":
+  [36m<select[39m
+    [33maria-label[39m=[32m"Waiting on"[39m
+  [36m/>[39m
+
+  Name "Sort":
+  [36m<select[39m
+    [33maria-label[39m=[32m"Sort"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  option:
+
+  Name "All":
+  [36m<option[39m
+    [33mvalue[39m=[32m"ALL"[39m
+  [36m/>[39m
+
+  Name "LAX":
+  [36m<option[39m
+    [33mvalue[39m=[32m"LAX"[39m
+  [36m/>[39m
+
+  Name "SFO":
+  [36m<option[39m
+    [33mvalue[39m=[32m"SFO"[39m
+  [36m/>[39m
+
+  Name "DFW":
+  [36m<option[39m
+    [33mvalue[39m=[32m"DFW"[39m
+  [36m/>[39m
+
+  Name "ORD":
+  [36m<option[39m
+    [33mvalue[39m=[32m"ORD"[39m
+  [36m/>[39m
+
+  Name "ATL":
+  [36m<option[39m
+    [33mvalue[39m=[32m"ATL"[39m
+  [36m/>[39m
+
+  Name "All waiting on":
+  [36m<option[39m
+    [33mvalue[39m=[32m"all"[39m
+  [36m/>[39m
+
+  Name "Blocked: missing-capability-evidence (1)":
+  [36m<option[39m
+    [33mvalue[39m=[32m"Blocked: missing-capability-evidence"[39m
+  [36m/>[39m
+
+  Name "Blocked: p4-capability (1)":
+  [36m<option[39m
+    [33mvalue[39m=[32m"Blocked: p4-capability"[39m
+  [36m/>[39m
+
+  Name "first opportunity (3)":
+  [36m<option[39m
+    [33mvalue[39m=[32m"first opportunity"[39m
+  [36m/>[39m
+
+  Name "No recorded open action (35)":
+  [36m<option[39m
+    [33mvalue[39m=[32m"No recorded open action"[39m
+  [36m/>[39m
+
+  Name "screen (1)":
+  [36m<option[39m
+    [33mvalue[39m=[32m"screen"[39m
+  [36m/>[39m
+
+  Name "Screening information (2)":
+  [36m<option[39m
+    [33mvalue[39m=[32m"Screening information"[39m
+  [36m/>[39m
+
+  Name "Longest waiting":
+  [36m<option[39m
+    [33mvalue[39m=[32m"time"[39m
+  [36m/>[39m
+
+  Name "Name":
+  [36m<option[39m
+    [33mvalue[39m=[32m"name"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  navigation:
+
+  Name "Reporter Growth workspaces":
+  [36m<nav[39m
+    [33maria-label[39m=[32m"Reporter Growth workspaces"[39m
+    [33mclass[39m=[32m"v2-shell__tabs"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  group:
+
+  Name "Capabilities":
+  [36m<fieldset />[39m
+
+  Name "Attendance":
+  [36m<fieldset />[39m
+
+  Name "":
+  [36m<details[39m
+    [33mclass[39m=[32m"v2-shell__scenario-controls"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  checkbox:
+
+  Name "Realtime transcription":
+  [36m<input[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  Name "Standard transcription":
+  [36m<input[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  Name "Remote":
+  [36m<input[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  Name "In person":
+  [36m<input[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  main:
+
+  Name "":
+  [36m<main[39m
+    [33mclass[39m=[32m"v2-shell__content"[39m
+  [36m/>[39m
+
+  Name "Funnel":
+  [36m<main[39m
+    [33maria-label[39m=[32m"Funnel"[39m
+    [33mclass[39m=[32m"workspace funnel"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  [36m<ol />[39m
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  [36m<li />[39m
+
+  Name "":
+  [36m<li />[39m
+
+  Name "":
+  [36m<li />[39m
+
+  --------------------------------------------------
+  figure:
+
+  Name "":
+  [36m<figure[39m
+    [33mclass[39m=[32m"rg-chart rg-chart--axis rg-chart--funnel"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"chart-summary"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  --------------------------------------------------
+  img:
+
+  Name "R7 wait time for Onboarding, scale zero to 30.4 days":
+  [36m<svg[39m
+    [33maria-label[39m=[32m"R7 wait time for Onboarding, scale zero to 30.4 days"[39m
+    [33mrole[39m=[32m"img"[39m
+    [33mviewBox[39m=[32m"0 0 100 100"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "Find candidate":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Find candidate"[39m
+    [33mplaceholder[39m=[32m"Find candidate…"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Felix Ames":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Felix Ames"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Greta Sloan":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Greta Sloan"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Hugo Lin":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Hugo Lin"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Damon Reese":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Damon Reese"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Imani Frost":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Imani Frost"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Elise Warren":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Elise Warren"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Jared Stone":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Jared Stone"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Quincy Lowe":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Quincy Lowe"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Rina Shaw":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Rina Shaw"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Sasha Bell":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Sasha Bell"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Tristan Gray":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Tristan Gray"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Marcus Wren":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Marcus Wren"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Elena Marlow":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Elena Marlow"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Noah Calder":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Noah Calder"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Priya Dalton":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Priya Dalton"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Jonah Mercer":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Jonah Mercer"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Amara Bell":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Amara Bell"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Avery Cole":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Avery Cole"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Della Quinn":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Della Quinn"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Notes for Milo Vance":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Notes for Milo Vance"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  table:
+
+  Name "":
+  [36m<table />[39m
+
+  --------------------------------------------------
+  rowgroup:
+
+  Name "":
+  [36m<thead />[39m
+
+  Name "":
+  [36m<tbody />[39m
+
+  --------------------------------------------------
+  row:
+
+  Name "Candidate Market Status Next step Waiting on Total in funnel Time in status Notes":
+  [36m<tr />[39m
+
+  Name "Felix Ames LAX Onboarding — — 58.0d · Over 42.0d · Over":
+  [36m<tr />[39m
+
+  Name "Greta Sloan LAX Onboarding — — 58.0d · Over 41.0d · Over":
+  [36m<tr />[39m
+
+  Name "Hugo Lin LAX Onboarding — — 58.0d · Over 40.0d · Over":
+  [36m<tr />[39m
+
+  Name "Damon Reese LAX Onboarding — — 58.0d · Over 39.0d · Over":
+  [36m<tr />[39m
+
+  Name "Imani Frost LAX Onboarding — — 58.0d · Over 39.0d · Over":
+  [36m<tr />[39m
+
+  Name "Elise Warren LAX Onboarding — — 58.0d · Over 38.0d · Over":
+  [36m<tr />[39m
+
+  Name "Jared Stone LAX Onboarding — — 58.0d · Over 38.0d · Over":
+  [36m<tr />[39m
+
+  Name "Quincy Lowe LAX Onboarding — — 58.0d · Over 27.0d · Over":
+  [36m<tr />[39m
+
+  Name "Rina Shaw LAX Onboarding — — 58.0d · Over 26.0d · Over":
+  [36m<tr />[39m
+
+  Name "Sasha Bell LAX Onboarding — — 58.0d · Over 25.0d · Over":
+  [36m<tr />[39m
+
+  Name "Tristan Gray LAX Onboarding — — 58.0d · Over 24.0d · Over":
+  [36m<tr />[39m
+
+  Name "Marcus Wren LAX Starting soon Review a first opportunity with the newly ready reporter Concrete work remains open 33.0d · Over 8.0d · Over":
+  [36m<tr />[39m
+
+  Name "Elena Marlow LAX Screening Resolve screening information p4-capability 33.0d · Over 7.0d · Over":
+  [36m<tr />[39m
+
+  Name "Noah Calder LAX Onboarding — — 32.0d · At 10.0d · At":
+  [36m<tr />[39m
+
+  Name "Priya Dalton LAX Approved — — 32.0d · At 5.0d · At":
+  [36m<tr />[39m
+
+  Name "Jonah Mercer LAX Screening Review the open realtime screening case Open work is overdue 31.0d · Under 5.0d · Under":
+  [36m<tr />[39m
+
+  Name "Amara Bell LAX Applicant — — 31.0d · Under 3.0d · Under":
+  [36m<tr />[39m
+
+  Name "Avery Cole LAX Onboarding Resolve screening information sample-realtime-verification 15.0d · Under 6.0d · Under":
+  [36m<tr />[39m
+
+  Name "Della Quinn LAX Approved — — 5.0d · Under 2.0d · Under":
+  [36m<tr />[39m
+
+  Name "Milo Vance LAX Applicant — — 4.0d · Under 3.0d · Under":
+  [36m<tr />[39m
+
+  --------------------------------------------------
+  columnheader:
+
+  Name "Candidate":
+  [36m<th />[39m
+
+  Name "Market":
+  [36m<th />[39m
+
+  Name "Status":
+  [36m<th />[39m
+
+  Name "Next step":
+  [36m<th />[39m
+
+  Name "Waiting on":
+  [36m<th />[39m
+
+  Name "Total in funnel":
+  [36m<th />[39m
+
+  Name "Time in status":
+  [36m<th />[39m
+
+  Name "Notes":
+  [36m<th />[39m
+
+  Name "Felix Ames":
+  [36m<th />[39m
+
+  Name "Greta Sloan":
+  [36m<th />[39m
+
+  Name "Hugo Lin":
+  [36m<th />[39m
+
+  Name "Damon Reese":
+  [36m<th />[39m
+
+  Name "Imani Frost":
+  [36m<th />[39m
+
+  Name "Elise Warren":
+  [36m<th />[39m
+
+  Name "Jared Stone":
+  [36m<th />[39m
+
+  Name "Quincy Lowe":
+  [36m<th />[39m
+
+  Name "Rina Shaw":
+  [36m<th />[39m
+
+  Name "Sasha Bell":
+  [36m<th />[39m
+
+  Name "Tristan Gray":
+  [36m<th />[39m
+
+  Name "Marcus Wren":
+  [36m<th />[39m
+
+  Name "Elena Marlow":
+  [36m<th />[39m
+
+  Name "Noah Calder":
+  [36m<th />[39m
+
+  Name "Priya Dalton":
+  [36m<th />[39m
+
+  Name "Jonah Mercer":
+  [36m<th />[39m
+
+  Name "Amara Bell":
+  [36m<th />[39m
+
+  Name "Avery Cole":
+  [36m<th />[39m
+
+  Name "Della Quinn":
+  [36m<th />[39m
+
+  Name "Milo Vance":
+  [36m<th />[39m
+
+  --------------------------------------------------
+  cell:
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "42.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "41.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "40.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "39.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "39.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "38.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "38.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "27.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "26.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "25.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "58.0d · Over":
+  [36m<td />[39m
+
+  Name "24.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Starting soon":
+  [36m<td />[39m
+
+  Name "Review a first opportunity with the newly ready reporter":
+  [36m<td />[39m
+
+  Name "Concrete work remains open":
+  [36m<td />[39m
+
+  Name "33.0d · Over":
+  [36m<td />[39m
+
+  Name "8.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Screening":
+  [36m<td />[39m
+
+  Name "Resolve screening information":
+  [36m<td />[39m
+
+  Name "p4-capability":
+  [36m<td />[39m
+
+  Name "33.0d · Over":
+  [36m<td />[39m
+
+  Name "7.0d · Over":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "32.0d · At":
+  [36m<td />[39m
+
+  Name "10.0d · At":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Approved":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "32.0d · At":
+  [36m<td />[39m
+
+  Name "5.0d · At":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Screening":
+  [36m<td />[39m
+
+  Name "Review the open realtime screening case":
+  [36m<td />[39m
+
+  Name "Open work is overdue":
+  [36m<td />[39m
+
+  Name "31.0d · Under":
+  [36m<td />[39m
+
+  Name "5.0d · Under":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Applicant":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "31.0d · Under":
+  [36m<td />[39m
+
+  Name "3.0d · Under":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Onboarding":
+  [36m<td />[39m
+
+  Name "Resolve screening information":
+  [36m<td />[39m
+
+  Name "sample-realtime-verification":
+  [36m<td />[39m
+
+  Name "15.0d · Under":
+  [36m<td />[39m
+
+  Name "6.0d · Under":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Approved":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "5.0d · Under":
+  [36m<td />[39m
+
+  Name "2.0d · Under":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  Name "LAX":
+  [36m<td />[39m
+
+  Name "Applicant":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "—":
+  [36m<td />[39m
+
+  Name "4.0d · Under":
+  [36m<td />[39m
+
+  Name "3.0d · Under":
+  [36m<td />[39m
+
+  Name "":
+  [36m<td />[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  contentinfo:
+
+  Name "":
+  [36m<footer[39m
+    [33mclass[39m=[32m"v2-shell__footer"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"v2-shell"[39m
+    [36m>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"v2-shell__header"[39m
+      [36m>[39m
+        [36m<h1>[39m
+          [0mProvider growth command center[0m
+        [36m</h1>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"v2-shell__focus"[39m
+        [36m>[39m
+          [0mFocus [0m
+          [36m<strong>[39m
+            [0mScreening is over SLA at 7 days.[0m
+          [36m</strong>[39m
+        [36m</span>[39m
+      [36m</header>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"Market"[39m
+        [33mclass[39m=[32m"v2-market-switcher"[39m
+      [36m>[39m
+        [36m<span>[39m
+          [0mMarket[0m
+        [36m</span>[39m
+        [36m<div>[39m
+          [36m<button[39m
+            [33maria-pressed[39m=[32m"false"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mAll[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33maria-pressed[39m=[32m"true"[39m
+            [33mclass[39m=[32m"is-active"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mLAX[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33maria-pressed[39m=[32m"false"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mSFO[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33maria-pressed[39m=[32m"false"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mDFW[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33maria-pressed[39m=[32m"false"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mORD[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33maria-pressed[39m=[32m"false"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mATL[0m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"sr-only"[39m
+        [36m>[39m
+          [0mMarket[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"ALL"[39m
+            [36m>[39m
+              [0mAll[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"LAX"[39m
+            [36m>[39m
+              [0mLAX[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"SFO"[39m
+            [36m>[39m
+              [0mSFO[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"DFW"[39m
+            [36m>[39m
+              [0mDFW[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"ORD"[39m
+            [36m>[39m
+              [0mORD[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"ATL"[39m
+            [36m>[39m
+              [0mATL[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+      [36m</section>[39m
+      [36m<nav[39m
+        [33maria-label[39m=[32m"Reporter Growth workspaces"[39m
+        [33mclass[39m=[32m"v2-shell__tabs"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mOverview[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33maria-current[39m=[32m"page"[39m
+          [33mclass[39m=[32m"is-active"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mFunnel[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mReporters[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mTeam[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mPrograms[0m
+        [36m</button>[39m
+      [36m</nav>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"Shared filters"[39m
+        [33mclass[39m=[32m"v2-filter-bar sr-only"[39m
+      [36m>[39m
+        [36m<fieldset>[39m
+          [36m<legend>[39m
+            [0mCapabilities[0m
+          [36m</legend>[39m
+          [36m<label>[39m
+            [36m<input[39m
+              [33mtype[39m=[32m"checkbox"[39m
+            [36m/>[39m
+            [0mRealtime transcription[0m
+          [36m</label>[39m
+          [36m<label>[39m
+            [36m<input[39m
+              [33mtype[39m=[32m"checkbox"[39m
+            [36m/>[39m
+            [0mStandard transcription[0m
+          [36m</label>[39m
+        [36m</fieldset>[39m
+        [36m<fieldset>[39m
+          [36m<legend>[39m
+            [0mAttendance[0m
+          [36m</legend>[39m
+          [36m<label>[39m
+            [36m<input[39m
+              [33mtype[39m=[32m"checkbox"[39m
+            [36m/>[39m
+            [0mRemote[0m
+          [36m</label>[39m
+          [36m<label>[39m
+            [36m<input[39m
+              [33mtype[39m=[32m"checkbox"[39m
+            [36m/>[39m
+            [0mIn person[0m
+          [36m</label>[39m
+        [36m</fieldset>[39m
+      [36m</section>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"v2-shell__content"[39m
+      [36m>[39m
+        [36m<main[39m
+          [33maria-label[39m=[32m"Funnel"[39m
+          [33mclass[39m=[32m"workspace funnel"[39m
+        [36m>[39m
+          [36m<section[39m
+            [33maria-label[39m=[32m"Funnel metrics"[39m
+            [33mclass[39m=[32m"kpi-strip"[39m
+          [36m>[39m
+            [36m<div>[39m
+              [36m<span>[39m
+                [0mPeople[0m
+              [36m</span>[39m
+              [36m<strong>[39m
+                [0m20[0m
+              [36m</strong>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<span>[39m
+                [0mNeed follow-up[0m
+              [36m</span>[39m
+              [36m<strong>[39m
+                [0m6[0m
+              [36m</strong>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<span>[39m
+                [0mSlowest step[0m
+              [36m</span>[39m
+              [36m<strong>[39m
+                [0m30 days[0m
+              [36m</strong>[39m
+              [36m<small>[39m
+                [0mOnboarding[0m
+              [36m</small>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<span>[39m
+                [0mStarted work[0m
+              [36m</span>[39m
+              [36m<strong>[39m
+      ...
+ ❯ Object.getElementError ../../../Users/pc/Desktop/STENO/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../../Users/pc/Desktop/STENO/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../../Users/pc/Desktop/STENO/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../../Users/pc/Desktop/STENO/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/integration/App.test.tsx:121:28
+    119|     const user = await renderApp();
+    120|     await user.click(marketButton("LAX"));
+    121|     const trigger = screen.getByRole("button", { name: "Inspect the af…
+       |                            ^
+    122|
+    123|     await user.click(trigger);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 32 passed (33)
+      Tests  2 failed | 269 passed (271)
+   Start at  23:46:25
+   Duration  17.44s (transform 1.54s, setup 1.59s, collect 5.29s, tests 63.65s, environment 14.10s, prepare 1.88s)
+
