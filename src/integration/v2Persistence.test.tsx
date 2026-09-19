@@ -20,7 +20,7 @@ describe("V2 browser storage integration", () => {
     const user = userEvent.setup();
     render(<App />);
     await screen.findByRole("region", { name: "Overview metrics" });
-    await user.click(screen.getByRole("button", { name: "LAX", exact: true }));
+    await user.click(screen.getByRole("button", { name: "LAX" }));
     const metrics = screen.getByRole("region", { name: "Overview metrics" });
     expect(within(metrics).getByText("Open jobs").parentElement).toHaveTextContent("11");
   });
