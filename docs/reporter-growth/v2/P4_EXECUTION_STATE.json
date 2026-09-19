@@ -699,5 +699,21 @@
       }
     }
   ],
-  "active_lane": null
+  "active_lane": {
+    "role": "data",
+    "task_name": "/root/ip1_data_history",
+    "worktree": "/private/tmp/steno-interview-ip1-data-history",
+    "branch": "codex/interview-ip1-data-history",
+    "base_commit": "0a52597dcc042d521d092547f0eb6b9ba7f00036",
+    "source_contract_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
+    "prerequisite_contract_commit": "662e7de0e3b87305a22f8a56ac67c2b2a48004cf",
+    "requests": [
+      "IC07_history_validation"
+    ],
+    "status": "running",
+    "runtime_evidence": {
+      "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-data-history-worker-runtime.json",
+      "sha256": "6ea6879034fa1ea08c69316e0fab6e404df621807065c0f3267abd123c51b8fe"
+    }
+  }
 }
