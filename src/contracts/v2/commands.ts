@@ -10,6 +10,7 @@ import type {
   WorkItemId,
 } from "./ids";
 import type { RecordPointer } from "./references";
+import type { DemoSnapshotV2 } from "./snapshot";
 import type { CoachingAction, TeamTarget, WorkItemChanges, WorkItemStatus, WorkOwnershipDomain, WorkPriority, WorkQualityCheck } from "./work";
 
 export type V2CommandType =
@@ -47,6 +48,13 @@ export interface V2CommandEnvelope<TType extends V2CommandType, TPayload> {
   readonly type: TType;
   readonly context: V2CommandContext;
   readonly payload: TPayload;
+}
+
+/** A domain validates facts; integration alone appends replay metadata and commits the revision. */
+export interface V2CommandMutation {
+  readonly snapshot: DemoSnapshotV2;
+  readonly affectedRecords: readonly RecordPointer[];
+  readonly message: string;
 }
 
 export interface WorkAssignPayload {

@@ -38,6 +38,10 @@ Use storage key `reporter-growth.v2.interview.v1`, a `reporter-growth-v2` envelo
 
 Work edits append actor/time/command-linked history and optional notes, and update only explicitly supplied fields. Notes preserve internal whitespace. Completion evidence must be nonempty, resolvable, known at the command time and related to the work; neither status nor note editing manufactures lifecycle or outcome records. A blocked legacy task stays in its last non-blocked open/in-progress board column; clearing the blocker returns to that column. The three visible columns are not a new canonical lifecycle.
 
+### Coordinator transaction boundary (September 18 continuation)
+
+`V2CommandMutation` is the additive shared result for a domain's pure command preparer: the proposed snapshot, affected canonical references, and a concise message. It does not acknowledge persistence. The domain validates its semantic inputs and appends appropriate work/decision history, without changing revision, clock, replay IDs, scenario IDs, or command records. Coordinator `commitV2Command` in `src/integration/v2CommandTransaction.ts` loads through the single repository, checks replay before stale revision, verifies current demo time and active actor, stages the domain mutation on a clone, appends one replay/command record, and acknowledges only after `repository.save` succeeds. Integration invokes it through the existing serialized mutation queue. Repository save remains the only revision increment. Work/Programs operations must not invent lifecycle, readiness, assignments, outcomes, or enrollment. Data keeps its frozen persistence boundary; this transaction addition changes no stored record fields.
+
 ## Serial execution and dispatch packet
 
 1. Finish coordinator-owned contract and integration boundaries with focused invariant checks; commit a compiling baseline. Keep the new data/logic and visual gates pending until their actual evidence exists.
