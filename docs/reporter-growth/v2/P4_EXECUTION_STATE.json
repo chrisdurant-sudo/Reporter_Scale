@@ -320,10 +320,10 @@
       }
     ],
     "latest_coordinator_verification": {
-      "candidate_commit": "702e95a8364232d03c913460d606970aaed1e7e0",
+      "candidate_commit": "4e2a715041643c2c9ccc428086258e8f77fb894b",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/702e95a8364232d03c913460d606970aaed1e7e0-ip1-data-history-verification.json",
-        "sha256": "ae083a49fe14dc9c841d2af24f8d036620e77d29488e09b27ec30b456988cd7e"
+        "file": "docs/reporter-growth/v2/evidence/4e2a715041643c2c9ccc428086258e8f77fb894b-ip1-network-verification.json",
+        "sha256": "bf0f59f52370c25d2af875ba50b9ac218ccb1a309def07461a1c41c9befe1e74"
       }
     },
     "continuation_authorization": {
@@ -379,8 +379,8 @@
   "fanout_authorized": false,
   "current_phase": "IP1_serial_data_logic",
   "current_candidate": {
-    "commit": "702e95a8364232d03c913460d606970aaed1e7e0",
-    "status": "data_capacity_recruiting_integrated_history_validation_repaired_full_suite_passed",
+    "commit": "4e2a715041643c2c9ccc428086258e8f77fb894b",
+    "status": "data_capacity_recruiting_network_integrated_full_suite_passed",
     "defect_register": "docs/reporter-growth/v2/INTERVIEW_PRODUCT_REVIEW_2026-09-18.md"
   },
   "gates": {
@@ -419,15 +419,16 @@
       "completed_roles": [
         "data",
         "capacity",
-        "recruiting"
+        "recruiting",
+        "network"
       ]
     },
     "baseline": {
       "status": "passed",
-      "candidate_commit": "702e95a8364232d03c913460d606970aaed1e7e0",
+      "candidate_commit": "4e2a715041643c2c9ccc428086258e8f77fb894b",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/702e95a8364232d03c913460d606970aaed1e7e0-ip1-data-history-verification.json",
-        "sha256": "ae083a49fe14dc9c841d2af24f8d036620e77d29488e09b27ec30b456988cd7e"
+        "file": "docs/reporter-growth/v2/evidence/4e2a715041643c2c9ccc428086258e8f77fb894b-ip1-network-verification.json",
+        "sha256": "bf0f59f52370c25d2af875ba50b9ac218ccb1a309def07461a1c41c9befe1e74"
       }
     },
     "visual_proof": {
@@ -558,7 +559,7 @@
       "lane": "network",
       "base_commit": "027f754db5e338da631aadc945a4607136f035e5",
       "candidate_commit": "67fbed109a7306204c692dcb1b509f6560591621",
-      "status": "boundary_passed_integration_pending",
+      "status": "passed",
       "changed_paths": [
         "src/logic/network/commands.ts",
         "src/logic/network/credentials.ts",
@@ -570,7 +571,13 @@
       "boundary_exit_code": 0,
       "focused_tests": 41,
       "worker_full_unit_tests": 238,
-      "acceptance_scope": "IC04 prepared logic; coordinator composition and IP07/IP09 presentation/independent acceptance remain pending"
+      "acceptance_scope": "IC04 prepared logic; coordinator composition and IP07/IP09 presentation/independent acceptance remain pending",
+      "integrated_commit": "314d5f67ae9f2bb265186c0af6c34dfb494c6ad5",
+      "full_verification": {
+        "file": "docs/reporter-growth/v2/evidence/4e2a715041643c2c9ccc428086258e8f77fb894b-ip1-network-verification.json",
+        "sha256": "bf0f59f52370c25d2af875ba50b9ac218ccb1a309def07461a1c41c9befe1e74"
+      },
+      "handoff": "docs/reporter-growth/v2/IP1_NETWORK_HANDOFF.md"
     }
   },
   "known_ownership_exceptions": [],
@@ -764,24 +771,18 @@
           "sha256": "3322d8e07c439354678ffcf5cc4b8521336c34a19b067cbd4575c3e46de4ad63"
         }
       }
+    },
+    {
+      "gate": "baseline",
+      "record": {
+        "status": "passed",
+        "candidate_commit": "702e95a8364232d03c913460d606970aaed1e7e0",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/702e95a8364232d03c913460d606970aaed1e7e0-ip1-data-history-verification.json",
+          "sha256": "ae083a49fe14dc9c841d2af24f8d036620e77d29488e09b27ec30b456988cd7e"
+        }
+      }
     }
   ],
-  "active_lane": {
-    "role": "network",
-    "task_name": "/root/ip1_network",
-    "worktree": "/private/tmp/steno-interview-ip1-network",
-    "branch": "codex/interview-ip1-network",
-    "base_commit": "027f754db5e338da631aadc945a4607136f035e5",
-    "source_contract_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
-    "prerequisite_contract_commit": "dbae7f46bec7dbfad049d82df9332099fd46dad0",
-    "requests": [
-      "IC04"
-    ],
-    "status": "review_ready",
-    "runtime_evidence": {
-      "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-network-worker-runtime.json",
-      "sha256": "edcf58a23ca9ee6771ed4d85b14e51bc5162c96747d1524e325a9ab29fd8b1d1"
-    },
-    "candidate_commit": "67fbed109a7306204c692dcb1b509f6560591621"
-  }
+  "active_lane": null
 }

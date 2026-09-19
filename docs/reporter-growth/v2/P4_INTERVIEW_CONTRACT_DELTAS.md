@@ -1,5 +1,7 @@
 # Interview amendment: coordinator contract preparation
 
+> IP1 Network update: Network candidate `67fbed109a7306204c692dcb1b509f6560591621` is integrated. Exact coordinator candidate `4e2a715041643c2c9ccc428086258e8f77fb894b` passes 241 unit/integration, nine acceptance and eight browser tests. Team and Programs remain next, serially; command composition and presentation remain pending. Read `IP1_NETWORK_HANDOFF.md` and the active ledger.
+
 Status: AUTHORIZED — IP1 SERIAL DATA/LOGIC IMPLEMENTATION; CONTRACT BOUNDARY PREPARED AT `dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333`
 
 Continuation: task `01a0b7df-3f9e-7c72-a35a-1a6ed497e596` verified the loaded Astra catalog and Data/Quality/Capacity/Recruiting zero-inheritance probes. Data, browser persistence, Capacity and Recruiting are integrated, including the follow-up malformed-history validation repair. Full baseline `702e95a8364232d03c913460d606970aaed1e7e0` passes 207 unit/integration, nine acceptance and eight browser cases. Network, Team and Programs are next, serially. Read the active ledger for exact evidence. No new start or sample expansion is needed.

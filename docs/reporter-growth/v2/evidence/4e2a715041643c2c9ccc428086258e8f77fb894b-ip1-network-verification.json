@@ -1,0 +1,24 @@
+{
+  "kind": "coordinator_full_verification",
+  "candidate_commit": "4e2a715041643c2c9ccc428086258e8f77fb894b",
+  "verified_at": "2026-09-19T06:14:13.201294+00:00",
+  "command": "env PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/private/tmp/steno-playwright-headless-shell/chrome-headless-shell-mac-arm64/chrome-headless-shell npm run verify:p4",
+  "exit_code": 0,
+  "full_suite_passed": true,
+  "summary_lines": [
+    "P4 readiness verification passed (203 checks).",
+    "P4 interview phase verification passed for IP1_serial_data_logic; worker dispatch is checked separately.",
+    "Test Files  31 passed (31)",
+    "Tests  241 passed (241)",
+    "Test Files  2 passed (2)",
+    "Tests  9 passed (9)",
+    "8 passed (4.6s)"
+  ],
+  "waivers": [],
+  "log": {
+    "file": "docs/reporter-growth/v2/evidence/4e2a715041643c2c9ccc428086258e8f77fb894b-ip1-network-verification.log",
+    "sha256": "6e55e8453ed0b0f3817af11f5708330462b4d210ae0a0ddefde10ef70427e5be"
+  },
+  "log_normalization": "Trailing whitespace stripped",
+  "raw_log_sha256": "6e55e8453ed0b0f3817af11f5708330462b4d210ae0a0ddefde10ef70427e5be"
+}
