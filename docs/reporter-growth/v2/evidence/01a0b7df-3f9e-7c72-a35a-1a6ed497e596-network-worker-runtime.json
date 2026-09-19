@@ -1,0 +1,45 @@
+{
+  "kind": "implementation_runtime_observation",
+  "role": "network",
+  "session_id": "01a0b837-9264-7981-a8b8-29b0a1573600",
+  "task_name": "/root/ip1_network",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "inherited_turns": 0,
+  "inheritance_evidence": "Explicit coordinator spawn fork_turns=none; no overrides",
+  "configured_service_tier": "default",
+  "resolved_service_tier": null,
+  "session_source": "/Users/pc/.codex/sessions/2026/09/18/rollout-2026-09-18T22-50-44-01a0b837-9264-7981-a8b8-29b0a1573600.jsonl",
+  "session_source_sha256_at_observation": "ca1aae18c88de82987f9a7d1d210d60728dcade55f70e36a25e7fe8d318faa38",
+  "session_metadata": {
+    "id": "01a0b837-9264-7981-a8b8-29b0a1573600",
+    "parent_thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+    "cwd": "/private/tmp/steno-p4-coordinator",
+    "source": {
+      "subagent": {
+        "thread_spawn": {
+          "parent_thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+          "depth": 1,
+          "agent_path": "/root/ip1_network",
+          "agent_nickname": "Peirce",
+          "agent_role": "network"
+        }
+      }
+    },
+    "agent_role": "network",
+    "agent_path": "/root/ip1_network"
+  },
+  "turn_contexts": [
+    {
+      "line": 8,
+      "payload": {
+        "model": "gpt-6-astra",
+        "effort": "high",
+        "cwd": "/private/tmp/steno-p4-coordinator",
+        "service_tier": null
+      }
+    }
+  ],
+  "verified_at": "2026-09-19T05:51:05.132529+00:00"
+}
