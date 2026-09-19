@@ -1,5 +1,7 @@
 # P4 implementation readiness
 
+> **September 18 interview amendment:** Read [P4_INTERVIEW_IMPROVEMENT_PLAN.md](P4_INTERVIEW_IMPROVEMENT_PLAN.md) and [ASTRA_COORDINATOR_HANDOFF.md](ASTRA_COORDINATOR_HANDOFF.md) first. The amendment supersedes conflicting presentation requirements below (including Overview KPIs, filter behavior, Team management and pilot details) and adds blocking IP01–IP12 acceptance. This update authorizes planning/model configuration only; new implementation and revised visual proof remain pending. Earlier proof and status statements describe historical scope.
+
 > **Execution update (2026-09-18):** The shared Overview/Funnel baseline remains frozen at
 > `e33ee8d1a70a7f103eaf67354aa98139c1fd20a7`. Quality adopted the stale suites and found two Funnel
 > controlled-input defects. The Experience Lead repaired them at exact source commit
@@ -113,19 +115,15 @@ The sole active registry is [`lanes.v2.json`](lanes.v2.json).
 
 | Lane | Model | Reasoning | Why |
 |---|---|---:|---|
-| Data | GPT-5.6 Luna | medium | Deterministic, high-volume synthetic record generation and validation benefit from a cost-sensitive focused model. |
-| Experience Lead | GPT-5.6 Terra | high | Shared UI architecture, exact visual comparison, interaction work, and cross-workspace coordination require deeper cross-contract reasoning. |
-| Reporters / Team / Programs Experience | GPT-5.6 Terra | medium | Each specialist must implement a polished screen while following the Lead's frozen system and visual reference. |
-| Capacity logic support | GPT-5.6 Terra | high | Supply/demand and projection rules are the most reasoning-sensitive domain calculations. |
-| Recruiting / Network / Team / Programs logic support | GPT-5.6 Terra | medium | Bounded prepared-view or command repairs need solid coding/reasoning without broad redesign authority. |
-| Quality | GPT-5.6 Terra | high | Independent visual comparison, responsive/browser investigation, and cross-contract acceptance require deeper deviation detection in addition to repeatable execution. |
-| Reviewer | GPT-5.6 Terra | high | Final cross-contract inspection and deviation detection need deeper reasoning over the complete candidate. |
+| Data | GPT-6 Astra | high | Deeper review of the assigned contracts and observable product behavior. |
+| Experience Lead | GPT-6 Astra | high | Deeper review of the assigned contracts and observable product behavior. |
+| Reporters / Team / Programs Experience | GPT-6 Astra | high | Deeper review of the assigned contracts and observable product behavior. |
+| Capacity logic support | GPT-6 Astra | high | Deeper review of the assigned contracts and observable product behavior. |
+| Recruiting / Network / Team / Programs logic support | GPT-6 Astra | high | Deeper review of the assigned contracts and observable product behavior. |
+| Quality | GPT-6 Astra | xhigh | Deeper review of the assigned contracts and observable product behavior. |
+| Reviewer | GPT-6 Astra | xhigh | Deeper review of the assigned contracts and observable product behavior. |
 
-Terra is the balanced intelligence/cost model; Luna is optimized for cost-sensitive, high-volume
-work. `medium` remains the normal bounded implementation setting, while `high` is reserved for the
-Experience Lead, Capacity, Quality, and Reviewer lanes that need deeper visual, rule, or cross-cutting
-scrutiny. All lanes use Standard/default processing; no worker may
-switch to Fast, Priority, or Ultrafast.
+Astra/high is the implementation baseline; Quality and Reviewer use Astra/xhigh. The coordinator selects Astra/xhigh interactively. Stronger models do not replace direct visual/behavioral verification. All roles retain Standard/default processing.
 
 ## Mandatory gates
 

@@ -1,5 +1,7 @@
 # V2 lane ownership and sequencing
 
+> **September 18 interview amendment:** Read [P4_INTERVIEW_IMPROVEMENT_PLAN.md](P4_INTERVIEW_IMPROVEMENT_PLAN.md) and [ASTRA_COORDINATOR_HANDOFF.md](ASTRA_COORDINATOR_HANDOFF.md) first. The amendment supersedes conflicting presentation requirements below (including Overview KPIs, filter behavior, Team management and pilot details) and adds blocking IP01–IP12 acceptance. This update authorizes planning/model configuration only; new implementation and revised visual proof remain pending. Earlier proof and status statements describe historical scope.
+
 Status: **P4 ROUTING READY — IMPLEMENTATION INACTIVE**
 
 This document and [`lanes.v2.json`](lanes.v2.json) are the active routing authority. They configure
@@ -55,18 +57,18 @@ unassigned paths.
 
 | Role | Model | Reasoning | Requested service tier |
 |---|---|---|---|
-| Experience Lead | GPT-5.6 Terra | high | `default` |
-| Reporters Experience | GPT-5.6 Terra | medium | `default` |
-| Team Experience | GPT-5.6 Terra | medium | `default` |
-| Programs Experience | GPT-5.6 Terra | medium | `default` |
-| Data | GPT-5.6 Luna | medium | `default` |
-| Capacity | GPT-5.6 Terra | high | `default` |
-| Recruiting | GPT-5.6 Terra | medium | `default` |
-| Network | GPT-5.6 Terra | medium | `default` |
-| Team | GPT-5.6 Terra | medium | `default` |
-| Programs | GPT-5.6 Terra | medium | `default` |
-| Quality | GPT-5.6 Terra | high | `default` |
-| Reviewer | GPT-5.6 Terra | high | `default` |
+| Experience Lead | GPT-6 Astra | high | `default` |
+| Reporters Experience | GPT-6 Astra | high | `default` |
+| Team Experience | GPT-6 Astra | high | `default` |
+| Programs Experience | GPT-6 Astra | high | `default` |
+| Data | GPT-6 Astra | high | `default` |
+| Capacity | GPT-6 Astra | high | `default` |
+| Recruiting | GPT-6 Astra | high | `default` |
+| Network | GPT-6 Astra | high | `default` |
+| Team | GPT-6 Astra | high | `default` |
+| Programs | GPT-6 Astra | high | `default` |
+| Quality | GPT-6 Astra | xhigh | `default` |
+| Reviewer | GPT-6 Astra | xhigh | `default` |
 
 All roles use Standard/default processing. The coordinator remains selected interactively. The
 zero-inheritance policy requires every routed probe and worker spawn to use the named role with
@@ -74,11 +76,7 @@ zero-inheritance policy requires every routed probe and worker spawn to use the 
 explicit dispatch packet plus repository instructions, do not spawn children, and do not change their
 model, reasoning effort, or service tier.
 
-Terra balances intelligence and cost for coordinated coding and review work, so it serves the Lead,
-presentation specialists, domain support, Quality, and Reviewer. Luna remains reserved for the
-cost-sensitive, high-volume deterministic Data expansion. `high` reasoning is required for the
-Lead's visual/system decisions, Capacity's projection-sensitive rules, Quality's cross-reference
-inspection, and the Reviewer's final cross-contract review; bounded specialists use `medium`.
+Astra/high is the implementation baseline; Quality and Reviewer use Astra/xhigh. The coordinator selects Astra/xhigh interactively. Fresh runtime probes are required; static configuration alone is not a runtime verification.
 
 ## Concurrency and communication
 

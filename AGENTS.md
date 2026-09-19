@@ -1,5 +1,7 @@
 # Reporter Growth
 
+> September 18 planning update: read `docs/reporter-growth/v2/ASTRA_COORDINATOR_HANDOFF.md` and `P4_INTERVIEW_IMPROVEMENT_PLAN.md` first. The latter is a dated design/acceptance amendment with IP01–IP12. Astra model configuration is approved; the new improvement implementation is not started or authorized by this planning request. Historical P4 state below does not bypass that gate.
+
 > **Current phase:** Reporter Growth v2 P4 implementation is authorized, but the candidate at
 > `2d1789b92ea6a14842b50e1709511dbf405f3599` is **not accepted**. The active phase is
 > `P4.1_visual_proof_repair`; the preview at `http://127.0.0.1:5174/` is repair evidence, not a

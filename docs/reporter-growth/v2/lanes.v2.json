@@ -118,8 +118,8 @@
     {
       "id": "data",
       "runtime_role": "data",
-      "model": "gpt-5.6-luna",
-      "reasoning_effort": "medium",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
       "service_tier": "default",
       "start_phase": "P4.0b_serial_sample_expansion",
       "allowed_directory_prefixes": [
@@ -139,7 +139,7 @@
     {
       "id": "experience",
       "runtime_role": "experience",
-      "model": "gpt-5.6-terra",
+      "model": "gpt-6-astra",
       "reasoning_effort": "high",
       "service_tier": "default",
       "start_phase": "P4.1_after_data_integration",
@@ -159,8 +159,8 @@
     {
       "id": "experience_reporters",
       "runtime_role": "experience_reporters",
-      "model": "gpt-5.6-terra",
-      "reasoning_effort": "medium",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
       "service_tier": "default",
       "start_phase": "P4.2_after_visual_proof",
       "allowed_directory_prefixes": [
@@ -177,8 +177,8 @@
     {
       "id": "experience_team",
       "runtime_role": "experience_team",
-      "model": "gpt-5.6-terra",
-      "reasoning_effort": "medium",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
       "service_tier": "default",
       "start_phase": "P4.2_after_visual_proof",
       "allowed_directory_prefixes": [
@@ -195,8 +195,8 @@
     {
       "id": "experience_programs",
       "runtime_role": "experience_programs",
-      "model": "gpt-5.6-terra",
-      "reasoning_effort": "medium",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
       "service_tier": "default",
       "start_phase": "P4.2_after_visual_proof",
       "allowed_directory_prefixes": [
@@ -213,7 +213,7 @@
     {
       "id": "capacity",
       "runtime_role": "capacity",
-      "model": "gpt-5.6-terra",
+      "model": "gpt-6-astra",
       "reasoning_effort": "high",
       "service_tier": "default",
       "start_phase": "on_demand_after_contract_change_request",
@@ -228,8 +228,8 @@
     {
       "id": "recruiting",
       "runtime_role": "recruiting",
-      "model": "gpt-5.6-terra",
-      "reasoning_effort": "medium",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
       "service_tier": "default",
       "start_phase": "on_demand_after_contract_change_request",
       "allowed_directory_prefixes": [
@@ -243,8 +243,8 @@
     {
       "id": "network",
       "runtime_role": "network",
-      "model": "gpt-5.6-terra",
-      "reasoning_effort": "medium",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
       "service_tier": "default",
       "start_phase": "on_demand_after_contract_change_request",
       "allowed_directory_prefixes": [
@@ -258,8 +258,8 @@
     {
       "id": "team",
       "runtime_role": "team",
-      "model": "gpt-5.6-terra",
-      "reasoning_effort": "medium",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
       "service_tier": "default",
       "start_phase": "on_demand_after_contract_change_request",
       "allowed_directory_prefixes": [
@@ -273,8 +273,8 @@
     {
       "id": "programs",
       "runtime_role": "programs",
-      "model": "gpt-5.6-terra",
-      "reasoning_effort": "medium",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
       "service_tier": "default",
       "start_phase": "on_demand_after_contract_change_request",
       "allowed_directory_prefixes": [
@@ -288,8 +288,8 @@
     {
       "id": "quality",
       "runtime_role": "quality",
-      "model": "gpt-5.6-terra",
-      "reasoning_effort": "high",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
       "service_tier": "default",
       "start_phase": "P4.4_after_fixed_integrated_candidate",
       "allowed_directory_prefixes": [
@@ -307,13 +307,21 @@
   "reviewer": {
     "id": "reviewer",
     "runtime_role": "reviewer",
-    "model": "gpt-5.6-terra",
-    "reasoning_effort": "high",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "xhigh",
     "service_tier": "default",
     "start_phase": "P4.5_after_quality_passes_without_waiver",
     "read_only": true,
     "allowed_directory_prefixes": [],
     "task": "docs/reporter-growth/v2/tasks/reviewer.md"
   },
-  "note": "This is the sole active P4 routing registry. P2 and P3 are complete and inactive. P4 is active. Exact Overview/Funnel visual proof was accepted for commit e33ee8d1a70a7f103eaf67354aa98139c1fd20a7, freezing the shared presentation baseline and authorizing the bounded P4.2 wave. Only the Lead and three registered workspace Experience specialists may communicate and run concurrently; they have non-overlapping paths and the Lead alone owns shared components. Runtime routing verification is mandatory before dispatch. All P4 roles use Standard/default processing; the resolved child service tier remains unobservable, so configured default is the strongest available evidence."
+  "note": "This is the sole active P4 routing registry. P2 and P3 are complete and inactive. P4 is active. Exact Overview/Funnel visual proof was accepted for commit e33ee8d1a70a7f103eaf67354aa98139c1fd20a7, freezing the shared presentation baseline and authorizing the bounded P4.2 wave. Only the Lead and three registered workspace Experience specialists may communicate and run concurrently; they have non-overlapping paths and the Lead alone owns shared components. Runtime routing verification is mandatory before dispatch. All P4 roles use Standard/default processing; the resolved child service tier remains unobservable, so configured default is the strongest available evidence.",
+  "interview_improvement_amendment": {
+    "plan": "docs/reporter-growth/v2/P4_INTERVIEW_IMPROVEMENT_PLAN.md",
+    "status": "planning_complete_implementation_not_authorized",
+    "implementation_authorized": false,
+    "acceptance_ids": "IP01-IP12",
+    "runtime_models_verified": false,
+    "requires_new_visual_proof": true
+  }
 }

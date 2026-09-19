@@ -1,5 +1,7 @@
 # P4 design lock
 
+> **September 18 interview amendment:** Read [P4_INTERVIEW_IMPROVEMENT_PLAN.md](P4_INTERVIEW_IMPROVEMENT_PLAN.md) and [ASTRA_COORDINATOR_HANDOFF.md](ASTRA_COORDINATOR_HANDOFF.md) first. The amendment supersedes conflicting presentation requirements below (including Overview KPIs, filter behavior, Team management and pilot details) and adds blocking IP01–IP12 acceptance. This update authorizes planning/model configuration only; new implementation and revised visual proof remain pending. Earlier proof and status statements describe historical scope.
+
 Status: **USER-APPROVED DESIGN — PRODUCTION IMPLEMENTATION NOT AUTHORIZED**
 
 Locked: September 17, 2026

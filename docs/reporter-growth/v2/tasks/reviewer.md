@@ -1,5 +1,7 @@
 # V2 fixed-candidate review — reviewer
 
+> September 18 amendment: read `../P4_INTERVIEW_IMPROVEMENT_PLAN.md` and `../ASTRA_COORDINATOR_HANDOFF.md` before dispatch. IP01–IP12 supplement acceptance; changed presentation requirements supersede older instructions here. The completed 50-person expansion is not repeated. The new pass requires its own recorded implementation start and revised visual proof. Model routing comes from the current registry.
+
 ## Purpose and boundary
 
 Perform one independent read-only review after Quality against the exact fixed integrated candidate.

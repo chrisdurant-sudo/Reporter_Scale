@@ -1,13 +1,13 @@
 # Reporter Growth v2 — project-scoped Codex subagent routing.
-# Intentionally does NOT set the coordinator model; choose the coordinator interactively.
+# Intentionally does NOT set the coordinator model; select gpt-6-astra / xhigh in the new task.
 # All child roles remain on Standard/default processing. Never use Fast, Priority, or Ultrafast.
 service_tier = "default"
 
 [agents]
 enabled = true
 max_concurrent_threads_per_session = 4
-default_subagent_model = "gpt-5.6-terra"
-default_subagent_reasoning_effort = "medium"
+default_subagent_model = "gpt-6-astra"
+default_subagent_reasoning_effort = "high"
 
 [agents.experience]
 description = "P4 Experience Lead: shared design system, shell, Overview/Funnel proof, shared-component changes, and workspace fidelity review."

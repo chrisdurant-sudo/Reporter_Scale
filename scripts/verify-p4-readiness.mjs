@@ -26,6 +26,17 @@ const executionStatePath = "docs/reporter-growth/v2/P4_EXECUTION_STATE.json";
 const executionState = JSON.parse(read(executionStatePath));
 const lanes = new Map(registry.lanes.map((lane) => [lane.id, lane]));
 
+
+// September 18 model amendment: every registered role must match its runtime configuration.
+for (const lane of [...registry.lanes, registry.reviewer]) {
+  const effort = ["quality", "reviewer"].includes(lane.id) ? "xhigh" : "high";
+  check(lane.model === "gpt-6-astra" && lane.reasoning_effort === effort && lane.service_tier === "default", `${lane.id} must use the approved Astra reasoning and Standard processing.`);
+  const configured = read(`.codex/agents/${lane.id}.toml`);
+  check(includesAll(configured, ['model = "gpt-6-astra"', `model_reasoning_effort = "${effort}"`, 'service_tier = "default"']), `${lane.id} runtime file must match registry.`);
+}
+check(registry.interview_improvement_amendment?.plan === "docs/reporter-growth/v2/P4_INTERVIEW_IMPROVEMENT_PLAN.md", "Registry must link the interview amendment.");
+check(read(registry.interview_improvement_amendment.plan).includes("IP12"), "Interview amendment must include its blocking acceptance matrix.");
+
 check(registry.routing_active === true, "P4 routing must be active as configuration.");
 check(registry.execution_state === executionStatePath, "The registry must point to the authoritative P4 execution state.");
 check(executionState.authorization?.status === "active", "Active implementation requires a recorded user authorization.");
@@ -71,7 +82,7 @@ const leadPaths = ["src/ui/", "src/shell/", "src/styles/", "src/features/markets
 check(experience?.task === "docs/reporter-growth/v2/tasks/experience-redesign.md", "Experience Lead must use the P4 Lead brief.");
 check(JSON.stringify(experience?.allowed_directory_prefixes) === JSON.stringify(leadPaths), "Experience Lead must own shared UI plus Overview/Funnel only.");
 check(experience?.start_phase === "P4.1_after_data_integration", "Experience Lead must start only after Data integration.");
-check(experience?.model === "gpt-5.6-terra" && experience?.reasoning_effort === "high", "Experience Lead must use Terra/high.");
+check(experience?.model === "gpt-6-astra" && experience?.reasoning_effort === "high", "Experience Lead must use Astra/high.");
 
 const specialistExpectations = {
   experience_reporters: {
@@ -93,11 +104,11 @@ for (const [id, expected] of Object.entries(specialistExpectations)) {
   check(lane?.start_phase === "P4.2_after_visual_proof", `${id} must start only after visual proof.`);
   check(lane?.task === expected.task, `${id} must use its workspace brief.`);
   check(JSON.stringify(lane?.allowed_directory_prefixes) === JSON.stringify([expected.path]), `${id} must own one feature path only.`);
-  check(lane?.model === "gpt-5.6-terra" && lane?.reasoning_effort === "medium" && lane?.service_tier === "default", `${id} must use Terra/medium/default.`);
+  check(lane?.model === "gpt-6-astra" && lane?.reasoning_effort === "high" && lane?.service_tier === "default", `${id} must use Astra/high/default.`);
 
   const roleText = read(`.codex/agents/${id}.toml`);
   check(includesAll(roleText, [expected.task.split("docs/reporter-growth/v2/")[1], expected.path, "shared components", "Experience Lead", "screenshot checkpoints", 'service_tier = "default"']), `${id} role lacks required ownership or coordination controls.`);
-  check(roleText.includes('model = "gpt-5.6-terra"') && roleText.includes('model_reasoning_effort = "medium"'), `${id} role model must match the registry.`);
+  check(roleText.includes('model = "gpt-6-astra"') && roleText.includes('model_reasoning_effort = "high"'), `${id} role model must match the registry.`);
 
   const taskText = read(expected.task);
   check(includesAll(taskText, ["after", "visual proof", expected.path, "Experience Lead", "candidate screenshots", "Communication does not expand"]), `${id} task brief lacks proof, path, or Lead-review controls.`);
@@ -126,12 +137,12 @@ const quality = lanes.get("quality");
 check(quality?.task === "docs/reporter-growth/v2/tasks/quality-redesign.md", "Quality must use the P4 brief.");
 check(quality?.start_phase === "P4.4_after_fixed_integrated_candidate", "Quality must wait for a fixed candidate.");
 check(quality?.acceptance_ids.includes("XR01-XR41"), "Quality must verify XR01-XR41.");
-check(quality?.model === "gpt-5.6-terra" && quality?.reasoning_effort === "high" && quality?.service_tier === "default", "Quality must use Terra/high/default.");
+check(quality?.model === "gpt-6-astra" && quality?.reasoning_effort === "xhigh" && quality?.service_tier === "default", "Quality must use Astra/xhigh/default.");
 
 const experienceAgent = read(".codex/agents/experience.toml");
-check(includesAll(experienceAgent, ['model = "gpt-5.6-terra"', 'model_reasoning_effort = "high"', 'service_tier = "default"']), "Experience runtime config must match Terra/high/default routing.");
+check(includesAll(experienceAgent, ['model = "gpt-6-astra"', 'model_reasoning_effort = "high"', 'service_tier = "default"']), "Experience runtime config must match Astra/high/default routing.");
 const qualityAgent = read(".codex/agents/quality.toml");
-check(includesAll(qualityAgent, ['model = "gpt-5.6-terra"', 'model_reasoning_effort = "high"', 'service_tier = "default"']), "Quality runtime config must match Terra/high/default routing.");
+check(includesAll(qualityAgent, ['model = "gpt-6-astra"', 'model_reasoning_effort = "xhigh"', 'service_tier = "default"']), "Quality runtime config must match Astra/xhigh/default routing.");
 check(registry.reviewer.task === "docs/reporter-growth/v2/tasks/reviewer.md", "Reviewer must use the fixed-candidate brief.");
 check(registry.reviewer.read_only === true, "Reviewer must remain read-only.");
 

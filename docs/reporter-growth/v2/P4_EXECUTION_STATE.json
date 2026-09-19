@@ -10,6 +10,11 @@
   },
   "authorized_contract_changes": [
     {
+      "authorized_at": "2026-09-18",
+      "scope": "Planning and model configuration only: incorporate the interview improvement proposal; configure all workers as gpt-6-astra/high, Quality and Reviewer xhigh, Standard/default throughout. Coordinator will select Astra/xhigh in a new task. No new improvement implementation dispatch authorized by this request.",
+      "source": "Explicit user instruction: get your proposal worked into the plan and make the model adjustments"
+    },
+    {
       "authorized_at": "2026-09-17",
       "scope": "Raise the P4 Experience Lead to GPT-5.6 Terra/high and the P4 Quality lane to GPT-5.6 Terra/high; preserve Standard/default processing and all other lane assignments.",
       "source": "Explicit user instruction: make your model changes"
@@ -35,6 +40,7 @@
       "source": "Concrete P4.2 contract-change request from the Programs Experience specialist and Experience Lead DEFECTS disposition for XR13/XR17/XR40"
     }
   ],
+  "interview_improvement_amendment": {"plan": "docs/reporter-growth/v2/P4_INTERVIEW_IMPROVEMENT_PLAN.md", "implementation_authorized": false, "runtime_models_verified": false, "new_visual_proof_required": true, "acceptance_ids": "IP01-IP12"},
   "implementation_base_commit": "8b85d4aafa2317be848e01caf47d8b6f92efa674",
   "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",
   "implementation_active": true,
@@ -220,6 +226,15 @@
   },
   "known_ownership_exceptions": [],
   "phase_allowed_prefixes": [
+    ".codex/config.toml",
+    ".codex/agents/capacity.toml",
+    ".codex/agents/experience_programs.toml",
+    ".codex/agents/experience_reporters.toml",
+    ".codex/agents/experience_team.toml",
+    ".codex/agents/network.toml",
+    ".codex/agents/programs.toml",
+    ".codex/agents/recruiting.toml",
+    ".codex/agents/team.toml",
     ".codex/agents/experience.toml",
     ".codex/agents/data.toml",
     ".codex/agents/quality.toml",
