@@ -42,7 +42,7 @@ describe("V2 browser storage integration", () => {
     await screen.findByRole("region", { name: "Overview metrics" });
     await user.click(screen.getByRole("button", { name: "LAX" }));
     const metrics = screen.getByRole("region", { name: "Overview metrics" });
-    expect(within(metrics).getByText("Open jobs").parentElement).toHaveTextContent("11");
+    expect(within(metrics).getByText("Requested slots").parentElement).toHaveTextContent("11");
   });
 
   it("reloads saved work and the scenario clock on remount, then explicitly restores the seed", async () => {
