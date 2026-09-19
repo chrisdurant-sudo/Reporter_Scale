@@ -23,3 +23,6 @@ The existing Team callbacks now use `commitV2Command` through the serialized que
 The Team specialist must add the prepared filters, exact detail drawer, editing/assignment/status controls, completion evidence, goals/inspection/coaching workflows, and awaited success/error handling. The historical Add form does not catch rejected callbacks yet; do not treat it as IP09 acceptance. New edit/transition controls use the same typed commands. No raw snapshot or business calculations belong in the feature.
 
 Network follow-up and Programs requested work must compose through this Team preparer, with one repository save and no private task store. Integration wiring and explicit input forms are pending. Preserve the 113-person base population, 114-person scenario result and 25-task baseline. SD01–SD07 remain unchanged. IP08/IP09 and independent Quality are still open.
+
+
+The coordinator also passes `onChangeFilters(TeamViewFilters)`, `onNavigateTarget(target)` and `preservedEvidenceContext` to TeamScreen for the specialist to declare and render. The domain receives these filters, and `view.appliedTeamFilters` is the current selection. Exact work navigation temporarily ignores retained local filters; clearing it restores them. Manual filter changes clear the exact drill-down. Root Reset clears both Team filters and Funnel controls.

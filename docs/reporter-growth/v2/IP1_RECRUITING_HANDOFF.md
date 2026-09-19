@@ -18,7 +18,7 @@ Use `attentionItems[].evidence` and `.navigationTarget` directly. Each names its
 
 ## Fixed baseline cohort diagnostics
 
-At the seed time, February 16, 2026, these are distinct entry windows, not alternative calculations of the same denominator. The app still supplies its original February-entry default pending the Lead's explicit cohort controls/labels. A prior-calendar-month view supplies observed outcomes without pretending recent entrants have failed.
+At the seed time, February 16, 2026, these are distinct entry windows, not alternative calculations of the same denominator. The coordinator now supplies January as the explicit prior-calendar-month default and exposes January/February choices for the Lead's controls. A January view supplies observed onboarding outcomes without pretending recent February entrants have failed; other metrics retain their own maturity horizons.
 
 | Entry window | Scope | M07 mature / observing | M08 timely / mature / observing |
 |---|---|---|---|
@@ -32,3 +32,16 @@ At the seed time, February 16, 2026, these are distinct entry windows, not alter
 Every typed cohort member exposes case/reporter ID, canonical entry event, entry time, deadline, observed end and maturity. Counts, member-set reconciliation and boundary invariants are asserted in `src/logic/recruiting/recruiting.seed.test.ts` and `recruiting.test.ts`. A zero mature denominator is unavailable, never 0% conversion. No source spend is allocated to a selected subset unless the source records actually support that allocation.
 
 Remaining: Lead controls/charts and exact evidence links, full revised visual/interaction proof, then independent Quality IP03/IP05/IP06 and cross-workspace acceptance. The malformed stored edit-history validation repair is separately tracked under IC07 and remains Data-owned.
+
+
+## Coordinator control port for the Experience Lead
+
+V2App passes the following additional props to RecruitingScreen; the Lead owns declaring/rendering them in its feature interface:
+
+- `onChangeRecordFilters(RecruitingRecordFilters)`: feeds the complete local selection into the domain preparer, so records/counts/attention agree. Current filters are `view.recordFilters`.
+- `entryCohortOptions`: `{id,label,window}[]` for January and February 2026; `selectedEntryCohortId` and `onChangeEntryCohort(id)` control the selection. The actual evidence entry window remains on the prepared view, especially during an exact drill-down.
+- `sourceOptions`: canonical `{id,label}[]`, `selectedSourceIds`, and `onChangeSourceIds(ids)`. Source is an exact workspace filter and therefore also scopes cohorts; label that distinction from operational owner/status filters.
+- `onNavigateTarget(target)` and `onInspectEvidence(bundle)` accept each attention row's actual prepared destination/evidence directly.
+- `preservedEvidenceContext` identifies exact navigation. While it is active, root temporarily ignores prior operational filters so the selected record remains visible. Clearing the drill-down restores the earlier filters. Manually changing a filter starts the chosen new scope and clears the drill-down.
+
+Two focused root integration checks verify January All M08 17/51 versus February 0/1 without changing the people inventory, stable owner-ID filtering, and restoration after exact external record navigation. Typecheck passed before those tests; combined validation follows Programs integration. This is callback preparation, not rendered IP03/IP05 acceptance. The Lead must replace the old feature-local label-based filtering and expose the cohort/control scope.

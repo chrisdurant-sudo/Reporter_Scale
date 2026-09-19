@@ -3,6 +3,7 @@ import type {
   ActorId,
   AttendanceMode,
   CapabilityCode,
+  DateWindow,
   DemoSnapshotV2,
   EvidenceBundle,
   MarketId,
@@ -11,6 +12,7 @@ import type {
   ProcessVersion,
   ProgramDecision,
   ReporterId,
+  SourceId,
   TeamCommandEnvelope,
   UtcTimestamp,
   WorkspaceFilterPayload,
@@ -41,8 +43,9 @@ import type {
   FunnelSlaInput,
   RecruitingLocalNoteCommand,
   RecruitingLocalNoteState,
+  RecruitingRecordFilters,
 } from "../logic/recruiting";
-import { prepareTeamCommand, prepareTeamView } from "../logic/team";
+import { prepareTeamCommand, prepareTeamView, type TeamViewFilters } from "../logic/team";
 import { V2AppShell } from "../shell";
 import type { V2GlobalFilters } from "../shell/V2AppShell";
 import { ErrorState, LoadingState } from "../ui/v2";
@@ -50,11 +53,15 @@ import { v2BrowserStorage } from "./v2BrowserStorage";
 import { prepareInterviewOverview } from "./v2Overview";
 import { commitV2Command } from "./v2CommandTransaction";
 
-const RECRUITING_ENTRY_WINDOW = {
-  startAt: "2026-02-01T00:00:00Z" as UtcTimestamp,
-  endAt: "2026-03-01T00:00:00Z" as UtcTimestamp,
-  boundary: "[start,end)" as const,
-};
+const RECRUITING_ENTRY_COHORTS: readonly { readonly id: string; readonly label: string; readonly window: DateWindow }[] = [
+  { id: "january-2026", label: "January 2026", window: {
+    startAt: "2026-01-01T00:00:00Z" as UtcTimestamp, endAt: "2026-02-01T00:00:00Z" as UtcTimestamp, boundary: "[start,end)",
+  } },
+  { id: "february-2026", label: "February 2026", window: {
+    startAt: "2026-02-01T00:00:00Z" as UtcTimestamp, endAt: "2026-03-01T00:00:00Z" as UtcTimestamp, boundary: "[start,end)",
+  } },
+];
+const RECRUITING_ENTRY_WINDOW = RECRUITING_ENTRY_COHORTS[0]!.window;
 const TEAM_REPORTING_WINDOW = {
   startAt: "2026-02-09T08:00:00Z" as UtcTimestamp,
   endAt: "2026-02-16T08:00:00Z" as UtcTimestamp,
@@ -178,6 +185,10 @@ export function V2App() {
   const [selectedEvidence, setSelectedEvidence] = useState<EvidenceBundle | null>(null);
   const evidenceTriggerRef = useRef<HTMLElement | null>(null);
   const [funnelSlaInput, setFunnelSlaInput] = useState<FunnelSlaInput>({});
+  const [recruitingRecordFilters, setRecruitingRecordFilters] = useState<RecruitingRecordFilters>({});
+  const [recruitingCohortId, setRecruitingCohortId] = useState(RECRUITING_ENTRY_COHORTS[0]!.id);
+  const [recruitingSourceIds, setRecruitingSourceIds] = useState<readonly SourceId[]>([]);
+  const [teamFilters, setTeamFilters] = useState<TeamViewFilters>({});
   const [recruitingNotes, setRecruitingNotes] = useState<RecruitingLocalNoteState>({
     persistence: "local-only-not-persisted",
     notes: [],
@@ -298,6 +309,10 @@ export function V2App() {
       setSelectedEvidence(null);
       evidenceTriggerRef.current = null;
       setFunnelSlaInput({});
+      setRecruitingRecordFilters({});
+      setRecruitingCohortId(RECRUITING_ENTRY_COHORTS[0]!.id);
+      setRecruitingSourceIds([]);
+      setTeamFilters({});
       setRecruitingNotes({ persistence: "local-only-not-persisted", notes: [] });
       setFeedback({
         changed: "Restored the original seed, fixed clock, saved goal and decision state, and replay state.",
@@ -326,15 +341,21 @@ export function V2App() {
   const marketsView = useMemo(() => snapshot
     ? prepareInterviewOverview(snapshot, queryContext("markets", snapshot, globalFilters, drillDown))
     : null, [drillDown, globalFilters, snapshot]);
-  const recruitingView = useMemo(() => snapshot
-    ? prepareRecruitingWorkspace(snapshot, queryContext("recruiting", snapshot, globalFilters, drillDown), { slaInput: funnelSlaInput })
-    : null, [drillDown, funnelSlaInput, globalFilters, snapshot]);
+  const recruitingView = useMemo(() => {
+    if (!snapshot) return null;
+    const context = queryContext("recruiting", snapshot, globalFilters, drillDown);
+    const exact = drillDown?.workspace === "recruiting";
+    const entryWindow = RECRUITING_ENTRY_COHORTS.find((cohort) => cohort.id === recruitingCohortId)!.window;
+    return prepareRecruitingWorkspace(snapshot, exact ? context : {
+      ...context, filters: { ...context.filters, window: entryWindow, sourceIds: recruitingSourceIds },
+    }, { slaInput: funnelSlaInput, filters: exact ? {} : recruitingRecordFilters });
+  }, [drillDown, funnelSlaInput, globalFilters, recruitingCohortId, recruitingRecordFilters, recruitingSourceIds, snapshot]);
   const reportersView = useMemo(() => snapshot
     ? prepareNetworkView(snapshot, queryContext("reporters", snapshot, globalFilters, drillDown))
     : null, [drillDown, globalFilters, snapshot]);
   const teamView = useMemo(() => snapshot
-    ? prepareTeamView(snapshot, queryContext("team", snapshot, globalFilters, drillDown), asMetric(snapshot, "M11"))
-    : null, [drillDown, globalFilters, snapshot]);
+    ? prepareTeamView(snapshot, queryContext("team", snapshot, globalFilters, drillDown), asMetric(snapshot, "M11"), drillDown?.workspace === "team" ? {} : teamFilters)
+    : null, [drillDown, globalFilters, snapshot, teamFilters]);
   const programsView = useMemo(() => snapshot
     ? prepareProgramsView(snapshot, queryContext("programs", snapshot, globalFilters, drillDown))
     : null, [drillDown, globalFilters, snapshot]);
@@ -562,6 +583,20 @@ export function V2App() {
       onSaveGoal={() => { void savePlan(); }}
     />;
     if (activeWorkspace === "recruiting") return <RecruitingScreen
+      {...{
+        onChangeRecordFilters: (next: RecruitingRecordFilters) => { setRecruitingRecordFilters(next); setDrillDown(null); },
+        entryCohortOptions: RECRUITING_ENTRY_COHORTS,
+        selectedEntryCohortId: recruitingCohortId,
+        onChangeEntryCohort: (id: string) => {
+          if (RECRUITING_ENTRY_COHORTS.some((cohort) => cohort.id === id)) { setRecruitingCohortId(id); setDrillDown(null); }
+        },
+        sourceOptions: snapshot.sources.map((source) => ({ id: source.id, label: source.label })),
+        selectedSourceIds: recruitingSourceIds,
+        onChangeSourceIds: (ids: readonly SourceId[]) => { setRecruitingSourceIds(ids); setDrillDown(null); },
+        onNavigateTarget: openWork,
+        onInspectEvidence: openEvidence,
+        preservedEvidenceContext: drillDown?.workspace === "recruiting",
+      }}
       view={recruitingView}
       slaInput={funnelSlaInput}
       localNotes={recruitingNotes}
@@ -589,7 +624,9 @@ export function V2App() {
         else setFeedback({ changed: "No recruiting checklist is recorded for this reporter.", notChanged: "No unrelated case was opened and no records changed." });
       },
     }} />;
-    if (activeWorkspace === "team") return <TeamScreen view={teamView} actions={{
+    if (activeWorkspace === "team") return <TeamScreen
+      {...{ onChangeFilters: (next: TeamViewFilters) => { setTeamFilters(next); setDrillDown(null); }, onNavigateTarget: openWork, preservedEvidenceContext: drillDown?.workspace === "team" }}
+      view={teamView} actions={{
       onOpenEvidence: (id) => openEvidence(findEvidence(String(id))),
       onCreateWork: (payload) => submitTeamCommand(
         { type: "work.create", payload },
