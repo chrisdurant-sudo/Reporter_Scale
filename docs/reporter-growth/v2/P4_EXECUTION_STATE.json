@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-19T08:40:08.005446+00:00",
+  "updated_at": "2026-09-19T08:47:36.459963+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -208,19 +208,6 @@
         }
       },
       {
-        "role": "experience",
-        "session_id": "01a0b88e-2ed9-7f03-b3e5-f7470a684f5b",
-        "model": "gpt-6-astra",
-        "reasoning_effort": "high",
-        "fork_turns": "none",
-        "inherited_turns": 0,
-        "verified_at": "2026-09-19T07:26:27.291352+00:00",
-        "evidence": {
-          "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-experience-probe.json",
-          "sha256": "64f28637ebaf318c3ce3c71dc5a076fa62a9f56e3843a24cd54be89e87503ea7"
-        }
-      },
-      {
         "role": "quality",
         "session_id": "01a0b8d0-7cc9-7621-b556-b577226b3559",
         "model": "gpt-6-astra",
@@ -231,6 +218,19 @@
         "evidence": {
           "file": "docs/reporter-growth/v2/evidence/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046-quality-probe.json",
           "sha256": "5c430a700b0d71d6b98902b0a49c1fbe23771efe72fbd38990a03116d700ba93"
+        }
+      },
+      {
+        "role": "experience",
+        "session_id": "01a0b8d4-fd9c-7f03-9d83-4555190d1fe5",
+        "model": "gpt-6-astra",
+        "reasoning_effort": "high",
+        "fork_turns": "none",
+        "inherited_turns": 0,
+        "verified_at": "2026-09-19T08:47:36.459963+00:00",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046-experience-probe.json",
+          "sha256": "317662fa968e47463998d1d9b1aea674dd07c18f717865f9ca540d44860430d6"
         }
       }
     ],
@@ -553,6 +553,19 @@
           "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-quality-probe.json",
           "sha256": "bdfba907a30bfc4d546319c4aa053dadbab873eef56b877713b9c59f773c6eaa"
         }
+      },
+      {
+        "role": "experience",
+        "session_id": "01a0b88e-2ed9-7f03-b3e5-f7470a684f5b",
+        "model": "gpt-6-astra",
+        "reasoning_effort": "high",
+        "fork_turns": "none",
+        "inherited_turns": 0,
+        "verified_at": "2026-09-19T07:26:27.291352+00:00",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-experience-probe.json",
+          "sha256": "64f28637ebaf318c3ce3c71dc5a076fa62a9f56e3843a24cd54be89e87503ea7"
+        }
       }
     ]
   },
@@ -562,11 +575,10 @@
   "fanout_authorized": false,
   "current_phase": "IP2_visual_proof",
   "current_candidate": {
-    "commit": "f7a6fc734513ba8621a7dbf3b1845f818d420658",
-    "status": "IP2_source_implementation_pending",
-    "defect_register": "docs/reporter-growth/v2/INTERVIEW_PRODUCT_REVIEW_2026-09-18.md",
-    "focused_verification": "Typecheck, lint and 15 app/persistence/Funnel-control tests passed. Full preparation baseline remains dfa4b9b921991abd6a40127146520c421204c8cb; revised visual acceptance pending.",
-    "reason": "Coordinator Focus copy wired to prepared counts. Type/lint and six action/control integration tests pass; full UI runtime verification awaits Lead source integration."
+    "commit": "6115ee767a9c10730fc908c5f52b1468f30c83ab",
+    "status": "IP2_integrated_pending_visual_repair_and_test_alignment",
+    "defect_register": "docs/reporter-growth/v2/IP2_COORDINATOR_REVIEW_2026-09-19.md",
+    "reason": "Exact submitted Lead candidate merged after boundary audit; 314 unit tests pass, two obsolete acceptance assertions fail. Browser diagnostics in progress. Two bounded presentation defects require Lead repair."
   },
   "gates": {
     "data": {
@@ -834,6 +846,16 @@
         "file": "docs/reporter-growth/v2/evidence/dfa4b9b921991abd6a40127146520c421204c8cb-ip1-programs-combined-verification.json",
         "sha256": "ec4e54c9a9d8c1fc1008832979f3ef868f6468d7252d868bcff88488ff305b95"
       }
+    },
+    "ip2_experience_initial": {
+      "lane": "experience",
+      "base_commit": "f7a6fc734513ba8621a7dbf3b1845f818d420658",
+      "candidate_commit": "be5d7a1d3a634f4a29243e09993661cef7264c1c",
+      "integrated_commit": "6115ee767a9c10730fc908c5f52b1468f30c83ab",
+      "status": "passed",
+      "boundary_exit_code": 0,
+      "changed_paths_count": 10,
+      "visual_acceptance": "pending_bounded_repair"
     }
   },
   "known_ownership_exceptions": [],
