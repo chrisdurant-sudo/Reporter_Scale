@@ -184,6 +184,18 @@ function createDemoRecordId(kind: DemoRecordKind): string {
   return `${kind}-${crypto.getRandomValues(new Uint32Array(4)).join("-")}`;
 }
 
+function linkedSelectionLabel(target: WorkspaceNavigationTarget): string {
+  const filters = target.filters;
+  if (filters.matchNone) return "Empty evidence selection";
+  const selections: readonly [readonly unknown[], string, string][] = [
+    [filters.requestIds, "request", "requests"], [filters.workItemIds, "task", "tasks"],
+    [filters.acquisitionCaseIds, "case", "cases"], [filters.programEnrollmentIds, "participant", "participants"],
+    [filters.reporterIds, "reporter", "reporters"], [filters.programIds, "program", "programs"],
+  ];
+  const selection = selections.find(([ids]) => ids.length > 0);
+  return selection ? `${selection[0].length} linked ${selection[0].length === 1 ? selection[1] : selection[2]}` : "Linked records";
+}
+
 function currentCheckpointIndex(snapshot: DemoSnapshotV2): number {
   let current = 0;
   SCENARIO_CONTRACT.checkpoints.forEach((checkpoint, index) => {
@@ -806,9 +818,8 @@ export function V2App() {
     onWorkspaceChange={(workspace) => { setActiveWorkspace(workspace); setSelectedEvidence(null); evidenceTriggerRef.current = null; }}
     onFiltersChange={(next) => { setGlobalFilters(next); setDrillDown(null); setSelectedEvidence(null); }}
   >
-    {drillDown ? <section aria-label="Preserved evidence context">
-      <p><strong>Evidence context preserved:</strong> {drillDown.evidenceContext.metric.id} {drillDown.evidenceContext.metric.version} · as of {displayDate(drillDown.evidenceContext.asOfAt)} · revision {drillDown.evidenceContext.snapshotRevision}.</p>
-      <p>{drillDown.filters.requestIds.length} request, {drillDown.filters.reporterIds.length} reporter, {drillDown.filters.acquisitionCaseIds.length} case, {drillDown.filters.workItemIds.length} work-item, and {drillDown.filters.programEnrollmentIds.length} enrollment filters are carried with this view.</p>
+    {drillDown?.workspace === activeWorkspace ? <section aria-label="Preserved evidence context" className="v2-linked-selection">
+      <p><strong>{linkedSelectionLabel(drillDown)}</strong> · {drillDown.filters.selectedMarket === "ALL" ? "All markets" : drillDown.filters.selectedMarket} · evidence as of {displayDate(drillDown.evidenceContext.asOfAt)}.</p>
       <button type="button" onClick={() => setDrillDown(null)}>Clear drill-down</button>
     </section> : null}
     {renderWorkspace()}

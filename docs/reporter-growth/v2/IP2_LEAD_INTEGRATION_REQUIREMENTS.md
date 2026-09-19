@@ -33,6 +33,8 @@ January is the default entry cohort. At the fixed baseline, All M08 is 17/51 and
 
 Exact external record navigation temporarily sets aside retained local filters so the target is visible. Clearing the root drill-down restores them. A local detail drawer must preserve the selections and return focus. Manual filter changes intentionally clear the exact drill-down. SLA edits retain immediate recomputation, local notes preserve whitespace, and neither changes source lifecycle facts.
 
+Root renders a compact `.v2-linked-selection` section only in the target workspace: linked-record label, selected market, evidence date and `Clear drill-down`. Metric IDs/version/revision remain in the internal navigation context. Shared styles may make this section match the reference, but do not replace it with a second technical context block.
+
 ## Shared presentation and proof
 
 Charts use coherent coordinates, the available container width, readable axes and useful desktop height. Pointer, keyboard and touch expose date/category, exact value, unit and historical/forecast status. Forecast assumptions and boundaries remain distinct. Cohort comparisons use categorical labels. Shared controls and drawers must work at 390px, with no horizontal page overflow or hover-only interaction.

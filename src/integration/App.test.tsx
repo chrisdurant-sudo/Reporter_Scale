@@ -132,9 +132,12 @@ describe("P4 integrated V2 experience", () => {
     await user.click(trigger);
     await user.click(within(await screen.findByRole("dialog", { name: "Why this?" })).getByRole("button", { name: "Open the work" }));
     const context = await screen.findByRole("region", { name: "Preserved evidence context" });
-    expect(context).toHaveTextContent("M01 v2-frozen-1");
-    expect(context).toHaveTextContent("revision 0");
-    expect(context).toHaveTextContent("10 request");
+    expect(context).toHaveTextContent("10 linked requests");
+    expect(context).toHaveTextContent("LAX");
+    expect(context).toHaveTextContent("evidence as of");
+    expect(context).not.toHaveTextContent("M01 v2-frozen-1");
+    await user.click(screen.getByRole("button", { name: "Team" }));
+    expect(screen.queryByRole("region", { name: "Preserved evidence context" })).not.toBeInTheDocument();
   });
 
   it("reconciles program membership for LAX, All, and SFO without averaging percentages", async () => {

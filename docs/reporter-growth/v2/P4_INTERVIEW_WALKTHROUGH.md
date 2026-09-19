@@ -1,6 +1,6 @@
 # Five-minute interview walkthrough
 
-Status: preparation during IP1. This is a rehearsal plan, not completed UI or acceptance evidence. Replace the pending checks below with exact candidate evidence after independent Quality and Reviewer pass. All numbers describe the synthetic demo, never business results.
+Status: preparation during IP2; serial logic and coordinator composition passed at `dfa4b9b921991abd6a40127146520c421204c8cb` (307 unit/integration, nine acceptance, eight browser tests). This is a rehearsal plan, not completed interview UI or acceptance evidence. Replace the pending checks below with exact candidate evidence after independent Quality and Reviewer pass. All numbers describe the synthetic demo, never business results.
 
 ## Start clean
 
@@ -20,7 +20,9 @@ Move to Funnel with LAX preserved. Select a counted stage, show the matching rec
 
 Distinguish current pipeline inventory from conversion: read the cohort entry window, entry event, follow-up horizon, numerator, denominator and still-observing members displayed in the completed implementation. Do not present an immature cohort as a failed conversion rate or relabel a stage inventory share as conversion.
 
-Pending proof: IP03/IP05/IP06; all filter combinations and cohort labels after Recruiting integration. Exact cohort numbers will be filled from the verified candidate.
+Verified talking point: January onboarding to first job within 14 days is 9/22 in LAX and 17/51 in All at the baseline. February LAX has no mature denominator and two observing cases. Keep this separate from the 30-day acquisition qualification horizon and from current People inventory.
+
+Pending proof: IP03/IP05/IP06; all rendered filter combinations, cohort labels and exact detail navigation.
 
 ## 1:40–2:40 — Manage the work and coach the team
 
@@ -44,13 +46,17 @@ Inspect a program's declared metric, comparison groups, outcome horizon and memb
 
 Inspect the canonical process steps: responsible role, SLA, required evidence and exception route. Enter a decision rationale, accountable owner and next review date. A limited expansion should create linked review work while preserving frozen enrollment and outcomes. A saved draft should copy the inspected process into a new draft version.
 
-Select DFW to show the weak-channel stop decision only after its qualification metric and source membership are verified. Return to LAX or All for the closing review.
+The checklist's earlier/pilot results are All 6/20 (30%) versus 11/20 (55%) over the same 14-day horizon, with a declared 50% pilot threshold. LAX is 3/10 versus 6/10; SFO is 3/10 versus 5/10. In a market subset, the whole-program threshold is a benchmark, not a separately declared per-market target. The checklist is administratively under review; its cohorts have completed observation and its expansion is still a proposal.
 
-Pending proof: IP10/IP11; metric-specific results, inspected process, editable decision, atomic linked work, refresh and frozen cohorts. Final numerical talking points await Programs verification.
+Select DFW to show 1/6 qualified within the 30-day horizon against the original 40% qualification target, retained direct spend of 360000 USD minor units ($3,600) and the recorded stop rationale. Do not relabel qualification as activation or direct spend as total cost. Return to LAX or All for the closing review. The LAX referral test has two observing entrants; its final cost-per-first-job result remains unavailable.
+
+Pending proof: IP10/IP11; rendered metric-specific results, inspected process, entered decision, atomic linked work, refresh and frozen cohorts. Numerical talking points above passed the integrated logic gate and still require visible source inspection in the final candidate.
 
 ## 4:25–5:00 — Close the weekly review
 
 Read target versus actual, the comparable-period change when available, the diagnosed constraint, evidence, accountable next action and review date. If a comparable historical snapshot is unavailable, say so; do not substitute overlapping windows or fabricate a trend.
+
+The market-wide review is evaluated at the current demo time. Team compares its explicit February 9–16 window to the preceding equal-length window; cohort outcomes keep their own entry windows and follow-up horizons. The checklist's next review is March 16 from the retained decision, not its completed February 16 review. A task due date is not an invented review date.
 
 Close with the operational loop: diagnose a source-backed constraint, assign work, inspect quality, measure the declared outcome and decide the next bounded action. Demonstrate one other market briefly if time permits.
 

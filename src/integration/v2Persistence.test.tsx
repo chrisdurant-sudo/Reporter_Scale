@@ -29,7 +29,7 @@ describe("V2 browser storage integration", () => {
     await user.click(within(row).getByRole("button", { name: "Inspect checklist" }));
     expect(await screen.findByRole("main", { name: "Funnel" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "SFO" })).toHaveAttribute("aria-pressed", "true");
-    expect(screen.getByRole("region", { name: "Preserved evidence context" })).toHaveTextContent("1 case");
+    expect(screen.getByRole("region", { name: "Preserved evidence context" })).toHaveTextContent("1 linked case");
     expect(screen.getByRole("row", { name: new RegExp(`${reporter.fictionalName} SFO`) })).toBeInTheDocument();
   });
 
