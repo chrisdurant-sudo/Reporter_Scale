@@ -1,0 +1,61 @@
+{
+  "kind": "read_only_routing_probe",
+  "role": "network",
+  "session_id": "01a0b835-0def-7a72-b87d-ffbf2f2c8dd5",
+  "task_name": "/root/ip_network_routing_probe",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "inherited_turns": 0,
+  "inheritance_evidence": "Coordinator verified explicit fork_turns=none spawn and probe confirmation; user-message inventory attached.",
+  "configured_service_tier": "default",
+  "resolved_service_tier": null,
+  "session_source": "/Users/pc/.codex/sessions/2026/09/18/rollout-2026-09-18T22-47-59-01a0b835-0def-7a72-b87d-ffbf2f2c8dd5.jsonl",
+  "session_source_sha256": "61d97bd004fc3f5b505938ba45102cbe20a8cf76e781099dfff2a38bcf1f872e",
+  "session_metadata": [
+    {
+      "line": 1,
+      "payload": {
+        "id": "01a0b835-0def-7a72-b87d-ffbf2f2c8dd5",
+        "parent_thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+        "cwd": "/private/tmp/steno-p4-coordinator",
+        "source": {
+          "subagent": {
+            "thread_spawn": {
+              "parent_thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+              "depth": 1,
+              "agent_path": "/root/ip_network_routing_probe",
+              "agent_nickname": "Planck",
+              "agent_role": "network"
+            }
+          }
+        },
+        "agent_role": "network",
+        "agent_path": "/root/ip_network_routing_probe"
+      }
+    }
+  ],
+  "turn_contexts": [
+    {
+      "line": 8,
+      "payload": {
+        "model": "gpt-6-astra",
+        "effort": "high",
+        "cwd": "/private/tmp/steno-p4-coordinator",
+        "service_tier": null
+      }
+    }
+  ],
+  "user_message_inventory": [
+    {
+      "line": 6,
+      "sha256": "4873c04786b4d1eec818070e80c4aaa0f5619ea6731f460aca993b6f7b1a2b97",
+      "prefix": "[{\"type\": \"input_text\", \"text\": \"<recommended_plugins>\\nHere is a list of plugins that are available but not installed.\\n\\n- Airtable (airta"
+    }
+  ],
+  "verified_at": "2026-09-19T05:49:37.044541+00:00",
+  "result": "PROBE_READY",
+  "writes": [],
+  "tests_run": [],
+  "children_spawned": 0
+}
