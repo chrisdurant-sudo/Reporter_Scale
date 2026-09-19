@@ -24,7 +24,7 @@ Select the latest known valid target for the same member/role, metric version, u
 
 A quality check's `checkedBy` is the reviewer, not the subject of a performance claim. Expose the inspected work and reviewer explicitly. If grouping inspected work by member, state the attribution basis and derive it from canonical work history (for example, owner at inspection); do not label reviewer activity as someone else's work quality. Keep unowned or ambiguous attribution visible. Only inspected work belongs in the denominator, with latest applicable checks and reasons visible. No invented overall score or ranking.
 
-Coaching and successful-practice records need the observed issue/strength, linked work, expected practice, next action, due date, review date and recorded result. Preserve source authors and inspectable review history supported by the existing schema. A review result is an explicit entered note, not an automatic score. If the frozen storage type cannot preserve a required history, request a narrow shared change before implementing a private substitute.
+Coaching and successful-practice records need the observed issue/strength, linked work, expected practice, next action, due date, review date and recorded result. Preserve source authors and creation dates; show the stored update time and current review result. The existing schema stores a current outcome note, so do not invent a sequence of prior reviews. A review result is an explicit entered note, not an automatic score. Request a narrow shared change only if an explicit acceptance requirement cannot be met by the frozen types.
 
 ## Integration and proof
 
