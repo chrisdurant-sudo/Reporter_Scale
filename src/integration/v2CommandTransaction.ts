@@ -10,10 +10,10 @@ import type {
 import { assessCommandGate } from "../logic/shared";
 
 /** Call from the app's serialized mutation queue; a successful result means repository save succeeded. */
-export async function commitV2Command<TType extends V2CommandType, TPayload>(
+export async function commitV2Command<TCommand extends V2CommandEnvelope<V2CommandType, unknown>>(
   repository: DemoRepositoryV2,
-  command: V2CommandEnvelope<TType, TPayload>,
-  prepare: (snapshot: DemoSnapshotV2, command: V2CommandEnvelope<TType, TPayload>) => V2CommandMutation,
+  command: TCommand,
+  prepare: (snapshot: DemoSnapshotV2, command: TCommand) => V2CommandMutation,
 ): Promise<V2CommandResult<DemoSnapshotV2>> {
   const fail = (revision: number, message: string, code: V2CommandError["code"] = "invalid-command", errors?: readonly V2CommandError[]): V2CommandResult<DemoSnapshotV2> => ({
     ok: false, commandId: command.context.commandId, revision, message,

@@ -4,12 +4,14 @@ import type {
   CoachingActionId,
   CommandId,
   ProgramId,
+  ProcessVersionId,
   RequestId,
   TeamMemberId,
   TeamTargetId,
   WorkItemId,
 } from "./ids";
 import type { RecordPointer } from "./references";
+import type { ProgramDecisionKind } from "./programs";
 import type { DemoSnapshotV2 } from "./snapshot";
 import type { CoachingAction, TeamTarget, WorkItemChanges, WorkItemStatus, WorkOwnershipDomain, WorkPriority, WorkQualityCheck } from "./work";
 
@@ -134,8 +136,27 @@ export interface ProgramTextSavePayload {
   readonly text: string;
 }
 
+/** Accountability and review are explicit inputs; domain preparation attaches current source evidence. */
+export interface ProgramDecisionSavePayload {
+  readonly programId: ProgramId;
+  readonly decision: ProgramDecisionKind;
+  readonly rationale: string;
+  readonly ownerId: TeamMemberId;
+  readonly nextReviewAt: UtcTimestamp;
+}
+
+/** A draft copies inspectable canonical steps; saving never enrolls people or rolls out a process. */
+export interface ProcessDraftSavePayload {
+  readonly programId: ProgramId;
+  readonly sourceProcessVersionId: ProcessVersionId;
+  readonly ownerId: TeamMemberId;
+  readonly nextReviewAt: UtcTimestamp;
+}
+
 export type ProgramsCommandEnvelope =
-  | V2CommandEnvelope<"programs.note.save", ProgramTextSavePayload>;
+  | V2CommandEnvelope<"programs.note.save", ProgramTextSavePayload>
+  | V2CommandEnvelope<"programs.record-decision", ProgramDecisionSavePayload>
+  | V2CommandEnvelope<"programs.save-process-version", ProcessDraftSavePayload>;
 
 export interface V2CommandError {
   readonly code: "invalid-command" | "stale-revision" | "validation-failed" | "invariant-failed" | "storage-failed";

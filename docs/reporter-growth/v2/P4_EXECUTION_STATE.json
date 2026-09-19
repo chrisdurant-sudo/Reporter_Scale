@@ -316,7 +316,8 @@
         "file": "docs/reporter-growth/v2/evidence/30a1aca9fbee1b1c4e81a5e6841fbd8b81a81b1a-ip0-repaired-verification.json",
         "sha256": "4b78a3a3258196c179f7586abdfbac47280359149372b7ac7cf0bd86aff9bd57"
       }
-    }
+    },
+    "transaction_contract_commit": "ccbdd5b1736bafb5ab67d23aea54c2b444e116ae"
   },
   "implementation_base_commit": "6e7ea99e2358e497b8a6d4331a6cc8513e668501",
   "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",
@@ -324,8 +325,8 @@
   "fanout_authorized": false,
   "current_phase": "IP1_serial_data_logic",
   "current_candidate": {
-    "commit": "30a1aca9fbee1b1c4e81a5e6841fbd8b81a81b1a",
-    "status": "baseline_verified_serial_data_logic_pending",
+    "commit": "ccbdd5b1736bafb5ab67d23aea54c2b444e116ae",
+    "status": "serial_data_logic_in_progress_transaction_boundary_focused_checks_passed",
     "defect_register": "docs/reporter-growth/v2/INTERVIEW_PRODUCT_REVIEW_2026-09-18.md"
   },
   "gates": {
@@ -482,5 +483,18 @@
         "reason": "Browser launch recovered; full run now reaches assertions: two browser cases pass, six fail on stale navigation/feedback selectors. Additional unsupported getByDisplayValue call identified. Quality-owned suite repair is required; no waiver."
       }
     }
-  ]
+  ],
+  "active_lane": {
+    "role": "data",
+    "task_name": "/root/ip1_data",
+    "worktree": "/private/tmp/steno-interview-ip1-data",
+    "branch": "codex/interview-ip1-data",
+    "base_commit": "a772282a7d7acb74d8a09ab1786ca6b3de9c51ae",
+    "source_contract_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
+    "requests": [
+      "IC07",
+      "IC08"
+    ],
+    "status": "running"
+  }
 }
