@@ -226,6 +226,13 @@
         "status": "approved",
         "contract_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
         "scope": "Versioned V2 local persistence, validation and linked work histories; no new 50-person expansion."
+      },
+      {
+        "id": "IC07_history_validation",
+        "role": "data",
+        "status": "approved",
+        "contract_commit": "662e7de0e3b87305a22f8a56ac67c2b2a48004cf",
+        "scope": "Reject stored/proposed edits missing required previous dueAt/blockerCode values; preserve optional-field absence and malformed bytes. See IP1_WORK_HISTORY_VALIDATION_REQUEST.md."
       }
     ],
     "source_contract_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
