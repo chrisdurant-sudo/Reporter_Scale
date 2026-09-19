@@ -49,6 +49,12 @@ describe("P4 integrated V2 experience", () => {
     expect(screen.getByText(/\d+ inactive for 28\+ days/)).toBeInTheDocument();
     expect(marketButton("SFO")).toHaveAttribute("aria-pressed", "true");
 
+    await user.click(screen.getByRole("button", { name: "Why this?" }));
+    const reporterEvidence = await screen.findByRole("dialog", { name: "Why this?" });
+    expect(reporterEvidence).toHaveTextContent("completed work in SFO");
+    expect(reporterEvidence).toHaveTextContent(/completed work in the trailing 28 elapsed days/i);
+    await user.keyboard("{Escape}");
+
     await user.click(screen.getByRole("button", { name: "Team" }));
     expect(await screen.findByRole("main", { name: "Team" })).toBeInTheDocument();
     expect(screen.getByText("5 tasks need an owner")).toBeInTheDocument();

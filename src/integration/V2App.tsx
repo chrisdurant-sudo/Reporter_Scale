@@ -542,7 +542,7 @@ export function V2App() {
     if (activeWorkspace === "reporters") return <ReportersNetworkScreen view={reportersView} actions={{
       onConfirmAvailability: (input) => appendAvailability(input.reporterId, input.confirmedAt),
       onCreateReengagementTask: appendReengagementTask,
-      onOpenEvidence: (id) => openEvidence(findEvidence(String(id))),
+      onOpenEvidence: openEvidence,
       onOpenRecruitingChecklist: (reporterId) => {
         const acquisition = snapshot.acquisitionCases.find((item) => item.reporterId === reporterId);
         const evidence = reportersView.evidence[0];
