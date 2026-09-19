@@ -21,3 +21,11 @@ Each row supplies `detailTarget`, nullable `checklistTarget`, and nullable `foll
 The Reporters specialist consumes the prepared skill/preference/availability/credential fields and exact targets, adds the explicit forms and person detail, and fixes awaited success/error feedback. It must make existing follow-up work openable rather than disabling the button. The current chart and labels are historical; they do not yet fulfill IP07. Do not sum or relabel the prepared values into unsupported activity or compliance claims. Preserve all 113 baseline people, the single scenario addition, the 25-task seed and SD01–SD07.
 
 Root still needs Team composition for follow-up and explicit availability callback wiring. Independent IP01/IP06/IP07/IP09, revised reference comparisons, all required viewports and browser persistence proof remain pending.
+
+## Coordinator follow-up composition
+
+`src/integration/v2NetworkComposition.ts` now exports `commitNetworkFollowUp(repository, context, payload)`. The explicit payload contains reporter, market, nullable owner and nullable due date. Invoke it only through the app's serialized queue. It loads the canonical state, asks Network to resolve existing follow-up identity, and creates missing work through Team plus `commitV2Command`. Existing open work is read-only: no reassignment, duplicate task or extra save. Successful creation acknowledges repository storage before returning.
+
+The result includes the saved/current snapshot and exact work target. It prepares the Team target in the entered market first, falling back to All only when that task has no matching recorded market relationship (for example, historical job-market activity outside present service/acquisition scope). It clears unrelated inherited demand filters and uses Team's M11 detail target. This does not add a market field to the work item or rewrite historical evidence targets. A null target must be disclosed as unavailable, never replaced with the first task.
+
+Three focused integration tests cover one save plus repeated open, unchanged operational outcomes, denied storage/stale writes, and the cross-market target round trip. Typecheck passed. The Reporters specialist still must supply explicit availability/follow-up inputs and catch awaited failures; the old feature callback port remains pending until its presentation phase.
