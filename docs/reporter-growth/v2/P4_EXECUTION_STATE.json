@@ -274,10 +274,10 @@
       }
     ],
     "latest_coordinator_verification": {
-      "candidate_commit": "df04eefc2b42680332bd0d8a3e0219ca79627f92",
+      "candidate_commit": "30a1aca9fbee1b1c4e81a5e6841fbd8b81a81b1a",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-ip0-verification.json",
-        "sha256": "51290efa20165e5d67f744aa701c05514e8acd442a2ab70775e64685f32be5d7"
+        "file": "docs/reporter-growth/v2/evidence/30a1aca9fbee1b1c4e81a5e6841fbd8b81a81b1a-ip0-repaired-verification.json",
+        "sha256": "4b78a3a3258196c179f7586abdfbac47280359149372b7ac7cf0bd86aff9bd57"
       }
     },
     "continuation_authorization": {
@@ -287,7 +287,7 @@
     },
     "runtime_verification_note": "Data and Quality probes verified; other roles require a fresh probe before implementation.",
     "browser_prerequisite_repair": {
-      "status": "authorized",
+      "status": "completed",
       "request": "docs/reporter-growth/v2/IP0_BROWSER_REPAIR_REQUEST.md",
       "proposal": {
         "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-browser-repair-proposal.patch",
@@ -298,7 +298,7 @@
         "sha256": "f422659b229368ef40991121f2b8a5c4ae6340a82bcc979aa2de298333852e41"
       },
       "diagnostic_passed": 8,
-      "registered_suite_passed": false,
+      "registered_suite_passed": true,
       "role": "quality",
       "authorization": {
         "source": "User: Approve the narrow test-repair exception",
@@ -309,17 +309,23 @@
         "tests/e2e/reporter-growth.browser.spec.ts"
       ],
       "independent_quality_gate_retained": true,
-      "waivers": []
+      "waivers": [],
+      "candidate_commit": "8c8752fef533f2ed9a64dd818cff89366e6314fc",
+      "integrated_commit": "30a1aca9fbee1b1c4e81a5e6841fbd8b81a81b1a",
+      "verification": {
+        "file": "docs/reporter-growth/v2/evidence/30a1aca9fbee1b1c4e81a5e6841fbd8b81a81b1a-ip0-repaired-verification.json",
+        "sha256": "4b78a3a3258196c179f7586abdfbac47280359149372b7ac7cf0bd86aff9bd57"
+      }
     }
   },
   "implementation_base_commit": "6e7ea99e2358e497b8a6d4331a6cc8513e668501",
   "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",
   "implementation_active": true,
   "fanout_authorized": false,
-  "current_phase": "IP0_contract_preparation",
+  "current_phase": "IP1_serial_data_logic",
   "current_candidate": {
-    "commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
-    "status": "contract_boundary_prepared_runtime_and_browser_blocked",
+    "commit": "30a1aca9fbee1b1c4e81a5e6841fbd8b81a81b1a",
+    "status": "baseline_verified_serial_data_logic_pending",
     "defect_register": "docs/reporter-growth/v2/INTERVIEW_PRODUCT_REVIEW_2026-09-18.md"
   },
   "gates": {
@@ -346,16 +352,24 @@
       "scope": "Coordinator-owned additive types and bounded requests only; domain/storage implementations and presentation remain pending."
     },
     "data_logic": {
-      "status": "blocked"
+      "status": "pending",
+      "required_roles": [
+        "data",
+        "capacity",
+        "recruiting",
+        "network",
+        "team",
+        "programs"
+      ],
+      "completed_roles": []
     },
     "baseline": {
-      "status": "failed",
-      "candidate_commit": "df04eefc2b42680332bd0d8a3e0219ca79627f92",
+      "status": "passed",
+      "candidate_commit": "30a1aca9fbee1b1c4e81a5e6841fbd8b81a81b1a",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-ip0-verification.json",
-        "sha256": "51290efa20165e5d67f744aa701c05514e8acd442a2ab70775e64685f32be5d7"
-      },
-      "reason": "Browser launch recovered; full run now reaches assertions: two browser cases pass, six fail on stale navigation/feedback selectors. Additional unsupported getByDisplayValue call identified. Quality-owned suite repair is required; no waiver."
+        "file": "docs/reporter-growth/v2/evidence/30a1aca9fbee1b1c4e81a5e6841fbd8b81a81b1a-ip0-repaired-verification.json",
+        "sha256": "4b78a3a3258196c179f7586abdfbac47280359149372b7ac7cf0bd86aff9bd57"
+      }
     },
     "visual_proof": {
       "status": "blocked"
@@ -370,7 +384,24 @@
       "status": "blocked"
     }
   },
-  "lane_audits": {},
+  "lane_audits": {
+    "ip0_quality_browser_repair": {
+      "lane": "quality",
+      "base_commit": "8c1e76d541f542c7c8739d115e216d7116f6f7d1",
+      "candidate_commit": "8c8752fef533f2ed9a64dd818cff89366e6314fc",
+      "integrated_commit": "30a1aca9fbee1b1c4e81a5e6841fbd8b81a81b1a",
+      "status": "passed",
+      "changed_paths": [
+        "tests/e2e/reporter-growth.browser.spec.ts"
+      ],
+      "boundary_exit_code": 0,
+      "full_verification": {
+        "file": "docs/reporter-growth/v2/evidence/30a1aca9fbee1b1c4e81a5e6841fbd8b81a81b1a-ip0-repaired-verification.json",
+        "sha256": "4b78a3a3258196c179f7586abdfbac47280359149372b7ac7cf0bd86aff9bd57"
+      },
+      "scope": "User-approved prerequisite test repair only; independent IP5 Quality remains pending."
+    }
+  },
   "known_ownership_exceptions": [],
   "phase_allowed_prefixes": [
     ".codex/config.toml",
@@ -437,6 +468,18 @@
           "sha256": "b277c34e5006dcf677913f87ca88158771a1a5de283d36d714dd633e2e223446"
         },
         "reason": "Fresh full run passes all non-browser checks; all eight browser cases fail at Chromium startup with macOS Mach-port permission denial, before assertions. No waiver."
+      }
+    },
+    {
+      "gate": "baseline",
+      "record": {
+        "status": "failed",
+        "candidate_commit": "df04eefc2b42680332bd0d8a3e0219ca79627f92",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-ip0-verification.json",
+          "sha256": "51290efa20165e5d67f744aa701c05514e8acd442a2ab70775e64685f32be5d7"
+        },
+        "reason": "Browser launch recovered; full run now reaches assertions: two browser cases pass, six fail on stale navigation/feedback selectors. Additional unsupported getByDisplayValue call identified. Quality-owned suite repair is required; no waiver."
       }
     }
   ]

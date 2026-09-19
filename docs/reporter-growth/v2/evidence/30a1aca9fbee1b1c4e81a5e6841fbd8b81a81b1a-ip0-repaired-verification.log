@@ -1,0 +1,142 @@
+
+> reporter-growth@0.1.0 verify:p4
+> npm run verify:p4:governance && npm run check && npm run test:acceptance && npm run test:e2e
+
+
+> reporter-growth@0.1.0 verify:p4:governance
+> node scripts/verify-p4-readiness.mjs && node scripts/verify-p4-phase-gate.mjs
+
+P4 readiness verification passed (203 checks).
+P4 interview phase verification passed for IP0_contract_preparation; worker dispatch is checked separately.
+
+> reporter-growth@0.1.0 check
+> npm run lint && npm run typecheck && npm run test && npm run build
+
+
+> reporter-growth@0.1.0 lint
+> eslint . --max-warnings=0
+
+
+> reporter-growth@0.1.0 typecheck
+> tsc -b --pretty false
+
+
+> reporter-growth@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /private/tmp/steno-p4-coordinator
+
+ ✓ src/features/programs/index.test.tsx (2 tests) 444ms
+ ✓ src/features/markets/index.test.tsx (4 tests) 1013ms
+   ✓ MarketsScreen > shows five prepared market records with record support and actions  494ms
+ ✓ src/features/improvements/index.test.tsx (5 tests) 1138ms
+   ✓ ImprovementsScreen > shows descriptive limits and requires a rationale before recording a decision  644ms
+ ✓ src/features/reporters/index.test.tsx (4 tests) 1219ms
+   ✓ ReportersScreen > filters work and opens a detail panel with local message preview  600ms
+   ✓ ReportersScreen > delegates screening, follow-up, and coaching saves to actions  373ms
+ ✓ src/integration/p2RecordsAndCalculations.test.ts (6 tests) 1409ms
+   ✓ P2 source → calculation → EvidenceBundle reconciliation > derives every frozen LAX capacity checkpoint from cumulative source events  1090ms
+ ✓ src/features/reporters/network.test.tsx (1 test) 282ms
+ ✓ src/data/v2.test.ts (12 tests) 1808ms
+   ✓ V2 synthetic records and repository > SD06 derives varied Overview and Funnel trends from canonical records  1019ms
+ ✓ src/ui/index.test.tsx (2 tests) 243ms
+ ✓ src/shell/V2AppShell.test.tsx (4 tests) 473ms
+   ✓ V2AppShell > offers five controlled workspaces and preserves the supplied shared filters across navigation  392ms
+ ✓ src/ui/v2.test.tsx (2 tests) 350ms
+   ✓ v2 evidence and state primitives > makes the prepared calculation and human-readable source records available before exact navigation  316ms
+ ✓ src/features/recruiting/index.test.tsx (2 tests) 312ms
+ ✓ src/features/markets/MarketsV2Screen.test.tsx (1 test) 284ms
+ ✓ src/shell/AppShell.test.tsx (1 test) 209ms
+ ✓ src/logic/programs/index.test.ts (12 tests) 31ms
+ ✓ src/logic/capacity/index.test.ts (13 tests) 50ms
+ ✓ src/logic/index.test.ts (6 tests) 21ms
+ ✓ src/logic/recruiting/recruiting.test.ts (16 tests) 29ms
+ ✓ src/data/index.test.ts (5 tests) 10ms
+ ✓ src/logic/network/index.test.ts (10 tests) 9ms
+ ✓ src/logic/team/index.test.ts (5 tests) 5ms
+ ✓ src/integration/v2Compatibility.test.ts (2 tests) 3ms
+ ✓ src/logic/shared/invariants.test.ts (5 tests) 3ms
+ ✓ src/contracts/v2/contracts.test.ts (3 tests) 2ms
+ ✓ src/integration/App.test.tsx (8 tests) 8666ms
+   ✓ P4 integrated V2 experience > renders all five workspaces, keeps the market across navigation, and retains the synthetic disclosure  1948ms
+   ✓ P4 integrated V2 experience > uses the locked Overview composition without restoring the superseded growth-goal panel  862ms
+   ✓ P4 integrated V2 experience > keeps planning, readiness, acceptance, and delivery as separate replayable checkpoints  2000ms
+   ✓ P4 integrated V2 experience > opens contextual evidence, closes on Escape with focus return, and carries exact context into work  556ms
+   ✓ P4 integrated V2 experience > reconciles program membership for LAX, All, and SFO without averaging percentages  473ms
+   ✓ P4 integrated V2 experience > persists program commands without manufacturing operational outcomes  1035ms
+   ✓ P4 integrated V2 experience > creates canonical Team work from the locked Add work form  620ms
+   ✓ P4 integrated V2 experience > persists Programs notes and next steps without changing outcomes  1172ms
+
+ Test Files  24 passed (24)
+      Tests  131 passed (131)
+   Start at  21:28:15
+   Duration  10.18s (transform 1.29s, setup 1.31s, collect 4.16s, tests 18.01s, environment 10.80s, prepare 1.28s)
+
+
+> reporter-growth@0.1.0 build
+> tsc -b && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 73 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.53 kB │ gzip:   0.33 kB
+dist/assets/index-BhEKzEhF.css   30.39 kB │ gzip:   5.75 kB
+dist/assets/index-CZS0fUmo.js   413.97 kB │ gzip: 119.23 kB
+✓ built in 600ms
+
+> reporter-growth@0.1.0 test:acceptance
+> vitest run --config vite.acceptance.config.ts
+
+
+ RUN  v3.2.7 /private/tmp/steno-p4-coordinator
+
+ ✓ tests/acceptance/reporter-growth.reconciliation.test.ts (4 tests) 516ms
+ ✓ tests/acceptance/reporter-growth.integration.test.tsx (5 tests) 3822ms
+   ✓ P4 cross-workspace acceptance > XR01-XR08/XR31-XR36 keeps the locked shell, concise hierarchy, and source-backed Overview controls  712ms
+   ✓ P4 cross-workspace acceptance > XR09-XR10/XR15-XR18/XR37 exercises Funnel controls, notes, SLA isolation, evidence, and focus return  1054ms
+   ✓ P4 cross-workspace acceptance > XR11/XR15/XR17/XR38 preserves market scope and exposes reporter readiness, compliance, and bounded follow-up  589ms
+   ✓ P4 cross-workspace acceptance > XR12/XR17/XR39 creates Team work through the real form and retains the required board semantics  653ms
+   ✓ P4 cross-workspace acceptance > XR13/XR15-XR18/XR40 keeps Programs results, filters, target-met evidence, and text persistence source-safe  814ms
+
+ Test Files  2 passed (2)
+      Tests  9 passed (9)
+   Start at  21:28:29
+   Duration  4.52s (transform 226ms, setup 69ms, collect 391ms, tests 4.34s, environment 459ms, prepare 74ms)
+
+
+> reporter-growth@0.1.0 test:e2e
+> npm run build && playwright test --config=playwright.config.mjs
+
+
+> reporter-growth@0.1.0 build
+> tsc -b && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 73 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.53 kB │ gzip:   0.33 kB
+dist/assets/index-BhEKzEhF.css   30.39 kB │ gzip:   5.75 kB
+dist/assets/index-CZS0fUmo.js   413.97 kB │ gzip: 119.23 kB
+✓ built in 564ms
+
+Running 8 tests using 2 workers
+
+(node:81414) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:81415) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › tests/e2e/reporter-growth.browser.spec.ts:27:3 › P4 browser acceptance › XR01-XR08/XR22 keeps every workspace reachable without page overflow at the active viewport (913ms)
+  ✓  2 [mobile] › tests/e2e/reporter-growth.browser.spec.ts:27:3 › P4 browser acceptance › XR01-XR08/XR22 keeps every workspace reachable without page overflow at the active viewport (915ms)
+  ✓  4 [mobile] › tests/e2e/reporter-growth.browser.spec.ts:39:3 › P4 browser acceptance › XR09-XR10/XR15/XR37 changes Funnel range, status, filters, and a market-specific SLA without lifecycle leakage (944ms)
+  ✓  3 [desktop] › tests/e2e/reporter-growth.browser.spec.ts:39:3 › P4 browser acceptance › XR09-XR10/XR15/XR37 changes Funnel range, status, filters, and a market-specific SLA without lifecycle leakage (946ms)
+  ✓  6 [desktop] › tests/e2e/reporter-growth.browser.spec.ts:63:3 › P4 browser acceptance › XR16/XR19-XR25 keeps the evidence drawer keyboard-operable and full-screen at 390px (520ms)
+  ✓  5 [mobile] › tests/e2e/reporter-growth.browser.spec.ts:63:3 › P4 browser acceptance › XR16/XR19-XR25 keeps the evidence drawer keyboard-operable and full-screen at 390px (525ms)
+  ✓  8 [mobile] › tests/e2e/reporter-growth.browser.spec.ts:81:3 › P4 browser acceptance › XR11-XR13/XR17/XR38-XR40 performs reporter, Team, and Programs working actions (1.2s)
+  ✓  7 [desktop] › tests/e2e/reporter-growth.browser.spec.ts:81:3 › P4 browser acceptance › XR11-XR13/XR17/XR38-XR40 performs reporter, Team, and Programs working actions (1.2s)
+
+  8 passed (4.5s)

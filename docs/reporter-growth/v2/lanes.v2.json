@@ -4,7 +4,7 @@
   "routing_active": true,
   "fanout_authorized": false,
   "implementation_active": true,
-  "current_phase": "IP0_contract_preparation",
+  "current_phase": "IP1_serial_data_logic",
   "execution_state": "docs/reporter-growth/v2/P4_EXECUTION_STATE.json",
   "execution_model": "serial_gates_with_bounded_parallel_workspace_wave",
   "transition_control": {
@@ -31,7 +31,7 @@
     ],
     "applies_to": "every_routed_probe_and_worker_spawn"
   },
-  "routing_verification_status": "astra_catalog_and_data_probe_verified_other_probes_pending",
+  "routing_verification_status": "astra_catalog_data_quality_probes_verified",
   "source_contract_commit": "19f7df98000e346a5b4ff32e00b699276c3f62fb",
   "prepared_against_commit": "c4f304c376ca631d88c694f519f76ec316f12a13",
   "implementation_requires": [
@@ -369,7 +369,7 @@
       "IP12"
     ],
     "runtime_models_verified": false,
-    "status": "implementation_authorized_coordinator_preparation"
+    "status": "serial_data_logic"
   },
   "active_execution_sequence": "interview_improvement",
   "historical_p4_execution_sequence": [
