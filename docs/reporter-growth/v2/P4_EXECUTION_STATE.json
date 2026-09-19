@@ -307,10 +307,10 @@
       }
     ],
     "latest_coordinator_verification": {
-      "candidate_commit": "662e7de0e3b87305a22f8a56ac67c2b2a48004cf",
+      "candidate_commit": "91cd6663fd56c1fa90b430772cdcfaf351978752",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/662e7de0e3b87305a22f8a56ac67c2b2a48004cf-ip1-shared-history-verification.json",
-        "sha256": "c64adac4be8ba400047a53898052e462e33fce73505d2b0d44d57d7193bf2d85"
+        "file": "docs/reporter-growth/v2/evidence/91cd6663fd56c1fa90b430772cdcfaf351978752-ip1-recruiting-verification.json",
+        "sha256": "3322d8e07c439354678ffcf5cc4b8521336c34a19b067cbd4575c3e46de4ad63"
       }
     },
     "continuation_authorization": {
@@ -366,8 +366,8 @@
   "fanout_authorized": false,
   "current_phase": "IP1_serial_data_logic",
   "current_candidate": {
-    "commit": "662e7de0e3b87305a22f8a56ac67c2b2a48004cf",
-    "status": "shared_contract_baseline_passed_recruiting_finalization_pending",
+    "commit": "91cd6663fd56c1fa90b430772cdcfaf351978752",
+    "status": "data_capacity_recruiting_integrated_full_suite_passed_remaining_logic_pending",
     "defect_register": "docs/reporter-growth/v2/INTERVIEW_PRODUCT_REVIEW_2026-09-18.md"
   },
   "gates": {
@@ -405,15 +405,16 @@
       ],
       "completed_roles": [
         "data",
-        "capacity"
+        "capacity",
+        "recruiting"
       ]
     },
     "baseline": {
       "status": "passed",
-      "candidate_commit": "662e7de0e3b87305a22f8a56ac67c2b2a48004cf",
+      "candidate_commit": "91cd6663fd56c1fa90b430772cdcfaf351978752",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/662e7de0e3b87305a22f8a56ac67c2b2a48004cf-ip1-shared-history-verification.json",
-        "sha256": "c64adac4be8ba400047a53898052e462e33fce73505d2b0d44d57d7193bf2d85"
+        "file": "docs/reporter-growth/v2/evidence/91cd6663fd56c1fa90b430772cdcfaf351978752-ip1-recruiting-verification.json",
+        "sha256": "3322d8e07c439354678ffcf5cc4b8521336c34a19b067cbd4575c3e46de4ad63"
       }
     },
     "visual_proof": {
@@ -494,6 +495,26 @@
         "explicit empty query support"
       ],
       "acceptance_scope": "IC01 prepared logic; Lead presentation and independent IP01/IP04/IP06 browser acceptance remain pending"
+    },
+    "ip1_recruiting": {
+      "lane": "recruiting",
+      "base_commit": "4e54406da9674cdb62cfa270d53bc135d75c2a0b",
+      "candidate_commit": "912ea2f19af2f54416fd41883da0d9c38898719d",
+      "integrated_commit": "91cd6663fd56c1fa90b430772cdcfaf351978752",
+      "status": "passed",
+      "changed_paths": [
+        "src/logic/recruiting/recruiting.ts",
+        "src/logic/recruiting/recruiting.test.ts",
+        "src/logic/recruiting/recruiting.seed.test.ts"
+      ],
+      "boundary_exit_code": 0,
+      "focused_tests": 32,
+      "full_verification": {
+        "file": "docs/reporter-growth/v2/evidence/91cd6663fd56c1fa90b430772cdcfaf351978752-ip1-recruiting-verification.json",
+        "sha256": "3322d8e07c439354678ffcf5cc4b8521336c34a19b067cbd4575c3e46de4ad63"
+      },
+      "acceptance_scope": "IC02 prepared logic; Lead presentation and IP03/IP05/IP06 independent acceptance remain pending",
+      "handoff": "docs/reporter-growth/v2/IP1_RECRUITING_HANDOFF.md"
     }
   },
   "known_ownership_exceptions": [],
@@ -665,26 +686,18 @@
           "sha256": "e10b8b937bccf1f41942bbc07f766b5a5ff6c22b23121fc65005388223ee011b"
         }
       }
+    },
+    {
+      "gate": "baseline",
+      "record": {
+        "status": "passed",
+        "candidate_commit": "662e7de0e3b87305a22f8a56ac67c2b2a48004cf",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/662e7de0e3b87305a22f8a56ac67c2b2a48004cf-ip1-shared-history-verification.json",
+          "sha256": "c64adac4be8ba400047a53898052e462e33fce73505d2b0d44d57d7193bf2d85"
+        }
+      }
     }
   ],
-  "active_lane": {
-    "role": "recruiting",
-    "task_name": "/root/ip1_recruiting",
-    "worktree": "/private/tmp/steno-interview-ip1-recruiting",
-    "branch": "codex/interview-ip1-recruiting",
-    "base_commit": "4e54406da9674cdb62cfa270d53bc135d75c2a0b",
-    "source_contract_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
-    "prerequisite_contract_commit": "662e7de0e3b87305a22f8a56ac67c2b2a48004cf",
-    "requests": [
-      "IC02"
-    ],
-    "status": "running",
-    "runtime_evidence": {
-      "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-recruiting-worker-runtime.json",
-      "sha256": "58a72246293d5deb5ed14058e6b0a9601b7e44c172edac4117cf1f21a0aaaebb"
-    },
-    "original_base_commit": "04f98454ad1e61c2a15f2041d848b0f6caf2a0f7",
-    "checkpoint_before_rebase": "9b6364f40e58a9530be008f61c9a26b3eea6fea1",
-    "rebased_checkpoint": "bc4dd160364fabdf22afdf08f5a4ca8737f27b25"
-  }
+  "active_lane": null
 }
