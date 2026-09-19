@@ -11,4 +11,5 @@ export * from "./repository";
 export * from "./scenario";
 export * from "./snapshot";
 export * from "./work";
+export * from "./weeklyReview";
 export * from "./workspace";
