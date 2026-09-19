@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-19T07:28:00.139789+00:00",
+  "updated_at": "2026-09-19T07:34:01.727271+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -425,9 +425,10 @@
   "fanout_authorized": false,
   "current_phase": "IP2_visual_proof",
   "current_candidate": {
-    "commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
-    "status": "serial_interview_preparation_passed_presentation_pending",
-    "defect_register": "docs/reporter-growth/v2/INTERVIEW_PRODUCT_REVIEW_2026-09-18.md"
+    "commit": "91a3a53210913af51432f207551e84337a401546",
+    "status": "IP2_linked_selection_prepared_visual_proof_pending",
+    "defect_register": "docs/reporter-growth/v2/INTERVIEW_PRODUCT_REVIEW_2026-09-18.md",
+    "focused_verification": "Typecheck, lint and 15 app/persistence/Funnel-control tests passed. Full preparation baseline remains dfa4b9b921991abd6a40127146520c421204c8cb; revised visual acceptance pending."
   },
   "gates": {
     "data": {
