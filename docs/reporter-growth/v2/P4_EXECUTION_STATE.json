@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-19T08:59:59.157741+00:00",
+  "updated_at": "2026-09-19T09:01:39.484149+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -651,8 +651,13 @@
     "visual_proof": {
       "status": "pending",
       "scope": "IP01-IP12_amendment",
-      "reason": "Desktop reference frozen; required actual source proof is1440\u00d7900 Overview/Funnel People/Bottlenecks/SLA with pointer and keyboard. Tablet/phone proof not required by latest user scope.",
-      "reference_manifest": "docs/reporter-growth/v2/design-lock/interview-2026-09-19/reference-manifest.json"
+      "reason": "Final exact clean desktop capture and interaction review pass; acceptance waits for full suite and specialist runtime probes before phase transition.",
+      "reference_manifest": "docs/reporter-growth/v2/design-lock/interview-2026-09-19/reference-manifest.json",
+      "candidate_commit": "d7c9d7347ae3904660a213595724360a599aa728",
+      "evidence": {
+        "file": "docs/reporter-growth/v2/design-lock/candidate/d7c9d7347ae3904660a213595724360a599aa728/proof-manifest.json",
+        "sha256": "72fe7eb6d7b7a3090d283b3bbd07fd3624d21af0e1396e0e179d032037fb2181"
+      }
     },
     "workspace_wave": {
       "status": "blocked"
@@ -1146,23 +1151,19 @@
     }
   ],
   "active_lane": {
-    "role": "experience",
-    "task_name": "/root/experience_probe_takeover",
-    "worktree": "/private/tmp/steno-ip2-proof-repair",
-    "branch": "codex/interview-ip2-proof-repair",
-    "base_commit": "dfdc56a6abd372703be80148a6d43cc9322dd0b5",
+    "role": "quality",
+    "task_name": "/root/quality_probe_takeover",
+    "worktree": "/private/tmp/steno-ip2-test-alignment",
+    "branch": "codex/interview-ip2-test-alignment",
+    "base_commit": "aa384f096e86e4ae584881e185e4d6b4776fac0a",
     "source_contract_commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
-    "status": "P4_VISUAL_PROOF_READY_stopped",
+    "status": "authorized_IP2_test_alignment",
     "allowed_paths": [
-      "src/features/recruiting/"
+      "tests/acceptance/reporter-growth.integration.test.tsx",
+      "tests/e2e/reporter-growth.browser.spec.ts"
     ],
     "production_edits_open": false,
-    "runtime_evidence": {
-      "file": "docs/reporter-growth/v2/evidence/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046-experience-probe.json",
-      "sha256": "317662fa968e47463998d1d9b1aea674dd07c18f717865f9ca540d44860430d6"
-    },
-    "scratch_source_proof": "/private/tmp/steno-ip2-final-proof",
-    "candidate_commit": "d7c9d7347ae3904660a213595724360a599aa728"
+    "test_edits_open": true
   },
   "unattended_handoff": {
     "status": "continuing_with_verified_auto_review",
@@ -1246,6 +1247,25 @@
         "sha256": "317662fa968e47463998d1d9b1aea674dd07c18f717865f9ca540d44860430d6"
       },
       "scratch_source_proof": "/private/tmp/steno-ip2-repaired-proof"
+    },
+    {
+      "role": "experience",
+      "task_name": "/root/experience_probe_takeover",
+      "worktree": "/private/tmp/steno-ip2-proof-repair",
+      "branch": "codex/interview-ip2-proof-repair",
+      "base_commit": "dfdc56a6abd372703be80148a6d43cc9322dd0b5",
+      "source_contract_commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
+      "status": "P4_VISUAL_PROOF_READY_stopped",
+      "allowed_paths": [
+        "src/features/recruiting/"
+      ],
+      "production_edits_open": false,
+      "runtime_evidence": {
+        "file": "docs/reporter-growth/v2/evidence/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046-experience-probe.json",
+        "sha256": "317662fa968e47463998d1d9b1aea674dd07c18f717865f9ca540d44860430d6"
+      },
+      "scratch_source_proof": "/private/tmp/steno-ip2-final-proof",
+      "candidate_commit": "d7c9d7347ae3904660a213595724360a599aa728"
     }
   ]
 }

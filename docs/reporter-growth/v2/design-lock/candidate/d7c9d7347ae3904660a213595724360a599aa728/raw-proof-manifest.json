@@ -1,0 +1,520 @@
+{
+  "candidate": "d7c9d7347ae3904660a213595724360a599aa728",
+  "clean": true,
+  "pointer_keyboard_passed": true,
+  "artifacts": [
+    {
+      "name": "overview_1440x900",
+      "path": "/private/tmp/steno-ip2-final-proof/overview_1440x900.png",
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Overview",
+        "market": "ALL",
+        "scenario": "baseline",
+        "projection": true
+      },
+      "candidate": "d7c9d7347ae3904660a213595724360a599aa728",
+      "clean": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "da01acd59f8b320d755ec0d93a94ee6a9ff23599292733eaf0311ebfee21354e"
+    },
+    {
+      "name": "overview_chart_keyboard",
+      "path": "/private/tmp/steno-ip2-final-proof/overview_chart_keyboard.png",
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Overview",
+        "market": "ALL",
+        "inspection": "End key; exact last projected point"
+      },
+      "candidate": "d7c9d7347ae3904660a213595724360a599aa728",
+      "clean": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "956d6fdd8b7f0737c5c2eaa026495d0e482b1a51c3857d5c6045a95966ec2262"
+    },
+    {
+      "name": "weekly_review",
+      "path": "/private/tmp/steno-ip2-final-proof/weekly_review.png",
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Overview",
+        "market": "ALL",
+        "dialog": "Current market-wide review"
+      },
+      "candidate": "d7c9d7347ae3904660a213595724360a599aa728",
+      "clean": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "15b2f79c3b8e9f2d373c1741ce3d73544099e7ff45fdb72427574e089dc26470"
+    },
+    {
+      "name": "weekly_measures",
+      "path": "/private/tmp/steno-ip2-final-proof/weekly_measures.png",
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Overview",
+        "market": "ALL",
+        "dialog": "Actuals, targets and comparison units"
+      },
+      "candidate": "d7c9d7347ae3904660a213595724360a599aa728",
+      "clean": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "c148f51852cf17360e4aa1d5ccaafa8f8bf16bcf5a3022dea56b264154db3834"
+    },
+    {
+      "name": "overview_attention_evidence",
+      "path": "/private/tmp/steno-ip2-final-proof/overview_attention_evidence.png",
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Overview",
+        "market": "LAX",
+        "dialog": "first attention exact evidence"
+      },
+      "candidate": "d7c9d7347ae3904660a213595724360a599aa728",
+      "clean": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "430f28b12c2a5be815988d4d3b27ba7ba3b4664a0f3a333175359884f8bc893b"
+    },
+    {
+      "name": "overview_exact_attention",
+      "path": "/private/tmp/steno-ip2-final-proof/overview_exact_attention.png",
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Overview",
+        "market": "LAX",
+        "linkedRequests": [
+          "req-lax-109",
+          "req-lax-110"
+        ]
+      },
+      "candidate": "d7c9d7347ae3904660a213595724360a599aa728",
+      "clean": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "4cbe6b16ee5fbd14e654fc1d1bde47737621db2a1c75eddcbb529c05e0711bd0"
+    },
+    {
+      "name": "clear_drill_down_keyboard_focus",
+      "path": "/private/tmp/steno-ip2-final-proof/clear_drill_down_keyboard_focus.png",
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Overview",
+        "market": "LAX",
+        "repair": "shared hover and visible keyboard focus"
+      },
+      "candidate": "d7c9d7347ae3904660a213595724360a599aa728",
+      "clean": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "31d6194026dc841b1b0b15d7954958c77057a75596917ce967d447b25329e032"
+    },
+    {
+      "name": "funnel_people_1440x900",
+      "path": "/private/tmp/steno-ip2-final-proof/funnel_people_1440x900.png",
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Funnel",
+        "mode": "People",
+        "market": "ALL",
+        "range": "R28",
+        "entryCohort": "January"
+      },
+      "candidate": "d7c9d7347ae3904660a213595724360a599aa728",
+      "clean": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "e9cc6c7b593534938ddaca42824270d0e54d4fafd479859b7131bfb596369dfa"
+    },
+    {
+      "name": "funnel_source_filter",
+      "path": "/private/tmp/steno-ip2-final-proof/funnel_source_filter.png",
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Funnel",
+        "market": "ALL",
+        "source": "source-targeted-referrals",
+        "records": 2
+      },
+      "candidate": "d7c9d7347ae3904660a213595724360a599aa728",
+      "clean": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "30e7dea7c4ab01ccd69b67ff65d4bb403c3fd803cd1ee0776dde638a109280ef"
+    },
+    {
+      "name": "funnel_sla_filter",
+      "path": "/private/tmp/steno-ip2-final-proof/funnel_sla_filter.png",
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Funnel",
+        "market": "ALL",
+        "sla": "over",
+        "sort": "name"
+      },
+      "candidate": "d7c9d7347ae3904660a213595724360a599aa728",
+      "clean": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "7102b6960e1cb25d02ea1bb8c43edc616439ce0e5252b0952b415c58d0b10059"
+    },
+    {
+      "name": "funnel_february_cohort",
+      "path": "/private/tmp/steno-ip2-final-proof/funnel_february_cohort.png",
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Funnel",
+        "market": "LAX",
+        "entryCohort": "February",
+        "inventory": 41,
+        "denominator": 0,
+        "observing": 2
+      },
+      "candidate": "d7c9d7347ae3904660a213595724360a599aa728",
+      "clean": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "e5350f75ae771573cbbbd8735b25dac277000b29cec56da1153b7a3915e46d5f"
+    },
+    {
+      "name": "funnel_sla_editor",
+      "path": "/private/tmp/steno-ip2-final-proof/funnel_sla_editor.png",
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Funnel",
+        "market": "LAX",
+        "editor": "inline",
+        "OnboardingSla": 90
+      },
+      "candidate": "d7c9d7347ae3904660a213595724360a599aa728",
+      "clean": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "f2c4014d34b2aeaecee14132c53b25fb8e307c4cc1fc22f1186f416530801ee7"
+    },
+    {
+      "name": "funnel_person_detail",
+      "path": "/private/tmp/steno-ip2-final-proof/funnel_person_detail.png",
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Funnel",
+        "market": "LAX",
+        "person": "Felix Ames",
+        "notes": "local draft whitespace retained"
+      },
+      "candidate": "d7c9d7347ae3904660a213595724360a599aa728",
+      "clean": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "bd43342b23ffc5fae7cd6b42b6a83a33677b59735abd636a55923df8b7e35ffd"
+    },
+    {
+      "name": "funnel_bottlenecks_1440x900",
+      "path": "/private/tmp/steno-ip2-final-proof/funnel_bottlenecks_1440x900.png",
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Funnel",
+        "mode": "Bottlenecks",
+        "market": "ALL",
+        "range": "R28"
+      },
+      "candidate": "d7c9d7347ae3904660a213595724360a599aa728",
+      "clean": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "aa2e9acecca2c726e96a355df3196aef9ef7d6c86919cdc517d8558cdd583659"
+    },
+    {
+      "name": "funnel_bottleneck_table",
+      "path": "/private/tmp/steno-ip2-final-proof/funnel_bottleneck_table.png",
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Funnel",
+        "mode": "Bottlenecks",
+        "market": "ALL",
+        "detail": "prepared counts, mean, median and SLA"
+      },
+      "candidate": "d7c9d7347ae3904660a213595724360a599aa728",
+      "clean": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "204110d51718332d9457f9876b44f1b52d72084682c091fd670c830ebe185430"
+    },
+    {
+      "name": "funnel_bottleneck_applicant",
+      "path": "/private/tmp/steno-ip2-final-proof/funnel_bottleneck_applicant.png",
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Funnel",
+        "mode": "Bottlenecks",
+        "market": "ALL",
+        "status": "Applicant",
+        "activePeople": 11
+      },
+      "candidate": "d7c9d7347ae3904660a213595724360a599aa728",
+      "clean": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "14a1461676732e187adb0f7b84bdedf868a05c261c0e3694db4472343e02dfc0"
+    },
+    {
+      "name": "funnel_people_filters",
+      "path": "/private/tmp/steno-ip2-final-proof/funnel_people_filters.png",
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Funnel",
+        "market": "ALL",
+        "detail": "cohort and current inventory controls"
+      },
+      "candidate": "d7c9d7347ae3904660a213595724360a599aa728",
+      "clean": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "0dd63f5632619a768bc64e9e06f5b48c99fb628cd3870f6eb878821fe9a1b995"
+    },
+    {
+      "name": "original_plan_delivered",
+      "path": "/private/tmp/steno-ip2-final-proof/original_plan_delivered.png",
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Overview",
+        "market": "LAX",
+        "scenario": "delivered",
+        "originalPlan": {
+          "completed": 10,
+          "firstJobs": 2
+        }
+      },
+      "candidate": "d7c9d7347ae3904660a213595724360a599aa728",
+      "clean": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "da9b8dad90394f92470d83f0347e660c8ea5cfbf88614319cea3d6fc9c946c16"
+    },
+    {
+      "name": "original_plan_completed_evidence",
+      "path": "/private/tmp/steno-ip2-final-proof/original_plan_completed_evidence.png",
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Overview",
+        "market": "LAX",
+        "repair": "completed-request bundle",
+        "members": 10
+      },
+      "candidate": "d7c9d7347ae3904660a213595724360a599aa728",
+      "clean": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "5f0e327053bc8286dfce3cd52c6c582347ea930a4a0a76522478a4d5ff6c55f4"
+    },
+    {
+      "name": "original_plan_first_jobs_evidence",
+      "path": "/private/tmp/steno-ip2-final-proof/original_plan_first_jobs_evidence.png",
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Overview",
+        "market": "LAX",
+        "repair": "new-reporter-first-job bundle",
+        "members": 2
+      },
+      "candidate": "d7c9d7347ae3904660a213595724360a599aa728",
+      "clean": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "263050596d9a15b3e05cb0de1fb57429620352ef8889536b9d0d924d6d8a53ab"
+    }
+  ],
+  "checks": [
+    {
+      "name": "All schedule reconciliation",
+      "passed": true,
+      "detail": "11 requested =6 confirmed+5 unresolved; baseline no goal"
+    },
+    {
+      "name": "Chart pointer and keyboard",
+      "passed": true,
+      "detail": "Single SVG focus target; Home/End and nearest point expose date, exact values, units and phase"
+    },
+    {
+      "name": "Weekly evidence and focus return",
+      "passed": true,
+      "detail": "Current market-wide review links exact M02 evidence; Escape restores Weekly review trigger"
+    },
+    {
+      "name": "All markets and five-workspace navigation",
+      "passed": true,
+      "detail": "Six market selections retain scope across every workspace"
+    },
+    {
+      "name": "Repair: shared drill-down button treatment",
+      "passed": true,
+      "detail": "Shared5px radius; hover rgb237243239; keyboard2px navy outline"
+    },
+    {
+      "name": "Precise capacity attention target",
+      "passed": true,
+      "detail": "First LAX attention narrows to two affected requests; clear restores full scope"
+    },
+    {
+      "name": "Status focus and clear",
+      "passed": true,
+      "detail": {
+        "inventory": 113,
+        "focused": 11
+      }
+    },
+    {
+      "name": "Stable owner/wait/source filters",
+      "passed": true,
+      "detail": {
+        "ownerValue": "team-1",
+        "owned": 11,
+        "waitValue": "blocker:availability-not-current",
+        "waitingCount": 2,
+        "sourced": 2
+      }
+    },
+    {
+      "name": "Search/sort/SLA and empty-state controls",
+      "passed": true,
+      "detail": "Prepared rows respond and clear restores inventory"
+    },
+    {
+      "name": "Entry cohort separate from inventory",
+      "passed": true,
+      "detail": "LAX February has no mature denominator and two observing; inventory unchanged; exact M08 evidence opens"
+    },
+    {
+      "name": "SLA immediate recompute and market draft isolation",
+      "passed": true,
+      "detail": "LAX90 updates threshold; SFO remains11; LAX90 retained; reset10"
+    },
+    {
+      "name": "Person drawer, local notes, focus return",
+      "passed": true,
+      "detail": "Whitespace retained through editing; blur commits through supplied local command"
+    },
+    {
+      "name": "Repair: mode-specific People and Bottlenecks captions",
+      "passed": true,
+      "detail": "People113 records; Bottlenecks66 active people; Applicant11 in both modes; second click restores113People"
+    },
+    {
+      "name": "Scenario Plan saved",
+      "passed": true,
+      "detail": {
+        "requested": 10,
+        "confirmed": 6,
+        "unresolved": 4,
+        "goal": "0 / 2"
+      }
+    },
+    {
+      "name": "Scenario Existing candidates accepted",
+      "passed": true,
+      "detail": {
+        "requested": 10,
+        "confirmed": 8,
+        "unresolved": 2,
+        "goal": "0 / 2"
+      }
+    },
+    {
+      "name": "Scenario New additions ready",
+      "passed": true,
+      "detail": {
+        "requested": 10,
+        "confirmed": 8,
+        "unresolved": 2,
+        "goal": "2 / 2"
+      }
+    },
+    {
+      "name": "Scenario New additions accepted",
+      "passed": true,
+      "detail": {
+        "requested": 10,
+        "confirmed": 10,
+        "unresolved": 0,
+        "goal": "2 / 2"
+      }
+    },
+    {
+      "name": "Scenario Jobs delivered",
+      "passed": true,
+      "detail": {
+        "requested": 0,
+        "confirmed": 0,
+        "unresolved": 0,
+        "goal": "2 / 2"
+      }
+    },
+    {
+      "name": "Repair: distinct original-plan evidence actions",
+      "passed": true,
+      "detail": "Prepared population labels open exact completed10 and first-job2 evidence bundles"
+    },
+    {
+      "name": "Original LAX plan and reset",
+      "passed": true,
+      "detail": "Original10completed/2firstjobs stays distinct from0current scheduling slots; reset restores11All"
+    },
+    {
+      "name": "No browser errors",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Desktop overflow",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scrollWidth": 1440
+      }
+    }
+  ],
+  "errors": []
+}
