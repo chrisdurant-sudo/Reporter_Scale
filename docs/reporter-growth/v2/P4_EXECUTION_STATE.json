@@ -1016,7 +1016,7 @@
     "branch": "codex/interview-ip2-experience",
     "base_commit": "f7a6fc734513ba8621a7dbf3b1845f818d420658",
     "source_contract_commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
-    "status": "source_implementation",
+    "status": "P4_VISUAL_PROOF_READY_stopped",
     "allowed_paths": [
       "src/ui/",
       "src/shell/",
@@ -1045,6 +1045,21 @@
       "runtime": "pending_Lead_source_integration"
     },
     "prior_base_commit": "d4b4ff98a3ee9e9fd1bffe829a6b747ab34670d1",
-    "baseline_advance_reason": "Coordinator Focus copy now consumes existing prepared counts. Worker confirmed owned-only local edits; fast-forward preserves those edits and brings desktop-only scope and prepared integration assertions into its source baseline."
+    "baseline_advance_reason": "Coordinator Focus copy now consumes existing prepared counts. Worker confirmed owned-only local edits; fast-forward preserves those edits and brings desktop-only scope and prepared integration assertions into its source baseline.",
+    "candidate_commit": "be5d7a1d3a634f4a29243e09993661cef7264c1c",
+    "handoff": "docs/reporter-growth/v2/IP2_EXPERIENCE_SOURCE_HANDOFF.md",
+    "scratch_source_proof": "/private/tmp/steno-ip2-source-proof"
+  },
+  "unattended_handoff": {
+    "status": "prepared_pending_replacement_runtime",
+    "requested_by_user": true,
+    "authorized_at": "2026-09-19T08:28:15.395428+00:00",
+    "authorization": "Approve Full Access for this project task",
+    "scope": "This project only; same coordinator checkout; authorized interview implementation and checks; no deployment or external messages.",
+    "approval_policy": "never",
+    "sandbox_mode": "danger-full-access",
+    "configured_service_tier": "default",
+    "handoff": "docs/reporter-growth/v2/UNATTENDED_HANDOFF_2026-09-19.md",
+    "new_task_id": null
   }
 }

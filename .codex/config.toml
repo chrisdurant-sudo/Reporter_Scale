@@ -1,3 +1,7 @@
+# User-approved September 19 unattended local project execution.
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
+
 # Reporter Growth v2 — project-scoped Codex subagent routing.
 # Intentionally does NOT set the coordinator model; select gpt-6-astra / xhigh in the new task.
 # All child roles remain on Standard/default processing. Never use Fast, Priority, or Ultrafast.

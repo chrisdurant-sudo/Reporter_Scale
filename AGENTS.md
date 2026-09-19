@@ -1,5 +1,8 @@
 # Reporter Growth
 
+> September 19 unattended handoff: the user approved Full Access plus `approval_policy = "never"` for this project task, superseding the sandbox-setting restriction solely for this authorized local run. The settings are applied in project `.codex/config.toml`; verify actual replacement-task runtime. Read `docs/reporter-growth/v2/UNATTENDED_HANDOFF_2026-09-19.md`. Lead source is stopped at clean `be5d7a1d3a634f4a29243e09993661cef7264c1c`, proof ready but not yet accepted/integrated. Desktop only; remaining quality gates unchanged.
+
+
 > September 19 standing test-owner sequencing amendment: the user approved “Approve these bounded test-alignment passes.” `docs/reporter-growth/v2/IP2_TEST_ALIGNMENT_REQUEST.md` permits serial Quality-owned alignment of obsolete assertions in the two named acceptance/browser files during IP2–IP4, after exact-candidate diagnostics and with runtime verification, scope and boundary audits. All substantive checks and the independent IP5 Quality/IP6 Reviewer gates remain required. No further start approval is needed.
 
 
