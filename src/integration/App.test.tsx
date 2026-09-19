@@ -47,7 +47,7 @@ describe("P4 integrated V2 experience", () => {
 
     await user.click(screen.getByRole("button", { name: "Reporters" }));
     expect(await screen.findByRole("main", { name: "Reporters" })).toBeInTheDocument();
-    expect(screen.getByText(/\d+ reporters with earlier work and no recent completion/)).toBeInTheDocument();
+    expect(screen.getByText(/\d+ need availability confirmation/)).toBeInTheDocument();
     expect(marketButton("SFO")).toHaveAttribute("aria-pressed", "true");
 
     await user.click(screen.getByRole("button", { name: "Why this?" }));

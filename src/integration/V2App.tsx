@@ -434,11 +434,17 @@ export function V2App() {
   }, [activeWorkspace, marketsView, programsView, recruitingView, reportersView, teamView]);
 
   const focusCondition = activeWorkspace === "markets"
-    ? marketsView?.overview?.focus.finding
+    ? marketsView?.schedule
+      ? marketsView.schedule.coverage.requested === 0
+        ? "No upcoming slots"
+        : `${marketsView.schedule.coverage.unresolved} ${marketsView.schedule.coverage.unresolved === 1 ? "slot" : "slots"} unresolved`
+      : undefined
     : activeWorkspace === "recruiting"
-      ? recruitingView?.focusCondition
+      ? recruitingView
+        ? `${recruitingView.kpis.peopleNeedingFollowUp.value} ${recruitingView.kpis.peopleNeedingFollowUp.value === 1 ? "person needs" : "people need"} follow-up`
+        : undefined
       : activeWorkspace === "reporters" && reportersView
-        ? `${reportersView.reengagementCandidates.length} reporters with earlier work and no recent completion`
+        ? `${reportersView.needsConfirmationReporterIds.length} need availability confirmation`
         : activeWorkspace === "team" && teamView
           ? teamView.summary.unownedTasks === 1
             ? "1 task needs an owner"
