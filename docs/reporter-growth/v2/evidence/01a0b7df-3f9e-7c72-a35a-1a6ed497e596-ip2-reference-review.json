@@ -1,0 +1,41 @@
+{
+  "kind": "coordinator-reference-review",
+  "status": "accepted_as_design_reference_only",
+  "reviewed_at": "2026-09-19T07:56:36.823471+00:00",
+  "source_base": "dfa4b9b921991abd6a40127146520c421204c8cb",
+  "presentation_scope": "desktop_interview_2026_09_19",
+  "original_reference_hashes_verified": 20,
+  "new_package_hashes_verified": 52,
+  "screenshot_matrix_verified": 44,
+  "visual_comparison": [
+    "Historical shell, compact six-market strip, five label-only tabs, neutral panels, dense tables and single drawer retained",
+    "Desktop/tablet Overview/Funnel People/Bottlenecks/SLA states inspected",
+    "Reporters, Team, Programs and management form desktop states inspected",
+    "Count ticks and series-specific units corrected",
+    "Cohort controls moved before People table",
+    "Program cohort labels and exact fractions separated",
+    "Weekly review condensed with ratio counts and expandable reasons"
+  ],
+  "closed_proposal_defects": [
+    "Invalid early Funnel render (wrong SLA field) corrected before final capture",
+    "Decimal count ticks",
+    "Weekly ratio omission and default evidence text wall",
+    "Plural and cohort label spacing",
+    "Source selector visibility",
+    "Cohort controls below long People grid",
+    "Visible implementation jargon in form headings"
+  ],
+  "independent_prototype_replay": {
+    "scope": "reference-only",
+    "checks": [
+      "LAX schedule10 slots",
+      "LAX January9/22",
+      "LAX February0/0 with2 observing",
+      "Bottlenecks table present",
+      "market retained",
+      "browser errors empty"
+    ],
+    "errors": []
+  },
+  "remaining": "Production implementation, canonical save/error/persistence flows, exact source proof and independent Quality/Reviewer are pending. This accepts design reference only."
+}

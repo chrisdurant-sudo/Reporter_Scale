@@ -4,7 +4,7 @@ Status: preparation during IP2; serial logic and coordinator composition passed 
 
 ## Start clean
 
-Use Reset demo, confirm All is selected, and identify the displayed scenario time. Keep the five workspaces and all five markets available. Explain that the application connects capacity diagnosis, recruiting, accountable team work, reporter readiness and measured program decisions.
+Use a desktop window, Reset demo, confirm All is selected, and identify the displayed scenario time. Keep the five workspaces and all five markets available. Explain that the application connects capacity diagnosis, recruiting, accountable team work, reporter readiness and measured program decisions. Phone optimization is outside the September 19 interview scope.
 
 ## 0:00–0:50 — Diagnose capacity, then focus on LAX
 
@@ -28,7 +28,7 @@ Pending proof: IP03/IP05/IP06; all rendered filter combinations, cohort labels a
 
 Open the linked Team task. Show its owner, due date, priority, notes, linked evidence and blocker. Assign or reassign it, edit one field, then show the retained history. Explain that blocked work keeps its last To do/In progress column; the blocker is a separate operational condition.
 
-Inspect a member's role-specific weekly target and actual work. Open the underlying quality sample before recording or reviewing a coaching action with a concrete follow-up date. Complete work only with related, valid evidence. Completion of a task does not manufacture readiness, acceptance or a job outcome.
+Switch briefly to All to inspect a member's whole-role weekly target and actual work; a LAX subset must not claim that whole-role target as a LAX goal. Open the underlying quality sample before recording or reviewing a coaching action with a concrete follow-up date, then return to the relevant market. Complete work only with related, valid evidence. Completion of a task does not manufacture readiness, acceptance or a job outcome.
 
 Pending proof: IP08/IP09; canonical edits, completion actor/evidence, member filters, target units, quality/coaching and persistence after refresh.
 

@@ -1,0 +1,13 @@
+{
+  "kind": "prototype-interactions-not-production-acceptance",
+  "checks": [
+    "All and five markets persist across all five workspaces without errors or page overflow",
+    "Counted Applicant click focuses eleven; second click restores All66",
+    "Stable Maya owner selection returns records and survives drawer Escape",
+    "February0/1 and ten observing is separate from unchanged66-person inventory",
+    "Source selection uses exported source-specific prepared values; clear restores All",
+    "Chart keyboard End and nearest-date pointer inspection expose values and phase",
+    "Tablet touch inspection exposes exact values and phase"
+  ],
+  "errors": []
+}

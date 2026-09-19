@@ -1,0 +1,616 @@
+{
+  "kind": "reference-proposal-not-implementation",
+  "sourceBase": "8265d59853567b9816c0bc3b7e1625576cb87978",
+  "factsSource": "dfa4b9b921991abd6a40127146520c421204c8cb",
+  "browser": "153.0.8010.12",
+  "states": [
+    {
+      "id": "overview-default-1440x900",
+      "file": "screenshots/overview-default-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "default",
+      "tab": "overview",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "b79a424e4584e60a20c2eea0fcff7e8c5c359d07e4d7ced39fe7566a6e815876",
+      "pageOverflow": false
+    },
+    {
+      "id": "overview-full-1440",
+      "file": "screenshots/overview-full-1440.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "full default",
+      "tab": "overview",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "47db45b9f258f3fdcca67eec1636979b6ed79240e780bb1c365e5efe7a8b8bad"
+    },
+    {
+      "id": "overview-keyboard-inspection-1440x900",
+      "file": "screenshots/overview-keyboard-inspection-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "keyboard-inspection",
+      "tab": "overview",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "681842e4fbf7cfd6d7ed16b6cdc596f13e55bae9808827008c3485fae95a0dac",
+      "pageOverflow": false
+    },
+    {
+      "id": "overview-pointer-inspection-1440x900",
+      "file": "screenshots/overview-pointer-inspection-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "pointer-inspection",
+      "tab": "overview",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "dd5bb2bb7b49a57f58aa0724b59f322f2456a64883a7525933729be733af5169",
+      "pageOverflow": false
+    },
+    {
+      "id": "overview-weekly-review-1440x900",
+      "file": "screenshots/overview-weekly-review-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "weekly-review",
+      "tab": "overview",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "3beee61a889c6538b3ecece814b135ac1719ac14b06090bc0e48df3658a56925",
+      "pageOverflow": false
+    },
+    {
+      "id": "funnel-default-1440x900",
+      "file": "screenshots/funnel-default-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "default",
+      "tab": "funnel",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "de8888a5eca05fa450e7c536a7889c821b6ae16f200552c9a227489865038d5c",
+      "pageOverflow": false
+    },
+    {
+      "id": "funnel-full-1440",
+      "file": "screenshots/funnel-full-1440.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "full default",
+      "tab": "funnel",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "bfe48ddc629c961a3930c16c068228c74432c02bb7074787bf441be2c9f361fd"
+    },
+    {
+      "id": "funnel-bottlenecks-1440x900",
+      "file": "screenshots/funnel-bottlenecks-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "bottlenecks",
+      "tab": "funnel",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "1c7459a026feea21ea5284be63270337172574c2629799ca9b175b6cb2e5df6d",
+      "pageOverflow": false
+    },
+    {
+      "id": "funnel-sla-editor-1440x900",
+      "file": "screenshots/funnel-sla-editor-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "sla-editor",
+      "tab": "funnel",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "1e32bf2d3056694e1635625871d78dc2391fefb5b7e59e86e8e9bd2615be9017",
+      "pageOverflow": false
+    },
+    {
+      "id": "funnel-person-detail-1440x900",
+      "file": "screenshots/funnel-person-detail-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "person-detail",
+      "tab": "funnel",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "685cedf53522a8fabda6debe5d50d44e68252d4e196b0029e374e4a84dde5d57",
+      "pageOverflow": false
+    },
+    {
+      "id": "funnel-applicant-filter-1440x900",
+      "file": "screenshots/funnel-applicant-filter-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "applicant-filter",
+      "tab": "funnel",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "2a932a4ffef0b1648493b321605f872337231c0b3609869ec731b2a77d36a92c",
+      "pageOverflow": false
+    },
+    {
+      "id": "funnel-maya-owner-filter-1440x900",
+      "file": "screenshots/funnel-maya-owner-filter-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "maya-owner-filter",
+      "tab": "funnel",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "9e45fe8bdf20c48313236f8b83e2820d9c82f95abc34ea942e01a13dc50e0d87",
+      "pageOverflow": false
+    },
+    {
+      "id": "funnel-february-cohort-1440x900",
+      "file": "screenshots/funnel-february-cohort-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "february-cohort",
+      "tab": "funnel",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "6ccd6ed06c13f165dd4cbd6339b66db2e8cd2971778948d5bf5daad688b4af3a",
+      "pageOverflow": false
+    },
+    {
+      "id": "reporters-default-1440x900",
+      "file": "screenshots/reporters-default-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "default",
+      "tab": "reporters",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "7e31a7b49d96a35944a1affeefa5190cb71cae05f6ed229db214737c814a9eb4",
+      "pageOverflow": false
+    },
+    {
+      "id": "reporters-full-1440",
+      "file": "screenshots/reporters-full-1440.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "full default",
+      "tab": "reporters",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "fe230dde7826a9e0299291dbbbf4c68ae0168e73fb72a14207a0f609d172bb05"
+    },
+    {
+      "id": "reporters-person-detail-1440x900",
+      "file": "screenshots/reporters-person-detail-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "person-detail",
+      "tab": "reporters",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "82d266428546ce958e82a74eda9804fe05f55874c83d64dcf4a718551b463c3b",
+      "pageOverflow": false
+    },
+    {
+      "id": "reporters-availability-form-1440x900",
+      "file": "screenshots/reporters-availability-form-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "availability-form",
+      "tab": "reporters",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "c06308ef37be23824176b9d56bf0b145d8f2ba724843ca2b8a8beca577b24b59",
+      "pageOverflow": false
+    },
+    {
+      "id": "reporters-follow-up-form-1440x900",
+      "file": "screenshots/reporters-follow-up-form-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "follow-up-form",
+      "tab": "reporters",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "7b1e1d1c19098b93a84427c9d853318932481b9a4996e7286b5f02df927097e1",
+      "pageOverflow": false
+    },
+    {
+      "id": "team-default-1440x900",
+      "file": "screenshots/team-default-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "default",
+      "tab": "team",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "7f7b1656e1170663a079890e31676608cd894ab13ca9263e91ef5058825b90bb",
+      "pageOverflow": false
+    },
+    {
+      "id": "team-full-1440",
+      "file": "screenshots/team-full-1440.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "full default",
+      "tab": "team",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "92227a172517466fcc25d6162ab491d5f1a532b619049fab7816de935c7ebff3"
+    },
+    {
+      "id": "team-add-work-1440x900",
+      "file": "screenshots/team-add-work-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "add-work",
+      "tab": "team",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "2c13f2dccd506ed9b09deed284577922dda14ff4805803e3996d05f0d9267598",
+      "pageOverflow": false
+    },
+    {
+      "id": "team-work-editor-1440x900",
+      "file": "screenshots/team-work-editor-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "work-editor",
+      "tab": "team",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "4983a4cfb4aee80eedf133f1f1eb23bd1975e7172b78d19d3566ca08e493218a",
+      "pageOverflow": false
+    },
+    {
+      "id": "team-goals-1440x900",
+      "file": "screenshots/team-goals-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "goals",
+      "tab": "team",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "ff336678ba9dc5281ad8af300ab909970a7496224ab26f35daa1d41a74f254da",
+      "pageOverflow": false
+    },
+    {
+      "id": "team-coaching-form-1440x900",
+      "file": "screenshots/team-coaching-form-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "coaching-form",
+      "tab": "team",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "344e45c2ba30fc16f265ad77acb74a6373616649960a025246ecf75c06456809",
+      "pageOverflow": false
+    },
+    {
+      "id": "programs-default-1440x900",
+      "file": "screenshots/programs-default-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "default",
+      "tab": "programs",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "43d40ec8c6240c2ace65595c81fab9399f9295f9d377866e09949ffc758f74aa",
+      "pageOverflow": false
+    },
+    {
+      "id": "programs-full-1440",
+      "file": "screenshots/programs-full-1440.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "full default",
+      "tab": "programs",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "317749509844c545e26279bb5f8e21885178e32b019dacc498f5f3bf58c4deb9"
+    },
+    {
+      "id": "programs-checklist-detail-1440x900",
+      "file": "screenshots/programs-checklist-detail-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "checklist-detail",
+      "tab": "programs",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "0670d90b727c249af9f27d78ea2574c277c9edafe7609b4a2c75d6f201bda6c8",
+      "pageOverflow": false
+    },
+    {
+      "id": "programs-decision-form-1440x900",
+      "file": "screenshots/programs-decision-form-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "decision-form",
+      "tab": "programs",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "d1323e6e41df86da0e3ea41ea33114cccf7e826c70729c871be20980bd8cb73e",
+      "pageOverflow": false
+    },
+    {
+      "id": "programs-process-draft-1440x900",
+      "file": "screenshots/programs-process-draft-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "process-draft",
+      "tab": "programs",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "8a9cc6015e01c3beb9d83e3e0e38cd2fb4bebfaa67cd241f3a96dff9f2973188",
+      "pageOverflow": false
+    },
+    {
+      "id": "programs-dfw-stopped-1440x900",
+      "file": "screenshots/programs-dfw-stopped-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "dfw-stopped",
+      "tab": "programs",
+      "market": "DFW",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "b3886c8cda0dbd594f0e2107083ff75ccea07c6ad16202b99a6136ed714784bd",
+      "pageOverflow": false
+    },
+    {
+      "id": "overview-default-1024x768",
+      "file": "screenshots/overview-default-1024x768.png",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "state": "default",
+      "tab": "overview",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "86a457a505576d091cddbcdeee34ee06d5c20d6a79763b687a72f86d387edf93",
+      "pageOverflow": false
+    },
+    {
+      "id": "overview-full-1024",
+      "file": "screenshots/overview-full-1024.png",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "state": "full default",
+      "tab": "overview",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "5e084d7a7c45d34ab24cf1cd37d7deaf6a251e78cda24318a0e004f3d44406c7"
+    },
+    {
+      "id": "funnel-default-1024x768",
+      "file": "screenshots/funnel-default-1024x768.png",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "state": "default",
+      "tab": "funnel",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "91d5e2ddf577b6c7e0b9ef52a150a98b24703a052279936754cb006729748296",
+      "pageOverflow": false
+    },
+    {
+      "id": "funnel-full-1024",
+      "file": "screenshots/funnel-full-1024.png",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "state": "full default",
+      "tab": "funnel",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "b3e5418a16b22ece7af31daded1d709351500fbfcfd70b634ba460032e48d566"
+    },
+    {
+      "id": "funnel-bottlenecks-1024x768",
+      "file": "screenshots/funnel-bottlenecks-1024x768.png",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "state": "bottlenecks",
+      "tab": "funnel",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "500000ce585774368c31c0b700fef2f4a892882b18cf30615dbbae6956eb6853",
+      "pageOverflow": false
+    },
+    {
+      "id": "funnel-sla-editor-1024x768",
+      "file": "screenshots/funnel-sla-editor-1024x768.png",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "state": "sla-editor",
+      "tab": "funnel",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "d53ebd604ba4db36676dd4e23aaf433cf1c09457da2c1efcd86cd6dd8fe5f956",
+      "pageOverflow": false
+    },
+    {
+      "id": "funnel-person-detail-1024x768",
+      "file": "screenshots/funnel-person-detail-1024x768.png",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "state": "person-detail",
+      "tab": "funnel",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "8730caf88bdc9877ded94c15c1c9e68fa362b8260dca0f722f94f97b0a5b60fa",
+      "pageOverflow": false
+    },
+    {
+      "id": "overview-default-768x1024",
+      "file": "screenshots/overview-default-768x1024.png",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "state": "default",
+      "tab": "overview",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "f2a18010f49bc56fc32b7a06433a830eb61c328b0ffedbd4357b0d6ec5d939fa",
+      "pageOverflow": false
+    },
+    {
+      "id": "overview-full-768",
+      "file": "screenshots/overview-full-768.png",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "state": "full default",
+      "tab": "overview",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "d91c059df151dc1dc0e2bef9b3e8ce4c27ae06780aeedeffdf7dafeeb3b9981b"
+    },
+    {
+      "id": "funnel-default-768x1024",
+      "file": "screenshots/funnel-default-768x1024.png",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "state": "default",
+      "tab": "funnel",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "b85bea59a2190fa057250bdec7b39db9b0c68f939f0e9836afe772938e29242b",
+      "pageOverflow": false
+    },
+    {
+      "id": "funnel-full-768",
+      "file": "screenshots/funnel-full-768.png",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "state": "full default",
+      "tab": "funnel",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "cb8e51922b9b39d4e970f5a65e0ffee82d7d1d998fa63ada7acf0a86bb8b7b4c"
+    },
+    {
+      "id": "funnel-bottlenecks-768x1024",
+      "file": "screenshots/funnel-bottlenecks-768x1024.png",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "state": "bottlenecks",
+      "tab": "funnel",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "5d090076369827e97e2cd1b8ff7ffb5f7f165c6d918e32db67a130f781be33eb",
+      "pageOverflow": false
+    },
+    {
+      "id": "funnel-sla-editor-768x1024",
+      "file": "screenshots/funnel-sla-editor-768x1024.png",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "state": "sla-editor",
+      "tab": "funnel",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "a3864fa2e4651ce9083f16c0ba6c7f1442012e68337fe496adeb5bef8d71c68e",
+      "pageOverflow": false
+    },
+    {
+      "id": "funnel-person-detail-768x1024",
+      "file": "screenshots/funnel-person-detail-768x1024.png",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "state": "person-detail",
+      "tab": "funnel",
+      "market": "All",
+      "route": "file:///private/tmp/steno-ip2-reference-proposal/reporter-growth-interview-reference.html",
+      "sha256": "776c135fc4d09671125a487b3e83ed837aebec2efd5f803eaa43fde8734cc9d4",
+      "pageOverflow": false
+    }
+  ],
+  "errors": []
+}

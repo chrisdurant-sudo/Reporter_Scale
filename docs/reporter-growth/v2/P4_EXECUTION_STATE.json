@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-19T07:48:20.541476+00:00",
+  "updated_at": "2026-09-19T07:56:36.831292+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -429,6 +429,17 @@
         "file": "docs/reporter-growth/v2/P4_INTERVIEW_VIEWPORT_SCOPE.md",
         "sha256": "b4f6e94131bda26ee01eec7d9f51113f1023ebe03881c583ecbbd2fcf3d5f590"
       }
+    },
+    "revised_reference": {
+      "status": "frozen",
+      "manifest": {
+        "file": "docs/reporter-growth/v2/design-lock/interview-2026-09-19/reference-manifest.json",
+        "sha256": "f5a1443b3705b8bb5a5bdd50ef89d9e5e0ca44520172de17a01780ace79b268f"
+      },
+      "coordinator_review": {
+        "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-ip2-reference-review.json",
+        "sha256": "780e5767f9b0ad157fcefc73ef32eaca53e8970af739d276cdf3675d7d33a0e9"
+      }
     }
   },
   "implementation_base_commit": "6e7ea99e2358e497b8a6d4331a6cc8513e668501",
@@ -500,7 +511,8 @@
     "visual_proof": {
       "status": "pending",
       "scope": "IP01-IP12_amendment",
-      "reason": "Lead runtime probe, separately versioned reference and exact-commit visual/interaction proof required."
+      "reason": "Amended desktop/tablet design reference frozen; actual Overview/Funnel source implementation and exact-commit proof pending.",
+      "reference_manifest": "docs/reporter-growth/v2/design-lock/interview-2026-09-19/reference-manifest.json"
     },
     "workspace_wave": {
       "status": "blocked"
@@ -966,7 +978,7 @@
     "branch": "codex/interview-ip2-experience",
     "base_commit": "8265d59853567b9816c0bc3b7e1625576cb87978",
     "source_contract_commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
-    "status": "reference_proposal_only",
+    "status": "reference_frozen_awaiting_source_baseline",
     "allowed_paths": [
       "src/ui/",
       "src/shell/",
@@ -979,6 +991,7 @@
     "runtime_evidence": {
       "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-experience-worker-runtime.json",
       "sha256": "062ddeccf1b537fdfa2dbae573e3c2cd5c1b8be26102be338751fda2202dfefd"
-    }
+    },
+    "reference_manifest": "docs/reporter-growth/v2/design-lock/interview-2026-09-19/reference-manifest.json"
   }
 }
