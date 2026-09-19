@@ -1,0 +1,31 @@
+# IC05/IC06 integration requirements for Programs
+
+This is a coordinator clarification of the authorized interview repair. Programs runs serially after Team, with exactly one `tasks/domain-support-redesign.md` brief and an exact base. The worker owns only `src/logic/programs/` and its colocated tests. Presentation remains with the later Programs specialist.
+
+## Measure the declared outcome
+
+Dispatch each result through its frozen measurement plan and metric version. M07 qualification uses the linked case's qualifying lifecycle event within the declared horizon; it must not count a first job as a substitute. M12 checklist activation uses globally earliest valid completed work within the enrollment horizon. M09 exposes the specified source cohort's stage/first-job memberships and attributable direct spend separately, with explicit units and source attribution. A first-job conversion ratio must be named as that ratio, not spend per job. Missing or incompatible metric definitions remain unavailable with a reason; do not fall back to the checklist calculation.
+
+Use complete observation windows, mature versus observing members, actual job/assignment relationships, and records known at the selected as-of time. Preserve unsuccessful mature members in denominators. First-job identity is global before any selected-market/source/program filter. Late jobs do not change timely classification. Use parsed UTC time comparisons, including equivalent timestamp spellings and exact half-open entry boundaries. Evidence must pass shared validation and open exactly its members; empty selection uses `matchNone` rather than an empty ID array that broadens the query.
+
+All and market results derive from explicit enrollment market-at-entry. Apply supplied exact IDs and record references conjunctively, and disclose any demand filters that do not describe a program enrollment. Retain empty groups with an honest no-participant state where relevant. A program target is usable only if its metric/version/unit/scope matches the result; preserve all earlier goal revisions and the originally evaluated target. Do not average percentages or treat the last alphabetically sorted group as an unlabeled overall result.
+
+The historical checklist sample must retain its canonical memberships: All earlier 6/20 and pilot 11/20, LAX 3/10 and 6/10, SFO 3/10 and 5/10, target 50%. The stopped DFW source program has its qualification outcome and original target/spend/reason; verify these from records. The running referral window may remain immature. No outcome or enrollment record may be rewritten to make the story cleaner.
+
+Expose truthful group comparisons with outcome labels, units, numerator/denominator, observation horizon, target and evidence. These groups are not a time series. Keep source spend records, currency and allocation visible; do not attribute whole-cohort spending to a filtered subset or add different currencies. Zero completions with spend is unavailable cost per job, not zero cost. Explain missing spending and excluded labor/overhead.
+
+## Pure commands and canonical Team work
+
+Export `prepareProgramsCommand(snapshot, ProgramsCommandEnvelope): ProgramsCommandMutation`, or an equivalent explicit signature. Validate note/next-step, decision and process-draft inputs. Derive identities from command IDs; validate active author, current time, known program, accountable owner and explicit review date. Append histories using latest append on equal timestamps. The preparer does not change clock, schema, seed, revision, command/replay or scenario metadata, and does not save anything.
+
+Decision evidence is prepared from the current canonical source, not accepted from presentation. Save the entered rationale, accountable owner and next review date. Keep stage/decision semantics explicit; a limited expansion requests bounded review work and never changes frozen enrollment, readiness, accepted assignments or jobs. Return `requestedWork` as typed `WorkCreatePayload[]`; do not construct private WorkItems or call another domain's implementation. Root's `composeProgramsCommand` runs these payloads through Team and saves the parent mutation once. All changes roll back if any requested task is invalid.
+
+A process draft must reference a known process version for that program, copy its actual steps/trigger/exceptions and assign the next version. Preserve responsible role, SLA, evidence requirement and exception route; expose missing historical fields as missing rather than inventing policy. Keep the original process version, approval history, workaround rows and cohort links inspectable. Add a new draft/history record and entered owner/review date. Saving is not rollout. Program note text retains intentional whitespace.
+
+## Prepared controls and weekly review
+
+Provide source-backed owner options, exact program/work/evidence targets, process versions and comparison details so the specialist never imports raw snapshots, storage or calculations. The coordinator will replace direct record construction in V2App with the prepared commands; acknowledged success must await the single repository save.
+
+Keep `prepareWeeklyProgramsReview` compatible with the repaired measurements, exact scope and shared historical work projection. Separate results by their actual cohort/horizon; the weekly reporting window does not redefine frozen program cohorts. Expose current open work, explicit decisions and actual accountable owner/review dates. Distinguish due dates, goal deadlines and program review dates. Unknown review ownership or dates stay unknown. Use latest append at the fixed demo time for notes, decisions and task status, and disclose partial reporting periods.
+
+Required proof: IC05/IC06, IP10/IP11, W05–W08, M07/M09/M12/M13, D06 and unchanged SD01–SD07. Tests should catch qualification versus activation substitution, different/empty market cohorts, observing entrants, incompatible targets, exact selection, unsafe spend attribution, equivalent UTC timestamps, equal-time edits, replay composition and failure noninterference. Handoff names exact base/candidate, actual checks, source counts and remaining presentation gaps. Independent Quality remains a later gate.
