@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { DemandRequest, DemoSnapshotV2, Reporter, WorkspaceFilterPayload, WorkspaceQueryContext } from "../../contracts/v2";
 import { validateEvidenceBundle } from "../shared";
 import { prepareMarketsWorkspace } from "./index";
+import { DEMO_SNAPSHOT_V2, V2_MAIN_REQUEST_WINDOW, applyScenarioCheckpoint } from "../../data/v2";
 
 const asOf = "2026-02-10T12:00:00Z";
 const utc = (value: string) => value as never;
@@ -237,11 +238,11 @@ describe("capacity markets calculations", () => {
     const possible = prepareMarketsWorkspace({ ...snapshot, demandRequests: snapshot.demandRequests.filter((request) => String(request.id) !== "req-unknown") }, context()).overview!.attention.find((item) => item.id === "possible-match")!;
     const noVerified = view.overview!.attention.find((item) => item.id === "no-verified-ready-match")!;
 
-    expect(view.overview!.attention.map((item) => item.id)).toEqual(["requirements-unknown", "projected-additional-need", "no-verified-ready-match"]);
+    expect(view.overview!.attention.map((item) => item.id)).toEqual(["requirements-unknown", "no-verified-ready-match", "possible-match"]);
     expect(view.overview!.attention[0]!.source.requestIds).toEqual([id("req-unknown")]);
-    expect(view.overview!.attention[1]!.source.requestIds).toEqual([id("req-confirmed")]);
+    expect(view.overview!.attention[1]!.source.requestIds).toEqual([id("req-none")]);
     expect(noVerified.source).toMatchObject({ readinessEventIds: [id("ready-Ari Confirmed"), id("ready-Bea Shared")], availabilityWindowIds: [id("avail-a"), id("avail-b")] });
-    expect(possible.source).toMatchObject({ readinessEventIds: [id("ready-Ari Confirmed"), id("ready-Bea Shared")], availabilityWindowIds: [id("avail-a"), id("avail-b")] });
+    expect(possible.source).toMatchObject({ readinessEventIds: [id("ready-Bea Shared")], availabilityWindowIds: [id("avail-b")] });
     expect(row).toMatchObject({ gap: 0, supplyDirection: { state: "flat" }, demandDirection: { state: "flat" } });
     expect(row.supplyDirection.source).toMatchObject({ marketIds: ["LAX"], reporterIds: [], readinessEventIds: [], availabilityWindowIds: [] });
     expect(insufficient).toMatchObject({ supplyDirection: { state: "insufficient-history", comparedFromAt: null, comparedToAt: null }, demandDirection: { state: "insufficient-history", comparedFromAt: null, comparedToAt: null } });
@@ -259,5 +260,187 @@ describe("capacity markets calculations", () => {
     const forecast = series.points.find((point) => point.at === utc("2026-02-21T10:00:00Z"));
 
     expect(forecast).toMatchObject({ phase: "forecast", availableSupply: 0, demand: 1, neededSupply: 1, reporterIds: [], availabilityWindowIds: [] });
+  });
+});
+
+
+describe("IC01 scheduling-window prepared facts", () => {
+  const mainIds = Array.from({ length: 10 }, (_, index) => id(`req-lax-${101 + index}`));
+  const mainContext = (snapshot: DemoSnapshotV2, selectedMarket: WorkspaceFilterPayload["selectedMarket"] = "LAX") => ({
+    ...context(), evaluation: { ...context().evaluation, asOfAt: snapshot.currentAsOfAt, snapshotRevision: snapshot.revision },
+    filters: { ...filters(), selectedMarket, window: V2_MAIN_REQUEST_WINDOW },
+  });
+
+  it("reconciles all five markets to the same explicit window under conjunctive filters", () => {
+    const query = mainContext(DEMO_SNAPSHOT_V2, "ALL");
+    for (const patch of [
+      {}, { marketIds: ["LAX", "SFO"] as const }, { requestIds: mainIds.slice(0, 3) },
+      { marketIds: ["LAX", "SFO"] as const, requestIds: mainIds, attendanceModes: ["remote"] as const,
+        recordRefs: [{ kind: "demand-request" as const, id: String(mainIds[0]) }] },
+      { selectedMarket: "DFW" as const, marketIds: ["LAX"] as const },
+    ]) {
+      const view = prepareMarketsWorkspace(DEMO_SNAPSHOT_V2, { ...query, filters: { ...query.filters, ...patch } });
+      const schedule = view.schedule;
+      expect(schedule.window).toEqual(V2_MAIN_REQUEST_WINDOW);
+      expect(schedule.coverage.requested).toBe(schedule.coverage.confirmed + schedule.coverage.unresolved);
+      expect(schedule.coverage.unresolved).toBe(schedule.coverage.possible + schedule.coverage.noVerifiedReadyMatch + schedule.coverage.requirementsUnknown);
+      for (const field of ["requested", "confirmed", "unresolved", "possible", "noVerifiedReadyMatch", "requirementsUnknown"] as const) {
+        expect(view.marketRows.reduce((total, row) => total + row.schedule!.coverage[field], 0), field).toBe(schedule.coverage[field]);
+      }
+      for (const row of view.marketRows) {
+        expect(row.schedule!.window).toEqual(schedule.window);
+        expect(row.schedule!.requestIds).toEqual(schedule.requestIds.filter((requestId) => DEMO_SNAPSHOT_V2.demandRequests.find((request) => request.id === requestId)!.marketId === row.marketId));
+        expect(row.evidence.flatMap(validateEvidenceBundle)).toEqual([]);
+      }
+    }
+  });
+
+  it("uses half-open request starts, excludes canceled and elapsed work, and keeps future records hidden", () => {
+    const snapshot = base();
+    const window = { startAt: utc("2026-02-20T10:00:00Z"), endAt: utc("2026-02-21T10:00:00Z"), boundary: "[start,end)" as const };
+    const changed = { ...snapshot, demandRequests: [...snapshot.demandRequests,
+      { ...snapshot.demandRequests[0]!, id: id("canceled"), status: "canceled" as const, canceledAt: utc(asOf) },
+      { ...snapshot.demandRequests[0]!, id: id("not-known-yet"), recordedAt: utc("2026-02-11T00:00:00Z") },
+    ] };
+    const query = { ...context(), filters: { ...filters(), window } };
+    const before = prepareMarketsWorkspace(changed, query);
+    expect(before.schedule.requestIds).toEqual([id("req-confirmed")]);
+    expect(before.schedule.excludedCanceledRequestIds).toEqual([id("canceled")]);
+    const after = prepareMarketsWorkspace(changed, { ...query, evaluation: { ...query.evaluation, asOfAt: utc("2026-02-21T11:00:00Z") } });
+    expect(after.schedule.coverage.requested).toBe(0);
+    expect(after.schedule.elapsedRequestIds).toEqual([id("not-known-yet"), id("req-confirmed")]);
+  });
+
+  it("separates five slots, two possible options and one shared candidate with overlap evidence", () => {
+    const schedule = prepareMarketsWorkspace(base(), context()).schedule;
+    expect(schedule.coverage).toMatchObject({ requested: 5, confirmed: 1, unresolved: 4, possible: 2, noVerifiedReadyMatch: 1, requirementsUnknown: 1 });
+    expect(schedule.people).toMatchObject({ confirmed: 1, possibleCandidates: 1, possibleCandidateReporterIds: [id("Bea Shared")],
+      sharedCandidates: [{ reporterId: id("Bea Shared"), requestIds: [id("req-possible-a"), id("req-possible-b")], overlappingRequestPairs: [[id("req-possible-a"), id("req-possible-b")]] }] });
+    expect(schedule.possibleRequestIds).toHaveLength(2);
+    expect(schedule.people.limitation).toContain("not guaranteed");
+  });
+
+  it("deduplicates nationwide candidate people and retains cross-market contention in each row", () => {
+    const snapshot = base();
+    const shared = { ...snapshot, markets: [...snapshot.markets, { ...snapshot.markets[0]!, id: "DFW" as const, code: "DFW" as const, name: "Dallas" }],
+      demandRequests: [...snapshot.demandRequests, { ...snapshot.demandRequests[1]!, id: id("req-dfw-shared"), marketId: "DFW" as const }],
+      reporters: snapshot.reporters.map((person) => String(person.id) === "Bea Shared" ? { ...person, serviceMarketIds: ["LAX", "DFW"] as const,
+        preferences: { ...person.preferences, serviceMarkets: [{ marketId: "LAX" as const, status: "serves" as const }, { marketId: "DFW" as const, status: "serves" as const }] } } : person),
+      availabilityWindows: snapshot.availabilityWindows.map((window) => String(window.reporterId) === "Bea Shared" ? { ...window, serviceMarketIds: ["LAX", "DFW"] as const } : window),
+    };
+    const view = prepareMarketsWorkspace(shared, { ...context(), filters: { ...filters(), selectedMarket: "ALL" } });
+    expect(view.schedule.people.possibleCandidates).toBe(1);
+    expect(view.schedule.coverage.possible).toBe(3);
+    expect(view.schedule.people.sharedCandidates[0]!.overlappingRequestPairs).toHaveLength(3);
+    for (const row of view.marketRows) expect(row.schedule!.people.sharedCandidates[0]!.requestIds).toHaveLength(3);
+    expect(view.marketRows.reduce((total, row) => total + row.schedule!.coverage.requested, 0)).toBe(6);
+  });
+
+  it("opens exact category evidence and routes each ready or pre-ready person to the right workspace", () => {
+    const snapshot = base();
+    const view = prepareMarketsWorkspace(snapshot, context());
+    for (const item of view.overview!.attention) {
+      expect(item.evidence).not.toBeNull();
+      expect(item.evidence!.contributingRecords.map((record) => record.id).sort()).toEqual([...item.source.requestIds].sort());
+      expect(item.navigationTarget!.filters.requestIds).toEqual(item.evidence!.filters.requestIds);
+      expect(item.navigationTarget!.filters.window).toEqual(view.schedule.window);
+      const roundTrip = prepareMarketsWorkspace(snapshot, { ...context(), filters: item.navigationTarget!.filters });
+      expect(roundTrip.schedule.requestIds).toEqual(item.source.requestIds);
+      expect(roundTrip.marketRows[0]!.schedule!.requestIds).toEqual(item.source.requestIds);
+      expect(validateEvidenceBundle(item.evidence!)).toEqual([]);
+    }
+    const possible = view.overview!.attention.find((item) => item.id === "possible-match")!;
+    expect(possible.personTargets).toHaveLength(1);
+    expect(possible.personTargets[0]).toMatchObject({ reporterId: "Bea Shared", target: { workspace: "reporters", intent: "record-detail", filters: { reporterIds: ["Bea Shared"], requestIds: [], recordRefs: [{ kind: "reporter", id: "Bea Shared" }] } } });
+    const missing = view.overview!.attention.find((item) => item.id === "no-verified-ready-match")!;
+    expect(missing.personTargets.find((item) => item.reporterId === id("Cy Missing"))).toMatchObject({ target: { workspace: "recruiting", filters: { reporterIds: ["Cy Missing"], recordRefs: [{ kind: "reporter", id: "Cy Missing" }] } } });
+    expect(view.overview!.attention.find((item) => item.id === "requirements-unknown")!.personTargets).toEqual([]);
+  });
+
+  it("changes attention, window totals and market rows when requirements, verification or assignments change", () => {
+    const snapshot = base();
+    const baseline = prepareMarketsWorkspace(snapshot, context());
+    const changed = prepareMarketsWorkspace({ ...snapshot,
+      demandRequests: snapshot.demandRequests.map((request) => String(request.id) === "req-unknown" ? { ...request, requirementsVersion: "verified", requiredCapabilityCodes: [id("realtime")] } : request),
+      capabilityVerifications: snapshot.capabilityVerifications.filter((item) => String(item.reporterId) !== "Bea Shared"),
+      assignmentEvents: snapshot.assignmentEvents.map((event) => ({ ...event, state: "canceled" as const })),
+    }, context());
+    expect(changed.schedule.coverage).toMatchObject({ requested: 5, confirmed: 0, unresolved: 5, possible: 1, noVerifiedReadyMatch: 4, requirementsUnknown: 0 });
+    expect(changed.overview!.attention.some((item) => item.id === "requirements-unknown")).toBe(false);
+    expect(changed.marketRows[0]!.schedule!.coverage).toEqual(changed.schedule.coverage);
+    expect(changed.overview!.focus.finding).not.toBe(baseline.overview!.focus.finding);
+    expect(changed.schedule.people.possibleCandidateReporterIds).toEqual([id("Ari Confirmed")]);
+  });
+
+  it("retains LAX 10/6/4 anchors through planning, readiness, acceptance and completed-plan checkpoints", () => {
+    const checkpoints = [
+      ["baseline", 6, 2, 2, 0], ["plan-saved", 6, 2, 2, 0], ["existing-acceptances", 8, 0, 2, 0],
+      ["two-new-ready", 8, 2, 0, 2], ["new-acceptances", 10, 0, 0, 2],
+    ] as const;
+    for (const [checkpoint, confirmed, possible, noMatch, growth] of checkpoints) {
+      const snapshot = applyScenarioCheckpoint(DEMO_SNAPSHOT_V2, checkpoint);
+      const view = prepareMarketsWorkspace(snapshot, { ...mainContext(snapshot), filters: { ...mainContext(snapshot).filters, requestIds: mainIds } });
+      expect(view.schedule.coverage).toMatchObject({ requested: 10, confirmed, unresolved: 10 - confirmed, possible, noVerifiedReadyMatch: noMatch });
+      expect(view.growthGoal?.actual ?? 0).toBe(growth);
+      if (view.growthGoal) {
+        expect(view.growthGoal).toMatchObject({ target: 2, deadline: "2026-02-23T17:00:00Z", marketIds: ["LAX"], unit: "people" });
+        expect(view.growthGoal.evidence.navigationTarget.filters.reporterIds).toHaveLength(growth);
+      }
+      expect(view.evidence.flatMap(validateEvidenceBundle)).toEqual([]);
+    }
+    const completed = applyScenarioCheckpoint(DEMO_SNAPSHOT_V2, "original-plan-delivered");
+    const view = prepareMarketsWorkspace(completed, { ...mainContext(completed), filters: { ...mainContext(completed).filters, requestIds: mainIds } });
+    expect(view.schedule.coverage).toMatchObject({ requested: 0, confirmed: 0, unresolved: 0 });
+    expect(view.schedule.elapsedRequestIds).toHaveLength(10);
+    expect(view.originalPlan).toMatchObject({ completedRequests: 10, firstJobs: 2 });
+    expect(view.growthGoal!.actual).toBe(2);
+  });
+
+  it("preserves a saved goal scope in All and market views, and does not let target edits or unavailability erase readiness", () => {
+    const snapshot = applyScenarioCheckpoint(DEMO_SNAPSHOT_V2, "two-new-ready");
+    const all = prepareMarketsWorkspace(snapshot, mainContext(snapshot, "ALL"));
+    const lax = prepareMarketsWorkspace(snapshot, mainContext(snapshot));
+    expect(all.growthGoal).toEqual(lax.growthGoal);
+    expect(all.marketRows.find((row) => row.marketId === "DFW")!.growthGoal).toBeNull();
+    const changed = { ...snapshot, goalRevisions: snapshot.goalRevisions.map((goal) => goal.metric.id === "M04" ? { ...goal, target: 9 } : goal),
+      availabilityWindows: snapshot.availabilityWindows.map((window) => window.reporterId === "person-lax-009" ? { ...window, status: "unavailable" as const } : window) };
+    const result = prepareMarketsWorkspace(changed, mainContext(changed));
+    expect(result.growthGoal).toMatchObject({ actual: 2, target: 9 });
+    expect(result.schedule.coverage.possible).toBeLessThan(lax.schedule.coverage.possible);
+  });
+
+  it("counts one accepted person once across two non-overlapping covered slots", () => {
+    const snapshot = base();
+    const extraRequest = { ...snapshot.demandRequests[0]!, id: id("second-covered-slot"), startAt: utc("2026-02-20T13:00:00Z"), endAt: utc("2026-02-20T14:00:00Z") };
+    const expanded = { ...snapshot, demandRequests: [...snapshot.demandRequests, extraRequest],
+      availabilityWindows: [...snapshot.availabilityWindows, { ...snapshot.availabilityWindows[0]!, id: id("second-availability"), startAt: extraRequest.startAt, endAt: extraRequest.endAt }],
+      assignmentEvents: [...snapshot.assignmentEvents, { ...snapshot.assignmentEvents[0]!, id: id("second-acceptance"), requestId: extraRequest.id }],
+    };
+    const view = prepareMarketsWorkspace(expanded, context());
+    expect(view.schedule.coverage.confirmed).toBe(2);
+    expect(view.schedule.people.confirmed).toBe(1);
+    expect(view.schedule.people.confirmedReporterIds).toEqual([id("Ari Confirmed")]);
+  });
+
+  it("does not project later acceptances backward into historical instant availability", () => {
+    const snapshot = base();
+    const historical = request("historical-slot", "2026-02-06T10:00:00Z", "2026-02-08T12:00:00Z");
+    const view = prepareMarketsWorkspace({ ...snapshot, demandRequests: [...snapshot.demandRequests, historical],
+      assignmentEvents: [...snapshot.assignmentEvents, { ...snapshot.assignmentEvents[0]!, id: id("late-recorded-acceptance"), requestId: historical.id, occurredAt: utc("2026-02-07T10:00:00Z"), recordedAt: utc("2026-02-07T10:00:00Z") }],
+      availabilityWindows: [...snapshot.availabilityWindows, { ...snapshot.availabilityWindows[0]!, id: id("historical-availability"), startAt: historical.startAt, endAt: historical.endAt }],
+    }, context());
+    expect(view.supplyDemandSeries!.points.find((point) => point.at === historical.startAt)!.reporterIds).toContain(id("Ari Confirmed"));
+  });
+
+  it("keeps instant trends separate and does not invent a prior weekly comparison", () => {
+    const view = prepareMarketsWorkspace(base(), context());
+    expect(view.schedule.previousPeriod.status).toBe("unavailable");
+    expect(view.schedule.previousPeriod.reason).toContain("comparable");
+    expect(view.supplyDemandSeries!.limitations.join(" ")).toContain("instants, not scheduling-window totals");
+    expect(view.overview!.focus.finding).toBe("1 of 5 scheduling-window slots confirmed; 4 unresolved.");
+    const empty = prepareMarketsWorkspace({ ...base(), demandRequests: [] }, context());
+    expect(empty.schedule.windowSource).toBe("no-known-upcoming-work");
+    expect(empty.schedule.coverage).toMatchObject({ requested: 0, confirmed: 0, unresolved: 0, confirmedRate: null });
+    expect(empty.evidence.flatMap(validateEvidenceBundle)).toEqual([]);
   });
 });
