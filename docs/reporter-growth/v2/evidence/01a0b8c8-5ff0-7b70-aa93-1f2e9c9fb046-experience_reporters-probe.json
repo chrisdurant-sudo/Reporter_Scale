@@ -1,0 +1,54 @@
+{
+  "kind": "read_only_routing_probe",
+  "role": "experience_reporters",
+  "session_id": "01a0b8f7-8e5d-78f2-a206-ae42895e99db",
+  "task_name": "/root/reporters_probe_takeover",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "inherited_turns": 0,
+  "inheritance_evidence": "Coordinator explicit spawn_agent call used fork_turns=none; only the explicit probe packet and repository environment were supplied.",
+  "configured_service_tier": "default",
+  "resolved_service_tier": null,
+  "session_source": "/Users/pc/.codex/sessions/2026/09/19/rollout-2026-09-19T02-20-26-01a0b8f7-8e5d-78f2-a206-ae42895e99db.jsonl",
+  "session_source_sha256": "c04c688d24a9da642f870483aaca932defc0e81ae21d0f98f455935010f4dbf7",
+  "session_metadata": {
+    "id": "01a0b8f7-8e5d-78f2-a206-ae42895e99db",
+    "parent_thread_id": "01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046",
+    "agent_role": "experience_reporters",
+    "agent_path": "/root/reporters_probe_takeover",
+    "cwd": "/private/tmp/steno-p4-coordinator",
+    "source": {
+      "subagent": {
+        "thread_spawn": {
+          "parent_thread_id": "01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046",
+          "depth": 1,
+          "agent_path": "/root/reporters_probe_takeover",
+          "agent_nickname": "Plato",
+          "agent_role": "experience_reporters"
+        }
+      }
+    }
+  },
+  "turn_contexts": [
+    {
+      "model": "gpt-6-astra",
+      "effort": "high",
+      "cwd": "/private/tmp/steno-p4-coordinator",
+      "approval_policy": "on-request",
+      "approvals_reviewer": "auto_review",
+      "sandbox_policy": {
+        "type": "workspace-write",
+        "writable_roots": [
+          "/Users/pc/.codex/visualizations/2026/09/19/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046"
+        ],
+        "network_access": false,
+        "exclude_tmpdir_env_var": false,
+        "exclude_slash_tmp": false
+      },
+      "service_tier": null
+    }
+  ],
+  "verified_at": "2026-09-19T09:24:10.951569+00:00",
+  "result": "PROBE_READY"
+}

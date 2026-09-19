@@ -1,0 +1,105 @@
+{
+  "kind": "runtime_role_reverification_before_workspace_wave",
+  "role": "experience",
+  "session_id": "01a0b8d4-fd9c-7f03-9d83-4555190d1fe5",
+  "task_name": "/root/experience_probe_takeover",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "inherited_turns": 0,
+  "inheritance_evidence": "Coordinator explicit spawn_agent call used fork_turns=none; only the explicit probe packet and repository environment were supplied.",
+  "configured_service_tier": "default",
+  "resolved_service_tier": null,
+  "session_source": "/Users/pc/.codex/sessions/2026/09/19/rollout-2026-09-19T01-42-41-01a0b8d4-fd9c-7f03-9d83-4555190d1fe5.jsonl",
+  "session_source_sha256": "3eaa0d158f89e293fa8c3df034231b4eb4f3b3e8112c111ecb4a92eb36ec54ae",
+  "session_metadata": {
+    "id": "01a0b8d4-fd9c-7f03-9d83-4555190d1fe5",
+    "parent_thread_id": "01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046",
+    "agent_role": "experience",
+    "agent_path": "/root/experience_probe_takeover",
+    "cwd": "/private/tmp/steno-p4-coordinator",
+    "source": {
+      "subagent": {
+        "thread_spawn": {
+          "parent_thread_id": "01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046",
+          "depth": 1,
+          "agent_path": "/root/experience_probe_takeover",
+          "agent_nickname": "Boyle",
+          "agent_role": "experience"
+        }
+      }
+    }
+  },
+  "turn_contexts": [
+    {
+      "model": "gpt-6-astra",
+      "effort": "high",
+      "cwd": "/private/tmp/steno-p4-coordinator",
+      "approval_policy": "on-request",
+      "approvals_reviewer": "auto_review",
+      "sandbox_policy": {
+        "type": "workspace-write",
+        "writable_roots": [
+          "/Users/pc/.codex/visualizations/2026/09/19/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046"
+        ],
+        "network_access": false,
+        "exclude_tmpdir_env_var": false,
+        "exclude_slash_tmp": false
+      },
+      "service_tier": null
+    },
+    {
+      "model": "gpt-6-astra",
+      "effort": "high",
+      "cwd": "/private/tmp/steno-p4-coordinator",
+      "approval_policy": "on-request",
+      "approvals_reviewer": "auto_review",
+      "sandbox_policy": {
+        "type": "workspace-write",
+        "writable_roots": [
+          "/Users/pc/.codex/visualizations/2026/09/19/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046"
+        ],
+        "network_access": false,
+        "exclude_tmpdir_env_var": false,
+        "exclude_slash_tmp": false
+      },
+      "service_tier": null
+    },
+    {
+      "model": "gpt-6-astra",
+      "effort": "high",
+      "cwd": "/private/tmp/steno-p4-coordinator",
+      "approval_policy": "on-request",
+      "approvals_reviewer": "auto_review",
+      "sandbox_policy": {
+        "type": "workspace-write",
+        "writable_roots": [
+          "/Users/pc/.codex/visualizations/2026/09/19/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046"
+        ],
+        "network_access": false,
+        "exclude_tmpdir_env_var": false,
+        "exclude_slash_tmp": false
+      },
+      "service_tier": null
+    },
+    {
+      "model": "gpt-6-astra",
+      "effort": "high",
+      "cwd": "/private/tmp/steno-p4-coordinator",
+      "approval_policy": "on-request",
+      "approvals_reviewer": "auto_review",
+      "sandbox_policy": {
+        "type": "workspace-write",
+        "writable_roots": [
+          "/Users/pc/.codex/visualizations/2026/09/19/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046"
+        ],
+        "network_access": false,
+        "exclude_tmpdir_env_var": false,
+        "exclude_slash_tmp": false
+      },
+      "service_tier": null
+    }
+  ],
+  "verified_at": "2026-09-19T09:26:34.575251+00:00",
+  "result": "same_verified_zero_inheritance_Lead_session_Astra_high"
+}

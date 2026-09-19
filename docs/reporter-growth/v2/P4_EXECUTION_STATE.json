@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-19T09:17:44.096340+00:00",
+  "updated_at": "2026-09-19T09:26:34.611810+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -65,7 +65,7 @@
       "IP12"
     ],
     "sample_expansion": "completed_do_not_repeat",
-    "runtime_models_verified": false,
+    "runtime_models_verified": true,
     "runtime_catalog": {
       "status": "verified",
       "observed_task": "01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046",
@@ -221,16 +221,55 @@
         }
       },
       {
+        "role": "experience_reporters",
+        "session_id": "01a0b8f7-8e5d-78f2-a206-ae42895e99db",
+        "model": "gpt-6-astra",
+        "reasoning_effort": "high",
+        "fork_turns": "none",
+        "inherited_turns": 0,
+        "verified_at": "2026-09-19T09:24:10.951569+00:00",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046-experience_reporters-probe.json",
+          "sha256": "cb5fb77fb282e2a739d86b25f699fca1e96fa04eb649120aeacf45382bea2fec"
+        }
+      },
+      {
+        "role": "experience_team",
+        "session_id": "01a0b8fb-213b-7840-932f-8dbb265e2ad0",
+        "model": "gpt-6-astra",
+        "reasoning_effort": "high",
+        "fork_turns": "none",
+        "inherited_turns": 0,
+        "verified_at": "2026-09-19T09:24:49.008390+00:00",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046-experience_team-probe.json",
+          "sha256": "68aa0c01cbcff458e98095e8de575b2034234d2d89b056bceead9b09cf67b940"
+        }
+      },
+      {
+        "role": "experience_programs",
+        "session_id": "01a0b8fb-b5e4-7e10-93f1-8c1805dbc6f8",
+        "model": "gpt-6-astra",
+        "reasoning_effort": "high",
+        "fork_turns": "none",
+        "inherited_turns": 0,
+        "verified_at": "2026-09-19T09:25:58.810688+00:00",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046-experience_programs-probe.json",
+          "sha256": "9a236a3898669eda41f6916aa91cee74d1eef8062968c83ca94d19bcb37c8d0f"
+        }
+      },
+      {
         "role": "experience",
         "session_id": "01a0b8d4-fd9c-7f03-9d83-4555190d1fe5",
         "model": "gpt-6-astra",
         "reasoning_effort": "high",
         "fork_turns": "none",
         "inherited_turns": 0,
-        "verified_at": "2026-09-19T08:47:36.459963+00:00",
+        "verified_at": "2026-09-19T09:26:34.575251+00:00",
         "evidence": {
-          "file": "docs/reporter-growth/v2/evidence/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046-experience-probe.json",
-          "sha256": "317662fa968e47463998d1d9b1aea674dd07c18f717865f9ca540d44860430d6"
+          "file": "docs/reporter-growth/v2/evidence/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046-experience-wave-probe.json",
+          "sha256": "91080b6694f0c0d970f7707aaa45ebf7442e7a5d34804ad058ae950ef658a9fe"
         }
       }
     ],
@@ -569,7 +608,17 @@
           },
           "waivers": []
         }
-      ]
+      ],
+      "source_resolution": {
+        "candidate_commit": "b5cbe33e66a52f466456467a240d2f704208fb10",
+        "status": "passed",
+        "acceptance": "9/9",
+        "browser": "8/8",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/b5cbe33e66a52f466456467a240d2f704208fb10-ip2-full-verification.json",
+          "sha256": "eed75e259840e5f35f87788627a2c72ace99c8f3f5545aeaddd2fb72880099c4"
+        }
+      }
     },
     "runtime_probe_history": [
       {
@@ -597,19 +646,32 @@
           "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-experience-probe.json",
           "sha256": "64f28637ebaf318c3ce3c71dc5a076fa62a9f56e3843a24cd54be89e87503ea7"
         }
+      },
+      {
+        "role": "experience",
+        "session_id": "01a0b8d4-fd9c-7f03-9d83-4555190d1fe5",
+        "model": "gpt-6-astra",
+        "reasoning_effort": "high",
+        "fork_turns": "none",
+        "inherited_turns": 0,
+        "verified_at": "2026-09-19T08:47:36.459963+00:00",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046-experience-probe.json",
+          "sha256": "317662fa968e47463998d1d9b1aea674dd07c18f717865f9ca540d44860430d6"
+        }
       }
     ]
   },
   "implementation_base_commit": "6e7ea99e2358e497b8a6d4331a6cc8513e668501",
   "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",
   "implementation_active": true,
-  "fanout_authorized": false,
-  "current_phase": "IP2_visual_proof",
+  "fanout_authorized": true,
+  "current_phase": "IP3_workspace_wave",
   "current_candidate": {
-    "commit": "4df77544c8b0a33897840c524e6eda58e790c9bc",
-    "status": "IP2_shared_drawer_regression_pending",
+    "commit": "b5cbe33e66a52f466456467a240d2f704208fb10",
+    "status": "IP2_accepted_shared_baseline",
     "defect_register": "docs/reporter-growth/v2/IP2_COORDINATOR_REVIEW_2026-09-19.md",
-    "reason": "Authorized Quality test alignment integrated after exact two-path audit;9/9 acceptance and7/8 browser passed. Actual shared narrow drawer width regression remains and has no waiver."
+    "reason": "All retained assertions pass; clean desktop proof reviewed; specialist runtime probes finishing."
   },
   "gates": {
     "data": {
@@ -660,25 +722,30 @@
     },
     "baseline": {
       "status": "passed",
-      "candidate_commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
+      "candidate_commit": "b5cbe33e66a52f466456467a240d2f704208fb10",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/dfa4b9b921991abd6a40127146520c421204c8cb-ip1-programs-combined-verification.json",
-        "sha256": "ec4e54c9a9d8c1fc1008832979f3ef868f6468d7252d868bcff88488ff305b95"
+        "file": "docs/reporter-growth/v2/evidence/b5cbe33e66a52f466456467a240d2f704208fb10-ip2-full-verification.json",
+        "sha256": "eed75e259840e5f35f87788627a2c72ace99c8f3f5545aeaddd2fb72880099c4"
       }
     },
     "visual_proof": {
-      "status": "pending",
+      "status": "accepted",
       "scope": "IP01-IP12_amendment",
-      "reason": "Final exact clean desktop capture and interaction review pass; acceptance waits for full suite and specialist runtime probes before phase transition.",
+      "reason": "Coordinator direct visual/reference comparison,20 checksummed desktop states,22 interactions, exact clean source and full b5cbe3 integrated suite passed. All four Experience runtime roles verified from actual metadata.",
       "reference_manifest": "docs/reporter-growth/v2/design-lock/interview-2026-09-19/reference-manifest.json",
-      "candidate_commit": "d7c9d7347ae3904660a213595724360a599aa728",
+      "candidate_commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
       "evidence": {
-        "file": "docs/reporter-growth/v2/design-lock/candidate/d7c9d7347ae3904660a213595724360a599aa728/proof-manifest.json",
-        "sha256": "72fe7eb6d7b7a3090d283b3bbd07fd3624d21af0e1396e0e179d032037fb2181"
-      }
+        "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/proof-manifest.json",
+        "sha256": "74e5540710df41f5e84199a512f1389b30f8f4591f4454c712530fe9011feb82"
+      },
+      "accepted_commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "pointer_keyboard_passed": true,
+      "waivers": []
     },
     "workspace_wave": {
-      "status": "blocked"
+      "status": "authorized",
+      "shared_source_baseline": "b5cbe33e66a52f466456467a240d2f704208fb10",
+      "lead_reviews": {}
     },
     "quality": {
       "status": "blocked"
@@ -932,6 +999,18 @@
         "acceptance": "9/9",
         "browser": "7/8; source drawer defect retained"
       }
+    },
+    "ip2_experience_drawer": {
+      "lane": "experience",
+      "base_commit": "3b31139d340ddd3674c73aa4dc0750bba0a2665e",
+      "candidate_commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "integrated_commit": "b5cbe33e66a52f466456467a240d2f704208fb10",
+      "status": "passed",
+      "boundary_exit_code": 0,
+      "changed_paths": [
+        "src/styles/tokens.css"
+      ],
+      "retained_browser_assertion": "full width at390px passes, all8 browser cases pass"
     }
   },
   "known_ownership_exceptions": [],
@@ -1182,22 +1261,19 @@
           "sha256": "04167b52103b1b958a423844a06d0de0a1d92b9ca65393d6bf7a041cd13243ec"
         }
       }
+    },
+    {
+      "gate": "baseline",
+      "record": {
+        "status": "passed",
+        "candidate_commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/dfa4b9b921991abd6a40127146520c421204c8cb-ip1-programs-combined-verification.json",
+          "sha256": "ec4e54c9a9d8c1fc1008832979f3ef868f6468d7252d868bcff88488ff305b95"
+        }
+      }
     }
   ],
-  "active_lane": {
-    "role": "experience",
-    "task_name": "/root/experience_probe_takeover",
-    "worktree": "/private/tmp/steno-ip2-proof-repair",
-    "branch": "codex/interview-ip2-proof-repair",
-    "base_commit": "3b31139d340ddd3674c73aa4dc0750bba0a2665e",
-    "source_contract_commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
-    "status": "retained_drawer_regression_repair",
-    "allowed_paths": [
-      "src/styles/tokens.css"
-    ],
-    "production_edits_open": true,
-    "scratch_source_proof": "/private/tmp/steno-ip2-drawer-proof"
-  },
   "unattended_handoff": {
     "status": "continuing_with_verified_auto_review",
     "requested_by_user": true,
@@ -1315,6 +1391,21 @@
       "production_edits_open": false,
       "test_edits_open": false,
       "candidate_commit": "9f91a8e422b421a28bf4d543c1ce52c1fd59af57"
+    },
+    {
+      "role": "experience",
+      "task_name": "/root/experience_probe_takeover",
+      "worktree": "/private/tmp/steno-ip2-proof-repair",
+      "branch": "codex/interview-ip2-proof-repair",
+      "base_commit": "3b31139d340ddd3674c73aa4dc0750bba0a2665e",
+      "source_contract_commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
+      "status": "P4_VISUAL_PROOF_READY_stopped",
+      "allowed_paths": [
+        "src/styles/tokens.css"
+      ],
+      "production_edits_open": false,
+      "scratch_source_proof": "/private/tmp/steno-ip2-drawer-proof",
+      "candidate_commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3"
     }
   ]
 }

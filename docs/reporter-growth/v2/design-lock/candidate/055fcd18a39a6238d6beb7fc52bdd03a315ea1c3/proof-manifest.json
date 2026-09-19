@@ -1,0 +1,365 @@
+{
+  "captured_from_commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+  "worktree_clean_before_capture": true,
+  "worktree": "/private/tmp/steno-ip2-proof-repair",
+  "viewport_scope": "desktop_only_interview_2026_09_19",
+  "artifacts": [
+    {
+      "id": "overview_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/overview_1440x900.png",
+      "sha256": "da01acd59f8b320d755ec0d93a94ee6a9ff23599292733eaf0311ebfee21354e",
+      "commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Overview",
+        "market": "ALL",
+        "scenario": "baseline",
+        "projection": true
+      }
+    },
+    {
+      "id": "overview_chart_keyboard",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/overview_chart_keyboard.png",
+      "sha256": "956d6fdd8b7f0737c5c2eaa026495d0e482b1a51c3857d5c6045a95966ec2262",
+      "commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Overview",
+        "market": "ALL",
+        "inspection": "End key; exact last projected point"
+      }
+    },
+    {
+      "id": "weekly_review",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/weekly_review.png",
+      "sha256": "15b2f79c3b8e9f2d373c1741ce3d73544099e7ff45fdb72427574e089dc26470",
+      "commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Overview",
+        "market": "ALL",
+        "dialog": "Current market-wide review"
+      }
+    },
+    {
+      "id": "weekly_measures",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/weekly_measures.png",
+      "sha256": "c148f51852cf17360e4aa1d5ccaafa8f8bf16bcf5a3022dea56b264154db3834",
+      "commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Overview",
+        "market": "ALL",
+        "dialog": "Actuals, targets and comparison units"
+      }
+    },
+    {
+      "id": "overview_attention_evidence",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/overview_attention_evidence.png",
+      "sha256": "430f28b12c2a5be815988d4d3b27ba7ba3b4664a0f3a333175359884f8bc893b",
+      "commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Overview",
+        "market": "LAX",
+        "dialog": "first attention exact evidence"
+      }
+    },
+    {
+      "id": "overview_exact_attention",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/overview_exact_attention.png",
+      "sha256": "4cbe6b16ee5fbd14e654fc1d1bde47737621db2a1c75eddcbb529c05e0711bd0",
+      "commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Overview",
+        "market": "LAX",
+        "linkedRequests": [
+          "req-lax-109",
+          "req-lax-110"
+        ]
+      }
+    },
+    {
+      "id": "clear_drill_down_keyboard_focus",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/clear_drill_down_keyboard_focus.png",
+      "sha256": "31d6194026dc841b1b0b15d7954958c77057a75596917ce967d447b25329e032",
+      "commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Overview",
+        "market": "LAX",
+        "repair": "shared hover and visible keyboard focus"
+      }
+    },
+    {
+      "id": "funnel_people_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/funnel_people_1440x900.png",
+      "sha256": "e9cc6c7b593534938ddaca42824270d0e54d4fafd479859b7131bfb596369dfa",
+      "commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Funnel",
+        "mode": "People",
+        "market": "ALL",
+        "range": "R28",
+        "entryCohort": "January"
+      }
+    },
+    {
+      "id": "funnel_source_filter",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/funnel_source_filter.png",
+      "sha256": "30e7dea7c4ab01ccd69b67ff65d4bb403c3fd803cd1ee0776dde638a109280ef",
+      "commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Funnel",
+        "market": "ALL",
+        "source": "source-targeted-referrals",
+        "records": 2
+      }
+    },
+    {
+      "id": "funnel_sla_filter",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/funnel_sla_filter.png",
+      "sha256": "7102b6960e1cb25d02ea1bb8c43edc616439ce0e5252b0952b415c58d0b10059",
+      "commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Funnel",
+        "market": "ALL",
+        "sla": "over",
+        "sort": "name"
+      }
+    },
+    {
+      "id": "funnel_february_cohort",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/funnel_february_cohort.png",
+      "sha256": "e5350f75ae771573cbbbd8735b25dac277000b29cec56da1153b7a3915e46d5f",
+      "commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Funnel",
+        "market": "LAX",
+        "entryCohort": "February",
+        "inventory": 41,
+        "denominator": 0,
+        "observing": 2
+      }
+    },
+    {
+      "id": "funnel_sla_editor",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/funnel_sla_editor.png",
+      "sha256": "2b3cd2bcaa9dd1571ff8d8d043ab8e347f5a13674be569bced827522429df310",
+      "commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Funnel",
+        "market": "LAX",
+        "editor": "inline",
+        "OnboardingSla": 90
+      }
+    },
+    {
+      "id": "funnel_person_detail",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/funnel_person_detail.png",
+      "sha256": "35a60ab5f363fd7899ac889c0266574c9d042390d793ff5c087419627d86d5f6",
+      "commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Funnel",
+        "market": "LAX",
+        "person": "Felix Ames",
+        "notes": "local draft whitespace retained"
+      }
+    },
+    {
+      "id": "funnel_bottlenecks_1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/funnel_bottlenecks_1440x900.png",
+      "sha256": "aa2e9acecca2c726e96a355df3196aef9ef7d6c86919cdc517d8558cdd583659",
+      "commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Funnel",
+        "mode": "Bottlenecks",
+        "market": "ALL",
+        "range": "R28"
+      }
+    },
+    {
+      "id": "funnel_bottleneck_table",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/funnel_bottleneck_table.png",
+      "sha256": "204110d51718332d9457f9876b44f1b52d72084682c091fd670c830ebe185430",
+      "commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Funnel",
+        "mode": "Bottlenecks",
+        "market": "ALL",
+        "detail": "prepared counts, mean, median and SLA"
+      }
+    },
+    {
+      "id": "funnel_bottleneck_applicant",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/funnel_bottleneck_applicant.png",
+      "sha256": "14a1461676732e187adb0f7b84bdedf868a05c261c0e3694db4472343e02dfc0",
+      "commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Funnel",
+        "mode": "Bottlenecks",
+        "market": "ALL",
+        "status": "Applicant",
+        "activePeople": 11
+      }
+    },
+    {
+      "id": "funnel_people_filters",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/funnel_people_filters.png",
+      "sha256": "0dd63f5632619a768bc64e9e06f5b48c99fb628cd3870f6eb878821fe9a1b995",
+      "commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Funnel",
+        "market": "ALL",
+        "detail": "cohort and current inventory controls"
+      }
+    },
+    {
+      "id": "original_plan_delivered",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/original_plan_delivered.png",
+      "sha256": "da9b8dad90394f92470d83f0347e660c8ea5cfbf88614319cea3d6fc9c946c16",
+      "commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Overview",
+        "market": "LAX",
+        "scenario": "delivered",
+        "originalPlan": {
+          "completed": 10,
+          "firstJobs": 2
+        }
+      }
+    },
+    {
+      "id": "original_plan_completed_evidence",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/original_plan_completed_evidence.png",
+      "sha256": "5f0e327053bc8286dfce3cd52c6c582347ea930a4a0a76522478a4d5ff6c55f4",
+      "commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Overview",
+        "market": "LAX",
+        "repair": "completed-request bundle",
+        "members": 10
+      }
+    },
+    {
+      "id": "original_plan_first_jobs_evidence",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/original_plan_first_jobs_evidence.png",
+      "sha256": "263050596d9a15b3e05cb0de1fb57429620352ef8889536b9d0d924d6d8a53ab",
+      "commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "http://127.0.0.1:5188/",
+      "state": {
+        "workspace": "Overview",
+        "market": "LAX",
+        "repair": "new-reporter-first-job bundle",
+        "members": 2
+      }
+    }
+  ],
+  "reference_evidence": {
+    "file": "docs/reporter-growth/v2/design-lock/interview-2026-09-19/reference-manifest.json",
+    "sha256": "f5a1443b3705b8bb5a5bdd50ef89d9e5e0ca44520172de17a01780ace79b268f"
+  },
+  "interaction_evidence": {
+    "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/interactions.json",
+    "sha256": "a0ebffba601ed2ded8cbc1e7b98579bf315f6b76c9816e23933507af102299d2"
+  },
+  "raw_evidence": {
+    "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/raw-proof-manifest.json",
+    "sha256": "af941cead966070f0e9c5ec0c38e2811dd35c63c95a93cc610b9c1d89bd8b1d2"
+  },
+  "coordinator_review": "docs/reporter-growth/v2/IP2_COORDINATOR_REVIEW_2026-09-19.md",
+  "disposition": "coordinator_visual_review_passed_full_suite_passed_pending_phase_record"
+}

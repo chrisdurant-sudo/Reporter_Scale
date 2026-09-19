@@ -1,0 +1,225 @@
+{
+  "captured_from_commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+  "worktree_clean_before_capture": true,
+  "interactions": [
+    {
+      "id": "market_selection",
+      "status": "passed",
+      "source_check": "All markets and five-workspace navigation",
+      "detail": "Six market selections retain scope across every workspace"
+    },
+    {
+      "id": "workspace_navigation",
+      "status": "passed",
+      "source_check": "All markets and five-workspace navigation",
+      "detail": "Six market selections retain scope across every workspace"
+    },
+    {
+      "id": "chart_pointer",
+      "status": "passed",
+      "source_check": "Chart pointer and keyboard",
+      "detail": "Single SVG focus target; Home/End and nearest point expose date, exact values, units and phase"
+    },
+    {
+      "id": "chart_keyboard",
+      "status": "passed",
+      "source_check": "Chart pointer and keyboard",
+      "detail": "Single SVG focus target; Home/End and nearest point expose date, exact values, units and phase"
+    },
+    {
+      "id": "status_filters",
+      "status": "passed",
+      "source_check": "Status focus and clear",
+      "detail": {
+        "inventory": 113,
+        "focused": 11
+      }
+    },
+    {
+      "id": "owner_waiting_filters",
+      "status": "passed",
+      "source_check": "Stable owner/wait/source filters",
+      "detail": {
+        "ownerValue": "team-1",
+        "owned": 11,
+        "waitValue": "blocker:availability-not-current",
+        "waitingCount": 2,
+        "sourced": 2
+      }
+    },
+    {
+      "id": "capacity_reconciliation",
+      "status": "passed",
+      "source_check": "All schedule reconciliation",
+      "detail": "11 requested =6 confirmed+5 unresolved; baseline no goal"
+    },
+    {
+      "id": "attention_destinations",
+      "status": "passed",
+      "source_check": "Precise capacity attention target",
+      "detail": "First LAX attention narrows to two affected requests; clear restores full scope"
+    },
+    {
+      "id": "sla_recomputation",
+      "status": "passed",
+      "source_check": "SLA immediate recompute and market draft isolation",
+      "detail": "LAX90 updates threshold; SFO remains11; LAX90 retained; reset10"
+    }
+  ],
+  "all_recorded_checks": [
+    {
+      "name": "All schedule reconciliation",
+      "passed": true,
+      "detail": "11 requested =6 confirmed+5 unresolved; baseline no goal"
+    },
+    {
+      "name": "Chart pointer and keyboard",
+      "passed": true,
+      "detail": "Single SVG focus target; Home/End and nearest point expose date, exact values, units and phase"
+    },
+    {
+      "name": "Weekly evidence and focus return",
+      "passed": true,
+      "detail": "Current market-wide review links exact M02 evidence; Escape restores Weekly review trigger"
+    },
+    {
+      "name": "All markets and five-workspace navigation",
+      "passed": true,
+      "detail": "Six market selections retain scope across every workspace"
+    },
+    {
+      "name": "Repair: shared drill-down button treatment",
+      "passed": true,
+      "detail": "Shared5px radius; hover rgb237243239; keyboard2px navy outline"
+    },
+    {
+      "name": "Precise capacity attention target",
+      "passed": true,
+      "detail": "First LAX attention narrows to two affected requests; clear restores full scope"
+    },
+    {
+      "name": "Status focus and clear",
+      "passed": true,
+      "detail": {
+        "inventory": 113,
+        "focused": 11
+      }
+    },
+    {
+      "name": "Stable owner/wait/source filters",
+      "passed": true,
+      "detail": {
+        "ownerValue": "team-1",
+        "owned": 11,
+        "waitValue": "blocker:availability-not-current",
+        "waitingCount": 2,
+        "sourced": 2
+      }
+    },
+    {
+      "name": "Search/sort/SLA and empty-state controls",
+      "passed": true,
+      "detail": "Prepared rows respond and clear restores inventory"
+    },
+    {
+      "name": "Entry cohort separate from inventory",
+      "passed": true,
+      "detail": "LAX February has no mature denominator and two observing; inventory unchanged; exact M08 evidence opens"
+    },
+    {
+      "name": "SLA immediate recompute and market draft isolation",
+      "passed": true,
+      "detail": "LAX90 updates threshold; SFO remains11; LAX90 retained; reset10"
+    },
+    {
+      "name": "Person drawer, local notes, focus return",
+      "passed": true,
+      "detail": "Whitespace retained through editing; blur commits through supplied local command"
+    },
+    {
+      "name": "Repair: mode-specific People and Bottlenecks captions",
+      "passed": true,
+      "detail": "People113 records; Bottlenecks66 active people; Applicant11 in both modes; second click restores113People"
+    },
+    {
+      "name": "Scenario Plan saved",
+      "passed": true,
+      "detail": {
+        "requested": 10,
+        "confirmed": 6,
+        "unresolved": 4,
+        "goal": "0 / 2"
+      }
+    },
+    {
+      "name": "Scenario Existing candidates accepted",
+      "passed": true,
+      "detail": {
+        "requested": 10,
+        "confirmed": 8,
+        "unresolved": 2,
+        "goal": "0 / 2"
+      }
+    },
+    {
+      "name": "Scenario New additions ready",
+      "passed": true,
+      "detail": {
+        "requested": 10,
+        "confirmed": 8,
+        "unresolved": 2,
+        "goal": "2 / 2"
+      }
+    },
+    {
+      "name": "Scenario New additions accepted",
+      "passed": true,
+      "detail": {
+        "requested": 10,
+        "confirmed": 10,
+        "unresolved": 0,
+        "goal": "2 / 2"
+      }
+    },
+    {
+      "name": "Scenario Jobs delivered",
+      "passed": true,
+      "detail": {
+        "requested": 0,
+        "confirmed": 0,
+        "unresolved": 0,
+        "goal": "2 / 2"
+      }
+    },
+    {
+      "name": "Repair: distinct original-plan evidence actions",
+      "passed": true,
+      "detail": "Prepared population labels open exact completed10 and first-job2 evidence bundles"
+    },
+    {
+      "name": "Original LAX plan and reset",
+      "passed": true,
+      "detail": "Original10completed/2firstjobs stays distinct from0current scheduling slots; reset restores11All"
+    },
+    {
+      "name": "No browser errors",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Desktop overflow",
+      "passed": true,
+      "detail": {
+        "width": 1440,
+        "scrollWidth": 1440
+      }
+    }
+  ],
+  "console_errors": [],
+  "page_errors": [],
+  "waivers": [],
+  "raw_evidence": {
+    "file": "docs/reporter-growth/v2/design-lock/candidate/055fcd18a39a6238d6beb7fc52bdd03a315ea1c3/raw-proof-manifest.json",
+    "sha256": "af941cead966070f0e9c5ec0c38e2811dd35c63c95a93cc610b9c1d89bd8b1d2"
+  }
+}

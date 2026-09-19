@@ -1,5 +1,8 @@
 # Reporter Growth
 
+> September19 IP3 transition: revised Overview/Funnel proof at clean `055fcd18a39a6238d6beb7fc52bdd03a315ea1c3` is accepted. Integrated `b5cbe33e66a52f466456467a240d2f704208fb10` passes315 unit/integration,9 acceptance,8 browser plus governance/lint/types/build. Lead and all three specialist actual Astra/high zero-inheritance runtimes are verified. Current phase `IP3_workspace_wave`; Lead plus Reporters/Team/Programs presentation specialists may run in their separate assigned worktrees using the frozen shared system. Independent Quality and Reviewer remain gated. Actual runtime is sandboxed automatic review; no user UI action is currently required.
+
+
 > September 19 unattended handoff: the user approved Full Access plus `approval_policy = "never"` for this project task, superseding the sandbox-setting restriction solely for this authorized local run. The settings are applied in project `.codex/config.toml`; verify actual replacement-task runtime. Read `docs/reporter-growth/v2/UNATTENDED_HANDOFF_2026-09-19.md`. Lead source is stopped at clean `be5d7a1d3a634f4a29243e09993661cef7264c1c`, proof ready but not yet accepted/integrated. Desktop only; remaining quality gates unchanged.
 
 

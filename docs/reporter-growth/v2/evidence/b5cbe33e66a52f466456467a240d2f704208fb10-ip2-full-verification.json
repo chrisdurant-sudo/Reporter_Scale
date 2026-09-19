@@ -1,0 +1,35 @@
+{
+  "kind": "coordinator_full_phase_verification",
+  "candidate_commit": "b5cbe33e66a52f466456467a240d2f704208fb10",
+  "source_proof_commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3",
+  "worktree_clean_before_run": true,
+  "command": "PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/private/tmp/steno-playwright-headless-shell/chrome-headless-shell-mac-arm64/chrome-headless-shell npm run verify:p4",
+  "exit_code": 0,
+  "observed_at": "2026-09-19T09:25:49.906575+00:00",
+  "results": {
+    "governance": {
+      "passed": true,
+      "checks": 203
+    },
+    "lint": "passed",
+    "typecheck": "passed",
+    "unit_integration": {
+      "passed": 315,
+      "files": 38
+    },
+    "acceptance": {
+      "passed": 9,
+      "files": 2
+    },
+    "build": "passed",
+    "browser": {
+      "passed": 8,
+      "failed": 0
+    }
+  },
+  "log": {
+    "file": "/private/tmp/steno-ip2-b5cbe3-full.log",
+    "sha256": "9e4ab2edba43f0dbf1568dbfb0b2fe7772b6da2a65bf7afbcd32508abea995a8"
+  },
+  "waivers": []
+}
