@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-19T08:55:58.041322+00:00",
+  "updated_at": "2026-09-19T08:59:59.157741+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -537,7 +537,20 @@
         "file": "docs/reporter-growth/v2/IP2_TEST_ALIGNMENT_REQUEST.md",
         "sha256": "629a9f4334b5fb53336a2b209ba2faa0824af11b4185292a66d1178ab89c9caa"
       },
-      "current_pass": null,
+      "current_pass": {
+        "id": "IP2_initial_alignment",
+        "status": "prepared",
+        "serial_workers_stopped": true,
+        "candidate_commit": "12690e87b4a43366c6c6f04509823ad13d1973d0",
+        "diagnostic": {
+          "file": "docs/reporter-growth/v2/evidence/12690e87b4a43366c6c6f04509823ad13d1973d0-ip2-diagnostic.json",
+          "sha256": "5420f966e7f70420af06c3e8c863b26e9b3b55ee6a87a2d49d6596833c7e869e"
+        },
+        "scope": {
+          "file": "docs/reporter-growth/v2/IP2_TEST_ALIGNMENT_SCOPE.md",
+          "sha256": "7ad2a9f711ea738ba9bcba4c325a8aa2406c84f29a9cb67097e66e3ef8314485"
+        }
+      },
       "completed_passes": []
     },
     "runtime_probe_history": [
@@ -575,10 +588,10 @@
   "fanout_authorized": false,
   "current_phase": "IP2_visual_proof",
   "current_candidate": {
-    "commit": "c9351e64b1dcebfb6b68e7848ff620c90aa5fb9a",
-    "status": "IP2_pending_bottleneck_count_label_and_test_alignment",
+    "commit": "12690e87b4a43366c6c6f04509823ad13d1973d0",
+    "status": "IP2_serial_test_alignment_prepared",
     "defect_register": "docs/reporter-growth/v2/IP2_COORDINATOR_REVIEW_2026-09-19.md",
-    "reason": "First two repairs integrated and reproduced the same obsolete test failures. Revised19-image21-check proof passes, but direct review confirmed Bottlenecks caption wrongly uses all113 records instead of prepared66 active people. Lead authorized to repair caption before final proof."
+    "reason": "Three bounded visual defects resolved and exact clean desktop proof complete. Same historical acceptance/browser conflicts reproduced on integrated candidate; authorized Quality-only alignment next."
   },
   "gates": {
     "data": {
@@ -868,6 +881,18 @@
         "src/features/markets/MarketsV2Screen.tsx",
         "src/styles/tokens.css"
       ]
+    },
+    "ip2_experience_caption": {
+      "lane": "experience",
+      "base_commit": "dfdc56a6abd372703be80148a6d43cc9322dd0b5",
+      "candidate_commit": "d7c9d7347ae3904660a213595724360a599aa728",
+      "integrated_commit": "12690e87b4a43366c6c6f04509823ad13d1973d0",
+      "status": "passed",
+      "boundary_exit_code": 0,
+      "changed_paths": [
+        "src/features/recruiting/index.tsx",
+        "src/features/recruiting/index.test.tsx"
+      ]
     }
   },
   "known_ownership_exceptions": [],
@@ -1127,16 +1152,17 @@
     "branch": "codex/interview-ip2-proof-repair",
     "base_commit": "dfdc56a6abd372703be80148a6d43cc9322dd0b5",
     "source_contract_commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
-    "status": "bottleneck_caption_repair",
+    "status": "P4_VISUAL_PROOF_READY_stopped",
     "allowed_paths": [
       "src/features/recruiting/"
     ],
-    "production_edits_open": true,
+    "production_edits_open": false,
     "runtime_evidence": {
       "file": "docs/reporter-growth/v2/evidence/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046-experience-probe.json",
       "sha256": "317662fa968e47463998d1d9b1aea674dd07c18f717865f9ca540d44860430d6"
     },
-    "scratch_source_proof": "/private/tmp/steno-ip2-final-proof"
+    "scratch_source_proof": "/private/tmp/steno-ip2-final-proof",
+    "candidate_commit": "d7c9d7347ae3904660a213595724360a599aa728"
   },
   "unattended_handoff": {
     "status": "continuing_with_verified_auto_review",

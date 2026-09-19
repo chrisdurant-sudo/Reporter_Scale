@@ -1,0 +1,91 @@
+{
+  "candidate_commit": "12690e87b4a43366c6c6f04509823ad13d1973d0",
+  "worktree": "/private/tmp/steno-p4-coordinator",
+  "clean_before_run": true,
+  "governance": "passed",
+  "lint": "Lead passed exact source",
+  "typecheck": "passed by exact browser build",
+  "unit_integration": {
+    "owned": 24,
+    "result": "Lead passed exact source; full coordinator suite pending test alignment"
+  },
+  "build": "passed by exact browser build",
+  "acceptance": {
+    "passed": 7,
+    "failed": 2
+  },
+  "browser": {
+    "passed": 4,
+    "failed": 4
+  },
+  "full_gate": "failed",
+  "waivers": [],
+  "logs": [
+    {
+      "kind": "acceptance",
+      "file": "/private/tmp/steno-ip2-12690e-acceptance.log",
+      "sha256": "3584de5abcb86c5c9976a8690bfdc541dcca3deebc6c86a3e6aeedd0a0006921",
+      "exit_code": 1,
+      "summary_lines": [
+        " \u276f tests/acceptance/reporter-growth.integration.test.tsx (5 tests | 2 failed) 11728ms",
+        "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 2 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        " FAIL  tests/acceptance/reporter-growth.integration.test.tsx > P4 cross-workspace acceptance > XR01-XR08/XR31-XR36 keeps the locked shell, concise hierarchy, and source-backed Overview controls",
+        "TestingLibraryElementError: Unable to find an element with the text: /Markets|Available reporters|Open jobs|More needed/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.",
+        " FAIL  tests/acceptance/reporter-growth.integration.test.tsx > P4 cross-workspace acceptance > XR09-XR10/XR15-XR18/XR37 exercises Funnel controls, notes, SLA isolation, evidence, and focus return",
+        "TestingLibraryElementError: Unable to find an accessible element with the role \"img\" and name `/R28 wait time for Applicant/i`",
+        " Test Files  1 failed | 1 passed (2)",
+        "      Tests  2 failed | 7 passed (9)"
+      ]
+    },
+    {
+      "kind": "browser",
+      "file": "/private/tmp/steno-ip2-12690e-browser.log",
+      "sha256": "512f07f714de79edf736c9931a8601b276b870bb5b85218bf17d14cdba14de7a",
+      "exit_code": 1,
+      "summary_lines": [
+        "    Error: expect(locator).toBeVisible() failed",
+        "    Error: element(s) not found",
+        "    Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'Why this?' }) resolved to 3 elements:",
+        "    Error: expect(locator).toBeVisible() failed",
+        "    Error: element(s) not found",
+        "    Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'Why this?' }) resolved to 3 elements:",
+        "  4 failed",
+        "  4 passed (12.8s)"
+      ]
+    }
+  ],
+  "conflicts": [
+    {
+      "file": "tests/acceptance/reporter-growth.integration.test.tsx",
+      "lines": [
+        25,
+        44,
+        48,
+        62
+      ],
+      "obsolete_assertions": [
+        "Old Overview KPI labels and chart img role/title",
+        "Global row count now includes new scope tables",
+        "Funnel chart old img role and R28 label",
+        "Applicant first click excludes instead of focuses",
+        "Global Why this? selector assumes one attention item"
+      ],
+      "replacement_basis": "IP02-IP06: accessible keyboard chart groups, explicit schedule capacity cells, scoped market grid, Applicant focus/clear, exact attention evidence trigger."
+    },
+    {
+      "file": "tests/e2e/reporter-growth.browser.spec.ts",
+      "lines": [
+        45,
+        48,
+        66
+      ],
+      "obsolete_assertions": [
+        "Old chart img role/title",
+        "Applicant focus behavior",
+        "Global evidence selector matches three distinct attention rows"
+      ],
+      "replacement_basis": "Retain range selection, exact observation, status rows/count, notes, SLA noninterference, evidence drawer/focus/overflow checks in both existing projects."
+    }
+  ],
+  "prior_full_verification_commit": "6115ee767a9c10730fc908c5f52b1468f30c83ab"
+}
