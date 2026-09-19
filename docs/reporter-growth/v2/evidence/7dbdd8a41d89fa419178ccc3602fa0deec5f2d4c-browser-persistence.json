@@ -1,0 +1,11 @@
+{
+  "candidate": "7dbdd8a41d89fa419178ccc3602fa0deec5f2d4c",
+  "kind": "coordinator_browser_persistence_diagnostic",
+  "reloadSnapshotIdentical": true,
+  "savedRevision": 2,
+  "resetRevision": 0,
+  "resetWorkItems": 25,
+  "pageErrors": [],
+  "scope": "Browser reload/reset only; not visual proof or independent Quality acceptance",
+  "diagnostic_script_sha256": "8d81085fcc42d85cd454d89d7638c0a82045ca1ac7cc48ba5a2e0cdfee5107a2"
+}

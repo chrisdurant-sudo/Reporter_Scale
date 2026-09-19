@@ -287,10 +287,10 @@
       }
     ],
     "latest_coordinator_verification": {
-      "candidate_commit": "1f5250251eabb33c438c793cbf5f6296bbe017da",
+      "candidate_commit": "7dbdd8a41d89fa419178ccc3602fa0deec5f2d4c",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/1f5250251eabb33c438c793cbf5f6296bbe017da-ip1-data-verification.json",
-        "sha256": "feb50b82f509d7acd9c846654e068f4aa5fe7a08ad14cc13c9acb1c25850b48f"
+        "file": "docs/reporter-growth/v2/evidence/7dbdd8a41d89fa419178ccc3602fa0deec5f2d4c-ip1-persistence-verification.json",
+        "sha256": "3468c1daee90a2ea12ad957547ba4d765d73f444f13415cc2b66c240c38d72d7"
       }
     },
     "continuation_authorization": {
@@ -330,7 +330,11 @@
         "sha256": "4b78a3a3258196c179f7586abdfbac47280359149372b7ac7cf0bd86aff9bd57"
       }
     },
-    "transaction_contract_commit": "ccbdd5b1736bafb5ab67d23aea54c2b444e116ae"
+    "transaction_contract_commit": "ccbdd5b1736bafb5ab67d23aea54c2b444e116ae",
+    "browser_persistence_diagnostic": {
+      "file": "docs/reporter-growth/v2/evidence/7dbdd8a41d89fa419178ccc3602fa0deec5f2d4c-browser-persistence.json",
+      "sha256": "8846c7166af1719441f0a98ebd7347aa3226f01a0e491f9382ef2cd450220115"
+    }
   },
   "implementation_base_commit": "6e7ea99e2358e497b8a6d4331a6cc8513e668501",
   "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",
@@ -338,8 +342,8 @@
   "fanout_authorized": false,
   "current_phase": "IP1_serial_data_logic",
   "current_candidate": {
-    "commit": "1f5250251eabb33c438c793cbf5f6296bbe017da",
-    "status": "data_integrated_full_suite_passed_remaining_logic_pending",
+    "commit": "7dbdd8a41d89fa419178ccc3602fa0deec5f2d4c",
+    "status": "data_and_browser_persistence_integrated_full_suite_passed_capacity_running",
     "defect_register": "docs/reporter-growth/v2/INTERVIEW_PRODUCT_REVIEW_2026-09-18.md"
   },
   "gates": {
@@ -381,10 +385,10 @@
     },
     "baseline": {
       "status": "passed",
-      "candidate_commit": "1f5250251eabb33c438c793cbf5f6296bbe017da",
+      "candidate_commit": "7dbdd8a41d89fa419178ccc3602fa0deec5f2d4c",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/1f5250251eabb33c438c793cbf5f6296bbe017da-ip1-data-verification.json",
-        "sha256": "feb50b82f509d7acd9c846654e068f4aa5fe7a08ad14cc13c9acb1c25850b48f"
+        "file": "docs/reporter-growth/v2/evidence/7dbdd8a41d89fa419178ccc3602fa0deec5f2d4c-ip1-persistence-verification.json",
+        "sha256": "3468c1daee90a2ea12ad957547ba4d765d73f444f13415cc2b66c240c38d72d7"
       }
     },
     "visual_proof": {
@@ -533,6 +537,17 @@
           "sha256": "4b78a3a3258196c179f7586abdfbac47280359149372b7ac7cf0bd86aff9bd57"
         }
       }
+    },
+    {
+      "gate": "baseline",
+      "record": {
+        "status": "passed",
+        "candidate_commit": "1f5250251eabb33c438c793cbf5f6296bbe017da",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/1f5250251eabb33c438c793cbf5f6296bbe017da-ip1-data-verification.json",
+          "sha256": "feb50b82f509d7acd9c846654e068f4aa5fe7a08ad14cc13c9acb1c25850b48f"
+        }
+      }
     }
   ],
   "active_lane": {
@@ -545,6 +560,10 @@
     "requests": [
       "IC01"
     ],
-    "status": "running"
+    "status": "running",
+    "runtime_evidence": {
+      "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-capacity-worker-runtime.json",
+      "sha256": "5d49ad5c87aa798d569e6966fe113f2ba2e50264e93d58c4e6aed23dbf0152df"
+    }
   }
 }

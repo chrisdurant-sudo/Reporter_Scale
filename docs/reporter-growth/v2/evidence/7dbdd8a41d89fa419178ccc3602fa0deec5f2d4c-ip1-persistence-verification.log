@@ -1,0 +1,155 @@
+
+> reporter-growth@0.1.0 verify:p4
+> npm run verify:p4:governance && npm run check && npm run test:acceptance && npm run test:e2e
+
+
+> reporter-growth@0.1.0 verify:p4:governance
+> node scripts/verify-p4-readiness.mjs && node scripts/verify-p4-phase-gate.mjs
+
+P4 readiness verification passed (203 checks).
+P4 interview phase verification passed for IP1_serial_data_logic; worker dispatch is checked separately.
+
+> reporter-growth@0.1.0 check
+> npm run lint && npm run typecheck && npm run test && npm run build
+
+
+> reporter-growth@0.1.0 lint
+> eslint . --max-warnings=0
+
+
+> reporter-growth@0.1.0 typecheck
+> tsc -b --pretty false
+
+
+> reporter-growth@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /private/tmp/steno-p4-coordinator
+
+ ✓ src/features/improvements/index.test.tsx (5 tests) 1120ms
+   ✓ ImprovementsScreen > shows descriptive limits and requires a rationale before recording a decision  670ms
+ ✓ src/features/reporters/index.test.tsx (4 tests) 1266ms
+   ✓ ReportersScreen > filters work and opens a detail panel with local message preview  633ms
+   ✓ ReportersScreen > delegates screening, follow-up, and coaching saves to actions  382ms
+ ✓ src/integration/p2RecordsAndCalculations.test.ts (6 tests) 1352ms
+   ✓ P2 source → calculation → EvidenceBundle reconciliation > derives every frozen LAX capacity checkpoint from cumulative source events  1145ms
+ ✓ src/data/v2.test.ts (12 tests) 2626ms
+   ✓ V2 synthetic records and repository > SD06 derives varied Overview and Funnel trends from canonical records  1072ms
+   ✓ V2 synthetic records and repository > D05 rejects broken outcome references, double acceptance, overlap, and invalid intervals  659ms
+   ✓ V2 synthetic records and repository > D06 applies cumulative checkpoints once and keeps dependent records ordered  509ms
+ ✓ src/shell/V2AppShell.test.tsx (4 tests) 452ms
+   ✓ V2AppShell > offers five controlled workspaces and preserves the supplied shared filters across navigation  332ms
+ ✓ src/features/programs/index.test.tsx (2 tests) 457ms
+   ✓ ProgramsScreen > filters prepared rows and saves note text through the canonical callback  337ms
+ ✓ src/data/v2Interview.test.ts (19 tests) 2864ms
+   ✓ IC07 durable injected repository > retains revision, exact note whitespace, commands and scenario clock across reconstruction  532ms
+ ✓ src/features/markets/index.test.tsx (4 tests) 898ms
+   ✓ MarketsScreen > shows five prepared market records with record support and actions  310ms
+   ✓ MarketsScreen > delegates a hypothetical plan preview and saves the edited draft without changing actuals  366ms
+ ✓ src/features/markets/MarketsV2Screen.test.tsx (1 test) 531ms
+   ✓ MarketsV2Screen > uses stateful controls and deterministic summary-card navigation without a growth-goal panel  529ms
+ ✓ src/shell/AppShell.test.tsx (1 test) 379ms
+   ✓ AppShell > offers exactly the three main tabs and reports market changes through its controlled callback  377ms
+ ✓ src/features/reporters/network.test.tsx (1 test) 373ms
+   ✓ ReportersNetworkScreen > changes the visible grid scope and uses prepared attention and compliance  372ms
+ ✓ src/features/recruiting/index.test.tsx (2 tests) 458ms
+   ✓ RecruitingScreen > renders concise Funnel values and preserves unknown wait-time gaps  394ms
+ ✓ src/integration/v2CommandTransaction.test.ts (3 tests) 333ms
+ ✓ src/logic/recruiting/recruiting.test.ts (16 tests) 14ms
+ ✓ src/logic/programs/index.test.ts (12 tests) 27ms
+ ✓ src/ui/index.test.tsx (2 tests) 210ms
+ ✓ src/ui/v2.test.tsx (2 tests) 253ms
+ ✓ src/logic/capacity/index.test.ts (13 tests) 76ms
+ ✓ src/integration/v2Persistence.test.tsx (3 tests) 4946ms
+   ✓ V2 browser storage integration > reloads saved work and the scenario clock on remount, then explicitly restores the seed  4308ms
+   ✓ V2 browser storage integration > preserves malformed bytes and unrelated data until explicit namespace reset  493ms
+ ✓ src/logic/network/index.test.ts (10 tests) 14ms
+ ✓ src/logic/index.test.ts (6 tests) 19ms
+ ✓ src/data/index.test.ts (5 tests) 26ms
+ ✓ src/logic/team/index.test.ts (5 tests) 8ms
+ ✓ src/logic/shared/invariants.test.ts (5 tests) 6ms
+ ✓ src/integration/v2Compatibility.test.ts (2 tests) 2ms
+ ✓ src/contracts/v2/contracts.test.ts (3 tests) 2ms
+ ✓ src/integration/App.test.tsx (8 tests) 9971ms
+   ✓ P4 integrated V2 experience > renders all five workspaces, keeps the market across navigation, and retains the synthetic disclosure  1887ms
+   ✓ P4 integrated V2 experience > uses the locked Overview composition without restoring the superseded growth-goal panel  917ms
+   ✓ P4 integrated V2 experience > keeps planning, readiness, acceptance, and delivery as separate replayable checkpoints  3351ms
+   ✓ P4 integrated V2 experience > opens contextual evidence, closes on Escape with focus return, and carries exact context into work  550ms
+   ✓ P4 integrated V2 experience > reconciles program membership for LAX, All, and SFO without averaging percentages  472ms
+   ✓ P4 integrated V2 experience > persists program commands without manufacturing operational outcomes  1070ms
+   ✓ P4 integrated V2 experience > creates canonical Team work from the locked Add work form  659ms
+   ✓ P4 integrated V2 experience > persists Programs notes and next steps without changing outcomes  1064ms
+
+ Test Files  27 passed (27)
+      Tests  156 passed (156)
+   Start at  21:51:21
+   Duration  11.37s (transform 1.24s, setup 1.65s, collect 5.01s, tests 28.68s, environment 11.44s, prepare 1.38s)
+
+
+> reporter-growth@0.1.0 build
+> tsc -b && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 76 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.53 kB │ gzip:   0.32 kB
+dist/assets/index-BhEKzEhF.css   30.39 kB │ gzip:   5.75 kB
+dist/assets/index-Cvc_b8se.js   439.63 kB │ gzip: 126.65 kB
+✓ built in 591ms
+
+> reporter-growth@0.1.0 test:acceptance
+> vitest run --config vite.acceptance.config.ts
+
+
+ RUN  v3.2.7 /private/tmp/steno-p4-coordinator
+
+ ✓ tests/acceptance/reporter-growth.reconciliation.test.ts (4 tests) 498ms
+ ✓ tests/acceptance/reporter-growth.integration.test.tsx (5 tests) 3922ms
+   ✓ P4 cross-workspace acceptance > XR01-XR08/XR31-XR36 keeps the locked shell, concise hierarchy, and source-backed Overview controls  735ms
+   ✓ P4 cross-workspace acceptance > XR09-XR10/XR15-XR18/XR37 exercises Funnel controls, notes, SLA isolation, evidence, and focus return  1077ms
+   ✓ P4 cross-workspace acceptance > XR11/XR15/XR17/XR38 preserves market scope and exposes reporter readiness, compliance, and bounded follow-up  608ms
+   ✓ P4 cross-workspace acceptance > XR12/XR17/XR39 creates Team work through the real form and retains the required board semantics  677ms
+   ✓ P4 cross-workspace acceptance > XR13/XR15-XR18/XR40 keeps Programs results, filters, target-met evidence, and text persistence source-safe  825ms
+
+ Test Files  2 passed (2)
+      Tests  9 passed (9)
+   Start at  21:51:36
+   Duration  4.61s (transform 254ms, setup 68ms, collect 438ms, tests 4.42s, environment 493ms, prepare 81ms)
+
+
+> reporter-growth@0.1.0 test:e2e
+> npm run build && playwright test --config=playwright.config.mjs
+
+
+> reporter-growth@0.1.0 build
+> tsc -b && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 76 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.53 kB │ gzip:   0.32 kB
+dist/assets/index-BhEKzEhF.css   30.39 kB │ gzip:   5.75 kB
+dist/assets/index-Cvc_b8se.js   439.63 kB │ gzip: 126.65 kB
+✓ built in 618ms
+
+Running 8 tests using 2 workers
+
+(node:95529) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95528) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [mobile] › tests/e2e/reporter-growth.browser.spec.ts:27:3 › P4 browser acceptance › XR01-XR08/XR22 keeps every workspace reachable without page overflow at the active viewport (951ms)
+  ✓  2 [desktop] › tests/e2e/reporter-growth.browser.spec.ts:27:3 › P4 browser acceptance › XR01-XR08/XR22 keeps every workspace reachable without page overflow at the active viewport (951ms)
+  ✓  3 [mobile] › tests/e2e/reporter-growth.browser.spec.ts:39:3 › P4 browser acceptance › XR09-XR10/XR15/XR37 changes Funnel range, status, filters, and a market-specific SLA without lifecycle leakage (914ms)
+  ✓  4 [desktop] › tests/e2e/reporter-growth.browser.spec.ts:39:3 › P4 browser acceptance › XR09-XR10/XR15/XR37 changes Funnel range, status, filters, and a market-specific SLA without lifecycle leakage (933ms)
+  ✓  5 [mobile] › tests/e2e/reporter-growth.browser.spec.ts:63:3 › P4 browser acceptance › XR16/XR19-XR25 keeps the evidence drawer keyboard-operable and full-screen at 390px (524ms)
+  ✓  6 [desktop] › tests/e2e/reporter-growth.browser.spec.ts:63:3 › P4 browser acceptance › XR16/XR19-XR25 keeps the evidence drawer keyboard-operable and full-screen at 390px (516ms)
+  ✓  8 [desktop] › tests/e2e/reporter-growth.browser.spec.ts:81:3 › P4 browser acceptance › XR11-XR13/XR17/XR38-XR40 performs reporter, Team, and Programs working actions (1.2s)
+  ✓  7 [mobile] › tests/e2e/reporter-growth.browser.spec.ts:81:3 › P4 browser acceptance › XR11-XR13/XR17/XR38-XR40 performs reporter, Team, and Programs working actions (1.2s)
+
+  8 passed (4.4s)

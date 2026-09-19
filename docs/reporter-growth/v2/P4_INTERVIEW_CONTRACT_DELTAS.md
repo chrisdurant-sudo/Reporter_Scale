@@ -1,14 +1,14 @@
 # Interview amendment: coordinator contract preparation
 
-Status: AUTHORIZED — CONTRACT BOUNDARY PREPARED AT `dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333`; IP0 QUALITY-ONLY PREREQUISITE REPAIR
+Status: AUTHORIZED — IP1 SERIAL DATA/LOGIC IMPLEMENTATION; CONTRACT BOUNDARY PREPARED AT `dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333`
 
-Continuation: task `01a0b7df-3f9e-7c72-a35a-1a6ed497e596` verified the loaded Astra catalog and Data/Quality runtime probes. Chromium launches outside the sandbox; the unchanged full run reached six stale browser-test failures. The user approved the narrow Quality-owned test repair in `IP0_BROWSER_REPAIR_REQUEST.md`. Earlier stale-catalog statements below are historical; the active ledger governs.
+Continuation: task `01a0b7df-3f9e-7c72-a35a-1a6ed497e596` verified the loaded Astra catalog and Data/Quality/Capacity zero-inheritance probes. The approved Quality-only prerequisite repair is complete. Data and browser persistence are integrated at `7dbdd8a41d89fa419178ccc3602fa0deec5f2d4c`: full suite 156 unit/integration, nine acceptance and eight browser cases pass. An isolated real-browser diagnostic confirms exact snapshot recovery after reload and reset to the 25-task seed. Capacity IC01 is running serially. The active ledger records evidence and remaining gates; the historical preparation account below does not reopen authorization or repeat the 50-person expansion.
 
 The user said “please start” in task `01a0b79d-03f1-7f60-9d63-681a9f9baef3` after the readiness review on September 18, 2026. This authorizes the implementation sequence in `P4_INTERVIEW_IMPROVEMENT_PLAN.md`; another start approval is not needed. Deployment, dependencies, external messages, credit resets and changes to the older main checkout remain outside scope.
 
 Active checkout: `/private/tmp/steno-p4-coordinator`. Amendment base: `6e7ea99e2358e497b8a6d4331a6cc8513e668501`. Frozen source contract: `19f7df98000e346a5b4ff32e00b699276c3f62fb` plus integrated amendments through the base. The source candidate remains `16479473d6b22ed64a18d4b1b5b9748f1c84374b`; its old Quality result is unclosed.
 
-## Current prerequisite
+## Historical IP0 prerequisite (resolved; see continuation and live ledger)
 
 The coordinator's actual session metadata confirms Astra/xhigh. All 12 active role TOMLs and registry entries agree on Astra/high, with Quality and Reviewer Astra/xhigh and Standard/default everywhere. The callable named-role catalog in this task still fixes roles to Terra/Luna from `/Users/pc/Desktop/STENO`. A command run with a different working directory does not establish that the task reloaded those roles. Do not dispatch, substitute a generic role, override a fixed named role, or infer runtime routing from configuration.
 
@@ -68,7 +68,7 @@ A passed contract/data-logic/baseline gate names an exact candidate SHA and chec
 
 Independent Quality records each IP01–IP12 result plus applicable XR01–XR41, SD01–SD07 and original V2 criteria against the fixed integrated candidate. Any production repair invalidates that result. A complete result names the same candidate for Quality and Reviewer. Hash checks and status fields verify an evidence record, not the truth of a screenshot comparison; independent inspection remains mandatory.
 
-## Preparation verification and continuation
+## Historical preparation verification and continuation
 
 The source boundary and request packet are committed at `dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333`. Typecheck, lint, 131 unit/integration tests, 9 acceptance tests and build passed; 12 governance regression tests pass. Final static governance passes 203 checks and the interview IP0 gate. The full command failed because Chromium could not register its macOS Mach port (permission denied 1100/SIGTRAP), before any browser assertions ran. This is an environment failure with no waiver, not a product pass.
 
