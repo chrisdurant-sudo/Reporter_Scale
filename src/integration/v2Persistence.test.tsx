@@ -13,6 +13,26 @@ afterEach(() => {
 });
 
 describe("V2 browser storage integration", () => {
+  it("opens a reporter's exact recruiting market instead of reusing the service-market filter", async () => {
+    const acquisition = DEMO_SNAPSHOT_V2.acquisitionCases.find((item) => item.ownerMarketId === "SFO"
+      && DEMO_SNAPSHOT_V2.readinessEvents.some((event) => event.reporterId === item.reporterId
+        && Date.parse(event.occurredAt) <= Date.parse(DEMO_SNAPSHOT_V2.currentAsOfAt)))!;
+    const reporter = DEMO_SNAPSHOT_V2.reporters.find((item) => item.id === acquisition.reporterId)!;
+    const snapshot = { ...DEMO_SNAPSHOT_V2, reporters: DEMO_SNAPSHOT_V2.reporters.map((item) => item.id === reporter.id ? { ...item, serviceMarketIds: ["LAX" as const] } : item) };
+    localStorage.setItem(INTERVIEW_V2_STORAGE_KEY, JSON.stringify({ format: "reporter-growth-v2", storageVersion: 1, seedVersion: snapshot.seedVersion, snapshot }));
+    const user = userEvent.setup();
+    render(<App />);
+    await screen.findByRole("region", { name: "Overview metrics" });
+    await user.click(screen.getByRole("button", { name: "LAX" }));
+    await user.click(screen.getByRole("button", { name: "Reporters" }));
+    const row = (await screen.findByRole("rowheader", { name: reporter.fictionalName })).closest("tr")!;
+    await user.click(within(row).getByRole("button", { name: "Inspect checklist" }));
+    expect(await screen.findByRole("main", { name: "Funnel" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "SFO" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("region", { name: "Preserved evidence context" })).toHaveTextContent("1 case");
+    expect(screen.getByRole("row", { name: new RegExp(`${reporter.fictionalName} SFO`) })).toBeInTheDocument();
+  });
+
   it("keeps a market selection open to all canonical requests in its scheduling window", async () => {
     const request = DEMO_SNAPSHOT_V2.demandRequests.find((item) => item.id === "req-lax-101")!;
     const snapshot = { ...DEMO_SNAPSHOT_V2, demandRequests: [...DEMO_SNAPSHOT_V2.demandRequests, { ...request, id: "req-lax-additional-proof" as never }] };

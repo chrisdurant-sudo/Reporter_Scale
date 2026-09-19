@@ -312,7 +312,7 @@ export function V2App() {
     : activeWorkspace === "recruiting"
       ? recruitingView?.focusCondition
       : activeWorkspace === "reporters" && reportersView
-        ? `${reportersView.reengagementCandidates.length} inactive for 28+ days`
+        ? `${reportersView.reengagementCandidates.length} reporters with earlier work and no recent completion`
         : activeWorkspace === "team" && teamView
           ? teamView.summary.unownedTasks === 1
             ? "1 task needs an owner"
@@ -544,20 +544,9 @@ export function V2App() {
       onCreateReengagementTask: appendReengagementTask,
       onOpenEvidence: openEvidence,
       onOpenRecruitingChecklist: (reporterId) => {
-        const acquisition = snapshot.acquisitionCases.find((item) => item.reporterId === reporterId);
-        const evidence = reportersView.evidence[0];
-        if (!evidence) return;
-        openWork({
-          workspace: "recruiting",
-          intent: "record-detail",
-          filters: {
-            ...filtersFor("recruiting", globalFilters),
-            reporterIds: [reporterId],
-            acquisitionCaseIds: acquisition ? [acquisition.id] : [],
-            recordRefs: [{ kind: "reporter", id: reporterId }, ...(acquisition ? [{ kind: "acquisition-case" as const, id: acquisition.id }] : [])],
-          },
-          evidenceContext: evidence.navigationTarget.evidenceContext,
-        });
+        const target = reportersView.reporters.find((row) => row.reporterId === reporterId)?.checklistTarget;
+        if (target) openWork(target);
+        else setFeedback({ changed: "No recruiting checklist is recorded for this reporter.", notChanged: "No unrelated case was opened and no records changed." });
       },
     }} />;
     if (activeWorkspace === "team") return <TeamScreen view={teamView} actions={{
