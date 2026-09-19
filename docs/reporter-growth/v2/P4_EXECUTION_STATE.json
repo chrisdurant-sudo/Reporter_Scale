@@ -287,10 +287,10 @@
       }
     ],
     "latest_coordinator_verification": {
-      "candidate_commit": "2abb25ed7246bb806dd992319e71c9b0ceb344fa",
+      "candidate_commit": "f1d053a1026158e0eb12dc38925c1cdef8e699f8",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/2abb25ed7246bb806dd992319e71c9b0ceb344fa-ip1-empty-contract-verification.json",
-        "sha256": "63175b8aa292a6452c1ea6addc871b75143c24c43fa3cfbb0091ba6355a4a890"
+        "file": "docs/reporter-growth/v2/evidence/f1d053a1026158e0eb12dc38925c1cdef8e699f8-ip1-capacity-verification.json",
+        "sha256": "e10b8b937bccf1f41942bbc07f766b5a5ff6c22b23121fc65005388223ee011b"
       }
     },
     "continuation_authorization": {
@@ -344,8 +344,8 @@
   "fanout_authorized": false,
   "current_phase": "IP1_serial_data_logic",
   "current_candidate": {
-    "commit": "2abb25ed7246bb806dd992319e71c9b0ceb344fa",
-    "status": "empty_selection_contract_full_suite_passed_capacity_repair_pending",
+    "commit": "f1d053a1026158e0eb12dc38925c1cdef8e699f8",
+    "status": "data_capacity_integrated_full_suite_passed_remaining_logic_pending",
     "defect_register": "docs/reporter-growth/v2/INTERVIEW_PRODUCT_REVIEW_2026-09-18.md"
   },
   "gates": {
@@ -382,15 +382,16 @@
         "programs"
       ],
       "completed_roles": [
-        "data"
+        "data",
+        "capacity"
       ]
     },
     "baseline": {
       "status": "passed",
-      "candidate_commit": "2abb25ed7246bb806dd992319e71c9b0ceb344fa",
+      "candidate_commit": "f1d053a1026158e0eb12dc38925c1cdef8e699f8",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/2abb25ed7246bb806dd992319e71c9b0ceb344fa-ip1-empty-contract-verification.json",
-        "sha256": "63175b8aa292a6452c1ea6addc871b75143c24c43fa3cfbb0091ba6355a4a890"
+        "file": "docs/reporter-growth/v2/evidence/f1d053a1026158e0eb12dc38925c1cdef8e699f8-ip1-capacity-verification.json",
+        "sha256": "e10b8b937bccf1f41942bbc07f766b5a5ff6c22b23121fc65005388223ee011b"
       }
     },
     "visual_proof": {
@@ -447,6 +448,30 @@
         "unit_failed": 1,
         "resolved_gap": "Coordinator fixture assertion updated at 1f5250251eabb33c438c793cbf5f6296bbe017da; full suite passed 153 unit/integration, 9 acceptance, 8 browser."
       }
+    },
+    "ip1_capacity": {
+      "lane": "capacity",
+      "base_commit": "31ef6005dba060907ac3232c38938e5aca8fa744",
+      "candidate_commit": "367d0ab175ab59cabebbaf77ba9f462434de1124",
+      "integrated_commit": "45a5ec43b06fe55d6d3e0b07b956c9798a57c36e",
+      "status": "passed",
+      "changed_paths": [
+        "src/logic/capacity/index.ts",
+        "src/logic/capacity/index.test.ts"
+      ],
+      "boundary_exit_code": 0,
+      "full_verification": {
+        "file": "docs/reporter-growth/v2/evidence/f1d053a1026158e0eb12dc38925c1cdef8e699f8-ip1-capacity-verification.json",
+        "sha256": "e10b8b937bccf1f41942bbc07f766b5a5ff6c22b23121fc65005388223ee011b"
+      },
+      "focused_tests": 30,
+      "review_defects_closed": [
+        "M02 units",
+        "cross-market acquisition targets",
+        "exact reporter demand filter removal",
+        "explicit empty query support"
+      ],
+      "acceptance_scope": "IC01 prepared logic; Lead presentation and independent IP01/IP04/IP06 browser acceptance remain pending"
     }
   },
   "known_ownership_exceptions": [],
@@ -596,6 +621,17 @@
           "sha256": "f06c0c19bb3b4513d82d266ad8be7d4ca45064e9208859d3f1c7c24e7be6e576"
         }
       }
+    },
+    {
+      "gate": "baseline",
+      "record": {
+        "status": "passed",
+        "candidate_commit": "2abb25ed7246bb806dd992319e71c9b0ceb344fa",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/2abb25ed7246bb806dd992319e71c9b0ceb344fa-ip1-empty-contract-verification.json",
+          "sha256": "63175b8aa292a6452c1ea6addc871b75143c24c43fa3cfbb0091ba6355a4a890"
+        }
+      }
     }
   ],
   "active_lane": {
@@ -608,7 +644,7 @@
     "requests": [
       "IC01"
     ],
-    "status": "repair_running_on_frozen_empty_filter_contract",
+    "status": "integrated_verified",
     "runtime_evidence": {
       "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-capacity-worker-runtime.json",
       "sha256": "5d49ad5c87aa798d569e6966fe113f2ba2e50264e93d58c4e6aed23dbf0152df"
