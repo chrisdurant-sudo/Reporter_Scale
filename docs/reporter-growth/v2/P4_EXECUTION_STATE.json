@@ -598,6 +598,37 @@
         "sha256": "bf0f59f52370c25d2af875ba50b9ac218ccb1a309def07461a1c41c9befe1e74"
       },
       "handoff": "docs/reporter-growth/v2/IP1_NETWORK_HANDOFF.md"
+    },
+    "ip1_team": {
+      "lane": "team",
+      "base_commit": "a4a765efab8fb8e2651b3ba871930f836ae6ecaa",
+      "candidate_commit": "dfbff4a443e831ae4c154bbd0cae16503ff2dc7e",
+      "status": "boundary_passed_pending_integration",
+      "changed_paths": [
+        "src/logic/team/commands.ts",
+        "src/logic/team/evidence.ts",
+        "src/logic/team/index.test.ts",
+        "src/logic/team/index.ts",
+        "src/logic/team/interview.test.ts",
+        "src/logic/team/support.ts"
+      ],
+      "boundary_exit_code": 0,
+      "focused_tests": 29,
+      "worker_full_unit_tests": {
+        "first": {
+          "passed": 262,
+          "failed": 1
+        },
+        "second": {
+          "passed": 262,
+          "failed": 2
+        },
+        "gaps": [
+          "Coordinator SFO focus assertion needs selected-market count.",
+          "Scenario test timeout passed unchanged in isolation; combined coordinator gate required."
+        ]
+      },
+      "acceptance_scope": "IC03 prepared logic; IP08/IP09 presentation and independent acceptance pending"
     }
   },
   "known_ownership_exceptions": [],
@@ -814,10 +845,11 @@
     "requests": [
       "IC03"
     ],
-    "status": "running",
+    "status": "review_ready",
     "runtime_evidence": {
       "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-team-worker-runtime.json",
       "sha256": "d4405f173f6aded6ae14beae28ff45eaeb761947027560cf644cef7c6164b1ff"
-    }
+    },
+    "candidate_commit": "dfbff4a443e831ae4c154bbd0cae16503ff2dc7e"
   }
 }
