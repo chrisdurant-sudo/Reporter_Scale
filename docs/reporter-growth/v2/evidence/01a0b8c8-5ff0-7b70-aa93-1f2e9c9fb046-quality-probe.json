@@ -1,0 +1,63 @@
+{
+  "kind": "read_only_routing_probe",
+  "role": "quality",
+  "session_id": "01a0b8d0-7cc9-7621-b556-b577226b3559",
+  "task_name": "/root/quality_probe_takeover",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "xhigh",
+  "fork_turns": "none",
+  "inherited_turns": 0,
+  "inheritance_evidence": "Explicit spawn fork_turns=none; child confirms zero inherited coordinator turns; user-message inventory contains only repository instructions/environment and this probe dispatch.",
+  "configured_service_tier": "default",
+  "resolved_service_tier": null,
+  "session_source": "/Users/pc/.codex/sessions/2026/09/19/rollout-2026-09-19T01-37-46-01a0b8d0-7cc9-7621-b556-b577226b3559.jsonl",
+  "session_source_sha256": "448286bee8c9037116eca15fd8fef361b0b5811438448e5b0610aa3b17f23196",
+  "session_metadata": {
+    "id": "01a0b8d0-7cc9-7621-b556-b577226b3559",
+    "parent_thread_id": "01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046",
+    "agent_role": "quality",
+    "agent_path": "/root/quality_probe_takeover",
+    "cwd": "/private/tmp/steno-p4-coordinator",
+    "source": {
+      "subagent": {
+        "thread_spawn": {
+          "parent_thread_id": "01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046",
+          "depth": 1,
+          "agent_path": "/root/quality_probe_takeover",
+          "agent_nickname": "Sartre",
+          "agent_role": "quality"
+        }
+      }
+    }
+  },
+  "turn_contexts": [
+    {
+      "model": "gpt-6-astra",
+      "effort": "xhigh",
+      "cwd": "/private/tmp/steno-p4-coordinator",
+      "approval_policy": "on-request",
+      "approvals_reviewer": "auto_review",
+      "sandbox_policy": {
+        "type": "workspace-write",
+        "writable_roots": [
+          "/Users/pc/.codex/visualizations/2026/09/19/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046"
+        ],
+        "network_access": false,
+        "exclude_tmpdir_env_var": false,
+        "exclude_slash_tmp": false
+      },
+      "service_tier": null
+    }
+  ],
+  "user_message_inventory": [
+    {
+      "sha256": "6cacd868062d7397a2ddb9fcd1c0d08e906b08d7872f84896898f576b51ba888",
+      "prefix": "[{\"type\": \"input_text\", \"text\": \"<recommended_plugins>\\nHere is a list of plugins that are available but not installed.\\n\\n- Airtable (airtable@openai-curated-r"
+    }
+  ],
+  "verified_at": "2026-09-19T08:40:08.005446+00:00",
+  "result": "PROBE_READY",
+  "writes": [],
+  "tests_run": [],
+  "children_spawned": 0
+}

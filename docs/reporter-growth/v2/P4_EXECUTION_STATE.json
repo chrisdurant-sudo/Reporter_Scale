@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-19T08:37:13.219016+00:00",
+  "updated_at": "2026-09-19T08:40:08.005446+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -143,19 +143,6 @@
         }
       },
       {
-        "role": "quality",
-        "session_id": "01a0b7e7-1495-7c82-a62c-6f7174a6cf3e",
-        "model": "gpt-6-astra",
-        "reasoning_effort": "xhigh",
-        "fork_turns": "none",
-        "inherited_turns": 0,
-        "verified_at": "2026-09-19T04:24:38.836056+00:00",
-        "evidence": {
-          "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-quality-probe.json",
-          "sha256": "bdfba907a30bfc4d546319c4aa053dadbab873eef56b877713b9c59f773c6eaa"
-        }
-      },
-      {
         "role": "capacity",
         "session_id": "01a0b7fe-43e0-75a3-b910-4b13bc99703f",
         "model": "gpt-6-astra",
@@ -231,6 +218,19 @@
         "evidence": {
           "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-experience-probe.json",
           "sha256": "64f28637ebaf318c3ce3c71dc5a076fa62a9f56e3843a24cd54be89e87503ea7"
+        }
+      },
+      {
+        "role": "quality",
+        "session_id": "01a0b8d0-7cc9-7621-b556-b577226b3559",
+        "model": "gpt-6-astra",
+        "reasoning_effort": "xhigh",
+        "fork_turns": "none",
+        "inherited_turns": 0,
+        "verified_at": "2026-09-19T08:40:08.005446+00:00",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046-quality-probe.json",
+          "sha256": "5c430a700b0d71d6b98902b0a49c1fbe23771efe72fbd38990a03116d700ba93"
         }
       }
     ],
@@ -539,7 +539,22 @@
       },
       "current_pass": null,
       "completed_passes": []
-    }
+    },
+    "runtime_probe_history": [
+      {
+        "role": "quality",
+        "session_id": "01a0b7e7-1495-7c82-a62c-6f7174a6cf3e",
+        "model": "gpt-6-astra",
+        "reasoning_effort": "xhigh",
+        "fork_turns": "none",
+        "inherited_turns": 0,
+        "verified_at": "2026-09-19T04:24:38.836056+00:00",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-quality-probe.json",
+          "sha256": "bdfba907a30bfc4d546319c4aa053dadbab873eef56b877713b9c59f773c6eaa"
+        }
+      }
+    ]
   },
   "implementation_base_commit": "6e7ea99e2358e497b8a6d4331a6cc8513e668501",
   "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",
