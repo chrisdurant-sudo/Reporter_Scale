@@ -336,7 +336,7 @@
       "sha256": "8846c7166af1719441f0a98ebd7347aa3226f01a0e491f9382ef2cd450220115"
     },
     "empty_selection_contract_commit": "637535208f12e702f117b1f16e3f172b580c2e49",
-    "composition_contract_commit": "348a8f4"
+    "composition_contract_commit": "348a8f4c4522478ac07d455bb47cf2718a595e91"
   },
   "implementation_base_commit": "6e7ea99e2358e497b8a6d4331a6cc8513e668501",
   "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",
@@ -603,12 +603,12 @@
     "task_name": "/root/ip1_capacity",
     "worktree": "/private/tmp/steno-interview-ip1-capacity",
     "branch": "codex/interview-ip1-capacity",
-    "base_commit": "284d0956c45739e90863b209c43e0b23938c9422",
+    "base_commit": "31ef6005dba060907ac3232c38938e5aca8fa744",
     "source_contract_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
     "requests": [
       "IC01"
     ],
-    "status": "coordinator_review_repairs",
+    "status": "repair_running_on_frozen_empty_filter_contract",
     "runtime_evidence": {
       "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-capacity-worker-runtime.json",
       "sha256": "5d49ad5c87aa798d569e6966fe113f2ba2e50264e93d58c4e6aed23dbf0152df"
@@ -617,6 +617,20 @@
       "M02 confirmed-slot count reinterprets frozen ratio unit",
       "Cross-market pre-ready person target must use acquisition owner market",
       "Zero-result evidence needs explicit-empty shared filter and consuming query support"
+    ],
+    "prior_base_commit": "284d0956c45739e90863b209c43e0b23938c9422",
+    "prerequisite_contract_commit": "637535208f12e702f117b1f16e3f172b580c2e49",
+    "reviewed_candidates": [
+      {
+        "commit": "8d22a5f08aec286e1f89f7e347a3b5bea0e2804b",
+        "disposition": "repairs_required",
+        "boundary_exit_code": 0
+      },
+      {
+        "commit": "d5cbb38628086134519a54dccf8fcce496c214c9",
+        "disposition": "M02_and_cross_market_repaired_empty_filter_pending",
+        "boundary_exit_code": 0
+      }
     ]
   }
 }
