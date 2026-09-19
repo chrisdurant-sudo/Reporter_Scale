@@ -20,7 +20,7 @@ function marketButton(name: "All" | "LAX" | "SFO" | "DFW" | "ORD" | "ATL") {
 
 function metric(regionName: "Overview metrics" | "Funnel metrics", label: string) {
   const region = screen.getByRole("region", { name: regionName });
-  return within(region).getByText(label).parentElement;
+  return within(region).getByText(label).parentElement!;
 }
 
 async function openDemoControls(user: ReturnType<typeof userEvent.setup>) {
@@ -33,9 +33,9 @@ describe("P4 integrated V2 experience", () => {
     const user = await renderApp();
 
     expect(marketButton("All")).toHaveAttribute("aria-pressed", "true");
-    expect(metric("Overview metrics", "Confirmed slots")).toHaveTextContent("6");
-    expect(metric("Overview metrics", "Requested slots")).toHaveTextContent("11");
-    expect(metric("Overview metrics", "Unresolved slots")).toHaveTextContent("5");
+    expect(within(metric("Overview metrics", "Confirmed slots")).getByText("6", { exact: true })).toBeInTheDocument();
+    expect(within(metric("Overview metrics", "Requested slots")).getByText("11", { exact: true })).toBeInTheDocument();
+    expect(within(metric("Overview metrics", "Unresolved slots")).getByText("5", { exact: true })).toBeInTheDocument();
     expect(screen.getByText(/Independent synthetic demo.*No real message is sent and no Steno system is connected/i)).toBeInTheDocument();
 
     await user.click(marketButton("SFO"));
@@ -71,9 +71,9 @@ describe("P4 integrated V2 experience", () => {
   it("uses the locked Overview composition without restoring the superseded growth-goal panel", async () => {
     const user = await renderApp();
     await user.click(marketButton("LAX"));
-    expect(metric("Overview metrics", "Confirmed slots")).toHaveTextContent("6");
-    expect(metric("Overview metrics", "Requested slots")).toHaveTextContent("10");
-    expect(metric("Overview metrics", "Unresolved slots")).toHaveTextContent("4");
+    expect(within(metric("Overview metrics", "Confirmed slots")).getByText("6", { exact: true })).toBeInTheDocument();
+    expect(within(metric("Overview metrics", "Requested slots")).getByText("10", { exact: true })).toBeInTheDocument();
+    expect(within(metric("Overview metrics", "Unresolved slots")).getByText("4", { exact: true })).toBeInTheDocument();
     expect(metric("Overview metrics", "Newly ready / goal")).toHaveTextContent("No growth goal saved");
     expect(screen.queryByText("Growth goal")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Save goal revision" })).not.toBeInTheDocument();
@@ -87,30 +87,30 @@ describe("P4 integrated V2 experience", () => {
 
     await user.click(within(feedback).getByRole("button", { name: "Advance to Plan saved" }));
     await waitFor(() => expect(feedback).toHaveTextContent("Checkpoint: Plan saved"));
-    expect(metric("Overview metrics", "Confirmed slots")).toHaveTextContent("6");
-    expect(metric("Overview metrics", "Unresolved slots")).toHaveTextContent("4");
+    expect(within(metric("Overview metrics", "Confirmed slots")).getByText("6", { exact: true })).toBeInTheDocument();
+    expect(within(metric("Overview metrics", "Unresolved slots")).getByText("4", { exact: true })).toBeInTheDocument();
     expect(metric("Overview metrics", "Newly ready / goal")).toHaveTextContent(/0\s*\/\s*2/);
 
     await user.click(within(feedback).getByRole("button", { name: "Advance to Existing candidates accepted" }));
     await waitFor(() => expect(feedback).toHaveTextContent("Checkpoint: Existing candidates accepted"));
-    expect(metric("Overview metrics", "Confirmed slots")).toHaveTextContent("8");
-    expect(metric("Overview metrics", "Unresolved slots")).toHaveTextContent("2");
+    expect(within(metric("Overview metrics", "Confirmed slots")).getByText("8", { exact: true })).toBeInTheDocument();
+    expect(within(metric("Overview metrics", "Unresolved slots")).getByText("2", { exact: true })).toBeInTheDocument();
     expect(metric("Overview metrics", "Newly ready / goal")).toHaveTextContent(/0\s*\/\s*2/);
 
     await user.click(within(feedback).getByRole("button", { name: "Advance to Two new reporters ready" }));
     await waitFor(() => expect(feedback).toHaveTextContent("Checkpoint: Two new reporters ready"));
-    expect(metric("Overview metrics", "Confirmed slots")).toHaveTextContent("8");
-    expect(metric("Overview metrics", "Unresolved slots")).toHaveTextContent("2");
+    expect(within(metric("Overview metrics", "Confirmed slots")).getByText("8", { exact: true })).toBeInTheDocument();
+    expect(within(metric("Overview metrics", "Unresolved slots")).getByText("2", { exact: true })).toBeInTheDocument();
     expect(metric("Overview metrics", "Newly ready / goal")).toHaveTextContent(/2\s*\/\s*2/);
 
     await user.click(within(feedback).getByRole("button", { name: "Advance to New reporters accepted" }));
     await waitFor(() => expect(feedback).toHaveTextContent("Checkpoint: New reporters accepted"));
-    expect(metric("Overview metrics", "Confirmed slots")).toHaveTextContent("10");
-    expect(metric("Overview metrics", "Unresolved slots")).toHaveTextContent("0");
-    expect(metric("Overview metrics", "Requested slots")).toHaveTextContent("10");
+    expect(within(metric("Overview metrics", "Confirmed slots")).getByText("10", { exact: true })).toBeInTheDocument();
+    expect(within(metric("Overview metrics", "Unresolved slots")).getByText("0", { exact: true })).toBeInTheDocument();
+    expect(within(metric("Overview metrics", "Requested slots")).getByText("10", { exact: true })).toBeInTheDocument();
 
     await user.click(within(feedback).getByRole("button", { name: "Advance to Original plan delivered" }));
-    await waitFor(() => expect(metric("Overview metrics", "Requested slots")).toHaveTextContent("0"));
+    await waitFor(() => expect(within(metric("Overview metrics", "Requested slots")).getByText("0", { exact: true })).toBeInTheDocument());
     expect(feedback).toHaveTextContent("Checkpoint: Original plan delivered");
 
     await user.click(within(feedback).getByRole("button", { name: "Advance to Pair onboarding cohort mature" }));
@@ -120,9 +120,9 @@ describe("P4 integrated V2 experience", () => {
     await user.click(within(feedback).getByRole("button", { name: "Reset demo" }));
     expect(await screen.findByRole("main", { name: "Overview" })).toBeInTheDocument();
     expect(feedback).toHaveTextContent("Baseline");
-    expect(metric("Overview metrics", "Confirmed slots")).toHaveTextContent("6");
-    expect(metric("Overview metrics", "Requested slots")).toHaveTextContent("11");
-    expect(metric("Overview metrics", "Unresolved slots")).toHaveTextContent("5");
+    expect(within(metric("Overview metrics", "Confirmed slots")).getByText("6", { exact: true })).toBeInTheDocument();
+    expect(within(metric("Overview metrics", "Requested slots")).getByText("11", { exact: true })).toBeInTheDocument();
+    expect(within(metric("Overview metrics", "Unresolved slots")).getByText("5", { exact: true })).toBeInTheDocument();
     expect(marketButton("All")).toHaveAttribute("aria-pressed", "true");
   }, 15_000); // Multiple persisted checkpoints and reset must finish before the next DOM test.
 
@@ -133,7 +133,7 @@ describe("P4 integrated V2 experience", () => {
 
     await user.click(trigger);
     const dialog = await screen.findByRole("dialog", { name: "Why this?" });
-    expect(dialog).toHaveTextContent(/non-canceled upcoming request slots/i);
+    expect(dialog).toHaveTextContent(/2 request slots: no verified ready match/i);
     expect(dialog).toHaveTextContent(/Window:/i);
 
     await user.keyboard("{Escape}");
@@ -188,7 +188,7 @@ describe("P4 integrated V2 experience", () => {
 
     await user.click(screen.getByRole("button", { name: "Overview" }));
     expect(await screen.findByRole("main", { name: "Overview" })).toBeInTheDocument();
-    expect(metric("Overview metrics", "Confirmed slots")).toHaveTextContent("6");
+    expect(within(metric("Overview metrics", "Confirmed slots")).getByText("6", { exact: true })).toBeInTheDocument();
   });
 
   it("creates canonical Team work from the locked Add work form", async () => {
