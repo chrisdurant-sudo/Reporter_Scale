@@ -1,0 +1,17 @@
+
+Running 8 tests using 2 workers
+
+(node:72952) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:72951) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [desktop] › ../steno-ip0-browser-diagnostic/diagnostic.spec.ts:27:7 › P4 browser acceptance › XR01-XR08/XR22 keeps every workspace reachable without page overflow at the active viewport (859ms)
+  ✓  1 [mobile] › ../steno-ip0-browser-diagnostic/diagnostic.spec.ts:27:7 › P4 browser acceptance › XR01-XR08/XR22 keeps every workspace reachable without page overflow at the active viewport (860ms)
+  ✓  3 [desktop] › ../steno-ip0-browser-diagnostic/diagnostic.spec.ts:39:7 › P4 browser acceptance › XR09-XR10/XR15/XR37 changes Funnel range, status, filters, and a market-specific SLA without lifecycle leakage (896ms)
+  ✓  4 [mobile] › ../steno-ip0-browser-diagnostic/diagnostic.spec.ts:39:7 › P4 browser acceptance › XR09-XR10/XR15/XR37 changes Funnel range, status, filters, and a market-specific SLA without lifecycle leakage (896ms)
+  ✓  5 [desktop] › ../steno-ip0-browser-diagnostic/diagnostic.spec.ts:63:7 › P4 browser acceptance › XR16/XR19-XR25 keeps the evidence drawer keyboard-operable and full-screen at 390px (471ms)
+  ✓  6 [mobile] › ../steno-ip0-browser-diagnostic/diagnostic.spec.ts:63:7 › P4 browser acceptance › XR16/XR19-XR25 keeps the evidence drawer keyboard-operable and full-screen at 390px (483ms)
+  ✓  7 [desktop] › ../steno-ip0-browser-diagnostic/diagnostic.spec.ts:81:7 › P4 browser acceptance › XR11-XR13/XR17/XR38-XR40 performs reporter, Team, and Programs working actions (1.1s)
+  ✓  8 [mobile] › ../steno-ip0-browser-diagnostic/diagnostic.spec.ts:81:7 › P4 browser acceptance › XR11-XR13/XR17/XR38-XR40 performs reporter, Team, and Programs working actions (1.1s)
+
+  8 passed (4.3s)

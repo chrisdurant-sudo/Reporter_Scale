@@ -31,7 +31,7 @@
     ],
     "applies_to": "every_routed_probe_and_worker_spawn"
   },
-  "routing_verification_status": "blocked_stale_loaded_roles_no_dispatch",
+  "routing_verification_status": "astra_catalog_and_data_probe_verified_other_probes_pending",
   "source_contract_commit": "19f7df98000e346a5b4ff32e00b699276c3f62fb",
   "prepared_against_commit": "c4f304c376ca631d88c694f519f76ec316f12a13",
   "implementation_requires": [

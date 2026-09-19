@@ -1,0 +1,40 @@
+{
+  "kind": "coordinator_baseline_verification",
+  "candidate_commit": "df04eefc2b42680332bd0d8a3e0219ca79627f92",
+  "source_tree_unchanged_during_run": true,
+  "verified_at": "2026-09-19T04:21:19.068408+00:00",
+  "command": "env PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/private/tmp/steno-playwright-headless-shell/chrome-headless-shell-mac-arm64/chrome-headless-shell npm run verify:p4",
+  "exit_code": 1,
+  "results": {
+    "governance": "passed",
+    "lint": "passed",
+    "typecheck": "passed",
+    "unit_integration": {
+      "passed": 131,
+      "failed": 0
+    },
+    "acceptance": {
+      "passed": 9,
+      "failed": 0
+    },
+    "build": "passed",
+    "browser": {
+      "passed": 2,
+      "failed": 6,
+      "launch": "passed_outside_sandbox"
+    }
+  },
+  "failures": [
+    "Workspace navigation selector matches both navigation and local Overview buttons.",
+    "SLA unchanged-facts assertion targets content inside collapsed Scenario controls.",
+    "Saved program note assertion targets content inside collapsed Scenario controls."
+  ],
+  "additional_source_defect": "Playwright Page has no getByDisplayValue; later assertion would fail after prior errors are fixed.",
+  "waivers": [],
+  "log": {
+    "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-ip0-full-verification.log",
+    "sha256": "3f14a12fa216cd0af8f3979850d1036e1864b152cde6a9c0ff90144742ba5f81",
+    "normalization": "Trailing whitespace stripped; raw original remains /private/tmp/steno-interview-ip0-verify.log",
+    "raw_sha256": "429fa5270dcc2f23feb16d0b77584508fa967bdc3c7ce83118775c02e8121d2d"
+  }
+}

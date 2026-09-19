@@ -1,0 +1,44 @@
+--- a/tests/e2e/reporter-growth.browser.spec.ts
++++ b/tests/e2e/reporter-growth.browser.spec.ts
+@@ -29,8 +29,8 @@
+     await expect(page.getByRole("heading", { name: "Provider growth command center" })).toBeVisible();
+     await expect(page.getByRole("button", { name: "All", exact: true })).toHaveAttribute("aria-pressed", "true");
+     for (const workspace of ["Overview", "Funnel", "Reporters", "Team", "Programs"] as const) {
+-      await page.getByRole("button", { name: workspace, exact: true }).click();
+-      await expect(page.getByRole("button", { name: workspace, exact: true })).toHaveAttribute("aria-current", "page");
++      await page.getByRole("navigation", { name: "Reporter Growth workspaces" }).getByRole("button", { name: workspace, exact: true }).click();
++      await expect(page.getByRole("navigation", { name: "Reporter Growth workspaces" }).getByRole("button", { name: workspace, exact: true })).toHaveAttribute("aria-current", "page");
+       await assertNoPageOverflow(page);
+     }
+     await expect(page.getByText(/Independent synthetic demo.*No real message is sent/i)).toBeVisible();
+@@ -55,6 +55,7 @@
+     const sla = page.getByRole("spinbutton", { name: "Onboarding SLA in days" });
+     await sla.fill("90");
+     await expect(sla).toHaveValue("90");
++    await page.getByText("Scenario controls", { exact: true }).click();
+     await expect(page.getByText(/Lifecycle, readiness, acceptance, and completed-work facts did not change/i)).toBeVisible();
+     await assertNoPageOverflow(page);
+   });
+@@ -93,15 +94,18 @@
+     await form.getByRole("button", { name: "Add" }).click();
+     await expect(page.getByText("Work added.")).toBeVisible();
+     await expect(page.getByRole("main", { name: "Team" })).toContainText("Browser quality work");
+-    await page.getByRole("button", { name: "Programs", exact: true }).click();
++    await page.getByRole("navigation", { name: "Reporter Growth workspaces" }).getByRole("button", { name: "Programs", exact: true }).click();
+     await expect(page.getByText("Target met")).toBeVisible();
+     const notes = page.getByRole("textbox", { name: /Notes for/ }).first();
+     await notes.fill("Browser persistence note");
+     await notes.blur();
++    await page.getByText("Scenario controls", { exact: true }).click();
+     await expect(page.getByText(/saved.*note|note.*saved/i)).toBeVisible();
+-    await page.getByRole("button", { name: "Overview", exact: true }).click();
+-    await page.getByRole("button", { name: "Programs", exact: true }).click();
+-    await expect(page.getByDisplayValue("Browser persistence note")).toBeVisible();
++    await page.getByRole("navigation", { name: "Reporter Growth workspaces" }).getByRole("button", { name: "Overview", exact: true }).click();
++    await page.getByRole("navigation", { name: "Reporter Growth workspaces" }).getByRole("button", { name: "Programs", exact: true }).click();
++    const savedNotes = page.getByRole("textbox", { name: /Notes for/ }).first();
++    await expect(savedNotes).toBeVisible();
++    await expect(savedNotes).toHaveValue("Browser persistence note");
+     await assertNoPageOverflow(page);
+   });
+ });

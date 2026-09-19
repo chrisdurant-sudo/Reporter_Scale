@@ -1,0 +1,157 @@
+{
+  "kind": "loaded_role_catalog_observation",
+  "observed_at": "2026-09-19T04:18:35.256236+00:00",
+  "task_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+  "session_source": "/Users/pc/.codex/sessions/2026/09/18/rollout-2026-09-18T21-14-16-01a0b7df-3f9e-7c72-a35a-1a6ed497e596.jsonl",
+  "session_metadata_excerpts": [
+    {
+      "type": "session_meta",
+      "timestamp": "2026-09-19T04:14:21.180Z",
+      "payload": {
+        "id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+        "cwd": "/private/tmp/steno-p4-coordinator",
+        "source": "vscode",
+        "model_provider": "openai",
+        "agent_role": null
+      }
+    },
+    {
+      "type": "turn_context",
+      "timestamp": "2026-09-19T04:14:21.575Z",
+      "payload": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh",
+        "cwd": "/private/tmp/steno-p4-coordinator",
+        "service_tier": null
+      }
+    },
+    {
+      "type": "turn_context",
+      "timestamp": "2026-09-19T04:14:37.686Z",
+      "payload": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh",
+        "cwd": "/private/tmp/steno-p4-coordinator",
+        "service_tier": null
+      }
+    }
+  ],
+  "loaded_roles": {
+    "capacity": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high"
+    },
+    "data": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high"
+    },
+    "experience": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high"
+    },
+    "experience_reporters": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high"
+    },
+    "experience_team": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high"
+    },
+    "experience_programs": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high"
+    },
+    "network": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high"
+    },
+    "programs": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high"
+    },
+    "recruiting": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high"
+    },
+    "team": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high"
+    },
+    "quality": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh"
+    },
+    "reviewer": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh"
+    }
+  },
+  "observation_source": "Current collaboration.spawn_agent callable named-role descriptions, observed directly by coordinator before any probe. Values below are runtime catalog observations, separately compared with role files.",
+  "configuration_checks": {
+    "capacity": {
+      "file": ".codex/agents/capacity.toml",
+      "sha256": "76bd621938d1bf6eb9e39821fff190a8017c4b188f090d056efb0f89238c011f",
+      "service_tier": "default"
+    },
+    "data": {
+      "file": ".codex/agents/data.toml",
+      "sha256": "b7330693ad473d5b6c7cf13569dfac5ee54e19862508b70b4d12e371e04609f4",
+      "service_tier": "default"
+    },
+    "experience": {
+      "file": ".codex/agents/experience.toml",
+      "sha256": "600e00212bd446ef8c06a7b93d89f1cc949a0e54ae6514ba18dceb59ffd801f3",
+      "service_tier": "default"
+    },
+    "experience_reporters": {
+      "file": ".codex/agents/experience_reporters.toml",
+      "sha256": "c991627f2c96fe5434f57ca356709b0ec07025b94b5cbc2e72d6e8286af3690f",
+      "service_tier": "default"
+    },
+    "experience_team": {
+      "file": ".codex/agents/experience_team.toml",
+      "sha256": "85b634ef4d50e0ab88729bbb07ddd827332aae53acfbde576d32e0ca1fb03036",
+      "service_tier": "default"
+    },
+    "experience_programs": {
+      "file": ".codex/agents/experience_programs.toml",
+      "sha256": "56887ac0a3785690e78154f39ea117a904a20e82c29c827165566daae3b95170",
+      "service_tier": "default"
+    },
+    "network": {
+      "file": ".codex/agents/network.toml",
+      "sha256": "6295c5f793748d923b60c3f41e50ffde2027130fb37b6aa85f306ad012e4f069",
+      "service_tier": "default"
+    },
+    "programs": {
+      "file": ".codex/agents/programs.toml",
+      "sha256": "44dc478ea6f58f6a9968de384d9b8ac19622b8ef5ff2bdf0b0902315985fa791",
+      "service_tier": "default"
+    },
+    "recruiting": {
+      "file": ".codex/agents/recruiting.toml",
+      "sha256": "bb74f1deffdac7e12a31ef39a76262e977810a54357c87460ab2751a00a8e04d",
+      "service_tier": "default"
+    },
+    "team": {
+      "file": ".codex/agents/team.toml",
+      "sha256": "5d34e24a417867d9dc4ba66aa70015ec09d0c668ab85ae84543fadfb21f0271b",
+      "service_tier": "default"
+    },
+    "quality": {
+      "file": ".codex/agents/quality.toml",
+      "sha256": "7b66225614aa1bd22dac12779afcf9870e6907ef9ba4744f5c9f7906d83b716a",
+      "service_tier": "default"
+    },
+    "reviewer": {
+      "file": ".codex/agents/reviewer.toml",
+      "sha256": "33e21efe7875bd30016102b53cb934a09a2accd6a2d350652b53ab5a65931ebf",
+      "service_tier": "default"
+    }
+  },
+  "configured_service_tier": "default",
+  "resolved_service_tier": null,
+  "tier_observability": "Resolved child service tier is not exposed; preserve the accepted configured-default limitation. No model/reasoning/tier override will be supplied.",
+  "status": "verified",
+  "probe_status": "pending"
+}

@@ -1,0 +1,358 @@
+
+> reporter-growth@0.1.0 verify:p4
+> npm run verify:p4:governance && npm run check && npm run test:acceptance && npm run test:e2e
+
+
+> reporter-growth@0.1.0 verify:p4:governance
+> node scripts/verify-p4-readiness.mjs && node scripts/verify-p4-phase-gate.mjs
+
+P4 readiness verification passed (203 checks).
+P4 interview phase verification passed for IP0_contract_preparation; worker dispatch is checked separately.
+
+> reporter-growth@0.1.0 check
+> npm run lint && npm run typecheck && npm run test && npm run build
+
+
+> reporter-growth@0.1.0 lint
+> eslint . --max-warnings=0
+
+
+> reporter-growth@0.1.0 typecheck
+> tsc -b --pretty false
+
+
+> reporter-growth@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /private/tmp/steno-p4-coordinator
+
+ ✓ src/features/programs/index.test.tsx (2 tests) 416ms
+ ✓ src/features/markets/index.test.tsx (4 tests) 921ms
+   ✓ MarketsScreen > shows five prepared market records with record support and actions  410ms
+ ✓ src/features/improvements/index.test.tsx (5 tests) 1095ms
+   ✓ ImprovementsScreen > shows descriptive limits and requires a rationale before recording a decision  576ms
+ ✓ src/features/reporters/index.test.tsx (4 tests) 1251ms
+   ✓ ReportersScreen > filters work and opens a detail panel with local message preview  542ms
+   ✓ ReportersScreen > delegates screening, follow-up, and coaching saves to actions  461ms
+ ✓ src/integration/p2RecordsAndCalculations.test.ts (6 tests) 1511ms
+   ✓ P2 source → calculation → EvidenceBundle reconciliation > derives every frozen LAX capacity checkpoint from cumulative source events  1197ms
+ ✓ src/shell/V2AppShell.test.tsx (4 tests) 389ms
+   ✓ V2AppShell > offers five controlled workspaces and preserves the supplied shared filters across navigation  312ms
+ ✓ src/data/v2.test.ts (12 tests) 1896ms
+   ✓ V2 synthetic records and repository > SD06 derives varied Overview and Funnel trends from canonical records  960ms
+   ✓ V2 synthetic records and repository > D06 applies cumulative checkpoints once and keeps dependent records ordered  356ms
+ ✓ src/ui/v2.test.tsx (2 tests) 346ms
+   ✓ v2 evidence and state primitives > makes the prepared calculation and human-readable source records available before exact navigation  328ms
+ ✓ src/features/recruiting/index.test.tsx (2 tests) 302ms
+ ✓ src/features/markets/MarketsV2Screen.test.tsx (1 test) 280ms
+ ✓ src/ui/index.test.tsx (2 tests) 364ms
+ ✓ src/features/reporters/network.test.tsx (1 test) 390ms
+   ✓ ReportersNetworkScreen > changes the visible grid scope and uses prepared attention and compliance  389ms
+ ✓ src/shell/AppShell.test.tsx (1 test) 195ms
+ ✓ src/logic/programs/index.test.ts (12 tests) 154ms
+ ✓ src/logic/capacity/index.test.ts (13 tests) 69ms
+ ✓ src/logic/index.test.ts (6 tests) 40ms
+ ✓ src/logic/network/index.test.ts (10 tests) 8ms
+ ✓ src/logic/recruiting/recruiting.test.ts (16 tests) 24ms
+ ✓ src/logic/team/index.test.ts (5 tests) 5ms
+ ✓ src/data/index.test.ts (5 tests) 13ms
+ ✓ src/integration/v2Compatibility.test.ts (2 tests) 3ms
+ ✓ src/logic/shared/invariants.test.ts (5 tests) 3ms
+ ✓ src/contracts/v2/contracts.test.ts (3 tests) 2ms
+ ✓ src/integration/App.test.tsx (8 tests) 9467ms
+   ✓ P4 integrated V2 experience > renders all five workspaces, keeps the market across navigation, and retains the synthetic disclosure  1897ms
+   ✓ P4 integrated V2 experience > uses the locked Overview composition without restoring the superseded growth-goal panel  1267ms
+   ✓ P4 integrated V2 experience > keeps planning, readiness, acceptance, and delivery as separate replayable checkpoints  2049ms
+   ✓ P4 integrated V2 experience > opens contextual evidence, closes on Escape with focus return, and carries exact context into work  594ms
+   ✓ P4 integrated V2 experience > reconciles program membership for LAX, All, and SFO without averaging percentages  510ms
+   ✓ P4 integrated V2 experience > persists program commands without manufacturing operational outcomes  1365ms
+   ✓ P4 integrated V2 experience > creates canonical Team work from the locked Add work form  716ms
+   ✓ P4 integrated V2 experience > persists Programs notes and next steps without changing outcomes  1069ms
+
+ Test Files  24 passed (24)
+      Tests  131 passed (131)
+   Start at  21:18:00
+   Duration  11.12s (transform 1.19s, setup 1.69s, collect 4.06s, tests 19.14s, environment 11.75s, prepare 1.39s)
+
+
+> reporter-growth@0.1.0 build
+> tsc -b && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 73 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.53 kB │ gzip:   0.33 kB
+dist/assets/index-BhEKzEhF.css   30.39 kB │ gzip:   5.75 kB
+dist/assets/index-CZS0fUmo.js   413.97 kB │ gzip: 119.23 kB
+✓ built in 690ms
+
+> reporter-growth@0.1.0 test:acceptance
+> vitest run --config vite.acceptance.config.ts
+
+
+ RUN  v3.2.7 /private/tmp/steno-p4-coordinator
+
+ ✓ tests/acceptance/reporter-growth.reconciliation.test.ts (4 tests) 582ms
+ ✓ tests/acceptance/reporter-growth.integration.test.tsx (5 tests) 3875ms
+   ✓ P4 cross-workspace acceptance > XR01-XR08/XR31-XR36 keeps the locked shell, concise hierarchy, and source-backed Overview controls  816ms
+   ✓ P4 cross-workspace acceptance > XR09-XR10/XR15-XR18/XR37 exercises Funnel controls, notes, SLA isolation, evidence, and focus return  1013ms
+   ✓ P4 cross-workspace acceptance > XR11/XR15/XR17/XR38 preserves market scope and exposes reporter readiness, compliance, and bounded follow-up  572ms
+   ✓ P4 cross-workspace acceptance > XR12/XR17/XR39 creates Team work through the real form and retains the required board semantics  650ms
+   ✓ P4 cross-workspace acceptance > XR13/XR15-XR18/XR40 keeps Programs results, filters, target-met evidence, and text persistence source-safe  822ms
+
+ Test Files  2 passed (2)
+      Tests  9 passed (9)
+   Start at  21:18:15
+   Duration  5.13s (transform 363ms, setup 144ms, collect 644ms, tests 4.46s, environment 1.10s, prepare 93ms)
+
+
+> reporter-growth@0.1.0 test:e2e
+> npm run build && playwright test --config=playwright.config.mjs
+
+
+> reporter-growth@0.1.0 build
+> tsc -b && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 73 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.53 kB │ gzip:   0.33 kB
+dist/assets/index-BhEKzEhF.css   30.39 kB │ gzip:   5.75 kB
+dist/assets/index-CZS0fUmo.js   413.97 kB │ gzip: 119.23 kB
+✓ built in 556ms
+
+Running 8 tests using 2 workers
+
+(node:71390) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:71391) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 [mobile] › tests/e2e/reporter-growth.browser.spec.ts:27:3 › P4 browser acceptance › XR01-XR08/XR22 keeps every workspace reachable without page overflow at the active viewport (600ms)
+  ✘  1 [desktop] › tests/e2e/reporter-growth.browser.spec.ts:27:3 › P4 browser acceptance › XR01-XR08/XR22 keeps every workspace reachable without page overflow at the active viewport (604ms)
+(node:71406) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:71405) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 [mobile] › tests/e2e/reporter-growth.browser.spec.ts:39:3 › P4 browser acceptance › XR09-XR10/XR15/XR37 changes Funnel range, status, filters, and a market-specific SLA without lifecycle leakage (6.1s)
+  ✘  4 [desktop] › tests/e2e/reporter-growth.browser.spec.ts:39:3 › P4 browser acceptance › XR09-XR10/XR15/XR37 changes Funnel range, status, filters, and a market-specific SLA without lifecycle leakage (6.1s)
+(node:71418) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:71417) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  5 [desktop] › tests/e2e/reporter-growth.browser.spec.ts:62:3 › P4 browser acceptance › XR16/XR19-XR25 keeps the evidence drawer keyboard-operable and full-screen at 390px (592ms)
+  ✓  6 [mobile] › tests/e2e/reporter-growth.browser.spec.ts:62:3 › P4 browser acceptance › XR16/XR19-XR25 keeps the evidence drawer keyboard-operable and full-screen at 390px (621ms)
+  ✘  8 [mobile] › tests/e2e/reporter-growth.browser.spec.ts:80:3 › P4 browser acceptance › XR11-XR13/XR17/XR38-XR40 performs reporter, Team, and Programs working actions (6.3s)
+  ✘  7 [desktop] › tests/e2e/reporter-growth.browser.spec.ts:80:3 › P4 browser acceptance › XR11-XR13/XR17/XR38-XR40 performs reporter, Team, and Programs working actions (6.3s)
+
+
+  1) [desktop] › tests/e2e/reporter-growth.browser.spec.ts:27:3 › P4 browser acceptance › XR01-XR08/XR22 keeps every workspace reachable without page overflow at the active viewport
+
+    Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'Overview', exact: true }) resolved to 2 elements:
+        1) <button type="button" class="is-active" aria-current="page">Overview</button> aka getByRole('navigation', { name: 'Reporter Growth workspaces' }).getByRole('button', { name: 'Overview' })
+        2) <button type="button" aria-pressed="false">Overview</button> aka getByRole('main', { name: 'Overview' }).getByRole('button', { name: 'Overview' })
+
+    Call log:
+      - waiting for getByRole('button', { name: 'Overview', exact: true })
+
+
+      30 |     await expect(page.getByRole("button", { name: "All", exact: true })).toHaveAttribute("aria-pressed", "true");
+      31 |     for (const workspace of ["Overview", "Funnel", "Reporters", "Team", "Programs"] as const) {
+    > 32 |       await page.getByRole("button", { name: workspace, exact: true }).click();
+         |                                                                        ^
+      33 |       await expect(page.getByRole("button", { name: workspace, exact: true })).toHaveAttribute("aria-current", "page");
+      34 |       await assertNoPageOverflow(page);
+      35 |     }
+        at /private/tmp/steno-p4-coordinator/tests/e2e/reporter-growth.browser.spec.ts:32:72
+
+    Error Context: test-results/reporter-growth.browser-P4-688c1-flow-at-the-active-viewport-desktop/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/reporter-growth.browser-P4-688c1-flow-at-the-active-viewport-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/reporter-growth.browser-P4-688c1-flow-at-the-active-viewport-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [desktop] › tests/e2e/reporter-growth.browser.spec.ts:39:3 › P4 browser acceptance › XR09-XR10/XR15/XR37 changes Funnel range, status, filters, and a market-specific SLA without lifecycle leakage
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator:  getByText(/Lifecycle, readiness, acceptance, and completed-work facts did not change/i)
+    Expected: visible
+    Received: hidden
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeVisible" getByText(/Lifecycle, readiness, acceptance, and completed-work facts did not change/i) with timeout 5000ms
+      - waiting for getByText(/Lifecycle, readiness, acceptance, and completed-work facts did not change/i)
+        13 × locator resolved to <p>…</p>
+           - unexpected value "hidden"
+
+
+      56 |     await sla.fill("90");
+      57 |     await expect(sla).toHaveValue("90");
+    > 58 |     await expect(page.getByText(/Lifecycle, readiness, acceptance, and completed-work facts did not change/i)).toBeVisible();
+         |                                                                                                                ^
+      59 |     await assertNoPageOverflow(page);
+      60 |   });
+      61 |
+        at /private/tmp/steno-p4-coordinator/tests/e2e/reporter-growth.browser.spec.ts:58:112
+
+    Error Context: test-results/reporter-growth.browser-P4-0eadf-A-without-lifecycle-leakage-desktop/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/reporter-growth.browser-P4-0eadf-A-without-lifecycle-leakage-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/reporter-growth.browser-P4-0eadf-A-without-lifecycle-leakage-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [desktop] › tests/e2e/reporter-growth.browser.spec.ts:80:3 › P4 browser acceptance › XR11-XR13/XR17/XR38-XR40 performs reporter, Team, and Programs working actions
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator:  getByText(/saved.*note|note.*saved/i)
+    Expected: visible
+    Received: hidden
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeVisible" getByText(/saved.*note|note.*saved/i) with timeout 5000ms
+      - waiting for getByText(/saved.*note|note.*saved/i)
+        14 × locator resolved to <p role="status">…</p>
+           - unexpected value "hidden"
+
+
+       99 |     await notes.fill("Browser persistence note");
+      100 |     await notes.blur();
+    > 101 |     await expect(page.getByText(/saved.*note|note.*saved/i)).toBeVisible();
+          |                                                              ^
+      102 |     await page.getByRole("button", { name: "Overview", exact: true }).click();
+      103 |     await page.getByRole("button", { name: "Programs", exact: true }).click();
+      104 |     await expect(page.getByDisplayValue("Browser persistence note")).toBeVisible();
+        at /private/tmp/steno-p4-coordinator/tests/e2e/reporter-growth.browser.spec.ts:101:62
+
+    Error Context: test-results/reporter-growth.browser-P4-2ff7e-nd-Programs-working-actions-desktop/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/reporter-growth.browser-P4-2ff7e-nd-Programs-working-actions-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/reporter-growth.browser-P4-2ff7e-nd-Programs-working-actions-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [mobile] › tests/e2e/reporter-growth.browser.spec.ts:27:3 › P4 browser acceptance › XR01-XR08/XR22 keeps every workspace reachable without page overflow at the active viewport
+
+    Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'Overview', exact: true }) resolved to 2 elements:
+        1) <button type="button" class="is-active" aria-current="page">Overview</button> aka getByRole('navigation', { name: 'Reporter Growth workspaces' }).getByRole('button', { name: 'Overview' })
+        2) <button type="button" aria-pressed="false">Overview</button> aka getByRole('main', { name: 'Overview' }).getByRole('button', { name: 'Overview' })
+
+    Call log:
+      - waiting for getByRole('button', { name: 'Overview', exact: true })
+
+
+      30 |     await expect(page.getByRole("button", { name: "All", exact: true })).toHaveAttribute("aria-pressed", "true");
+      31 |     for (const workspace of ["Overview", "Funnel", "Reporters", "Team", "Programs"] as const) {
+    > 32 |       await page.getByRole("button", { name: workspace, exact: true }).click();
+         |                                                                        ^
+      33 |       await expect(page.getByRole("button", { name: workspace, exact: true })).toHaveAttribute("aria-current", "page");
+      34 |       await assertNoPageOverflow(page);
+      35 |     }
+        at /private/tmp/steno-p4-coordinator/tests/e2e/reporter-growth.browser.spec.ts:32:72
+
+    Error Context: test-results/reporter-growth.browser-P4-688c1-flow-at-the-active-viewport-mobile/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/reporter-growth.browser-P4-688c1-flow-at-the-active-viewport-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/reporter-growth.browser-P4-688c1-flow-at-the-active-viewport-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) [mobile] › tests/e2e/reporter-growth.browser.spec.ts:39:3 › P4 browser acceptance › XR09-XR10/XR15/XR37 changes Funnel range, status, filters, and a market-specific SLA without lifecycle leakage
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator:  getByText(/Lifecycle, readiness, acceptance, and completed-work facts did not change/i)
+    Expected: visible
+    Received: hidden
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeVisible" getByText(/Lifecycle, readiness, acceptance, and completed-work facts did not change/i) with timeout 5000ms
+      - waiting for getByText(/Lifecycle, readiness, acceptance, and completed-work facts did not change/i)
+        13 × locator resolved to <p>…</p>
+           - unexpected value "hidden"
+
+
+      56 |     await sla.fill("90");
+      57 |     await expect(sla).toHaveValue("90");
+    > 58 |     await expect(page.getByText(/Lifecycle, readiness, acceptance, and completed-work facts did not change/i)).toBeVisible();
+         |                                                                                                                ^
+      59 |     await assertNoPageOverflow(page);
+      60 |   });
+      61 |
+        at /private/tmp/steno-p4-coordinator/tests/e2e/reporter-growth.browser.spec.ts:58:112
+
+    Error Context: test-results/reporter-growth.browser-P4-0eadf-A-without-lifecycle-leakage-mobile/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/reporter-growth.browser-P4-0eadf-A-without-lifecycle-leakage-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/reporter-growth.browser-P4-0eadf-A-without-lifecycle-leakage-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6) [mobile] › tests/e2e/reporter-growth.browser.spec.ts:80:3 › P4 browser acceptance › XR11-XR13/XR17/XR38-XR40 performs reporter, Team, and Programs working actions
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator:  getByText(/saved.*note|note.*saved/i)
+    Expected: visible
+    Received: hidden
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeVisible" getByText(/saved.*note|note.*saved/i) with timeout 5000ms
+      - waiting for getByText(/saved.*note|note.*saved/i)
+        14 × locator resolved to <p role="status">…</p>
+           - unexpected value "hidden"
+
+
+       99 |     await notes.fill("Browser persistence note");
+      100 |     await notes.blur();
+    > 101 |     await expect(page.getByText(/saved.*note|note.*saved/i)).toBeVisible();
+          |                                                              ^
+      102 |     await page.getByRole("button", { name: "Overview", exact: true }).click();
+      103 |     await page.getByRole("button", { name: "Programs", exact: true }).click();
+      104 |     await expect(page.getByDisplayValue("Browser persistence note")).toBeVisible();
+        at /private/tmp/steno-p4-coordinator/tests/e2e/reporter-growth.browser.spec.ts:101:62
+
+    Error Context: test-results/reporter-growth.browser-P4-2ff7e-nd-Programs-working-actions-mobile/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/reporter-growth.browser-P4-2ff7e-nd-Programs-working-actions-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/reporter-growth.browser-P4-2ff7e-nd-Programs-working-actions-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6 failed
+    [desktop] › tests/e2e/reporter-growth.browser.spec.ts:27:3 › P4 browser acceptance › XR01-XR08/XR22 keeps every workspace reachable without page overflow at the active viewport
+    [desktop] › tests/e2e/reporter-growth.browser.spec.ts:39:3 › P4 browser acceptance › XR09-XR10/XR15/XR37 changes Funnel range, status, filters, and a market-specific SLA without lifecycle leakage
+    [desktop] › tests/e2e/reporter-growth.browser.spec.ts:80:3 › P4 browser acceptance › XR11-XR13/XR17/XR38-XR40 performs reporter, Team, and Programs working actions
+    [mobile] › tests/e2e/reporter-growth.browser.spec.ts:27:3 › P4 browser acceptance › XR01-XR08/XR22 keeps every workspace reachable without page overflow at the active viewport
+    [mobile] › tests/e2e/reporter-growth.browser.spec.ts:39:3 › P4 browser acceptance › XR09-XR10/XR15/XR37 changes Funnel range, status, filters, and a market-specific SLA without lifecycle leakage
+    [mobile] › tests/e2e/reporter-growth.browser.spec.ts:80:3 › P4 browser acceptance › XR11-XR13/XR17/XR38-XR40 performs reporter, Team, and Programs working actions
+  2 passed (16.9s)

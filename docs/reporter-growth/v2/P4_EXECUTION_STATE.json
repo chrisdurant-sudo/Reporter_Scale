@@ -67,68 +67,82 @@
     "sample_expansion": "completed_do_not_repeat",
     "runtime_models_verified": false,
     "runtime_catalog": {
-      "status": "stale",
-      "observed_task": "01a0b7b2-a7eb-7102-b4ee-eef2ff07d262",
-      "observed_at": "2026-09-19T03:29:53.428155+00:00",
-      "session_cwd": "/Users/pc/Desktop/STENO",
+      "status": "verified",
+      "observed_task": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+      "observed_at": "2026-09-19T04:18:35.256236+00:00",
+      "session_cwd": "/private/tmp/steno-p4-coordinator",
       "active_command_checkout": "/private/tmp/steno-p4-coordinator",
-      "reason": "Fresh coordinator session is Astra/xhigh but was created in the older checkout and still exposes 12 fixed Terra/Luna role assignments. Probe dispatch gate failed; no probes or workers were launched.",
+      "reason": "All 12 callable named-role assignments now agree with approved Astra/high or Astra/xhigh. Runtime probes remain mandatory.",
       "roles": {
         "capacity": {
-          "model": "gpt-5.6-terra",
+          "model": "gpt-6-astra",
           "reasoning_effort": "high"
         },
         "data": {
-          "model": "gpt-5.6-luna",
-          "reasoning_effort": "medium"
+          "model": "gpt-6-astra",
+          "reasoning_effort": "high"
         },
         "experience": {
-          "model": "gpt-5.6-terra",
-          "reasoning_effort": "medium"
+          "model": "gpt-6-astra",
+          "reasoning_effort": "high"
         },
         "experience_reporters": {
-          "model": "gpt-5.6-terra",
-          "reasoning_effort": "medium"
+          "model": "gpt-6-astra",
+          "reasoning_effort": "high"
         },
         "experience_team": {
-          "model": "gpt-5.6-terra",
-          "reasoning_effort": "medium"
+          "model": "gpt-6-astra",
+          "reasoning_effort": "high"
         },
         "experience_programs": {
-          "model": "gpt-5.6-terra",
-          "reasoning_effort": "medium"
+          "model": "gpt-6-astra",
+          "reasoning_effort": "high"
         },
         "network": {
-          "model": "gpt-5.6-terra",
-          "reasoning_effort": "medium"
+          "model": "gpt-6-astra",
+          "reasoning_effort": "high"
         },
         "programs": {
-          "model": "gpt-5.6-terra",
-          "reasoning_effort": "medium"
+          "model": "gpt-6-astra",
+          "reasoning_effort": "high"
         },
         "recruiting": {
-          "model": "gpt-5.6-terra",
-          "reasoning_effort": "medium"
+          "model": "gpt-6-astra",
+          "reasoning_effort": "high"
         },
         "team": {
-          "model": "gpt-5.6-terra",
-          "reasoning_effort": "medium"
+          "model": "gpt-6-astra",
+          "reasoning_effort": "high"
         },
         "quality": {
-          "model": "gpt-5.6-luna",
-          "reasoning_effort": "medium"
+          "model": "gpt-6-astra",
+          "reasoning_effort": "xhigh"
         },
         "reviewer": {
-          "model": "gpt-5.6-terra",
-          "reasoning_effort": "high"
+          "model": "gpt-6-astra",
+          "reasoning_effort": "xhigh"
         }
       },
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/d29b91c5903adb9a43a135d8d3453072c73476e2-takeover-01a0b7b2-a7eb-7102-b4ee-eef2ff07d262-runtime.json",
-        "sha256": "66ada05e0cfabba1c8a2a145f097dc0a83135ac2ab662a67c354be67f3bbd02d"
+        "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-astra-catalog.json",
+        "sha256": "ad8f6551289160502b288cd3a686b4a984808094c14ed89c20d003ac10aa4b76"
       }
     },
-    "runtime_probes": [],
+    "runtime_probes": [
+      {
+        "role": "data",
+        "session_id": "01a0b7e3-6f51-7373-b642-3285d4f548c4",
+        "model": "gpt-6-astra",
+        "reasoning_effort": "high",
+        "fork_turns": "none",
+        "inherited_turns": 0,
+        "verified_at": "2026-09-19T04:21:19.068408+00:00",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-data-probe.json",
+          "sha256": "c4347ddb12467af6c54d11a106ad01d4c712a8218eaa23a537d97a74903177c1"
+        }
+      }
+    ],
     "new_visual_proof_required": true,
     "contract_packet": "docs/reporter-growth/v2/P4_INTERVIEW_CONTRACT_DELTAS.md",
     "approved_contract_requests": [
@@ -182,19 +196,96 @@
         "observed_task": "01a0b79d-03f1-7f60-9d63-681a9f9baef3",
         "reason": "Current callable named roles still advertise Terra/Luna from the older main checkout. No probe or worker has been dispatched. Load the active checkout configuration in a fresh task before probes.",
         "roles": {}
+      },
+      {
+        "status": "stale",
+        "observed_task": "01a0b7b2-a7eb-7102-b4ee-eef2ff07d262",
+        "observed_at": "2026-09-19T03:29:53.428155+00:00",
+        "session_cwd": "/Users/pc/Desktop/STENO",
+        "active_command_checkout": "/private/tmp/steno-p4-coordinator",
+        "reason": "Fresh coordinator session is Astra/xhigh but was created in the older checkout and still exposes 12 fixed Terra/Luna role assignments. Probe dispatch gate failed; no probes or workers were launched.",
+        "roles": {
+          "capacity": {
+            "model": "gpt-5.6-terra",
+            "reasoning_effort": "high"
+          },
+          "data": {
+            "model": "gpt-5.6-luna",
+            "reasoning_effort": "medium"
+          },
+          "experience": {
+            "model": "gpt-5.6-terra",
+            "reasoning_effort": "medium"
+          },
+          "experience_reporters": {
+            "model": "gpt-5.6-terra",
+            "reasoning_effort": "medium"
+          },
+          "experience_team": {
+            "model": "gpt-5.6-terra",
+            "reasoning_effort": "medium"
+          },
+          "experience_programs": {
+            "model": "gpt-5.6-terra",
+            "reasoning_effort": "medium"
+          },
+          "network": {
+            "model": "gpt-5.6-terra",
+            "reasoning_effort": "medium"
+          },
+          "programs": {
+            "model": "gpt-5.6-terra",
+            "reasoning_effort": "medium"
+          },
+          "recruiting": {
+            "model": "gpt-5.6-terra",
+            "reasoning_effort": "medium"
+          },
+          "team": {
+            "model": "gpt-5.6-terra",
+            "reasoning_effort": "medium"
+          },
+          "quality": {
+            "model": "gpt-5.6-luna",
+            "reasoning_effort": "medium"
+          },
+          "reviewer": {
+            "model": "gpt-5.6-terra",
+            "reasoning_effort": "high"
+          }
+        },
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/d29b91c5903adb9a43a135d8d3453072c73476e2-takeover-01a0b7b2-a7eb-7102-b4ee-eef2ff07d262-runtime.json",
+          "sha256": "66ada05e0cfabba1c8a2a145f097dc0a83135ac2ab662a67c354be67f3bbd02d"
+        }
       }
     ],
     "latest_coordinator_verification": {
-      "candidate_commit": "d29b91c5903adb9a43a135d8d3453072c73476e2",
+      "candidate_commit": "df04eefc2b42680332bd0d8a3e0219ca79627f92",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/d29b91c5903adb9a43a135d8d3453072c73476e2-takeover-01a0b7b2-a7eb-7102-b4ee-eef2ff07d262-verification.json",
-        "sha256": "b277c34e5006dcf677913f87ca88158771a1a5de283d36d714dd633e2e223446"
+        "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-ip0-verification.json",
+        "sha256": "51290efa20165e5d67f744aa701c05514e8acd442a2ab70775e64685f32be5d7"
       }
     },
     "continuation_authorization": {
-      "source": "User explicitly requested coordinator takeover and continuation of already-authorized interview implementation without another start approval.",
-      "thread_id": "01a0b7b2-a7eb-7102-b4ee-eef2ff07d262",
-      "recorded_at": "2026-09-19T03:29:53.428155+00:00"
+      "source": "User: Continue the already-authorized interview implementation. Verify loaded Astra roles before dispatch. No new start approval is needed.",
+      "thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+      "recorded_at": "2026-09-19T04:18:35.256236+00:00"
+    },
+    "runtime_verification_note": "Data probe verified. Every other role still requires its own fresh probe before implementation.",
+    "browser_prerequisite_repair": {
+      "status": "awaiting_narrow_sequencing_exception",
+      "request": "docs/reporter-growth/v2/IP0_BROWSER_REPAIR_REQUEST.md",
+      "proposal": {
+        "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-browser-repair-proposal.patch",
+        "sha256": "e3e74660b6f18e7ad1f079c5ba1852e3a8a3f5d3a25d96c7ccbbf1f3c0bdad03"
+      },
+      "diagnostic": {
+        "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-browser-diagnostic.log",
+        "sha256": "f422659b229368ef40991121f2b8a5c4ae6340a82bcc979aa2de298333852e41"
+      },
+      "diagnostic_passed": 8,
+      "registered_suite_passed": false
     }
   },
   "implementation_base_commit": "6e7ea99e2358e497b8a6d4331a6cc8513e668501",
@@ -235,12 +326,12 @@
     },
     "baseline": {
       "status": "failed",
-      "candidate_commit": "d29b91c5903adb9a43a135d8d3453072c73476e2",
+      "candidate_commit": "df04eefc2b42680332bd0d8a3e0219ca79627f92",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/d29b91c5903adb9a43a135d8d3453072c73476e2-takeover-01a0b7b2-a7eb-7102-b4ee-eef2ff07d262-verification.json",
-        "sha256": "b277c34e5006dcf677913f87ca88158771a1a5de283d36d714dd633e2e223446"
+        "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-ip0-verification.json",
+        "sha256": "51290efa20165e5d67f744aa701c05514e8acd442a2ab70775e64685f32be5d7"
       },
-      "reason": "Fresh full run passes all non-browser checks; all eight browser cases fail at Chromium startup with macOS Mach-port permission denial, before assertions. No waiver."
+      "reason": "Browser launch recovered; full run now reaches assertions: two browser cases pass, six fail on stale navigation/feedback selectors. Additional unsupported getByDisplayValue call identified. Quality-owned suite repair is required; no waiver."
     },
     "visual_proof": {
       "status": "blocked"
@@ -310,6 +401,18 @@
           "sha256": "41b69e53b7646bc790d2bff50dde7da7eb44c32d58722b70ad5da84295e36621"
         },
         "reason": "Browser runtime permission denial prevented all eight browser cases; full verification failed. No waiver."
+      }
+    },
+    {
+      "gate": "baseline",
+      "record": {
+        "status": "failed",
+        "candidate_commit": "d29b91c5903adb9a43a135d8d3453072c73476e2",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/d29b91c5903adb9a43a135d8d3453072c73476e2-takeover-01a0b7b2-a7eb-7102-b4ee-eef2ff07d262-verification.json",
+          "sha256": "b277c34e5006dcf677913f87ca88158771a1a5de283d36d714dd633e2e223446"
+        },
+        "reason": "Fresh full run passes all non-browser checks; all eight browser cases fail at Chromium startup with macOS Mach-port permission denial, before assertions. No waiver."
       }
     }
   ]

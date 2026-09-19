@@ -1,0 +1,61 @@
+{
+  "kind": "read_only_routing_probe",
+  "role": "data",
+  "session_id": "01a0b7e3-6f51-7373-b642-3285d4f548c4",
+  "task_name": "/root/ip_data_routing_probe",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "inherited_turns": 0,
+  "inheritance_evidence": "Coordinator spawn call explicitly set fork_turns=none. Child reports only repository instructions and explicit probe dispatch; no coordinator conversation turns. Session user-message inventory attached.",
+  "configured_service_tier": "default",
+  "resolved_service_tier": null,
+  "session_source": "/Users/pc/.codex/sessions/2026/09/18/rollout-2026-09-18T21-18-50-01a0b7e3-6f51-7373-b642-3285d4f548c4.jsonl",
+  "session_source_sha256": "907a1d70023c58871cd19936ef4ae5af0968c4a9383532d9d82060e9ca3e04cc",
+  "session_metadata": [
+    {
+      "line": 1,
+      "payload": {
+        "id": "01a0b7e3-6f51-7373-b642-3285d4f548c4",
+        "parent_thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+        "cwd": "/private/tmp/steno-p4-coordinator",
+        "source": {
+          "subagent": {
+            "thread_spawn": {
+              "parent_thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+              "depth": 1,
+              "agent_path": "/root/ip_data_routing_probe",
+              "agent_nickname": "Banach",
+              "agent_role": "data"
+            }
+          }
+        },
+        "agent_role": "data",
+        "agent_path": "/root/ip_data_routing_probe"
+      }
+    }
+  ],
+  "turn_contexts": [
+    {
+      "line": 8,
+      "payload": {
+        "model": "gpt-6-astra",
+        "effort": "high",
+        "cwd": "/private/tmp/steno-p4-coordinator",
+        "service_tier": null
+      }
+    }
+  ],
+  "user_message_inventory": [
+    {
+      "line": 6,
+      "sha256": "e7b93535639021367442aaa832cf596278bcff44f280c8532f74acf8c4f35c80",
+      "prefix": "[{\"type\": \"input_text\", \"text\": \"<recommended_plugins>\\nHere is a list of plugins that are available but not installed.\\n\\n- Airtable (airta"
+    }
+  ],
+  "verified_at": "2026-09-19T04:21:19.068408+00:00",
+  "result": "PROBE_READY",
+  "writes": [],
+  "tests_run": [],
+  "children_spawned": 0
+}
