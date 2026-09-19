@@ -40,6 +40,7 @@ function commitExists(commit) {
 }
 
 const registry = JSON.parse(readFileSync(path.join(root, "docs/reporter-growth/v2/lanes.v2.json"), "utf8"));
+const state = JSON.parse(readFileSync(path.join(root, "docs/reporter-growth/v2/P4_EXECUTION_STATE.json"), "utf8"));
 const lane = registry.lanes.find((candidate) => candidate.id === laneId);
 const errors = [];
 if (!lane) errors.push(`Unknown P4 lane: ${laneId}`);
@@ -67,6 +68,14 @@ if (lane) {
     if (!lane.allowed_directory_prefixes.some((prefix) => changedPath.startsWith(prefix))) {
       errors.push(`${laneId} changed a path outside its registry boundary: ${changedPath}`);
     }
+  }
+}
+
+if (laneId === "quality" && state.current_phase === "IP0_contract_preparation") {
+  const repair = state.interview_improvement_amendment?.browser_prerequisite_repair;
+  if (repair?.status !== "authorized") errors.push("IP0 Quality requires the explicit prerequisite-repair exception.");
+  for (const changedPath of changedPaths) {
+    if (!repair?.allowed_paths?.includes(changedPath)) errors.push(`IP0 Quality repair exceeded its exact-file boundary: ${changedPath}`);
   }
 }
 

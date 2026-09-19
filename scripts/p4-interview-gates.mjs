@@ -76,7 +76,14 @@ export function inspectInterviewDispatch(state, registry, role, kind, verifyEvid
   if (kind === 'probe') return errors;
   if (!validProbe(amendment, registry, role, verifyEvidence)) errors.push(`${role} requires a fresh zero-inheritance runtime probe before implementation.`);
   const phase = state.current_phase;
-  const permitted = (phase === 'IP1_serial_data_logic' && support.includes(role))
+  const repair = amendment?.browser_prerequisite_repair;
+  const prerequisiteRepair = phase === 'IP0_contract_preparation' && role === 'quality'
+    && repair?.status === 'authorized' && repair.role === 'quality'
+    && repair.authorization?.source && repair.authorization?.thread_id && repair.authorization?.authorized_at
+    && JSON.stringify(repair.allowed_paths) === JSON.stringify(['tests/e2e/reporter-growth.browser.spec.ts'])
+    && repair.independent_quality_gate_retained === true && repair.waivers?.length === 0
+    && verifyEvidence(repair.proposal) && verifyEvidence(repair.diagnostic);
+  const permitted = prerequisiteRepair || (phase === 'IP1_serial_data_logic' && support.includes(role))
     || (phase === 'IP2_visual_proof' && role === 'experience')
     || (phase === 'IP3_workspace_wave' && ['experience', ...specialists].includes(role))
     || (phase === 'IP5_quality' && role === 'quality')

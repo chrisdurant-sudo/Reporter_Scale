@@ -141,6 +141,19 @@
           "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-data-probe.json",
           "sha256": "c4347ddb12467af6c54d11a106ad01d4c712a8218eaa23a537d97a74903177c1"
         }
+      },
+      {
+        "role": "quality",
+        "session_id": "01a0b7e7-1495-7c82-a62c-6f7174a6cf3e",
+        "model": "gpt-6-astra",
+        "reasoning_effort": "xhigh",
+        "fork_turns": "none",
+        "inherited_turns": 0,
+        "verified_at": "2026-09-19T04:24:38.836056+00:00",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-quality-probe.json",
+          "sha256": "bdfba907a30bfc4d546319c4aa053dadbab873eef56b877713b9c59f773c6eaa"
+        }
       }
     ],
     "new_visual_proof_required": true,
@@ -272,9 +285,9 @@
       "thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
       "recorded_at": "2026-09-19T04:18:35.256236+00:00"
     },
-    "runtime_verification_note": "Data probe verified. Every other role still requires its own fresh probe before implementation.",
+    "runtime_verification_note": "Data and Quality probes verified; other roles require a fresh probe before implementation.",
     "browser_prerequisite_repair": {
-      "status": "awaiting_narrow_sequencing_exception",
+      "status": "authorized",
       "request": "docs/reporter-growth/v2/IP0_BROWSER_REPAIR_REQUEST.md",
       "proposal": {
         "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-browser-repair-proposal.patch",
@@ -285,7 +298,18 @@
         "sha256": "f422659b229368ef40991121f2b8a5c4ae6340a82bcc979aa2de298333852e41"
       },
       "diagnostic_passed": 8,
-      "registered_suite_passed": false
+      "registered_suite_passed": false,
+      "role": "quality",
+      "authorization": {
+        "source": "User: Approve the narrow test-repair exception",
+        "thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+        "authorized_at": "2026-09-19T04:23:46.482402+00:00"
+      },
+      "allowed_paths": [
+        "tests/e2e/reporter-growth.browser.spec.ts"
+      ],
+      "independent_quality_gate_retained": true,
+      "waivers": []
     }
   },
   "implementation_base_commit": "6e7ea99e2358e497b8a6d4331a6cc8513e668501",

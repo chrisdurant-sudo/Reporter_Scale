@@ -76,3 +76,24 @@ test('tampered historical evidence and a repeated seed expansion are rejected', 
   assert.ok(audit(f).some((e) => e.includes('checksum')));
   assert.ok(audit(f).some((e) => e.includes('must not be repeated')));
 });
+test('IP0 test repair requires explicit bounded authorization and a fresh Quality probe', () => {
+  const f = fixture(); const a = f.state.interview_improvement_amendment;
+  a.runtime_catalog = { status: 'verified', evidence: proof, roles: { quality: role('quality') } };
+  a.runtime_probes = [{ role: 'quality', ...role('quality'), fork_turns: 'none', inherited_turns: 0, session_id: 'quality-probe', verified_at: '2026-09-19', evidence: proof }];
+  a.browser_prerequisite_repair = { status: 'authorized', role: 'quality', authorization: { source: 'Approve the narrow test-repair exception', thread_id: 'task', authorized_at: '2026-09-19' }, allowed_paths: ['tests/e2e/reporter-growth.browser.spec.ts'], independent_quality_gate_retained: true, waivers: [], proposal: proof, diagnostic: proof };
+  f.state.gates.baseline.status = 'failed';
+  const check = () => inspectInterviewDispatch(f.state, f.registry, 'quality', 'implementation', verify);
+  assert.deepEqual(check(), []);
+  a.browser_prerequisite_repair.allowed_paths.push('src/'); assert.ok(check().length);
+  a.browser_prerequisite_repair.allowed_paths.pop();
+  a.browser_prerequisite_repair.authorization = null; assert.ok(check().length);
+});
+test('IP0 exception cannot waive independent acceptance or reuse an inherited probe', () => {
+  const f = fixture(); const a = f.state.interview_improvement_amendment;
+  a.runtime_catalog = { status: 'verified', evidence: proof, roles: { quality: role('quality') } };
+  a.runtime_probes = [{ role: 'quality', ...role('quality'), fork_turns: 'all', inherited_turns: 1, session_id: 'quality-probe', verified_at: '2026-09-19', evidence: proof }];
+  a.browser_prerequisite_repair = { status: 'authorized', role: 'quality', authorization: { source: 'approved', thread_id: 'task', authorized_at: '2026-09-19' }, allowed_paths: ['tests/e2e/reporter-growth.browser.spec.ts'], independent_quality_gate_retained: false, waivers: ['browser'], proposal: proof, diagnostic: proof };
+  const errors = inspectInterviewDispatch(f.state, f.registry, 'quality', 'implementation', verify);
+  assert.ok(errors.some((e) => e.includes('fresh zero-inheritance')));
+  assert.ok(errors.some((e) => e.includes('cannot run during')));
+});

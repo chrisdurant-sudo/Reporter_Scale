@@ -18,4 +18,4 @@ No assertion is removed, no product behavior changes, and desktop plus 390px cov
 
 AGENTS.md requires the full `npm run verify:p4` before each phase transition and says any failure blocks dispatch. It also reserves browser tests to Quality after integration. This creates a prerequisite cycle for the stale suite. Requested exception: one serial Quality-owned, tests-only prerequisite repair during IP0, after its own verified Astra/xhigh zero-inheritance probe. Quality may change only this spec for the repairs above, in a separate worktree, with an exact commit and lane-boundary audit. Coordinator then integrates and reruns the unchanged full command. IP5 independent Quality remains mandatory and no acceptance gate is waived.
 
-Status: awaiting the narrow sequencing exception; no Quality repair worker or implementation worker has been dispatched.
+Status: APPROVED by the user in task `01a0b7df-3f9e-7c72-a35a-1a6ed497e596`: “Approve the narrow test-repair exception.” Dispatch still requires the verified Quality probe and exact separate worktree.
