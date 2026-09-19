@@ -1,10 +1,12 @@
-import type { UtcTimestamp } from "./common";
+import type { AttendanceMode, MarketId, UtcTimestamp } from "./common";
+import type { AvailabilityStatus } from "./demand";
 import type {
   ActorId,
   CoachingActionId,
   CommandId,
   ProgramId,
   ProcessVersionId,
+  ReporterId,
   RequestId,
   TeamMemberId,
   TeamTargetId,
@@ -131,6 +133,19 @@ export type TeamCommandEnvelope =
   | V2CommandEnvelope<"team.coaching.record", TeamCoachingRecordPayload>
   | V2CommandEnvelope<"team.coaching.review", TeamCoachingReviewPayload>
   | V2CommandEnvelope<"team.practice.share", TeamPracticeSharePayload>;
+
+/** Explicit simulation inputs; preferences and the selected global filter are not a confirmation. */
+export interface NetworkAvailabilityRecordPayload {
+  readonly reporterId: ReporterId;
+  readonly startAt: UtcTimestamp;
+  readonly endAt: UtcTimestamp;
+  readonly status: AvailabilityStatus;
+  readonly serviceMarketIds: readonly MarketId[];
+  readonly attendanceModes: readonly AttendanceMode[];
+  readonly confirmationExpiresAt: UtcTimestamp | null;
+}
+
+export type NetworkCommandEnvelope = V2CommandEnvelope<"network.record-availability", NetworkAvailabilityRecordPayload>;
 
 export interface ProgramTextSavePayload {
   readonly programId: ProgramId;
