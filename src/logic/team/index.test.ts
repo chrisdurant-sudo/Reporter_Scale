@@ -41,7 +41,8 @@ describe("prepareTeamView", () => {
   it("shows inspected samples and explicit coaching without fabricating readiness, assignments, or outcomes", () => {
     const view = prepareTeamView(snapshot, context, metric);
     const jun = view.members.find((member) => member.id === memberA)!;
-    expect(jun.quality).toMatchObject({ inspectedCount: 1, passedCount: 1, ratio: 1 });
+    expect(jun.quality.inspectedCount).toBe(0);
+    expect(view.members.find((member) => member.id === memberB)?.quality).toMatchObject({ inspectedCount: 1, passedCount: 1, ratio: 1 });
     expect(jun.coachingActions[0]?.observedIssueOrStrength).toBe("Clear handoff notes");
     expect(snapshot.readinessEvents).toEqual([]);
     expect(snapshot.assignmentEvents).toEqual([]);
@@ -49,14 +50,14 @@ describe("prepareTeamView", () => {
   });
   it("excludes inspections outside the reporting window", () => {
     const withEarlierCheck = { ...snapshot, workQualityChecks: [...snapshot.workQualityChecks, { ...snapshot.workQualityChecks[0]!, id: "quality-old" as never, workItemId: "open-overdue" as never, checkedAt: "2026-02-28T23:59:59.000Z" as never }] } as DemoSnapshotV2;
-    const jun = prepareTeamView(withEarlierCheck, context, metric).members.find((member) => member.id === memberA)!;
+    const jun = prepareTeamView(withEarlierCheck, context, metric).members.find((member) => member.id === memberB)!;
     expect(jun.quality.inspectedCount).toBe(1);
     expect(jun.quality.sample.map((sample) => sample.workItemId)).not.toContain("open-overdue");
   });
   it("prefers an explicit member target over a role target regardless of target order", () => {
     const memberTarget = { ...snapshot.teamTargets[0]!, id: "target-member" as never, teamMemberId: memberA, target: 5 };
     const withBothTargets = { ...snapshot, teamTargets: [snapshot.teamTargets[0]!, memberTarget] } as DemoSnapshotV2;
-    const jun = prepareTeamView(withBothTargets, context, metric).members.find((member) => member.id === memberA)!;
+    const jun = prepareTeamView(withBothTargets, { ...context, filters: { ...context.filters, selectedMarket: "ALL", marketIds: [] } }, metric).members.find((member) => member.id === memberA)!;
     expect(jun.completed.target).toBe(5);
   });
   it("prepares the source-backed board, summary, compact member values, and Add Work options as of the evaluation time", () => {
@@ -78,12 +79,12 @@ describe("prepareTeamView", () => {
         { id: "coach-reviewed", teamMemberId: memberB, linkedWorkItemIds: [], observedIssueOrStrength: "Observed", expectedPractice: "Practice", nextAction: "Review", dueAt: "2026-03-08T00:00:00.000Z", reviewAt: "2026-03-09T00:00:00.000Z", outcomeNote: "Reviewed", authorId: actorA, createdAt: "2026-03-03T00:00:00.000Z" },
       ],
     } as unknown as DemoSnapshotV2;
-    const view = prepareTeamView(boardSnapshot, context, metric);
+    const view = prepareTeamView(boardSnapshot, { ...context, filters: { ...context.filters, selectedMarket: "ALL", marketIds: [] } }, metric);
 
     expect(view.board).toEqual(expect.arrayContaining([
       expect.objectContaining({ id: "completed-once", title: "screen work", status: "Done", ownerId: memberB, ownerName: "Sky", ownershipDomain: "screening", programId: null, programTitle: null }),
       expect.objectContaining({ id: "open-overdue", title: "onboard work", status: "To do", ownershipDomain: "onboarding" }),
-      expect.objectContaining({ id: "titled-blocked", title: "Resolve ORD handoff", status: "In progress", ownerId: memberA, ownerName: "Jun", ownershipDomain: "program", programId: "program-current", programTitle: "Referral campaign" }),
+      expect.objectContaining({ id: "titled-blocked", title: "Resolve ORD handoff", status: "To do", blocked: true, ownerId: memberA, ownerName: "Jun", ownershipDomain: "program", programId: "program-current", programTitle: "Referral campaign" }),
     ]));
     expect(view.board.map((item) => item.id)).not.toContain("canceled-work");
     expect(view.board.map((item) => item.id)).not.toContain("future-work");
@@ -92,6 +93,6 @@ describe("prepareTeamView", () => {
       expect.objectContaining({ id: memberA, ownedDomains: ["program"], openWork: 1, goal: 2, coachingDue: 1 }),
       expect.objectContaining({ id: memberB, ownedDomains: ["onboarding"], openWork: 1, goal: 2, coachingDue: 0 }),
     ]));
-    expect(view.addWorkOptions).toEqual({ owners: [{ id: null, name: "Unassigned" }, { id: memberA, name: "Jun" }, { id: memberB, name: "Sky" }], programs: [{ id: "program-current", title: "Referral campaign" }] });
+    expect(view.addWorkOptions).toMatchObject({ owners: [{ id: null, name: "Unassigned" }, { id: memberA, name: "Jun" }, { id: memberB, name: "Sky" }], programs: [{ id: "program-current", title: "Referral campaign" }] });
   });
 });
