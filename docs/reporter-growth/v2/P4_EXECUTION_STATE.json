@@ -167,6 +167,19 @@
           "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-capacity-probe.json",
           "sha256": "36e774d1134ec7c8acb154314a02f4c963ccdc2022ad79abd0a407fee24fa0a7"
         }
+      },
+      {
+        "role": "recruiting",
+        "session_id": "01a0b817-20fc-7b73-a18b-183dff9d5c58",
+        "model": "gpt-6-astra",
+        "reasoning_effort": "high",
+        "fork_turns": "none",
+        "inherited_turns": 0,
+        "verified_at": "2026-09-19T05:17:01.732762+00:00",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-recruiting-probe.json",
+          "sha256": "d649ef784f688513661283523614a1e45692609540aa9a18c43f02eff3e2a4d3"
+        }
       }
     ],
     "new_visual_proof_required": true,
@@ -298,7 +311,7 @@
       "thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
       "recorded_at": "2026-09-19T04:18:35.256236+00:00"
     },
-    "runtime_verification_note": "Verified probes: data, quality, capacity. Other roles require their own probe before implementation.",
+    "runtime_verification_note": "Verified probes: data, quality, capacity, recruiting. Other roles require their own probe before implementation.",
     "browser_prerequisite_repair": {
       "status": "completed",
       "request": "docs/reporter-growth/v2/IP0_BROWSER_REPAIR_REQUEST.md",
