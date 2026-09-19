@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-18",
+  "updated_at": "2026-09-19T06:48:28.687139+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -340,10 +340,10 @@
       }
     ],
     "latest_coordinator_verification": {
-      "candidate_commit": "ffe2bbd8f307b1444373af3bf8185fc94bc709c6",
+      "candidate_commit": "740a1cbfadf8f8f1959e6fbaa85d252654594d45",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/ffe2bbd8f307b1444373af3bf8185fc94bc709c6-ip1-team-runtime-rerun.json",
-        "sha256": "72fa9fa39245d30a1d4251c94052e8c13a2e97d87e71faeb648b6483e9d01011"
+        "file": "docs/reporter-growth/v2/evidence/740a1cbfadf8f8f1959e6fbaa85d252654594d45-ip1-team-verification.json",
+        "sha256": "04167b52103b1b958a423844a06d0de0a1d92b9ca65393d6bf7a041cd13243ec"
       }
     },
     "continuation_authorization": {
@@ -399,8 +399,8 @@
   "fanout_authorized": false,
   "current_phase": "IP1_serial_data_logic",
   "current_candidate": {
-    "commit": "4e2a715041643c2c9ccc428086258e8f77fb894b",
-    "status": "data_capacity_recruiting_network_integrated_full_suite_passed",
+    "commit": "740a1cbfadf8f8f1959e6fbaa85d252654594d45",
+    "status": "data_capacity_recruiting_network_team_integrated_full_suite_passed",
     "defect_register": "docs/reporter-growth/v2/INTERVIEW_PRODUCT_REVIEW_2026-09-18.md"
   },
   "gates": {
@@ -440,17 +440,17 @@
         "data",
         "capacity",
         "recruiting",
-        "network"
+        "network",
+        "team"
       ]
     },
     "baseline": {
-      "status": "failed",
-      "candidate_commit": "ffe2bbd8f307b1444373af3bf8185fc94bc709c6",
+      "status": "passed",
+      "candidate_commit": "740a1cbfadf8f8f1959e6fbaa85d252654594d45",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/ffe2bbd8f307b1444373af3bf8185fc94bc709c6-ip1-team-runtime-rerun.json",
-        "sha256": "72fa9fa39245d30a1d4251c94052e8c13a2e97d87e71faeb648b6483e9d01011"
-      },
-      "reason": "The multi-checkpoint app test exceeded its default 5-second limit under full-suite load and continued into the next DOM test. Prior focused and full runs passed. Coordinator sets this seven-checkpoint integration case to 15 seconds without changing assertions; full rerun required."
+        "file": "docs/reporter-growth/v2/evidence/740a1cbfadf8f8f1959e6fbaa85d252654594d45-ip1-team-verification.json",
+        "sha256": "04167b52103b1b958a423844a06d0de0a1d92b9ca65393d6bf7a041cd13243ec"
+      }
     },
     "visual_proof": {
       "status": "blocked"
@@ -604,7 +604,7 @@
       "lane": "team",
       "base_commit": "a4a765efab8fb8e2651b3ba871930f836ae6ecaa",
       "candidate_commit": "dfbff4a443e831ae4c154bbd0cae16503ff2dc7e",
-      "status": "integrated_pending_full_verification",
+      "status": "passed",
       "changed_paths": [
         "src/logic/team/commands.ts",
         "src/logic/team/evidence.ts",
@@ -631,7 +631,11 @@
       },
       "acceptance_scope": "IC03 prepared logic; IP08/IP09 presentation and independent acceptance pending",
       "integrated_commit": "ccb2973b5c1d642f699d823c4dbc6a857b173306",
-      "handoff": "docs/reporter-growth/v2/IP1_TEAM_HANDOFF.md"
+      "handoff": "docs/reporter-growth/v2/IP1_TEAM_HANDOFF.md",
+      "full_verification": {
+        "file": "docs/reporter-growth/v2/evidence/740a1cbfadf8f8f1959e6fbaa85d252654594d45-ip1-team-verification.json",
+        "sha256": "04167b52103b1b958a423844a06d0de0a1d92b9ca65393d6bf7a041cd13243ec"
+      }
     }
   },
   "known_ownership_exceptions": [],
@@ -859,23 +863,18 @@
         },
         "reason": "All 271 unit/integration and nine acceptance tests pass; six browser tests pass, two expose crypto.randomUUID being unavailable on the HTTP test origin. Coordinator command identity repair and full rerun required."
       }
-    }
-  ],
-  "active_lane": {
-    "role": "team",
-    "task_name": "/root/ip1_team",
-    "worktree": "/private/tmp/steno-interview-ip1-team",
-    "branch": "codex/interview-ip1-team",
-    "base_commit": "a4a765efab8fb8e2651b3ba871930f836ae6ecaa",
-    "source_contract_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
-    "requests": [
-      "IC03"
-    ],
-    "status": "integrated_pending_full_verification",
-    "runtime_evidence": {
-      "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-team-worker-runtime.json",
-      "sha256": "d4405f173f6aded6ae14beae28ff45eaeb761947027560cf644cef7c6164b1ff"
     },
-    "candidate_commit": "dfbff4a443e831ae4c154bbd0cae16503ff2dc7e"
-  }
+    {
+      "gate": "baseline",
+      "record": {
+        "status": "failed",
+        "candidate_commit": "ffe2bbd8f307b1444373af3bf8185fc94bc709c6",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/ffe2bbd8f307b1444373af3bf8185fc94bc709c6-ip1-team-runtime-rerun.json",
+          "sha256": "72fa9fa39245d30a1d4251c94052e8c13a2e97d87e71faeb648b6483e9d01011"
+        },
+        "reason": "The multi-checkpoint app test exceeded its default 5-second limit under full-suite load and continued into the next DOM test. Prior focused and full runs passed. Coordinator sets this seven-checkpoint integration case to 15 seconds without changing assertions; full rerun required."
+      }
+    }
+  ]
 }
