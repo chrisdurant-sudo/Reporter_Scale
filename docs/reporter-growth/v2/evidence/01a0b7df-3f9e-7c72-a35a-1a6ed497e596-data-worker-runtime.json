@@ -1,0 +1,25 @@
+{
+  "kind": "implementation_runtime_observation",
+  "role": "data",
+  "task_name": "/root/ip1_data",
+  "session_id": "01a0b7ed-a4b0-7531-b1c9-2bf41630d450",
+  "source": "/Users/pc/.codex/sessions/2026/09/18/rollout-2026-09-18T21-29-59-01a0b7ed-a4b0-7531-b1c9-2bf41630d450.jsonl",
+  "observed_at": "2026-09-19T04:37:56.187563+00:00",
+  "session_cwd": "/private/tmp/steno-p4-coordinator",
+  "assigned_worktree": "/private/tmp/steno-interview-ip1-data",
+  "branch": "codex/interview-ip1-data",
+  "base_commit": "a772282a7d7acb74d8a09ab1786ca6b3de9c51ae",
+  "fork_turns": "none",
+  "inherited_turns": 0,
+  "turn_contexts": [
+    {
+      "model": "gpt-6-astra",
+      "effort": "high",
+      "cwd": "/private/tmp/steno-p4-coordinator",
+      "service_tier": null
+    }
+  ],
+  "configured_service_tier": "default",
+  "resolved_service_tier": null,
+  "result": "model_reasoning_verified"
+}

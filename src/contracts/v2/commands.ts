@@ -153,6 +153,11 @@ export interface ProcessDraftSavePayload {
   readonly nextReviewAt: UtcTimestamp;
 }
 
+/** Integration composes requested Team work through its canonical preparer before one atomic save. */
+export interface ProgramsCommandMutation extends V2CommandMutation {
+  readonly requestedWork: readonly WorkCreatePayload[];
+}
+
 export type ProgramsCommandEnvelope =
   | V2CommandEnvelope<"programs.note.save", ProgramTextSavePayload>
   | V2CommandEnvelope<"programs.record-decision", ProgramDecisionSavePayload>

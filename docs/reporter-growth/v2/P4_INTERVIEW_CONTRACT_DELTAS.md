@@ -44,6 +44,8 @@ Work edits append actor/time/command-linked history and optional notes, and upda
 
 Programs' typed command union now includes `ProgramDecisionSavePayload` (program, decision, entered rationale, accountable owner, next review) and `ProcessDraftSavePayload` (program, canonical source process version, owner, next review). Programs prepares the current evidence itself rather than accepting a UI-supplied outcome. It records the decision and updates the program's accountable owner/review date using existing fields; expansion creates bounded review work only. A process draft copies the inspected canonical version's actual steps, with a new version/status/history; it never substitutes generic invented steps or changes frozen enrollment. This adds command boundaries only, not stored fields or a new workflow designer.
 
+`ProgramsCommandMutation` additionally returns `requestedWork` as typed `WorkCreatePayload` records. Programs must not maintain a private task store or bypass Team's command invariants. Integration composes these requests through Team's pure preparer and saves decision/evidence/work together in one repository revision. A failure in any preparer means no save. Network similarly prepares follow-up identity/inputs; integration opens an existing matching canonical task or uses Team's preparer before saving. Presentation never writes WorkItem objects directly.
+
 ## Serial execution and dispatch packet
 
 1. Finish coordinator-owned contract and integration boundaries with focused invariant checks; commit a compiling baseline. Keep the new data/logic and visual gates pending until their actual evidence exists.

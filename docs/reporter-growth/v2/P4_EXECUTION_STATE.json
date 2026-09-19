@@ -495,6 +495,10 @@
       "IC07",
       "IC08"
     ],
-    "status": "running"
+    "status": "running",
+    "runtime_evidence": {
+      "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-data-worker-runtime.json",
+      "sha256": "18a0eb4b8a8114f1742f1d49ab62f9ac5d71b4208e4d9e71bcd861cc09d0c411"
+    }
   }
 }
