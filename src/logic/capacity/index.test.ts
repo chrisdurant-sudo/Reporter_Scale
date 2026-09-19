@@ -495,3 +495,77 @@ describe("IC01 coordinator review repairs", () => {
     expect(missingCase.personTargets.some((item) => item.reporterId === acquisition.reporterId)).toBe(false);
   });
 });
+
+describe("IC01 exact-empty queries and person destinations", () => {
+  it("honors matchNone across requests, people, series, goals and original-plan results", () => {
+    const snapshot = applyScenarioCheckpoint(DEMO_SNAPSHOT_V2, "original-plan-delivered");
+    const query = { ...context(), evaluation: { ...context().evaluation, asOfAt: snapshot.currentAsOfAt, snapshotRevision: snapshot.revision },
+      filters: { ...filters(["req-lax-109"]), selectedMarket: "ALL" as const, matchNone: true, window: V2_MAIN_REQUEST_WINDOW } };
+    const view = prepareMarketsWorkspace(snapshot, query);
+    expect(view.requests).toEqual([]);
+    expect(view.marketRows).toEqual([]);
+    expect(view.growthGoal).toBeNull();
+    expect(view.schedule.coverage).toMatchObject({ requested: 0, confirmed: 0, unresolved: 0 });
+    expect(view.schedule.people).toMatchObject({ confirmed: 0, possibleCandidates: 0, sharedCandidates: [] });
+    expect(view.originalPlan).toMatchObject({ status: "available", requestIds: [], completedRequests: 0, firstJobs: 0 });
+    expect(view.supplyDemandSeries!.points.every((point) => point.availableSupply === 0 && point.demand === 0 && point.reporterIds.length === 0)).toBe(true);
+    expect(view.overview!.attention).toEqual([]);
+    expect(view.evidence.every((bundle) => bundle.filters.matchNone && bundle.navigationTarget.filters.matchNone)).toBe(true);
+    expect(view.evidence.flatMap(validateEvidenceBundle)).toEqual([]);
+    const normal = prepareMarketsWorkspace(snapshot, { ...query, filters: { ...query.filters, matchNone: false } });
+    expect(normal.originalPlan.completedRequests).toBe(1);
+    expect(normal.growthGoal!.actual).toBe(2);
+  });
+
+  it("marks zero-result goal, count and original-plan targets empty instead of broadening their population", () => {
+    const snapshot = applyScenarioCheckpoint(DEMO_SNAPSHOT_V2, "plan-saved");
+    const query = { ...context(), evaluation: { ...context().evaluation, asOfAt: snapshot.currentAsOfAt, snapshotRevision: snapshot.revision },
+      filters: { ...filters(["req-lax-101"]), window: V2_MAIN_REQUEST_WINDOW } };
+    const view = prepareMarketsWorkspace(snapshot, query);
+    expect(view.growthGoal!.actual).toBe(0);
+    const emptyBundles = [view.growthGoal!.evidence, ...view.originalPlan.evidence,
+      view.schedule.evidence.find((bundle) => bundle.metric.id === "M03")!];
+    expect(emptyBundles).toHaveLength(4);
+    for (const bundle of emptyBundles) {
+      expect(bundle.computation).toMatchObject({ status: "available", value: 0 });
+      expect(bundle.filters.matchNone).toBe(true);
+      expect(bundle.navigationTarget.filters.matchNone).toBe(true);
+      expect(validateEvidenceBundle(bundle)).toEqual([]);
+      const roundtrip = prepareMarketsWorkspace(snapshot, { ...query, filters: bundle.navigationTarget.filters });
+      expect(roundtrip.schedule.requestIds).toEqual([]);
+      expect(roundtrip.growthGoal).toBeNull();
+    }
+    const missing = prepareMarketsWorkspace(snapshot, { ...query, filters: { ...query.filters, requestIds: [id("no-such-request")] } });
+    const requested = missing.schedule.evidence.find((bundle) => bundle.metric.id === "M01")!;
+    expect(requested.navigationTarget.filters.matchNone).toBe(true);
+    expect(prepareMarketsWorkspace(snapshot, { ...query, filters: requested.navigationTarget.filters }).coverage.requested).toBe(0);
+  });
+
+  it("keeps a zero confirmed numerator with a positive denominator as a nonempty ratio population", () => {
+    const snapshot = { ...base(), assignmentEvents: [] };
+    const view = prepareMarketsWorkspace(snapshot, context());
+    const evidence = view.schedule.confirmedCoverageEvidence!;
+    expect(evidence.computation).toMatchObject({ value: 0, numerator: 0, denominator: 5 });
+    expect(evidence.filters.matchNone).toBe(false);
+    expect(evidence.navigationTarget.filters.matchNone).toBe(false);
+    expect(evidence.denominatorMembers).toHaveLength(5);
+    expect(validateEvidenceBundle(evidence)).toEqual([]);
+    expect(prepareMarketsWorkspace(snapshot, { ...context(), filters: evidence.navigationTarget.filters }).coverage.requested).toBe(5);
+  });
+
+  it("clears demand skill and attendance filters when opening a ready reporter with missing verification", () => {
+    const snapshot = base();
+    const changed = { ...snapshot, capabilityVerifications: snapshot.capabilityVerifications.filter((item) => item.reporterId !== id("Bea Shared")) };
+    const query = { ...context(), filters: { ...filters(["req-possible-a"]), capabilityCodes: [id("realtime")], attendanceModes: ["remote"] as const } };
+    const view = prepareMarketsWorkspace(changed, query);
+    const attention = view.overview!.attention.find((item) => item.id === "no-verified-ready-match")!;
+    const person = attention.personTargets.find((item) => item.reporterId === id("Bea Shared"))!;
+    expect(view.requests[0]!.candidates.find((item) => item.reporterId === person.reporterId)!.unknowns).toContain("Required capability realtime is not verified.");
+    expect(person.target).toMatchObject({ workspace: "reporters", intent: "record-detail", filters: {
+      selectedMarket: "LAX", marketBasis: "service-market", marketIds: ["LAX"], reporterIds: [id("Bea Shared")],
+      recordRefs: [{ kind: "reporter", id: "Bea Shared" }], capabilityCodes: [], attendanceModes: [], requestIds: [], window: null,
+    } });
+    expect(attention.reporterTarget!.filters.capabilityCodes).toEqual([]);
+    expect(attention.reporterTarget!.filters.attendanceModes).toEqual([]);
+  });
+});

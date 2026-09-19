@@ -193,6 +193,7 @@ const isVisible = (reporter: Reporter, asOf: UtcTimestamp) => before(reporter.cr
 const activeAt = (startAt: string, endAt: string, at: string) => Date.parse(startAt) <= Date.parse(at) && Date.parse(at) < Date.parse(endAt);
 
 function scopedMarketIds(snapshot: DemoSnapshotV2, filters: WorkspaceFilterPayload): readonly MarketId[] {
+  if (filters.matchNone) return [];
   const selected = filters.selectedMarket === "ALL" ? null : filters.selectedMarket;
   const explicit = new Set(filters.marketIds);
   return snapshot.markets
@@ -201,6 +202,7 @@ function scopedMarketIds(snapshot: DemoSnapshotV2, filters: WorkspaceFilterPaylo
 }
 
 function scoped(snapshot: DemoSnapshotV2, filters: WorkspaceFilterPayload, asOf: UtcTimestamp, plan: boolean) {
+  if (filters.matchNone) return [];
   const selected = new Set(filters.selectedMarket === "ALL" ? snapshot.markets.map((market) => market.id) : [filters.selectedMarket]);
   const markets = new Set(filters.marketIds), ids = new Set(filters.requestIds.map(String));
   const recordIds = new Set(filters.recordRefs.filter((ref) => ref.kind === "demand-request").map((ref) => ref.id));
@@ -297,7 +299,7 @@ function definition(snapshot: DemoSnapshotV2, id: string): MetricDefinitionRef |
   return row ? { id: row.id, version: row.version } : null;
 }
 function filtersWithRequests(filters: WorkspaceFilterPayload, ids: readonly RequestId[]): WorkspaceFilterPayload {
-  return { ...filters, requestIds: ids, recordRefs: ids.map(requestRef) };
+  return { ...filters, requestIds: ids, recordRefs: ids.map(requestRef), matchNone: ids.length === 0 };
 }
 function readableRequest(snapshot: DemoSnapshotV2, request: DemandRequest): ResolvedRecordReference {
   const market = snapshot.markets.find((item) => item.id === request.marketId);
@@ -356,6 +358,7 @@ function requirements(values: readonly RequestCapacityAssessment[]): readonly Re
   return [...groups.values()].map((group) => ({ kind: group.kind, value: group.value, requested: group.rows.length, confirmed: group.rows.filter((item) => item.status === "confirmed").length, possible: group.rows.filter((item) => item.status === "possible-match").length, unresolved: group.rows.filter((item) => item.status !== "confirmed").length }));
 }
 function goal(snapshot: DemoSnapshotV2, context: Context): GrowthGoalView | null {
+  if (context.filters.matchNone) return null;
   const saved = snapshot.goalRevisions.filter((item) => String(item.metric.id) === "M04" && item.savedAt <= context.evaluation.asOfAt && (context.filters.selectedMarket === "ALL" || !item.scope.marketIds.length || item.scope.marketIds.includes(context.filters.selectedMarket)) && (!context.filters.marketIds.length || !item.scope.marketIds.length || item.scope.marketIds.some((marketId) => context.filters.marketIds.includes(marketId)))).sort((a, b) => b.version - a.version || String(b.savedAt).localeCompare(String(a.savedAt)))[0];
   if (!saved || !snapshot.metricDefinitions.some((item) => item.id === saved.metric.id && item.version === saved.metric.version)) return null;
   const ref = saved.metric;
@@ -368,7 +371,7 @@ function goal(snapshot: DemoSnapshotV2, context: Context): GrowthGoalView | null
     return saved.scope.requiredCapabilityCodes.every((capability) => snapshot.capabilityVerifications.some((item) => item.reporterId === event.reporterId && item.capabilityCode === capability && item.status === "verified" && verificationIds.has(String(item.id)) && before(item.recordedAt, event.occurredAt)));
   });
   const filters: WorkspaceFilterPayload = {
-    ...context.filters, selectedMarket: saved.scope.marketIds.length === 1 ? saved.scope.marketIds[0]! : "ALL",
+    ...context.filters, matchNone: rows.length === 0, selectedMarket: saved.scope.marketIds.length === 1 ? saved.scope.marketIds[0]! : "ALL",
     marketBasis: "recruiting-market-at-entry", marketIds: saved.scope.marketIds,
     reporterIds: sortedIds(rows.map((item) => item.reporterId)), acquisitionCaseIds: rows.map((item) => item.acquisitionCaseId),
     requestIds: [], workItemIds: [], programIds: saved.scope.programIds, programEnrollmentIds: [], sourceIds: [], jobOutcomeIds: [],
@@ -396,7 +399,7 @@ function isValidCompletedOutcome(snapshot: DemoSnapshotV2, outcome: DemoSnapshot
     before(item.occurredAt, asOf),
   );
 }
-function originalPlan(snapshot: DemoSnapshotV2, context: Context): OriginalPlanResults {
+export function prepareOriginalPlanResults(snapshot: DemoSnapshotV2, context: Context): OriginalPlanResults {
   if (!context.filters.requestIds.length) return { status: "unavailable", requestIds: [], completedRequests: null, firstJobs: null, evidence: [], limitation: "Original-plan results require an explicit frozen request ID set." };
   const requests = scoped(snapshot, context.filters, context.evaluation.asOfAt, true);
   const ids = sortedIds(requests.map((request) => request.id));
@@ -405,13 +408,16 @@ function originalPlan(snapshot: DemoSnapshotV2, context: Context): OriginalPlanR
   for (const item of snapshot.jobOutcomes.filter((outcome) => isValidCompletedOutcome(snapshot, outcome, context.evaluation.asOfAt))) { const existing = earliest.get(item.reporterId); if (!existing || Date.parse(item.completedAt!) < Date.parse(existing.completedAt!)) earliest.set(item.reporterId, item); }
   const first = done.filter((item) => earliest.get(item.reporterId)?.id === item.id), ref = definition(snapshot, "M05");
   if (!ref) return { status: "unavailable", requestIds: ids, completedRequests: null, firstJobs: null, evidence: [], limitation: "M05 metric definition is not available in the snapshot." };
-  const filters = { ...filtersWithRequests(context.filters, ids), marketBasis: "job-market" as const };
-  const bundle = (name: string, values: readonly typeof done[number][], population: string): EvidenceBundle => ({
+  const bundle = (name: string, values: readonly typeof done[number][], population: string): EvidenceBundle => {
+    const filters: WorkspaceFilterPayload = { ...filtersWithRequests(context.filters, sortedIds(values.map((item) => item.requestId))),
+      marketBasis: "job-market", jobOutcomeIds: values.map((item) => item.id), reporterIds: sortedIds(values.map((item) => item.reporterId)) };
+    return ({
     id: ("evidence-capacity-M05-" + name + "-" + context.evaluation.snapshotRevision) as EvidenceBundle["id"], metric: ref, asOfAt: context.evaluation.asOfAt, snapshotRevision: context.evaluation.snapshotRevision, unit: "jobs",
     scope: { workspace: CAPACITY_WORKSPACE, marketBasis: "job-market", selectedMarket: filters.selectedMarket, populationDescription: population }, filters, reportingWindow: null, computation: { status: "available", value: values.length, numerator: null, denominator: null },
     contributingRecords: values.map((item) => ({ kind: "job-outcome", id: String(item.id), label: "Completed request " + item.requestId, occurredAt: item.completedAt, joinPath: [{ kind: "job-outcome", id: String(item.id) }, requestRef(item.requestId), reporterRef(item.reporterId)] })), numeratorMembers: [], denominatorMembers: [], exclusions: [], unknownCount: 0, limitations: ["This uses the frozen original-plan request set, including later cancellations or completions."], explanation: String(values.length) + " " + population + ".",
     navigationTarget: { workspace: CAPACITY_WORKSPACE, intent: "evidence-list", filters, evidenceContext: { asOfAt: context.evaluation.asOfAt, snapshotRevision: context.evaluation.snapshotRevision, metric: ref } },
-  });
+    });
+  };
   return { status: "available", requestIds: ids, completedRequests: done.length, firstJobs: first.length, evidence: [bundle("completed", done, "original-plan requests completed"), bundle("first-jobs", first, "first jobs completed")], limitation: null };
 }
 function supplyDemandSeries(snapshot: DemoSnapshotV2, context: Context): SupplyDemandSeries {
@@ -619,7 +625,7 @@ function requestAttention(snapshot: DemoSnapshotV2, context: Context, values: re
       workspace: "reporters", intent: "evidence-list", evidenceContext: evidence.navigationTarget.evidenceContext,
       filters: { ...context.filters, marketBasis: "service-market", marketIds, reporterIds: source.reporterIds,
         requestIds: [], acquisitionCaseIds: [], workItemIds: [], programIds: [], programEnrollmentIds: [], sourceIds: [], jobOutcomeIds: [],
-        recordRefs: source.reporterIds.map(reporterRef), window: null },
+        recordRefs: source.reporterIds.map(reporterRef), capabilityCodes: [], attendanceModes: [], window: null },
     } : null;
     const personTargets = reporterTarget ? source.reporterIds.flatMap((reporterId) => {
       const ready = snapshot.readinessEvents.some((event) => event.reporterId === reporterId && before(event.recordedAt, context.evaluation.asOfAt) && before(event.occurredAt, context.evaluation.asOfAt));
@@ -700,7 +706,7 @@ export function prepareMarketsWorkspace(snapshot: DemoSnapshotV2, context: Conte
   const live = scoped(snapshot, scheduleContext.filters, context.evaluation.asOfAt, false).filter((item) => item.status === "open");
   const requests = assessments(snapshot, live, context.evaluation.asOfAt), coverage = summary(requests);
   const schedule = schedulingWindow(snapshot, scheduleContext, resolved, requests);
-  const goalValue = goal(snapshot, context), plan = originalPlan(snapshot, context), series = supplyDemandSeries(snapshot, context);
+  const goalValue = goal(snapshot, context), plan = prepareOriginalPlanResults(snapshot, context), series = supplyDemandSeries(snapshot, context);
   const overviewValue = overview(snapshot, scheduleContext, series, requests);
   const marketIds = scopedMarketIds(snapshot, context.filters);
   const marketRows = snapshot.markets.filter((market) => marketIds.includes(market.id)).map((market) => {
