@@ -15,7 +15,7 @@ export function prepareWeeklyReviewFoundation(
   const measures: WeeklyReviewMeasure[] = [];
   const coverage = capacity.schedule?.confirmedCoverageEvidence;
   if (coverage) measures.push({
-    id: "schedule-coverage", label: "Confirmed scheduling coverage", metric: coverage.metric, unit: coverage.unit,
+    id: "schedule-coverage", label: "Confirmed scheduling coverage", metric: coverage.metric, unit: coverage.unit, currency: null,
     actual: coverage.computation.value,
     actualUnavailableReason: coverage.computation.status === "unavailable" ? coverage.computation.reason : null,
     scopeLabel: coverage.scope.populationDescription, observationLabel: capacity.schedule!.rule,
@@ -25,7 +25,7 @@ export function prepareWeeklyReviewFoundation(
   });
   const goal = capacity.growthGoal;
   if (goal) measures.push({
-    id: `readiness-${goal.goalRevisionId}`, label: "Saved readiness goal", metric: goal.metric, unit: goal.unit,
+    id: `readiness-${goal.goalRevisionId}`, label: "Saved readiness goal", metric: goal.metric, unit: goal.unit, currency: null,
     actual: goal.actual, actualUnavailableReason: null,
     scopeLabel: goal.evidence.scope.populationDescription,
     observationLabel: `Saved baseline ${goal.baselineAsOfAt}; goal deadline ${goal.deadline}.`,
@@ -36,7 +36,7 @@ export function prepareWeeklyReviewFoundation(
   });
   const onboarding = recruiting.evidence.find((evidence) => evidence.metric.id === "M08");
   if (onboarding) measures.push({
-    id: "onboarding-first-job", label: "First job within 14 days of onboarding", metric: onboarding.metric, unit: onboarding.unit,
+    id: "onboarding-first-job", label: "First job within 14 days of onboarding", metric: onboarding.metric, unit: onboarding.unit, currency: null,
     actual: onboarding.computation.value,
     actualUnavailableReason: onboarding.computation.status === "unavailable" ? onboarding.computation.reason : null,
     scopeLabel: onboarding.scope.populationDescription, observationLabel: onboarding.explanation,

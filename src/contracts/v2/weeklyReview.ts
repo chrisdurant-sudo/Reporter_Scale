@@ -1,4 +1,4 @@
-import type { DateWindow, MetricDefinitionRef, MetricEvaluationContext, SelectedMarket, UtcTimestamp } from "./common";
+import type { CurrencyCode, DateWindow, MetricDefinitionRef, MetricEvaluationContext, SelectedMarket, UtcTimestamp } from "./common";
 import type { EvidenceBundle, EvidenceUnit, WorkspaceNavigationTarget } from "./evidence";
 import type { RecordPointer } from "./references";
 import type { TeamMemberId } from "./ids";
@@ -9,6 +9,8 @@ export interface WeeklyReviewMeasure {
   readonly label: string;
   readonly metric: MetricDefinitionRef;
   readonly unit: EvidenceUnit;
+  /** Null for nonmonetary or unavailable/ambiguous currency; never assume a currency from the UI locale. */
+  readonly currency: CurrencyCode | null;
   readonly actual: number | null;
   readonly actualUnavailableReason: string | null;
   readonly scopeLabel: string;
