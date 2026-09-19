@@ -4,7 +4,7 @@
 
 > Continuation update: the user has now explicitly authorized the improvement implementation in task `01a0b79d-03f1-7f60-9d63-681a9f9baef3`. Start from `P4_INTERVIEW_CONTRACT_DELTAS.md` and the active ledger. Fresh coordinator task `01a0b7df-3f9e-7c72-a35a-1a6ed497e596` is rooted at `/private/tmp/steno-p4-coordinator` and has verified the loaded Astra catalog plus Data and Quality zero-inheritance probes. Chromium launch is recovered. The user-approved Quality-only IP0 browser-suite repair is integrated at `30a1aca9fbee1b1c4e81a5e6841fbd8b81a81b1a`; the full suite passes. The current phase is IP1 serial Data/logic implementation. Read the live ledger and `IP0_BROWSER_REPAIR_REQUEST.md` for exact evidence. Do not request another implementation start or repeat the 50-person expansion.
 
-> IP1 update: Data, browser persistence, Capacity IC01 and Recruiting IC02 are integrated. The follow-up Data history-validation defect is repaired; malformed previous values now fail load/save without replacing bytes. Latest full baseline `702e95a8364232d03c913460d606970aaed1e7e0` passes 207 unit/integration, nine acceptance and eight browser tests. The completed 50-person expansion and 25-task sample are unchanged. Next serial roles: Network, Team, Programs. Recruiting API/cohort evidence is in `IP1_RECRUITING_HANDOFF.md`. New presentation and independent Quality/Reviewer gates remain pending.
+> Active work: Team is the sole implementation worker in `/private/tmp/steno-interview-ip1-team`, based on `a4a765efab8fb8e2651b3ba871930f836ae6ecaa`; its actual Astra/high runtime is recorded. Programs follows Team integration. Coordinator IC09 weekly-review types and the Capacity/Recruiting composition foundation are committed with four focused checks and typecheck; the combined full gate is pending. The 50-person expansion and 25-task seed remain unchanged. `IP1_RECRUITING_HANDOFF.md`, `IP1_NETWORK_HANDOFF.md` and the live ledger carry current evidence. Presentation and independent Quality/Reviewer remain pending.
 
 ## Start in the correct checkout
 
@@ -24,10 +24,10 @@ The root contains copies of this handoff, the improvement plan and product revie
 A new task must use the active checkout's project configuration; opening an Astra task in the older
 main checkout alone will not load the new worker assignments.
 
-## What the user authorized
+## Historical planning authorization
 
 Detailed critique first, then incorporate the proposal into the plan and update model assignments.
-The new interview improvement implementation has not been authorized or started by that request.
+That initial planning request did not authorize implementation; the later explicit start and continuation at the top of this file now do.
 The user intends to select Astra/xhigh as coordinator. Keep All / LAX / SFO / DFW / ORD / ATL;
 LAX is the primary narrative, while All and every other market remain functional and meaningful.
 No production source, dependencies, deployment or external messages changed in this planning pass.
@@ -43,7 +43,7 @@ No production source, dependencies, deployment or external messages changed in t
    presentation requirements; canonical data meanings and safety boundaries remain in force.
 5. Job description: `/Users/pc/Desktop/STENO/JD.txt` (user-owned, not staged by this planning pass).
 
-## Current evidence and remaining work
+## Historical evidence and remaining acceptance gates
 
 The completed 50-person expansion and SD01–SD07 are historical passed gates. Do not rerun an additive
 50-person seed expansion. A bounded linked-task/history amendment may be needed for the Team board.

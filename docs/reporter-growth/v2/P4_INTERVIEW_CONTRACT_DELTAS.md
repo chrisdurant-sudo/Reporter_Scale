@@ -4,11 +4,11 @@
 
 Status: AUTHORIZED — IP1 SERIAL DATA/LOGIC IMPLEMENTATION; CONTRACT BOUNDARY PREPARED AT `dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333`
 
-Continuation: task `01a0b7df-3f9e-7c72-a35a-1a6ed497e596` verified the loaded Astra catalog and Data/Quality/Capacity/Recruiting zero-inheritance probes. Data, browser persistence, Capacity and Recruiting are integrated, including the follow-up malformed-history validation repair. Full baseline `702e95a8364232d03c913460d606970aaed1e7e0` passes 207 unit/integration, nine acceptance and eight browser cases. Network, Team and Programs are next, serially. Read the active ledger for exact evidence. No new start or sample expansion is needed.
+Continuation: task `01a0b7df-3f9e-7c72-a35a-1a6ed497e596` verified the loaded Astra catalog and Data/Quality/Capacity/Recruiting/Network/Team zero-inheritance probes. Data, browser persistence, Capacity, Recruiting and Network are integrated. Team is the sole active implementation worker; Programs follows serially. The latest full gate is the exact Network integration candidate above; the later weekly-review foundation awaits the combined gate. Read the live ledger for runtime, ownership and evidence. No new start or sample expansion is needed.
 
 The user said “please start” in task `01a0b79d-03f1-7f60-9d63-681a9f9baef3` after the readiness review on September 18, 2026. This authorizes the implementation sequence in `P4_INTERVIEW_IMPROVEMENT_PLAN.md`; another start approval is not needed. Deployment, dependencies, external messages, credit resets and changes to the older main checkout remain outside scope.
 
-Active checkout: `/private/tmp/steno-p4-coordinator`. Amendment base: `6e7ea99e2358e497b8a6d4331a6cc8513e668501`. Frozen source contract: `19f7df98000e346a5b4ff32e00b699276c3f62fb` plus integrated amendments through the base. The source candidate remains `16479473d6b22ed64a18d4b1b5b9748f1c84374b`; its old Quality result is unclosed.
+Active checkout: `/private/tmp/steno-p4-coordinator`. Amendment base: `6e7ea99e2358e497b8a6d4331a6cc8513e668501`. Frozen source contract: `19f7df98000e346a5b4ff32e00b699276c3f62fb` plus integrated amendments through the base. The pre-amendment source candidate was `16479473d6b22ed64a18d4b1b5b9748f1c84374b`; its historical Quality result does not accept this amendment.
 
 ## Historical IP0 prerequisite (resolved; see continuation and live ledger)
 
