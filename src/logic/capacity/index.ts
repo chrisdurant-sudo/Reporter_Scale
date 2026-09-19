@@ -138,6 +138,8 @@ export interface PreparedSchedulingWindow {
   readonly unit: "request-slots";
   readonly rule: string;
   readonly coverage: CoverageSummary & { readonly unresolved: number };
+  /** M02 stays a ratio; its numerator and numeratorMembers support the confirmed-slot count. */
+  readonly confirmedCoverageEvidence: EvidenceBundle | null;
   readonly requestIds: readonly RequestId[];
   readonly confirmedRequestIds: readonly RequestId[];
   readonly unresolvedRequestIds: readonly RequestId[];
@@ -619,12 +621,23 @@ function requestAttention(snapshot: DemoSnapshotV2, context: Context, values: re
         requestIds: [], acquisitionCaseIds: [], workItemIds: [], programIds: [], programEnrollmentIds: [], sourceIds: [], jobOutcomeIds: [],
         recordRefs: source.reporterIds.map(reporterRef), window: null },
     } : null;
-    const personTargets = reporterTarget ? source.reporterIds.map((reporterId) => {
+    const personTargets = reporterTarget ? source.reporterIds.flatMap((reporterId) => {
       const ready = snapshot.readinessEvents.some((event) => event.reporterId === reporterId && before(event.recordedAt, context.evaluation.asOfAt) && before(event.occurredAt, context.evaluation.asOfAt));
-      const target: WorkspaceNavigationTarget = { ...reporterTarget, workspace: ready ? "reporters" : "recruiting", intent: "record-detail",
-        filters: { ...reporterTarget.filters, reporterIds: [reporterId], recordRefs: [reporterRef(reporterId)],
-          acquisitionCaseIds: ready ? [] : snapshot.acquisitionCases.filter((item) => item.reporterId === reporterId && before(item.recordedAt, context.evaluation.asOfAt)).map((item) => item.id) } };
-      return { reporterId, target };
+      if (ready) {
+        const target: WorkspaceNavigationTarget = { ...reporterTarget, intent: "record-detail",
+          filters: { ...reporterTarget.filters, reporterIds: [reporterId], recordRefs: [reporterRef(reporterId)] } };
+        return [{ reporterId, target }];
+      }
+      // Recruiting ownership is fixed at acquisition entry, independent of the demand/service market.
+      // Without a known case there is no canonical Funnel record to open.
+      return snapshot.acquisitionCases.filter((item) => item.reporterId === reporterId && before(item.recordedAt, context.evaluation.asOfAt) && before(item.openedAt, context.evaluation.asOfAt)).map((acquisition) => {
+        const target: WorkspaceNavigationTarget = { ...reporterTarget, workspace: "recruiting", intent: "record-detail",
+          filters: { ...reporterTarget.filters, marketBasis: "recruiting-market-at-entry", selectedMarket: acquisition.ownerMarketId,
+            marketIds: [acquisition.ownerMarketId], reporterIds: [reporterId], acquisitionCaseIds: [acquisition.id],
+            recordRefs: [reporterRef(reporterId), { kind: "acquisition-case", id: String(acquisition.id) }],
+            capabilityCodes: [], attendanceModes: [], requestIds: [], window: null } };
+        return { reporterId, target };
+      });
     }) : [];
     return [{ id: status, finding, nextAction, source, marketIds, evidence, navigationTarget: evidence?.navigationTarget ?? null, reporterTarget, personTargets }];
   });
@@ -657,10 +670,10 @@ function schedulingWindow(snapshot: DemoSnapshotV2, context: Context, resolved: 
     }));
     return [{ reporterId, requestIds: requests.map((item) => item.id), overlappingRequestPairs: pairs }];
   });
+  const confirmedCoverageEvidence = coverageEvidence(snapshot, context, values.map((item) => item.request), values.filter((item) => item.status === "confirmed"));
   const evidence = [
     countEvidence(snapshot, "M01", definition(snapshot, "M01"), context, values.map((item) => item.request), "Non-canceled upcoming request slots starting in the declared scheduling window."),
-    coverageEvidence(snapshot, context, values.map((item) => item.request), values.filter((item) => item.status === "confirmed")),
-    countEvidence(snapshot, "M02-confirmed-slots", definition(snapshot, "M02"), context, values.filter((item) => item.status === "confirmed").map((item) => item.request), "Request slots with one valid accepted assignment; this is not a count of people."),
+    confirmedCoverageEvidence,
     countEvidence(snapshot, "M03-unresolved", definition(snapshot, "M03"), context, values.filter((item) => item.status !== "confirmed").map((item) => item.request), "Unresolved = possible + no verified ready match + requirements unknown. Categories are exclusive."),
     ...requestAttention(snapshot, context, values).map((item) => item.evidence),
   ].filter((item): item is EvidenceBundle => item !== null);
@@ -676,7 +689,7 @@ function schedulingWindow(snapshot: DemoSnapshotV2, context: Context, resolved: 
     elapsedRequestIds: sortedIds(all.filter((item) => item.status !== "canceled" && Date.parse(item.startAt) < Date.parse(context.evaluation.asOfAt)).map((item) => item.id)),
     people: { unit: "people", confirmed: confirmedReporterIds.length, confirmedReporterIds, possibleCandidates: possibleCandidateReporterIds.length, possibleCandidateReporterIds, sharedCandidates,
       limitation: "Distinct people are separate from slots. A person can cover separate non-overlapping slots. Shared options, especially overlapping pairs, are not guaranteed simultaneously fillable capacity." },
-    evidence,
+    evidence, confirmedCoverageEvidence,
     previousPeriod: { status: "unavailable", reason: "No frozen comparable prior scheduling-window evaluation is supplied. Current request status and verification records do not establish an equivalent prior-period coverage snapshot; instant chart points are not weekly slot totals." },
   };
 }
