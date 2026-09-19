@@ -14,3 +14,11 @@ Coordinator opened both actual historical and amended interactive references, in
 ## Verification
 
 Exact integrated candidate passes governance, lint, types, all 314 unit/integration tests and production build. Acceptance: seven pass, two fail at obsolete Overview/Funnel selectors. Full gate therefore fails, no waiver. Browser diagnostics are being run separately before the authorized serial Quality alignment. No specialist work or visual acceptance is authorized by this review.
+
+## Follow-up after the first repair
+
+`dfdc56a6abd372703be80148a6d43cc9322dd0b5` repairs both listed defects and integrates at `c9351e64b1dcebfb6b68e7848ff620c90aa5fb9a`. Coordinator passed the exact two-path boundary and governance, verified all19 image hashes and inspected core4 plus both repaired states. All21 recorded interactions pass; no browser errors. Corrected evidence labels open the distinct10-request and2-first-job bundles.
+
+The Lead flagged an unchanged caption and coordinator confirmed it in `funnel_bottleneck_table.png`: Current bottlenecks says113 records shown above five active-status rows totaling66. IP03/IP05 require truthful count scope. A serial presentation-only correction is authorized in `src/features/recruiting/`: use `view.kpis.activePeopleInFunnel.value` with active-person wording in Bottlenecks mode; retain the actual record count in People mode. No domain change or new calculation is required. Final clean proof must supersede the previous capture before acceptance.
+
+The exact c9351e integration again produces7/9 acceptance and4/8 browser passes, same known historical assertions. Logs: `/private/tmp/steno-ip2-c9351e-acceptance.log` and `/private/tmp/steno-ip2-c9351e-browser.log`. They remain failed diagnostics, not waived checks.
