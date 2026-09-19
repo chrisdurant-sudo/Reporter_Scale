@@ -85,3 +85,7 @@ The ledger names the exact verification JSON and complete log under `evidence/`.
 ### Shared historical work projection
 
 Recruiting requested a shared `projectWorkItemAt(work, asOfAt)` helper after coordinator review found that task due dates and blockers would otherwise leak later edits into an older as-of view. The coordinator implementation in `src/logic/shared/work.ts` restores title, priority, due date and blocker by reversing later edits in descending time and append order. It preserves the audit records and originally absent optional fields; it does not reinterpret status, ownership, completion credit, or revision. Recruiting, Team and other consumers of historical editable fields use this helper instead of duplicating reconstruction rules. Commands still append history through their owning domain.
+
+### Atomic Programs/Team composition
+
+Coordinator `composeProgramsCommand` in `src/integration/v2ProgramComposition.ts` runs the Programs preparer, then each requested work payload through the supplied Team preparer, inside `commitV2Command`. Child creation IDs derive deterministically from the parent command ID and request index. Only the parent enters the replay log; affected references are deduplicated and one repository save acknowledges all changes. A failed child abandons the entire prepared mutation. Focused transaction tests cover parent replay without duplicate tasks and rollback when a later task fails. Domain command validation and presentation wiring remain the Programs/Team owners' responsibilities in the ordered sequence.
