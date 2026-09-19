@@ -7,6 +7,9 @@ import type {
   CredentialRecord,
   DateWindow,
   DemoRepositoryV2,
+  DemoRepositoryV2Options,
+  PersistedDemoSnapshotV2,
+  V2CommandError,
   DemoSnapshotV2,
   EvidenceBundle,
   GoalRevision,
@@ -37,6 +40,10 @@ import type {
   WorkaroundExample,
   WorkspaceFilterPayload,
 } from "../contracts/v2";
+
+import { INTERVIEW_V2_STORAGE_KEY } from "../contracts/v2";
+import { validateInterviewRecords, preservesWorkHistory } from "./v2Validation";
+import { interviewWorkItems, interviewQualityChecks, interviewCoaching, interviewProcess } from "./v2InterviewSeed";
 
 const asId = (value: string) => value as never;
 const utc = (value: string) => value as UtcTimestamp;
@@ -704,6 +711,7 @@ const targetWindow: DateWindow = { startAt: utc("2026-02-09T08:00:00Z"), endAt: 
 const teamTargets: TeamTarget[] = [
   { id: asId("target-recruiting-ops-v1"), teamMemberId: null, role: "Recruiting operations", metric: { id: asId("M11"), version: asId("v2-frozen-1") }, target: 4, reportingWindow: targetWindow, createdAt: utc("2026-02-09T08:00:00Z"), rationale: "Fictional like-role tasks target for the same reporting window.", provenance },
   { id: asId("target-program-ops-v1"), teamMemberId: asId("team-2"), role: "Program operations", metric: { id: asId("M11"), version: asId("v2-frozen-1") }, target: 1, reportingWindow: targetWindow, createdAt: utc("2026-02-09T08:00:00Z"), rationale: "Fictional individual tasks target using the same unit.", provenance },
+  { id: asId("target-network-ops-v1"), teamMemberId: asId("team-3"), role: "Network operations", metric: { id: asId("M11"), version: asId("v2-frozen-1") }, target: 3, reportingWindow: targetWindow, createdAt: utc("2026-02-09T08:00:00Z"), rationale: "Review three linked availability or first-opportunity tasks in the stated week; task completion does not confirm coverage.", provenance },
 ];
 const workQualityChecks: WorkQualityCheck[] = [
   { id: asId("quality-dfw-review"), workItemId: asId("work-dfw-review"), checkedBy: asId("team-2"), checkedAt: utc("2026-01-16T18:00:00Z"), requiredCheckResults: [{ checkCode: "evidence-linked", passed: true, reason: "The fictional decision retains its source records." }], outcome: "passed", provenance },
@@ -859,10 +867,10 @@ export const DEMO_SNAPSHOT_V2: DemoSnapshotV2 = {
   assignmentEvents,
   jobOutcomes,
   teamMembers,
-  workItems,
+  workItems: [...workItems, ...interviewWorkItems],
   teamTargets,
-  workQualityChecks,
-  coachingActions,
+  workQualityChecks: [...workQualityChecks, ...interviewQualityChecks],
+  coachingActions: [...coachingActions, ...interviewCoaching],
   sources,
   sourceSpend,
   programs,
@@ -874,7 +882,7 @@ export const DEMO_SNAPSHOT_V2: DemoSnapshotV2 = {
   programDecisions,
   goalRevisions,
   workaroundExamples,
-  processVersions,
+  processVersions: [...processVersions, interviewProcess],
   commandRecords: [],
 };
 
@@ -929,7 +937,7 @@ export function applyScenarioCheckpoint(snapshot: DemoSnapshotV2, checkpointId: 
   return { ...next, currentAsOfAt: checkpointRecord.asOfAt };
 }
 
-const failure = (snapshot: Partial<DemoSnapshotV2> | null, code: "validation-failed" | "invariant-failed", message: string, field: string | null = null): RepositoryResult<DemoSnapshotV2> => ({
+const failure = (snapshot: Partial<DemoSnapshotV2> | null, code: V2CommandError["code"], message: string, field: string | null = null): RepositoryResult<DemoSnapshotV2> => ({
   ok: false,
   errors: [{ code, message, field, relatedRecords: [] }],
   revision: snapshot?.revision ?? 0,
@@ -939,11 +947,18 @@ const duplicates = (values: readonly string[]) => new Set(values).size !== value
 const after = (left: string, right: string) => Date.parse(left) > Date.parse(right);
 
 export function validateDemoSnapshot(value: unknown): RepositoryResult<DemoSnapshotV2> {
+  try { return validateSnapshotRecords(value); }
+  catch { return failure(null, "validation-failed", "Snapshot contains malformed records."); }
+}
+
+function validateSnapshotRecords(value: unknown): RepositoryResult<DemoSnapshotV2> {
   if (!value || typeof value !== "object") return failure(null, "validation-failed", "Snapshot must be an object.");
   const snapshot = value as Partial<DemoSnapshotV2>;
-  const requiredArrays: readonly (keyof DemoSnapshotV2)[] = ["markets", "metricDefinitions", "reporters", "acquisitionCases", "lifecycleEvents", "capabilityVerifications", "onboardingSteps", "readinessEvents", "availabilityWindows", "demandRequests", "assignmentEvents", "jobOutcomes", "teamMembers", "workItems", "programs", "programEnrollments", "goalRevisions", "processVersions", "appliedCommandIds", "appliedScenarioEventIds"];
+  const requiredArrays: readonly (keyof DemoSnapshotV2)[] = ["markets", "metricDefinitions", "evidenceSnapshots", "manualMarketNotes", "reporters", "acquisitionCases", "lifecycleEvents", "credentialRecords", "capabilityVerifications", "screeningReviews", "onboardingSteps", "readinessEvents", "availabilityWindows", "demandRequests", "assignmentEvents", "jobOutcomes", "teamMembers", "workItems", "teamTargets", "workQualityChecks", "coachingActions", "sources", "sourceSpend", "programs", "programEnrollments", "programNotes", "programDecisions", "goalRevisions", "workaroundExamples", "processVersions", "commandRecords", "appliedCommandIds", "appliedScenarioEventIds"];
   if (snapshot.schemaVersion !== 2 || requiredArrays.some((key) => !Array.isArray(snapshot[key]))) return failure(snapshot, "validation-failed", "Snapshot schema or required collections are invalid.");
   const candidate = snapshot as DemoSnapshotV2;
+  const interviewError = validateInterviewRecords(candidate);
+  if (interviewError) return failure(candidate, "validation-failed", interviewError);
   if (candidate.markets.length !== 5 || duplicates(candidate.markets.map((item) => String(item.id)))) return failure(candidate, "invariant-failed", "Exactly five distinct markets are required.", "markets");
   if (duplicates(candidate.reporters.map((item) => String(item.id))) || duplicates(candidate.demandRequests.map((item) => String(item.id))) || duplicates(candidate.assignmentEvents.map((item) => String(item.id))) || duplicates(candidate.jobOutcomes.map((item) => String(item.id))) || duplicates(candidate.appliedCommandIds.map(String)) || duplicates(candidate.appliedScenarioEventIds.map(String))) return failure(candidate, "invariant-failed", "Canonical IDs and replay IDs must be unique.");
   const marketIds = new Set(candidate.markets.map((item) => item.id));
@@ -1012,28 +1027,72 @@ export function validateDemoSnapshot(value: unknown): RepositoryResult<DemoSnaps
   return { ok: true, value: structuredClone(candidate), revision: candidate.revision, message: "V2 snapshot validated." };
 }
 
-export function createDemoRepositoryV2(seed: DemoSnapshotV2 = DEMO_SNAPSHOT_V2): DemoRepositoryV2 {
+export function createDemoRepositoryV2(seed: DemoSnapshotV2 = DEMO_SNAPSHOT_V2, options: DemoRepositoryV2Options = {}): DemoRepositoryV2 {
   const validatedSeed = validateDemoSnapshot(seed);
   if (!validatedSeed.ok) throw new Error(validatedSeed.message);
   const frozenSeed = structuredClone(validatedSeed.value);
   let current = structuredClone(frozenSeed);
+  let observedBytes: string | null | undefined;
+  const storage = options.storage;
+  const key = options.storageKey ?? INTERVIEW_V2_STORAGE_KEY;
+  const success = (message: string): RepositoryResult<DemoSnapshotV2> => ({ ok: true, value: structuredClone(current), revision: current.revision, message });
+  const read = (): { snapshot: DemoSnapshotV2; bytes: string | null } | RepositoryResult<DemoSnapshotV2> => {
+    if (!storage) return { snapshot: current, bytes: null };
+    let bytes: string | null;
+    try { bytes = storage.getItem(key); }
+    catch { return failure(current, "storage-failed", "Local demo storage could not be read. Existing state was preserved."); }
+    if (bytes === null) return { snapshot: frozenSeed, bytes };
+    try {
+      const envelope = JSON.parse(bytes) as Partial<PersistedDemoSnapshotV2> | null;
+      if (!envelope || envelope.format !== "reporter-growth-v2" || envelope.storageVersion !== 1 || envelope.seedVersion !== frozenSeed.seedVersion || envelope.snapshot?.seedVersion !== frozenSeed.seedVersion || envelope.snapshot?.baseAsOfAt !== frozenSeed.baseAsOfAt) {
+        return failure(current, "validation-failed", "Saved demo format or seed version is incompatible. Explicit Reset is required to replace this namespace.");
+      }
+      const checked = validateDemoSnapshot(envelope.snapshot);
+      if (!checked.ok) return failure(current, "validation-failed", "Saved demo is invalid. Existing bytes were preserved; Explicit Reset can recover this namespace.");
+      return { snapshot: checked.value, bytes };
+    } catch { return failure(current, "validation-failed", "Saved demo is not valid JSON. Existing bytes were preserved; Explicit Reset can recover this namespace."); }
+  };
+  const write = (snapshot: DemoSnapshotV2): RepositoryResult<DemoSnapshotV2> | null => {
+    if (!storage) return null;
+    try {
+      const envelope: PersistedDemoSnapshotV2 = { format: "reporter-growth-v2", storageVersion: 1, seedVersion: frozenSeed.seedVersion, snapshot };
+      const bytes = JSON.stringify(envelope);
+      storage.setItem(key, bytes);
+      observedBytes = bytes;
+      return null;
+    } catch { return failure(current, "storage-failed", "Local demo storage could not be saved. Prior state was preserved; retry when storage is available."); }
+  };
   return {
-    async load() { return { ok: true, value: structuredClone(current), revision: current.revision, message: "V2 snapshot loaded." }; },
+    async load() {
+      const loaded = read();
+      if (!("snapshot" in loaded)) return loaded;
+      current = structuredClone(loaded.snapshot);
+      observedBytes = loaded.bytes;
+      return success("V2 snapshot loaded.");
+    },
     async save(next, expectedRevision) {
-      if (expectedRevision !== current.revision) return {
-        ok: false,
-        errors: [{ code: "stale-revision", message: "Stale revision.", field: "expectedRevision", relatedRecords: [] }],
-        revision: current.revision,
-        message: "Stale revision.",
-      };
+      const loaded = read();
+      if (!("snapshot" in loaded)) return loaded;
+      if (expectedRevision !== loaded.snapshot.revision || (storage && observedBytes !== undefined && observedBytes !== loaded.bytes)) {
+        return failure(loaded.snapshot, "stale-revision", "Stale revision. Reload the latest saved demo before editing.", "expectedRevision");
+      }
       const checked = validateDemoSnapshot(next);
       if (!checked.ok) return checked;
-      current = { ...structuredClone(checked.value), revision: current.revision + 1 };
-      return { ok: true, value: structuredClone(current), revision: current.revision, message: "V2 snapshot saved." };
+      if (checked.value.seedVersion !== frozenSeed.seedVersion || checked.value.baseAsOfAt !== frozenSeed.baseAsOfAt || !preservesWorkHistory(loaded.snapshot, checked.value)) return failure(current, "invariant-failed", "Save cannot replace the seed identity, rewind the clock, remove replay IDs, or rewrite recorded work history.");
+      const saved = { ...structuredClone(checked.value), revision: loaded.snapshot.revision + 1 };
+      const error = write(saved);
+      if (error) return error;
+      current = saved;
+      return success("V2 snapshot saved.");
     },
     async reset() {
-      current = structuredClone(frozenSeed);
-      return { ok: true, value: structuredClone(current), revision: current.revision, message: "V2 snapshot reset." };
+      // Explicit recovery writes only our namespace; never remove/clear another application's data.
+      const checked = validateDemoSnapshot(frozenSeed);
+      if (!checked.ok) return checked;
+      const error = write(checked.value);
+      if (error) return error;
+      current = structuredClone(checked.value);
+      return success("V2 snapshot reset.");
     },
   };
 }
