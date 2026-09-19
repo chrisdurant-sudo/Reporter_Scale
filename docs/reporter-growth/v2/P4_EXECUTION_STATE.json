@@ -259,6 +259,13 @@
         "status": "approved",
         "contract_commit": "662e7de0e3b87305a22f8a56ac67c2b2a48004cf",
         "scope": "Reject stored/proposed edits missing required previous dueAt/blockerCode values; preserve optional-field absence and malformed bytes. See IP1_WORK_HISTORY_VALIDATION_REQUEST.md."
+      },
+      {
+        "id": "IC09",
+        "role": "coordinator",
+        "status": "approved",
+        "contract_commit": "c7e87500c6ec4b2f287aa3cc7214e8dfcedfe309",
+        "scope": "Read-only weekly review composition of prepared domain measures, compatible targets/comparisons, exact constraint evidence and recorded accountable review actions; no stored data changes."
       }
     ],
     "source_contract_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
