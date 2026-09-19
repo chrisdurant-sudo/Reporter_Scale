@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-19T07:56:36.831292+00:00",
+  "updated_at": "2026-09-19T07:57:04.925716+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -439,7 +439,8 @@
       "coordinator_review": {
         "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-ip2-reference-review.json",
         "sha256": "780e5767f9b0ad157fcefc73ef32eaca53e8970af739d276cdf3675d7d33a0e9"
-      }
+      },
+      "frozen_at_commit": "d4b4ff98a3ee9e9fd1bffe829a6b747ab34670d1"
     }
   },
   "implementation_base_commit": "6e7ea99e2358e497b8a6d4331a6cc8513e668501",
@@ -976,9 +977,9 @@
     "task_name": "/root/ip2_experience",
     "worktree": "/private/tmp/steno-interview-ip2-experience",
     "branch": "codex/interview-ip2-experience",
-    "base_commit": "8265d59853567b9816c0bc3b7e1625576cb87978",
+    "base_commit": "d4b4ff98a3ee9e9fd1bffe829a6b747ab34670d1",
     "source_contract_commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
-    "status": "reference_frozen_awaiting_source_baseline",
+    "status": "source_implementation",
     "allowed_paths": [
       "src/ui/",
       "src/shell/",
@@ -987,7 +988,7 @@
       "src/features/recruiting/"
     ],
     "scratch_reference_output": "/private/tmp/steno-ip2-reference-proposal",
-    "production_edits_open": false,
+    "production_edits_open": true,
     "runtime_evidence": {
       "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-experience-worker-runtime.json",
       "sha256": "062ddeccf1b537fdfa2dbae573e3c2cd5c1b8be26102be338751fda2202dfefd"
