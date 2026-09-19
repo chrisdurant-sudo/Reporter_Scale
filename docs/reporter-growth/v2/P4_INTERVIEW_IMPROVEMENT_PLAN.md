@@ -1,5 +1,7 @@
 # Interview improvement implementation plan
 
+> September 19 viewport amendment: the user does not need phone optimization. `P4_INTERVIEW_VIEWPORT_SCOPE.md` governs the current interview proof: desktop/tablet (1440×900, 1024×768, 768×1024), basic narrow-screen usability retained, no required 390px visual proof. Historical requirements below remain evidence of their original scope.
+
 Date: September 18, 2026
 Status: **IMPLEMENTATION AUTHORIZED — IP2 REVISED VISUAL PROOF**
 
@@ -155,7 +157,7 @@ A stronger model alone cannot establish these outcomes. Visible behavior and evi
    specialists in the established bounded wave. Lead stays sole shared writer, answers contract
    questions, reviews screenshots; coordinator integrates exact commits sequentially.
 6. Quality independently verifies IP01–IP12 plus unaffected XR/SD/original acceptance against one
-   integrated commit. Include genuine pointer/keyboard/touch controls and 390px states, not only DOM
+   integrated commit. Include genuine pointer/keyboard/touch controls and required desktop/tablet states, not only DOM
    existence assertions. Owners repair defects; any production repair invalidates prior Quality pass.
 7. Reviewer inspects the exact Quality-passed commit. Produce the walkthrough and evidence register.
    Deployment remains a separate authorization; no claim of interview certainty or real outcomes.
@@ -170,7 +172,7 @@ are serial; maximum four workers only for the Lead-plus-specialists wave. No dom
 | ID | Required observable result | Owner / independent verification |
 |---|---|---|
 | IP01 | All plus five markets work across all five tabs; selection persists; LAX story and a distinct DFW stop case reconcile | Lead, specialists / Quality |
-| IP02 | Charts fill available plot space at desktop and 390px; hover/focus/tap gives exact source-backed numbers and units; forecast is distinguishable | Lead / Quality |
+| IP02 | Charts fill available plot space at desktop and required tablet widths; hover/focus/tap gives exact source-backed numbers and units; forecast is distinguishable | Lead / Quality |
 | IP03 | Counted status click focuses selection, second click clears; combined filters/search/sort/clear agree with records and declared chart scope | Lead, specialists / Quality |
 | IP04 | Overview capacity KPIs and market rows reconcile for one explicit window; unknown/possible and people/slots remain distinct | Capacity + Lead / Quality |
 | IP05 | Waiting on and Owner return expected fixtures; Applicant includes Applicants; conversion exposes cohort and horizon | Recruiting + Lead / Quality |
@@ -180,7 +182,7 @@ are serial; maximum four workers only for the Lead-plus-specialists wave. No dom
 | IP09 | Member filtering and assignment/status/due/priority/notes edits persist and reset; completion evidence and coaching/goal units are inspectable | Team support + Team Experience / Quality |
 | IP10 | Program filters have explicit scope; each case uses its own metric/target; numerators, denominators and windows reconstruct | Programs support + Experience / Quality |
 | IP11 | Pilot checklist has steps/owner/SLA/evidence/exceptions; decision rationale and next review persist; cohort result avoids causal claims | Programs support + Experience / Quality |
-| IP12 | Weekly review and five-minute walkthrough traverse canonical linked evidence; revised references, desktop/mobile behavior and exact-commit Quality/Reviewer gates pass without waivers | Coordinator, Lead / Quality + Reviewer |
+| IP12 | Weekly review and five-minute walkthrough traverse canonical linked evidence; revised references, desktop/tablet behavior and exact-commit Quality/Reviewer gates pass without waivers | Coordinator, Lead / Quality + Reviewer |
 
 ## Models for the next session
 

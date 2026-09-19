@@ -1,5 +1,7 @@
 # Interview amendment: coordinator contract preparation
 
+> September 19 viewport amendment: the user does not need phone optimization. `P4_INTERVIEW_VIEWPORT_SCOPE.md` governs the current interview proof: desktop/tablet (1440×900, 1024×768, 768×1024), basic narrow-screen usability retained, no required 390px visual proof. Historical requirements below remain evidence of their original scope.
+
 > September 19 current state: all serial repairs and coordinator composition are integrated at `dfa4b9b921991abd6a40127146520c421204c8cb`. The complete gate passes 307 unit/integration, nine acceptance and eight browser tests. Phase is `IP2_visual_proof`; reference revision and Overview/Funnel proof are next after verifying the Experience Lead runtime. All specialist presentation and independent Quality/Reviewer remain pending. Read `IP2_LEAD_INTEGRATION_REQUIREMENTS.md` and the live ledger. Earlier progress entries below are historical.
 
 > IP1 Network update: Network candidate `67fbed109a7306204c692dcb1b509f6560591621` is integrated. Exact coordinator candidate `4e2a715041643c2c9ccc428086258e8f77fb894b` passes 241 unit/integration, nine acceptance and eight browser tests. Team and Programs remain next, serially; command composition and presentation remain pending. Read `IP1_NETWORK_HANDOFF.md` and the active ledger.
@@ -76,7 +78,7 @@ Historical ledger is preserved at `history/P4_PRE_INTERVIEW_STATE_2026-09-18.jso
 
 Current phases are IP0 contract preparation, IP1 serial data/logic, IP2 revised visual proof, IP3 workspace wave, IP4 integration, IP5 Quality, IP6 Reviewer, then IP_complete. `lanes.v2.json` is the sole routing registry. The old sequence is explicitly historical. The active ledger starts with fan-out closed.
 
-A passed contract/data-logic/baseline gate names an exact candidate SHA and checksum-valid tracked evidence. Visual proof identifies an exact clean commit, versioned amendment reference and all Overview/Funnel 1440×900, 1024×768, 768×1024, 390×844 and SLA-editor states. Interaction evidence covers exact numbers with pointer/keyboard/touch, all markets, navigation, owner/waiting filters, capacity reconciliation, correct attention targets and SLA editing. No errors or waivers.
+A passed contract/data-logic/baseline gate names an exact candidate SHA and checksum-valid tracked evidence. Visual proof identifies an exact clean commit, versioned amendment reference and all Overview/Funnel 1440×900, 1024×768, 768×1024 and SLA-editor states under the September 19 viewport amendment. Interaction evidence covers exact numbers with pointer/keyboard/touch, all markets, navigation, owner/waiting filters, capacity reconciliation, correct attention targets and SLA editing. No errors or waivers.
 
 Independent Quality records each IP01–IP12 result plus applicable XR01–XR41, SD01–SD07 and original V2 criteria against the fixed integrated candidate. Any production repair invalidates that result. A complete result names the same candidate for Quality and Reviewer. Hash checks and status fields verify an evidence record, not the truth of a screenshot comparison; independent inspection remains mandatory.
 

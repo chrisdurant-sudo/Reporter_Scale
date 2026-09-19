@@ -1,5 +1,7 @@
 # Reporter Growth
 
+> September 19 user scope update: phone optimization is not required. Read `docs/reporter-growth/v2/P4_INTERVIEW_VIEWPORT_SCOPE.md`; current interview visual proof targets desktop/tablet. Preserve basic responsive behavior and all remaining functional and accessibility checks.
+
 > September 19 IP2 transition: the full serial interview preparation candidate `dfa4b9b921991abd6a40127146520c421204c8cb` passes 307 unit/integration, nine acceptance and eight browser tests plus governance/lint/types/build. Data, Capacity, Recruiting, Network, Team and Programs are integrated. Current phase: `IP2_visual_proof`; only the Experience Lead may implement after its actual Astra/high zero-inheritance runtime probe is verified. Version the amended reference separately, then prove Overview/Funnel at all required viewports. Specialists, independent Quality and Reviewer remain blocked. No new start approval or 50-person expansion is needed.
 
 > September 18 IP0 prerequisite exception: the user explicitly approved one serial Quality-owned test-only repair of `tests/e2e/reporter-growth.browser.spec.ts` during IP0, as specified in `docs/reporter-growth/v2/IP0_BROWSER_REPAIR_REQUEST.md`. This exception requires a verified Astra/xhigh zero-inheritance probe, a separate worktree, an exact-commit boundary audit, and a full-suite rerun. It does not waive any assertion, permit production edits, or replace the later independent IP5 Quality gate. All other dispatch sequencing remains unchanged.

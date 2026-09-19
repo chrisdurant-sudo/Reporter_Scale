@@ -369,7 +369,8 @@
       "IP12"
     ],
     "runtime_models_verified": false,
-    "status": "revised_visual_proof"
+    "status": "revised_visual_proof",
+    "presentation_scope": "desktop_interview_2026_09_19"
   },
   "active_execution_sequence": "interview_improvement",
   "historical_p4_execution_sequence": [

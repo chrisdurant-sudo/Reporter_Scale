@@ -1,5 +1,7 @@
 # P4 Visual Proof Gate
 
+> September 19 viewport amendment: the user does not need phone optimization. `P4_INTERVIEW_VIEWPORT_SCOPE.md` governs the current interview proof: desktop/tablet (1440×900, 1024×768, 768×1024), basic narrow-screen usability retained, no required 390px visual proof. Historical requirements below remain evidence of their original scope.
+
 This file is the executable evidence contract for the P4.1 presentation gate. It closes the gap
 between a compiling implementation and a visually accepted implementation. Passing unit tests or
 serving a local preview does not satisfy this gate.

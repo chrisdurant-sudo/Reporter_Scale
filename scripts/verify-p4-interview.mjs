@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { inspectInterviewGates, inspectInterviewDispatch } from './p4-interview-gates.mjs';
+import { inspectInterviewGates, inspectInterviewDispatch, interviewViewports } from './p4-interview-gates.mjs';
 
 export function verifyInterview(root, state, registry, dispatch = null) {
   const git = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
@@ -64,7 +64,7 @@ export function verifyInterview(root, state, registry, dispatch = null) {
       const manifest = json(proof.evidence.file);
       check(manifest.captured_from_commit === proof.accepted_commit && manifest.worktree_clean_before_capture === true, 'The visual manifest must identify the clean accepted commit.');
       for (const surface of ['overview', 'funnel_people', 'funnel_bottlenecks']) {
-        for (const [width, height] of [[1440, 900], [1024, 768], [768, 1024], [390, 844]]) {
+        for (const [width, height] of interviewViewports(state)) {
           const artifact = manifest.artifacts?.find((item) => item.id === `${surface}_${width}x${height}`);
           check(artifact?.commit === proof.accepted_commit && artifact?.viewport?.width === width && artifact?.viewport?.height === height && artifact.route && artifact.state && evidence(artifact), `Missing or invalid revised ${surface} ${width}x${height} capture.`);
         }
@@ -75,7 +75,9 @@ export function verifyInterview(root, state, registry, dispatch = null) {
       if (evidence(manifest.interaction_evidence)) {
         const interactions = json(manifest.interaction_evidence.file);
         check(interactions.captured_from_commit === proof.accepted_commit && interactions.worktree_clean_before_capture === true, 'Interaction proof must match the clean visual candidate.');
-        for (const id of ['market_selection', 'workspace_navigation', 'chart_pointer', 'chart_keyboard', 'chart_touch', 'status_filters', 'owner_waiting_filters', 'capacity_reconciliation', 'attention_destinations', 'sla_recomputation', 'mobile_390']) check(interactions.interactions?.some((item) => item.id === id && item.status === 'passed'), `Missing revised behavior proof: ${id}`);
+        const requiredInteractions = ['market_selection', 'workspace_navigation', 'chart_pointer', 'chart_keyboard', 'chart_touch', 'status_filters', 'owner_waiting_filters', 'capacity_reconciliation', 'attention_destinations', 'sla_recomputation'];
+        if (interviewViewports(state).some(([width]) => width === 390)) requiredInteractions.push('mobile_390');
+        for (const id of requiredInteractions) check(interactions.interactions?.some((item) => item.id === id && item.status === 'passed'), `Missing revised behavior proof: ${id}`);
         check(interactions.console_errors?.length === 0 && interactions.page_errors?.length === 0 && interactions.waivers?.length === 0, 'Interaction proof cannot contain errors or waivers.');
       } else errors.push('Revised proof requires checksum-valid interactions.');
     }
