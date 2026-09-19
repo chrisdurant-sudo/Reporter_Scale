@@ -68,8 +68,16 @@ const expectedSequence = [
   ["quality"],
   ["reviewer"],
 ];
-check(JSON.stringify(registry.p4_execution_sequence.map((step) => step.roles)) === JSON.stringify(expectedSequence), "P4 order must be Data → Lead proof → bounded workspace wave → Quality → Reviewer.");
-check(registry.p4_execution_sequence.every((step, index) => index === 2 || step.roles.length === 1), "Only P4.2 may contain parallel roles.");
+check(JSON.stringify(registry.historical_p4_execution_sequence.map((step) => step.roles)) === JSON.stringify(expectedSequence), "P4 order must be Data → Lead proof → bounded workspace wave → Quality → Reviewer.");
+check(registry.historical_p4_execution_sequence.every((step, index) => index === 2 || step.roles.length === 1), "Only P4.2 may contain parallel roles.");
+
+const interviewSequence = registry.interview_execution_sequence;
+check(registry.active_execution_sequence === "interview_improvement", "The interview sequence must be active.");
+check(JSON.stringify(interviewSequence.map((step) => step.phase)) === JSON.stringify(["IP0_contract_preparation", "IP1_serial_data_logic", "IP2_visual_proof", "IP3_workspace_wave", "IP4_integration", "IP5_quality", "IP6_reviewer"]), "Interview phases must preserve the serial preparation/proof/Quality/Reviewer gates.");
+check(interviewSequence[1].serial === true, "Data and domain support must run serially.");
+check(JSON.stringify(interviewSequence[2].roles) === JSON.stringify(["experience"]), "Only the Lead owns visual proof.");
+check(JSON.stringify(interviewSequence[3].roles) === JSON.stringify(["experience", "experience_reporters", "experience_team", "experience_programs"]), "Only the bounded Lead/specialist wave may run concurrently.");
+check(lanes.get("quality").interview_acceptance_ids.length === 12 && registry.reviewer.interview_acceptance_ids.length === 12, "Quality and Reviewer must receive all IP acceptance IDs.");
 
 const data = lanes.get("data");
 check(data?.task === "docs/reporter-growth/v2/tasks/data-expansion-p4.md", "Data must use the P4 expansion brief.");
@@ -215,6 +223,10 @@ const requiredFiles = [
   "scripts/verify-p4-readiness.mjs",
   "scripts/verify-p4-phase-gate.mjs",
   "scripts/verify-p4-lane-boundary.mjs",
+  "scripts/p4-interview-gates.mjs",
+  "scripts/verify-p4-interview.mjs",
+  "scripts/verify-p4-dispatch.mjs",
+  "docs/reporter-growth/v2/P4_INTERVIEW_CONTRACT_DELTAS.md",
 ];
 
 for (const relativePath of requiredFiles) {

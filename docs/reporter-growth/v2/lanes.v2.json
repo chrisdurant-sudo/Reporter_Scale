@@ -2,9 +2,9 @@
   "schema_version": 2,
   "packet_kind": "routing_registry",
   "routing_active": true,
-  "fanout_authorized": true,
+  "fanout_authorized": false,
   "implementation_active": true,
-  "current_phase": "P4.3_integration",
+  "current_phase": "IP0_contract_preparation",
   "execution_state": "docs/reporter-growth/v2/P4_EXECUTION_STATE.json",
   "execution_model": "serial_gates_with_bounded_parallel_workspace_wave",
   "transition_control": {
@@ -19,7 +19,8 @@
       "phase_transition",
       "quality_dispatch",
       "reviewer_dispatch"
-    ]
+    ],
+    "dispatch_command": "npm run verify:p4:dispatch -- --role <role> --kind <probe|implementation>"
   },
   "spawn_context_policy": {
     "name": "zero_inheritance",
@@ -30,7 +31,7 @@
     ],
     "applies_to": "every_routed_probe_and_worker_spawn"
   },
-  "routing_verification_status": "p4_2_workspace_proof_accepted_integration_frozen",
+  "routing_verification_status": "blocked_stale_loaded_roles_no_dispatch",
   "source_contract_commit": "19f7df98000e346a5b4ff32e00b699276c3f62fb",
   "prepared_against_commit": "c4f304c376ca631d88c694f519f76ec316f12a13",
   "implementation_requires": [
@@ -39,51 +40,6 @@
     "P4_READINESS_VERIFIED",
     "ZERO_INHERITANCE_SPAWN_POLICY_VERIFIED",
     "RUNTIME_ROUTING_PROBE_VERIFIED_BEFORE_FIRST_WORKER"
-  ],
-  "p4_execution_sequence": [
-    {
-      "order": 1,
-      "phase": "P4.0b_serial_sample_expansion",
-      "roles": [
-        "data"
-      ],
-      "gate": "SD01_SD07_and_full_baseline_checks_pass"
-    },
-    {
-      "order": 2,
-      "phase": "P4.1_overview_funnel_visual_proof",
-      "roles": [
-        "experience"
-      ],
-      "gate": "P4_VISUAL_PROOF_ACCEPTED"
-    },
-    {
-      "order": 3,
-      "phase": "P4.2_bounded_parallel_workspace_wave",
-      "roles": [
-        "experience",
-        "experience_reporters",
-        "experience_team",
-        "experience_programs"
-      ],
-      "gate": "THREE_WORKSPACES_LEAD_REVIEWED_and_P4_INTEGRATED_CANDIDATE_FIXED"
-    },
-    {
-      "order": 4,
-      "phase": "P4.4_independent_quality",
-      "roles": [
-        "quality"
-      ],
-      "gate": "QUALITY_PASSED_without_waiver"
-    },
-    {
-      "order": 5,
-      "phase": "P4.5_fixed_commit_review",
-      "roles": [
-        "reviewer"
-      ],
-      "gate": "REVIEW_READY"
-    }
   ],
   "max_concurrent_lane_workers": 4,
   "max_concurrent_spawned_agents_excluding_coordinator": 4,
@@ -134,6 +90,11 @@
         "SD05",
         "SD06",
         "SD07"
+      ],
+      "interview_acceptance_ids": [
+        "IP08",
+        "IP09",
+        "IP11"
       ]
     },
     {
@@ -154,6 +115,15 @@
       "acceptance_ids": [
         "XR01-XR37",
         "XR41"
+      ],
+      "interview_acceptance_ids": [
+        "IP01",
+        "IP02",
+        "IP03",
+        "IP04",
+        "IP05",
+        "IP06",
+        "IP12"
       ]
     },
     {
@@ -172,6 +142,12 @@
         "XR14-XR25",
         "XR31-XR38",
         "XR41"
+      ],
+      "interview_acceptance_ids": [
+        "IP01",
+        "IP03",
+        "IP06",
+        "IP07"
       ]
     },
     {
@@ -190,6 +166,11 @@
         "XR14-XR25",
         "XR31-XR39",
         "XR41"
+      ],
+      "interview_acceptance_ids": [
+        "IP01",
+        "IP08",
+        "IP09"
       ]
     },
     {
@@ -208,6 +189,14 @@
         "XR31-XR36",
         "XR40",
         "XR41"
+      ],
+      "interview_acceptance_ids": [
+        "IP01",
+        "IP02",
+        "IP03",
+        "IP06",
+        "IP10",
+        "IP11"
       ]
     },
     {
@@ -223,6 +212,10 @@
       "task": "docs/reporter-growth/v2/tasks/domain-support-redesign.md",
       "acceptance_ids": [
         "request_specific_only"
+      ],
+      "interview_acceptance_ids": [
+        "IP04",
+        "IP06"
       ]
     },
     {
@@ -238,6 +231,10 @@
       "task": "docs/reporter-growth/v2/tasks/domain-support-redesign.md",
       "acceptance_ids": [
         "request_specific_only"
+      ],
+      "interview_acceptance_ids": [
+        "IP05",
+        "IP06"
       ]
     },
     {
@@ -253,6 +250,9 @@
       "task": "docs/reporter-growth/v2/tasks/domain-support-redesign.md",
       "acceptance_ids": [
         "request_specific_only"
+      ],
+      "interview_acceptance_ids": [
+        "IP07"
       ]
     },
     {
@@ -268,6 +268,9 @@
       "task": "docs/reporter-growth/v2/tasks/domain-support-redesign.md",
       "acceptance_ids": [
         "request_specific_only"
+      ],
+      "interview_acceptance_ids": [
+        "IP09"
       ]
     },
     {
@@ -283,6 +286,10 @@
       "task": "docs/reporter-growth/v2/tasks/domain-support-redesign.md",
       "acceptance_ids": [
         "request_specific_only"
+      ],
+      "interview_acceptance_ids": [
+        "IP10",
+        "IP11"
       ]
     },
     {
@@ -301,6 +308,20 @@
         "XR01-XR41",
         "SD01-SD07",
         "original_V2_acceptance"
+      ],
+      "interview_acceptance_ids": [
+        "IP01",
+        "IP02",
+        "IP03",
+        "IP04",
+        "IP05",
+        "IP06",
+        "IP07",
+        "IP08",
+        "IP09",
+        "IP10",
+        "IP11",
+        "IP12"
       ]
     }
   ],
@@ -313,15 +334,143 @@
     "start_phase": "P4.5_after_quality_passes_without_waiver",
     "read_only": true,
     "allowed_directory_prefixes": [],
-    "task": "docs/reporter-growth/v2/tasks/reviewer.md"
+    "task": "docs/reporter-growth/v2/tasks/reviewer.md",
+    "interview_acceptance_ids": [
+      "IP01",
+      "IP02",
+      "IP03",
+      "IP04",
+      "IP05",
+      "IP06",
+      "IP07",
+      "IP08",
+      "IP09",
+      "IP10",
+      "IP11",
+      "IP12"
+    ]
   },
-  "note": "This is the sole active P4 routing registry. P2 and P3 are complete and inactive. P4 is active. Exact Overview/Funnel visual proof was accepted for commit e33ee8d1a70a7f103eaf67354aa98139c1fd20a7, freezing the shared presentation baseline and authorizing the bounded P4.2 wave. Only the Lead and three registered workspace Experience specialists may communicate and run concurrently; they have non-overlapping paths and the Lead alone owns shared components. Runtime routing verification is mandatory before dispatch. All P4 roles use Standard/default processing; the resolved child service tier remains unobservable, so configured default is the strongest available evidence.",
+  "note": "The interview amendment is authorized. Its execution sequence supersedes the preserved historical P4 sequence. Data/logic repairs are serial; no repeated 50-person expansion. New Overview/Funnel visual and behavioral proof gates the Lead-plus-three-specialist wave. Runtime routing is blocked until fresh named-role metadata and zero-inheritance probes are verified. Lead is sole shared-component writer; Quality reports and owners repair; Reviewer examines the exact Quality-passed commit. Standard/default only.",
   "interview_improvement_amendment": {
     "plan": "docs/reporter-growth/v2/P4_INTERVIEW_IMPROVEMENT_PLAN.md",
-    "status": "planning_complete_implementation_not_authorized",
-    "implementation_authorized": false,
-    "acceptance_ids": "IP01-IP12",
+    "implementation_authorized": true,
+    "acceptance_ids": [
+      "IP01",
+      "IP02",
+      "IP03",
+      "IP04",
+      "IP05",
+      "IP06",
+      "IP07",
+      "IP08",
+      "IP09",
+      "IP10",
+      "IP11",
+      "IP12"
+    ],
     "runtime_models_verified": false,
-    "requires_new_visual_proof": true
-  }
+    "status": "implementation_authorized_coordinator_preparation"
+  },
+  "active_execution_sequence": "interview_improvement",
+  "historical_p4_execution_sequence": [
+    {
+      "order": 1,
+      "phase": "P4.0b_serial_sample_expansion",
+      "roles": [
+        "data"
+      ],
+      "gate": "SD01_SD07_and_full_baseline_checks_pass"
+    },
+    {
+      "order": 2,
+      "phase": "P4.1_overview_funnel_visual_proof",
+      "roles": [
+        "experience"
+      ],
+      "gate": "P4_VISUAL_PROOF_ACCEPTED"
+    },
+    {
+      "order": 3,
+      "phase": "P4.2_bounded_parallel_workspace_wave",
+      "roles": [
+        "experience",
+        "experience_reporters",
+        "experience_team",
+        "experience_programs"
+      ],
+      "gate": "THREE_WORKSPACES_LEAD_REVIEWED_and_P4_INTEGRATED_CANDIDATE_FIXED"
+    },
+    {
+      "order": 4,
+      "phase": "P4.4_independent_quality",
+      "roles": [
+        "quality"
+      ],
+      "gate": "QUALITY_PASSED_without_waiver"
+    },
+    {
+      "order": 5,
+      "phase": "P4.5_fixed_commit_review",
+      "roles": [
+        "reviewer"
+      ],
+      "gate": "REVIEW_READY"
+    }
+  ],
+  "interview_execution_sequence": [
+    {
+      "phase": "IP0_contract_preparation",
+      "roles": [],
+      "gate": "coordinator_contract_baseline"
+    },
+    {
+      "phase": "IP1_serial_data_logic",
+      "roles": [
+        "data",
+        "capacity",
+        "recruiting",
+        "network",
+        "team",
+        "programs"
+      ],
+      "serial": true,
+      "gate": "bounded_repairs_integrated_and_full_baseline_passed"
+    },
+    {
+      "phase": "IP2_visual_proof",
+      "roles": [
+        "experience"
+      ],
+      "gate": "revised_overview_funnel_proof_accepted"
+    },
+    {
+      "phase": "IP3_workspace_wave",
+      "roles": [
+        "experience",
+        "experience_reporters",
+        "experience_team",
+        "experience_programs"
+      ],
+      "gate": "lead_review_and_sequential_integration"
+    },
+    {
+      "phase": "IP4_integration",
+      "roles": [],
+      "gate": "exact_candidate_fixed"
+    },
+    {
+      "phase": "IP5_quality",
+      "roles": [
+        "quality"
+      ],
+      "gate": "IP01_IP12_and_existing_acceptance_no_waivers"
+    },
+    {
+      "phase": "IP6_reviewer",
+      "roles": [
+        "reviewer"
+      ],
+      "gate": "exact_quality_passed_commit"
+    }
+  ]
 }

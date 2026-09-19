@@ -1,0 +1,78 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { inspectInterviewGates, inspectInterviewDispatch, IP_IDS } from './p4-interview-gates.mjs';
+const proof = { file: 'proof.json', sha256: 'verified' };
+const verify = (item) => item?.file === proof.file && item.sha256 === proof.sha256;
+const roles = ['data', 'capacity', 'recruiting', 'network', 'team', 'programs', 'experience', 'experience_reporters', 'experience_team', 'experience_programs', 'quality', 'reviewer'];
+const role = (id) => ({ id, model: 'gpt-6-astra', reasoning_effort: ['quality', 'reviewer'].includes(id) ? 'xhigh' : 'high' });
+function fixture(phase = 'IP0_contract_preparation') {
+  const a = { implementation_authorized: true, authorization: { source: 'please start', thread_id: 'task', authorized_at: '2026-09-18' }, acceptance_ids: IP_IDS, sample_expansion: 'completed_do_not_repeat', contract_packet: 'contracts.md', runtime_probes: [], approved_contract_requests: [] };
+  const state = { current_phase: phase, implementation_active: true, fanout_authorized: false, current_candidate: { commit: 'candidate' }, historical_p4: proof, interview_improvement_amendment: a, gates: { data: { status: 'passed', required_acceptance_ids: Array.from({ length: 7 }, (_, i) => `SD0${i + 1}`) }, contracts: { status: 'passed' }, data_logic: { status: 'passed' }, baseline: { status: 'passed' }, visual_proof: { status: 'pending' } } };
+  const registry = { current_phase: phase, active_execution_sequence: 'interview_improvement', implementation_active: true, fanout_authorized: false, interview_improvement_amendment: { implementation_authorized: true }, lanes: roles.filter((r) => r !== 'reviewer').map(role), reviewer: role('reviewer') };
+  return { state, registry };
+}
+const audit = ({ state, registry }) => inspectInterviewGates(state, registry, verify);
+function ready() {
+  const f = fixture('IP6_reviewer');
+  f.state.fanout_authorized = f.registry.fanout_authorized = true;
+  const a = f.state.interview_improvement_amendment;
+  a.runtime_probes = roles.map((id) => ({ role: id, ...role(id), fork_turns: 'none', inherited_turns: 0, session_id: `session-${id}`, verified_at: '2026-09-19', evidence: proof }));
+  f.state.gates.visual_proof = { status: 'accepted', scope: 'IP01-IP12_amendment', accepted_commit: 'visual', reference_manifest: 'amended-reference.json', evidence: proof, pointer_keyboard_touch_passed: true, mobile_390_passed: true, waivers: [] };
+  f.state.gates.workspace_wave = { status: 'passed', candidate_commit: 'candidate', lead_reviews: Object.fromEntries(roles.filter((id) => id.startsWith('experience_')).map((id) => [id, { status: 'passed', evidence: proof }])) };
+  f.state.gates.quality = { status: 'passed', candidate_commit: 'candidate', full_suite_passed: true, existing_acceptance_passed: true, waivers: [], acceptance: Object.fromEntries(IP_IDS.map((id) => [id, { status: 'passed', evidence: proof }])) };
+  return f;
+}
+test('coordinator preparation can proceed while every worker is blocked', () => {
+  const f = fixture(); assert.deepEqual(audit(f), []);
+  for (const id of roles) assert.ok(inspectInterviewDispatch(f.state, f.registry, id, 'implementation', verify).length);
+});
+test('old active authorization cannot replace the explicit interview start', () => {
+  const f = fixture(); f.state.interview_improvement_amendment.implementation_authorized = false;
+  assert.ok(audit(f).some((e) => e.includes('explicit start')));
+});
+test('historical phase and accepted screenshots cannot reopen fan-out', () => {
+  const f = fixture('P4.3_integration'); f.state.gates.visual_proof.status = 'accepted'; f.state.fanout_authorized = true;
+  assert.ok(audit(f).some((e) => e.includes('historical P4 phase')));
+  assert.ok(audit(f).some((e) => e.includes('Historical visual')));
+});
+test('configured Astra cannot substitute for loaded-role or runtime evidence', () => {
+  const f = fixture('IP1_serial_data_logic'); const a = f.state.interview_improvement_amendment;
+  a.runtime_catalog = { status: 'verified', evidence: proof, roles: { data: { model: 'gpt-5.6-luna', reasoning_effort: 'medium' } } };
+  assert.ok(inspectInterviewDispatch(f.state, f.registry, 'data', 'probe', verify).some((e) => e.includes('Loaded data')));
+});
+test('a verified catalog permits a read-only probe, not an implementation', () => {
+  const f = fixture(); f.state.interview_improvement_amendment.runtime_catalog = { status: 'verified', evidence: proof, roles: { data: role('data') } };
+  assert.deepEqual(inspectInterviewDispatch(f.state, f.registry, 'data', 'probe', verify), []);
+  assert.ok(inspectInterviewDispatch(f.state, f.registry, 'data', 'implementation', verify).length);
+});
+test('serial logic requires a frozen contract and approved bounded request', () => {
+  const f = fixture('IP1_serial_data_logic'); f.state.gates.contracts.status = 'pending';
+  assert.ok(inspectInterviewDispatch(f.state, f.registry, 'team', 'implementation', verify).some((e) => e.includes('frozen coordinator')));
+  assert.ok(inspectInterviewDispatch(f.state, f.registry, 'team', 'implementation', verify).some((e) => e.includes('bounded contract')));
+});
+test('presentation cannot precede completed serial repairs', () => {
+  const f = fixture('IP2_visual_proof'); f.state.gates.data_logic.status = 'pending';
+  assert.ok(audit(f).some((e) => e.includes('serial data/logic')));
+});
+test('reviewer can receive a fully evidenced candidate', () => assert.deepEqual(audit(ready()), []));
+test('any production repair invalidates the prior Quality commit', () => {
+  const f = ready(); f.state.current_candidate.commit = 'repaired';
+  assert.ok(audit(f).some((e) => e.includes('exact Quality-passed')));
+});
+test('missing IP verification or responsive waiver blocks Reviewer', () => {
+  const f = ready(); delete f.state.gates.quality.acceptance.IP09; f.state.gates.visual_proof.waivers = ['mobile'];
+  assert.ok(audit(f).some((e) => e.includes('IP09')));
+  assert.ok(audit(f).some((e) => e.includes('390px')));
+});
+test('inherited or stale probes cannot authorize the specialist wave', () => {
+  const f = ready(); const p = f.state.interview_improvement_amendment.runtime_probes.find((p) => p.role === 'experience_team');
+  p.fork_turns = 'all'; p.inherited_turns = 1;
+  assert.ok(audit(f).some((e) => e.includes('experience_team runtime probe')));
+  p.fork_turns = 'none'; p.inherited_turns = 0; p.verified_at = '2026-09-17';
+  assert.ok(audit(f).some((e) => e.includes('experience_team runtime probe')));
+});
+test('tampered historical evidence and a repeated seed expansion are rejected', () => {
+  const f = fixture(); f.state.historical_p4 = { ...proof, sha256: 'changed' }; f.state.interview_improvement_amendment.sample_expansion = 'add_50';
+  assert.ok(audit(f).some((e) => e.includes('checksum')));
+  assert.ok(audit(f).some((e) => e.includes('must not be repeated')));
+});

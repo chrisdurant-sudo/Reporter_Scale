@@ -172,6 +172,10 @@ export interface ProcessStep {
   readonly order: number;
   readonly instruction: string;
   readonly evidenceRequirement: string;
+  /** Historical process versions may omit these; the amended version supplies all three. */
+  readonly responsibleRole?: string;
+  readonly slaElapsedHours?: number;
+  readonly exceptionRoute?: string;
 }
 
 export interface ProcessApproval {

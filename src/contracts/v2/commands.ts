@@ -4,16 +4,18 @@ import type {
   CoachingActionId,
   CommandId,
   ProgramId,
+  RequestId,
   TeamMemberId,
   TeamTargetId,
   WorkItemId,
 } from "./ids";
 import type { RecordPointer } from "./references";
-import type { CoachingAction, TeamTarget, WorkItemStatus, WorkOwnershipDomain, WorkQualityCheck } from "./work";
+import type { CoachingAction, TeamTarget, WorkItemChanges, WorkItemStatus, WorkOwnershipDomain, WorkPriority, WorkQualityCheck } from "./work";
 
 export type V2CommandType =
   | "goal.save-revision"
   | "work.create"
+  | "work.edit"
   | "work.assign"
   | "work.transition"
   | "team.target.save-revision"
@@ -59,12 +61,29 @@ export interface WorkCreatePayload {
   readonly status: Exclude<WorkItemStatus, "canceled">;
   readonly domain: WorkOwnershipDomain;
   readonly programId: ProgramId | null;
+  /** Existing callers remain compatible; the interview workflow supplies explicit links and dates. */
+  readonly primaryEntityRef?: RecordPointer;
+  readonly relatedRequestIds?: readonly RequestId[];
+  readonly dueAt?: UtcTimestamp | null;
+  readonly priority?: WorkPriority;
+  readonly blockerCode?: string | null;
+  readonly completionEvidenceRefs?: readonly RecordPointer[];
+}
+
+/** Team validates nonempty edits, timestamps and linked records; integration saves one revision. */
+export interface WorkEditPayload {
+  readonly workItemId: WorkItemId;
+  readonly changes: WorkItemChanges;
+  readonly appendNote?: string;
+  readonly reason: string;
 }
 
 export interface WorkTransitionPayload {
   readonly workItemId: WorkItemId;
   readonly status: Exclude<WorkItemStatus, "canceled">;
   readonly reason: string;
+  /** A completion must resolve nonempty evidence; it never creates readiness or job outcomes. */
+  readonly completionEvidenceRefs?: readonly RecordPointer[];
 }
 
 export interface TeamTargetSaveRevisionPayload {
@@ -92,6 +111,7 @@ export interface TeamPracticeSharePayload {
 
 export type TeamCommandEnvelope =
   | V2CommandEnvelope<"work.create", WorkCreatePayload>
+  | V2CommandEnvelope<"work.edit", WorkEditPayload>
   | V2CommandEnvelope<"work.assign", WorkAssignPayload>
   | V2CommandEnvelope<"work.transition", WorkTransitionPayload>
   | V2CommandEnvelope<"team.target.save-revision", TeamTargetSaveRevisionPayload>
@@ -110,7 +130,7 @@ export type ProgramsCommandEnvelope =
   | V2CommandEnvelope<"programs.note.save", ProgramTextSavePayload>;
 
 export interface V2CommandError {
-  readonly code: "invalid-command" | "stale-revision" | "validation-failed" | "invariant-failed";
+  readonly code: "invalid-command" | "stale-revision" | "validation-failed" | "invariant-failed" | "storage-failed";
   readonly message: string;
   readonly field: string | null;
   readonly relatedRecords: readonly RecordPointer[];

@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
+import { verifyInterview } from "./verify-p4-interview.mjs";
 
 const root = process.cwd();
 const errors = [];
@@ -56,6 +57,18 @@ const defectsPath = "docs/reporter-growth/v2/P4_VISUAL_PROOF_DEFECTS.md";
 const gatePath = "docs/reporter-growth/v2/P4_VISUAL_PROOF_GATE.md";
 const registry = json(registryPath);
 const state = json(statePath);
+
+// Once the new start is recorded, historical proof cannot authorize any phase.
+if (registry.active_execution_sequence === "interview_improvement" || state.interview_improvement_amendment?.implementation_authorized || state.current_phase?.startsWith("IP")) {
+  const failures = verifyInterview(root, state, registry);
+  if (failures.length) {
+    console.error(`P4 interview phase verification failed:\n${failures.map((item) => `- ${item}`).join("\n")}`);
+    process.exit(1);
+  }
+  console.log(`P4 interview phase verification passed for ${state.current_phase}; worker dispatch is checked separately.`);
+  process.exit(0);
+}
+
 
 check(!root.split(path.sep).includes("node_modules"), "P4 worktrees must not be nested under node_modules; Node and Playwright reject TypeScript files there.");
 check(state.schema_version === 1, "P4 execution state must use schema version 1.");

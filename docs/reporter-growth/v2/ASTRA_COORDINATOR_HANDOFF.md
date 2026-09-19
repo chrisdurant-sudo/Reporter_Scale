@@ -1,5 +1,7 @@
 # Astra coordinator handoff — September 18, 2026
 
+> Continuation update: the user has now explicitly authorized the improvement implementation in task `01a0b79d-03f1-7f60-9d63-681a9f9baef3`. Start from `P4_INTERVIEW_CONTRACT_DELTAS.md` and the active ledger. Coordinator preparation has begun; no worker has run. The task loaded stale Terra/Luna roles from the old checkout. A fresh task rooted at `/private/tmp/steno-p4-coordinator` must verify loaded Astra roles and zero-inheritance probes. Do not request another implementation start or repeat the 50-person expansion.
+
 ## Start in the correct checkout
 
 Use `/private/tmp/steno-p4-coordinator`, the checkout behind the reviewed local preview at

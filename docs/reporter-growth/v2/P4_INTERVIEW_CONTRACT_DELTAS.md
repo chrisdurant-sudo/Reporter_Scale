@@ -1,0 +1,59 @@
+# Interview amendment: coordinator contract preparation
+
+Status: AUTHORIZED — PREPARATION IN PROGRESS; NO WORKER DISPATCH
+
+The user said “please start” in task `01a0b79d-03f1-7f60-9d63-681a9f9baef3` after the readiness review on September 18, 2026. This authorizes the implementation sequence in `P4_INTERVIEW_IMPROVEMENT_PLAN.md`; another start approval is not needed. Deployment, dependencies, external messages, credit resets and changes to the older main checkout remain outside scope.
+
+Active checkout: `/private/tmp/steno-p4-coordinator`. Amendment base: `6e7ea99e2358e497b8a6d4331a6cc8513e668501`. Frozen source contract: `19f7df98000e346a5b4ff32e00b699276c3f62fb` plus integrated amendments through the base. The source candidate remains `16479473d6b22ed64a18d4b1b5b9748f1c84374b`; its old Quality result is unclosed.
+
+## Current prerequisite
+
+The coordinator's actual session metadata confirms Astra/xhigh. All 12 active role TOMLs and registry entries agree on Astra/high, with Quality and Reviewer Astra/xhigh and Standard/default everywhere. The callable named-role catalog in this task still fixes roles to Terra/Luna from `/Users/pc/Desktop/STENO`. A command run with a different working directory does not establish that the task reloaded those roles. Do not dispatch, substitute a generic role, override a fixed named role, or infer runtime routing from configuration.
+
+Resume the already authorized work in a task rooted at the active checkout, inspect the callable role metadata, then run zero-inheritance probes. Capture the actual catalog and probe evidence with session IDs, role/model/reasoning, inherited-turn count, paths and SHA-256 checksums. Resolved service tier remains unobservable; configured `default` is the available evidence. No probe or implementation worker has run for this amendment.
+
+## Exact preparation scope
+
+The following are bounded coordinator contract-change requests to finish before presentation. They are not permission for a worker to write contracts or another lane's path. Requests become `approved` in the ledger only when the relevant TypeScript boundary, validation obligations and compiling baseline are frozen.
+
+| Request | Ownership after freeze | Required interface/behavior | Acceptance |
+|---|---|---|---|
+| IC01 capacity | Capacity: `src/logic/capacity/`; coordinator: shared query/integration | One explicit scheduling window; requested/confirmed/unresolved slot partitions; possible/no-verified-match/requirements-unknown breakdown; distinct person counts; saved readiness goal progress; exact request/person targets and evidence | IP01, IP04, IP06; M01–M03, M07, M09; S01–S08 |
+| IC02 funnel | Recruiting: `src/logic/recruiting/`; coordinator: filter contract/integration | Stable owner IDs separate from waiting-on reason keys; option member IDs; conjunctive record filters; stage click focuses then clears; independent declared cohort/horizon and source outcome denominators; exact-record attention links | IP03, IP05, IP06; M04–M06; W01 |
+| IC03 canonical Team work | Team: `src/logic/team/`; coordinator: `src/contracts/v2/` and integration | Typed updates for due date, priority, notes and blocker; explicit completion evidence; assign/reassign/status remains canonical; blocked is visibly orthogonal to the three board columns; completion actor/history retained | IP08, IP09; W02–W04; D06 |
+| IC04 linked follow-up | Network: `src/logic/network/`; Team command owner and coordinator compose writes | Prepared verified skill labels, structured preferences, dated availability and credential review remain separate; follow-up resolves an existing matching canonical open work item before creating one; repeat click returns its ID | IP07; D01, D04, D06; W02 |
+| IC05 program measurement | Programs: `src/logic/programs/`; coordinator: shared view types | Metric-specific group results, units, target, numerator/denominator and horizon. Qualification counts qualified lifecycle outcomes; onboarding activation counts timely first jobs. Unknown metric stays unavailable. Cohort comparison is not a time series | IP10; M02, M05, M06; W05, W06 |
+| IC06 process and decision | Programs: `src/logic/programs/`; coordinator: process/decision types and integration | Each step exposes responsible role, SLA, evidence and exception route; editable rationale, owner and next review; limited expansion creates review work and never alters frozen enrollment or outcomes | IP11; W06–W08 |
+| IC07 durable local demo | Data: `src/data/`; coordinator: repository/compatibility boundary and integration | Versioned browser-local V2 snapshot persistence through the single repository; validated load, stale revision/replay safety, storage failure state and deterministic reset. Preserve v1 and unknown/invalid stored values; never silently overwrite them | IP09, IP11; F04, D06, W08 |
+| IC08 linked work sample | Data: `src/data/` only | Approximately 20–30 useful total linked work items, with scenario-led variation, assignments/unassigned, blocked/overdue/completed, different markets, inspected/coaching histories and partner deliverables. Final count follows scenario coverage. Preserve all existing people, stable anchors, cohorts and SD01–SD07 | IP08, IP09; SD01–SD07 |
+| IC09 weekly review | Coordinator integration/shared evidence; domain owners prepare facts | Target/actual and comparable-period change; diagnosed constraint with evidence, accountable next action and review date. No new independent calculations in JSX or duplicated dashboard totals | IP12; M07–M09; U01, U02 |
+
+Source-confirmed gaps: `WorkItem` has no priority or note history; `WorkCreatePayload` and `WorkTransitionPayload` cannot express the required due/priority/evidence edits. `ProcessStep` has only id/order/instruction/evidence requirement. `createDemoRepositoryV2` stores a cloned snapshot in memory, and `V2App` constructs it on mount. Programs `groupEvidence` currently computes timely first jobs for every declared program metric. These require source changes; relabeling the UI alone is insufficient.
+
+The existing owner/status/coaching commands and source records should be reused. Do not replace whole domain APIs, change metric meanings, infer compliance policy, duplicate team storage, or create chart values in presentation. Coordinator-owned source boundaries now add `WorkItemChanges`, `WorkItemEdit`, `WorkItemNote`, `WorkPriority`, `WorkEditPayload`, optional explicit create/completion inputs, per-step responsible role/SLA/exception fields, and the injected `DemoSnapshotStorage`/`PersistedDemoSnapshotV2`/`DemoRepositoryV2Options` types. Optional record fields preserve older V2 snapshots without inventing history. Absence of priority is unspecified. Data validates these fields; Team enforces edit/completion invariants; integration owns revisioned writes. The types are preparation, not working edit controls or persistence.
+
+Use storage key `reporter-growth.v2.interview.v1`, a `reporter-growth-v2` envelope at storageVersion 1, matching seedVersion and a validated V2 snapshot. Data extends `createDemoRepositoryV2(seed = DEMO_SNAPSHOT_V2, options = {})` compatibly. Validate before replacing in-memory state, write storage before acknowledging save, and preserve the prior state on storage failure (`storage-failed`). Invalid/incompatible existing bytes produce an explicit recoverable error; no automatic v1 conversion or deletion. Explicit Reset replaces only this namespace with the validated frozen seed. Refresh must reload revision, command replay IDs, scenario clock and edits. Integration injects browser storage only after Data supplies the tested adapter.
+
+Work edits append actor/time/command-linked history and optional notes, and update only explicitly supplied fields. Notes preserve internal whitespace. Completion evidence must be nonempty, resolvable, known at the command time and related to the work; neither status nor note editing manufactures lifecycle or outcome records. A blocked legacy task stays in its last non-blocked open/in-progress board column; clearing the blocker returns to that column. The three visible columns are not a new canonical lifecycle.
+
+## Serial execution and dispatch packet
+
+1. Finish coordinator-owned contract and integration boundaries with focused invariant checks; commit a compiling baseline. Keep the new data/logic and visual gates pending until their actual evidence exists.
+2. Verify the fresh loaded catalog and read-only probes with `fork_turns="none"`. Run `npm run verify:p4:governance` first and `npm run verify:p4:dispatch -- --role <role> --kind probe` immediately before a probe. Record proof before `--kind implementation` can pass.
+3. Run Data and needed domain support one at a time against approved requests. Data uses exactly one amended brief, `tasks/data-expansion-p4.md`; it must not repeat the 50-person expansion. Domain support uses exactly one `tasks/domain-support-redesign.md` brief plus its specific request.
+4. Each worker gets its absolute separate worktree/branch, exact base and contract commit, exclusive allowed paths, assigned request/IP/XR/SD/original acceptance IDs and exact-commit handoff requirements. Workers are not alone in the repository and must preserve others' changes; no children.
+5. Coordinator checks each boundary with `verify:p4:lane`, integrates sequentially and runs the full required gate. Presentation starts only after the serial repairs are integrated and verified.
+6. Lead versions the changed reference states and implements shared UI, Overview and Funnel. Include both `design-lock/reference-manifest.md` and the separate amendment reference. Lead is sole shared-component writer. No specialist edits before new proof acceptance.
+7. Probe Lead and all three specialists before the bounded wave. Lead reviews each specialist's screenshots; Quality reports defects for owners to repair; Reviewer sees the exact Quality-passed commit.
+
+Every Data, Experience, Quality and Reviewer dispatch includes `P4_SYNTHETIC_SAMPLE_EXPANSION.md`. Every Experience, Quality and Reviewer dispatch includes the exact path `docs/reporter-growth/v2/design-lock/reference-manifest.md` and direct comparison with its interactive reference/screenshots plus the versioned amendment. All / LAX / SFO / DFW / ORD / ATL remain available across all five tabs; All defaults, LAX connects the narrative and DFW demonstrates stopping a weak channel.
+
+## Evidence contract
+
+Historical ledger is preserved at `history/P4_PRE_INTERVIEW_STATE_2026-09-18.json` with its checksum in the active ledger. It cannot open an interview gate. No historical reference hashes are changed.
+
+Current phases are IP0 contract preparation, IP1 serial data/logic, IP2 revised visual proof, IP3 workspace wave, IP4 integration, IP5 Quality, IP6 Reviewer, then IP_complete. `lanes.v2.json` is the sole routing registry. The old sequence is explicitly historical. The active ledger starts with fan-out closed.
+
+A passed contract/data-logic/baseline gate names an exact candidate SHA and checksum-valid tracked evidence. Visual proof identifies an exact clean commit, versioned amendment reference and all Overview/Funnel 1440×900, 1024×768, 768×1024, 390×844 and SLA-editor states. Interaction evidence covers exact numbers with pointer/keyboard/touch, all markets, navigation, owner/waiting filters, capacity reconciliation, correct attention targets and SLA editing. No errors or waivers.
+
+Independent Quality records each IP01–IP12 result plus applicable XR01–XR41, SD01–SD07 and original V2 criteria against the fixed integrated candidate. Any production repair invalidates that result. A complete result names the same candidate for Quality and Reviewer. Hash checks and status fields verify an evidence record, not the truth of a screenshot comparison; independent inspection remains mandatory.

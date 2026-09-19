@@ -2,6 +2,7 @@ import type { DateWindow, DemoProvenance, MetricDefinitionRef, UtcTimestamp } fr
 import type {
   ActorId,
   CoachingActionId,
+  CommandId,
   ProgramId,
   RequestId,
   TeamMemberId,
@@ -39,10 +40,41 @@ export interface WorkItemStatusChange {
   readonly reason: string;
 }
 
+export type WorkPriority = "low" | "normal" | "high" | "urgent";
+
+/** Values recorded by an edit. Omitted fields retain their prior value; null clears a due date/blocker. */
+export interface WorkItemChanges {
+  readonly title?: string;
+  readonly dueAt?: UtcTimestamp | null;
+  readonly priority?: WorkPriority;
+  readonly blockerCode?: string | null;
+}
+
+export interface WorkItemEdit {
+  readonly commandId: CommandId;
+  readonly actorId: ActorId;
+  readonly occurredAt: UtcTimestamp;
+  readonly reason: string;
+  readonly previous: WorkItemChanges;
+  readonly changes: WorkItemChanges;
+}
+
+/** Notes belong to canonical work and use the command ID for replay-safe identity. */
+export interface WorkItemNote {
+  readonly commandId: CommandId;
+  readonly actorId: ActorId;
+  readonly occurredAt: UtcTimestamp;
+  readonly text: string;
+}
+
 export interface WorkItem {
   readonly id: WorkItemId;
   /** User-facing label for work created through the Team board. Historical records use the kind-based fallback. */
   readonly title?: string;
+  /** Optional for older V2 snapshots; absence is unspecified, never inferred urgency. */
+  readonly priority?: WorkPriority;
+  readonly editHistory?: readonly WorkItemEdit[];
+  readonly notes?: readonly WorkItemNote[];
   readonly kind: WorkItemKind;
   readonly primaryEntityRef: RecordPointer;
   readonly relatedRequestIds: readonly RequestId[];

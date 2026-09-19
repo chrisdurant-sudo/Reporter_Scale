@@ -40,190 +40,90 @@
       "source": "Concrete P4.2 contract-change request from the Programs Experience specialist and Experience Lead DEFECTS disposition for XR13/XR17/XR40"
     }
   ],
-  "interview_improvement_amendment": {"plan": "docs/reporter-growth/v2/P4_INTERVIEW_IMPROVEMENT_PLAN.md", "implementation_authorized": false, "runtime_models_verified": false, "new_visual_proof_required": true, "acceptance_ids": "IP01-IP12"},
-  "implementation_base_commit": "8b85d4aafa2317be848e01caf47d8b6f92efa674",
+  "interview_improvement_amendment": {
+    "plan": "docs/reporter-growth/v2/P4_INTERVIEW_IMPROVEMENT_PLAN.md",
+    "implementation_authorized": true,
+    "authorization": {
+      "authorized_at": "2026-09-18",
+      "local_date": "2026-09-18",
+      "source": "User: please start, following the readiness assessment in this task.",
+      "thread_id": "01a0b79d-03f1-7f60-9d63-681a9f9baef3",
+      "recorded_at": "2026-09-19T03:07:31Z"
+    },
+    "acceptance_ids": [
+      "IP01",
+      "IP02",
+      "IP03",
+      "IP04",
+      "IP05",
+      "IP06",
+      "IP07",
+      "IP08",
+      "IP09",
+      "IP10",
+      "IP11",
+      "IP12"
+    ],
+    "sample_expansion": "completed_do_not_repeat",
+    "runtime_models_verified": false,
+    "runtime_catalog": {
+      "status": "stale",
+      "observed_task": "01a0b79d-03f1-7f60-9d63-681a9f9baef3",
+      "reason": "Current callable named roles still advertise Terra/Luna from the older main checkout. No probe or worker has been dispatched. Load the active checkout configuration in a fresh task before probes.",
+      "roles": {}
+    },
+    "runtime_probes": [],
+    "new_visual_proof_required": true,
+    "contract_packet": "docs/reporter-growth/v2/P4_INTERVIEW_CONTRACT_DELTAS.md",
+    "approved_contract_requests": []
+  },
+  "implementation_base_commit": "6e7ea99e2358e497b8a6d4331a6cc8513e668501",
   "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",
   "implementation_active": true,
-  "fanout_authorized": true,
-  "current_phase": "P4.3_integration",
+  "fanout_authorized": false,
+  "current_phase": "IP0_contract_preparation",
   "current_candidate": {
-    "commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
-    "status": "repaired_p4_2_workspace_candidate_awaiting_quality_rerun",
-    "preview_url": "http://127.0.0.1:5174/",
-    "preview_status": "online_verified",
-    "preview_process": {
-      "pid": 81713,
-      "cwd": "/private/tmp/steno-p4-coordinator"
-    },
-    "defect_register": "docs/reporter-growth/v2/P4_VISUAL_PROOF_DEFECTS.md"
+    "commit": "6e7ea99e2358e497b8a6d4331a6cc8513e668501",
+    "status": "interview_contract_preparation_runtime_blocked",
+    "defect_register": "docs/reporter-growth/v2/INTERVIEW_PRODUCT_REVIEW_2026-09-18.md"
   },
   "gates": {
     "data": {
       "status": "passed",
-      "required_acceptance_ids": ["SD01", "SD02", "SD03", "SD04", "SD05", "SD06", "SD07"],
+      "required_acceptance_ids": [
+        "SD01",
+        "SD02",
+        "SD03",
+        "SD04",
+        "SD05",
+        "SD06",
+        "SD07"
+      ],
       "evidence": "Integrated Data commit 29735a1 passes SD01-SD07: 50 canonical P4 additions remain balanced at 10 per market; Overview and Funnel retain source-derived rise/fall/recovery for All plus every market; and all 113 base-seed plus 1 scenario-added reporter identities have 114 unique natural-looking invented names. The independent coordinator run passed 12 focused data tests, the Data lane boundary, and the 117-test full baseline."
     },
-    "baseline": {
-      "status": "passed",
-      "verified_at": "2026-09-18",
-      "passed": [
-        "lint",
-        "typecheck",
-        "unit/integration: 24 files / 131 tests",
-        "production build",
-        "required Experience checks"
-      ],
-      "failed": [],
-      "deferred_quality_findings": [
-        "Quality adopted the stale cross-workspace and browser suites and removed the prohibited 390px waiver. Its first pass found two Funnel controlled-input defects; the Experience Lead repaired them, and the 9-test acceptance suite now passes. A fresh independent Quality rerun remains mandatory.",
-        "The Quality worktree's Playwright Chromium 153.0.8010.12 launch still terminates with SIGABRT before page open. The external exact-commit proof completed without waiver, but it does not replace the independent Quality rerun."
-      ],
-      "scope_note": "The repaired P4.2 workspace candidate passes lint, types, all 24 registered unit/integration files with 131 tests, the 9-test Quality acceptance suite, the production build, and required Experience checks. Independent Quality must rerun after the production repair."
+    "contracts": {
+      "status": "pending"
     },
-    "browser": {
-      "status": "passed",
-      "runner_status": "The exact-commit proof runner completed in Playwright Chromium 153.0.8010.12 from the verified /private/tmp coordinator preview.",
-      "evidence": "docs/reporter-growth/v2/design-lock/candidate/e33ee8d1a70a7f103eaf67354aa98139c1fd20a7/interactions.json",
-      "result": "All required P4.1 interactions passed; the complete 390×844 matrix was captured; browser console and page error lists are empty.",
-      "waiver_allowed": false
+    "data_logic": {
+      "status": "blocked"
+    },
+    "baseline": {
+      "status": "pending"
     },
     "visual_proof": {
-      "status": "accepted",
-      "candidate_commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
-      "accepted_commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
-      "accepted_at": "2026-09-18",
-      "artifact_manifest": "docs/reporter-growth/v2/design-lock/candidate/e33ee8d1a70a7f103eaf67354aa98139c1fd20a7/manifest.json",
-      "lead_disposition": "P4_VISUAL_PROOF_READY",
-      "coordinator_disposition": "accepted_after_independent_locked-reference_comparison",
-      "required_artifact_ids": [
-        "overview_1440x900",
-        "overview_1024x768",
-        "overview_768x1024",
-        "overview_390x844",
-        "funnel_people_1440x900",
-        "funnel_people_1024x768",
-        "funnel_people_768x1024",
-        "funnel_people_390x844",
-        "funnel_bottlenecks_1440x900",
-        "funnel_bottlenecks_1024x768",
-        "funnel_bottlenecks_768x1024",
-        "funnel_bottlenecks_390x844",
-        "funnel_sla_editor"
-      ],
-      "candidate_artifacts": [
-        "overview_1440x900",
-        "overview_1024x768",
-        "overview_768x1024",
-        "overview_390x844",
-        "funnel_people_1440x900",
-        "funnel_people_1024x768",
-        "funnel_people_768x1024",
-        "funnel_people_390x844",
-        "funnel_bottlenecks_1440x900",
-        "funnel_bottlenecks_1024x768",
-        "funnel_bottlenecks_768x1024",
-        "funnel_bottlenecks_390x844",
-        "funnel_sla_editor"
-      ],
-      "blocking_conditions": []
+      "status": "blocked"
     },
     "workspace_wave": {
-      "status": "passed",
-      "frozen_shared_baseline": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
-      "accepted_commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
-      "artifact_manifest": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/manifest.json",
-      "interaction_proof": "docs/reporter-growth/v2/design-lock/candidate/16479473d6b22ed64a18d4b1b5b9748f1c84374b/interactions.json",
-      "lead_disposition": "P4_WORKSPACE_VISUAL_PROOF_READY",
-      "coordinator_disposition": "accepted_after_independent_locked-reference_comparison",
-      "route": "http://127.0.0.1:5174/",
-      "browser": "Playwright Chromium 153.0.8010.12",
-      "artifact_count": 37,
-      "interaction_count": 16,
-      "console_errors": 0,
-      "page_errors": 0,
-      "waiver_allowed": false,
-      "reason": "After Quality exposed Funnel sequential note and numeric-input defects, the Experience Lead repaired them and the coordinator recaptured the full exact-commit proof. All required desktop, tablet, and 390×844 states are checksum-valid; 16 interactions, including exact note whitespace and clear-then-type SLA recomputation, passed without browser errors or waivers."
+      "status": "blocked"
     },
     "quality": {
-      "status": "blocked",
-      "first_candidate_commit": "439829151151de6e8279e5af01261f07d1b50a3c",
-      "first_disposition": "DEFECTS",
-      "repair_commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
-      "reason": "Quality adopted the stale suites and found Funnel note-whitespace and clear-then-type SLA defects. The Experience Lead repair and replacement exact-commit proof are integrated; Quality must rerun independently from the repaired candidate."
+      "status": "blocked"
     },
     "reviewer": {
-      "status": "blocked",
-      "reason": "Quality has not passed an exact integrated commit."
+      "status": "blocked"
     }
   },
-  "lane_audits": {
-    "data": {
-      "base_commit": "88f133672b2edfed4e7650fdc7b2fc5a8e586525",
-      "handoff_commit": "e601cb4a27514725afb38d70e2b1dba6f1e57ebb",
-      "integrated_commit": "29735a174028795b107c07d75aa7a58a32aeec05",
-      "boundary_status": "passed",
-      "acceptance_evidence_status": "passed_sd01_sd07",
-      "disposition": "integrated"
-    },
-    "experience": {
-      "base_commit": "dc408b017629b3ec16dcd511bccd85adbed3e0f8",
-      "handoff_commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
-      "integrated_commit": "e33ee8d1a70a7f103eaf67354aa98139c1fd20a7",
-      "boundary_status": "passed",
-      "acceptance_evidence_status": "passed",
-      "visual_evidence_status": "passed",
-      "disposition": "P4_VISUAL_PROOF_READY_accepted_shared_baseline_frozen"
-    },
-    "experience_reporters": {
-      "base_commit": "3a659eaa2c3d1c1d63022d499c5e00599caf17a1",
-      "handoff_commit": "0856bda7a3978855f38794e19ee31564c7fbb08c",
-      "integrated_commit": "f84f9a192b1f6009148e14cdd64b235a3c6f174d",
-      "boundary_status": "passed",
-      "acceptance_evidence_status": "passed",
-      "visual_evidence_status": "lead_reviewed_and_accepted",
-      "disposition": "integrated"
-    },
-    "experience_team": {
-      "base_commit": "e28bd5ec85d1280ff0428cde0a7fd44eb012ae04",
-      "handoff_commit": "c0bb4ca8f7cc5f93881e69d23b0b804d84fa5f7b",
-      "integrated_commit": "2291b3cb166229f9dd308d58aa83ca464487fb96",
-      "boundary_status": "passed",
-      "acceptance_evidence_status": "passed",
-      "visual_evidence_status": "lead_reviewed_and_accepted",
-      "disposition": "integrated"
-    },
-    "experience_programs": {
-      "base_commit": "60831a3ec1c7133eb7dd286f326f8e7389058136",
-      "handoff_commit": "b1a47d0fcf9af76097de3985a560d1a997d1df0f",
-      "integrated_commit": "1e03a5d538b64bb647bafa01dcacab7fa869ea45",
-      "repair_base_commit": "8c331d5d85816ec282597a099bc12187add1d7e4",
-      "boundary_status": "passed",
-      "acceptance_evidence_status": "passed",
-      "visual_evidence_status": "lead_reviewed_and_accepted_after_target_label_repair",
-      "disposition": "integrated"
-    },
-    "team_logic_support": {
-      "integrated_commit": "85e62f41b17992a1ab0a048fe1875b4b9827793f",
-      "disposition": "integrated_contract_change"
-    },
-    "network_logic_support": {
-      "integrated_commit": "3a659eaa2c3d1c1d63022d499c5e00599caf17a1",
-      "disposition": "integrated_contract_change"
-    },
-    "programs_logic_support": {
-      "integrated_commit": "60831a3ec1c7133eb7dd286f326f8e7389058136",
-      "disposition": "integrated_contract_change"
-    },
-    "experience_p4_3_repair": {
-      "base_commit": "05909579b31834705218abb4a650dd8fda0eb04c",
-      "handoff_commit": "f120189a808503f1b5894513c1fdc65b0b4cb18c",
-      "integrated_commit": "16479473d6b22ed64a18d4b1b5b9748f1c84374b",
-      "boundary_status": "passed",
-      "acceptance_evidence_status": "passed_9_of_9",
-      "visual_evidence_status": "passed_37_artifacts_16_interactions",
-      "disposition": "integrated_awaiting_quality_rerun"
-    }
-  },
+  "lane_audits": {},
   "known_ownership_exceptions": [],
   "phase_allowed_prefixes": [
     ".codex/config.toml",
@@ -262,5 +162,9 @@
     "src/ui/",
     "tests/acceptance/",
     "tests/e2e/"
-  ]
+  ],
+  "historical_p4": {
+    "file": "docs/reporter-growth/v2/history/P4_PRE_INTERVIEW_STATE_2026-09-18.json",
+    "sha256": "0914c3d6fb45c0dffb7f777f3edd8ce1cc40f27d1af65628c5891663126ea338"
+  }
 }

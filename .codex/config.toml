@@ -26,7 +26,7 @@ description = "P4 Programs presentation specialist after visual proof; uses the 
 config_file = "./agents/experience_programs.toml"
 
 [agents.data]
-description = "P4 serial data-preparation lane: balanced 50-person synthetic expansion, complete histories, validation, repository, and reset."
+description = "P4 serial data-preparation lane: preserve the completed 50-person sample; bounded linked-work histories, validation, repository, and reset."
 config_file = "./agents/data.toml"
 
 [agents.capacity]
