@@ -1,0 +1,30 @@
+{
+  "source_commit": "12690e87b4a43366c6c6f04509823ad13d1973d0",
+  "proof_source": "d7c9d7347ae3904660a213595724360a599aa728",
+  "base": "aa384f096e86e4ae584881e185e4d6b4776fac0a",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "route": "http://127.0.0.1:5188/",
+  "reproduction": "Funnel → Tobin Shaw · ORD attention → focus Why this? → Enter",
+  "actual": {
+    "x": 19.5,
+    "y": 0,
+    "width": 370.5,
+    "height": 844
+  },
+  "required": {
+    "minWidth": 389,
+    "minHeight": 843
+  },
+  "content": "FIRST-TIME ACQUISITION CASES WITH COMPLETE SYNTHETIC RECORDS.\n×\nWhy this?\n\nComplete sample-required-evidence: Blocked: same-required-step-missing\n\n1 people\n\nCurrent record scope · As of Feb 16, 2026\n\nContributing records\nTobin Shaw\nCalculation and limitations\nOpen the work",
+  "afterEscape": {
+    "hidden": true,
+    "focusReturned": true,
+    "overflow": 0
+  },
+  "owner": "Experience Lead",
+  "status": "open; assertions preserved",
+  "source_cause": "src/styles/tokens.css:396 sets width:min(660px,95vw) and max-width:95vw with no 390px fullscreen override"
+}
