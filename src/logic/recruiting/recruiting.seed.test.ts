@@ -6,7 +6,7 @@ import { validateEvidenceBundle } from "../shared/evidence";
 
 const query = (selectedMarket: "ALL" | MarketId, start = "2026-01-01T00:00:00Z", end = "2026-02-01T00:00:00Z"): WorkspaceQueryContext<"recruiting"> => ({
   workspace: "recruiting",
-  evaluation: { asOfAt: DEMO_SNAPSHOT_V2.baseAsOfAt, snapshotRevision: DEMO_SNAPSHOT_V2.revision, reportingTimeZone: "America/Los_Angeles" },
+  evaluation: { asOfAt: DEMO_SNAPSHOT_V2.baseAsOfAt, snapshotRevision: DEMO_SNAPSHOT_V2.revision, reportingTimeZone: "America/Los_Angeles" as WorkspaceQueryContext<"recruiting">["evaluation"]["reportingTimeZone"] },
   filters: { selectedMarket, marketBasis: "recruiting-market-at-entry", marketIds: [], reporterIds: [], acquisitionCaseIds: [], requestIds: [], workItemIds: [], programIds: [], programEnrollmentIds: [], sourceIds: [], jobOutcomeIds: [], capabilityCodes: [], attendanceModes: [], recordRefs: [], window: { startAt: start as UtcTimestamp, endAt: end as UtcTimestamp, boundary: "[start,end)" } },
 });
 

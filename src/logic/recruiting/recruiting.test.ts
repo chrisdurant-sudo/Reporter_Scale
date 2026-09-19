@@ -323,3 +323,18 @@ describe("IC02 wait and finalized source measures", () => {
     expect(trend.filter((item) => item.asOfAt >= "2026-03-18T00:00:00.000Z").every((item) => item.acquisitionCaseIds.length === 0)).toBe(true);
   });
 });
+
+describe("IC02 work edit history", () => {
+  it("uses the shared as-of projector so future due date, title, and blocker edits cannot change past actions", () => {
+    const before = utc("2026-03-01T00:00:00Z"), edited = utc("2026-03-10T00:00:00Z");
+    const oldDue = utc("2026-02-25T00:00:00Z"), newDue = utc("2026-03-30T00:00:00Z");
+    const original = { id: "work-a", kind: "onboard", title: "Confirm orientation", primaryEntityRef: { kind: "acquisition-case", id: "case-a" }, relatedRequestIds: [], programId: null, createdAt: utc("2026-02-01T00:00:00Z"), ownerHistory: [], dueAt: oldDue, statusHistory: [{ status: "open", occurredAt: utc("2026-02-01T00:00:00Z"), actorId: "actor", reason: "follow up" }], blockerCode: "missing-form", completionEvidenceRefs: [], provenance: "synthetic-demo" };
+    const updated = { ...original, title: "Review submitted form", dueAt: newDue, blockerCode: null, editHistory: [{ commandId: "edit", actorId: "actor", occurredAt: edited, reason: "Received form", previous: { title: original.title, dueAt: oldDue, blockerCode: original.blockerCode }, changes: { title: "Review submitted form", dueAt: newDue, blockerCode: null } }] };
+    const old = projectCurrentCases(contactedSnapshot({ workItems: [original] }), before)[0]!;
+    const reconstructed = projectCurrentCases(contactedSnapshot({ workItems: [updated] }), before)[0]!;
+    expect(reconstructed.openActions).toEqual(old.openActions);
+    expect(reconstructed.openActions[0]).toMatchObject({ label: "Confirm orientation", dueAt: oldDue, waitingOnKey: "blocker:missing-form" });
+    const current = projectCurrentCases(contactedSnapshot({ workItems: [updated] }), asOf)[0]!;
+    expect(current.openActions[0]).toMatchObject({ label: "Review submitted form", dueAt: newDue, waitingOnKey: "work:onboard" });
+  });
+});
