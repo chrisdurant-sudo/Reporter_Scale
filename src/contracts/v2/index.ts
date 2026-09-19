@@ -13,3 +13,4 @@ export * from "./snapshot";
 export * from "./work";
 export * from "./weeklyReview";
 export * from "./workspace";
+export * from "./interaction";

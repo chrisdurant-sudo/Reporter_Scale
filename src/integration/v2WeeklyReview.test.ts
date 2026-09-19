@@ -4,7 +4,7 @@ import { REPORTING_TIME_ZONE } from "../contracts/v2";
 import { applyScenarioCheckpoint, DEMO_SNAPSHOT_V2, V2_MAIN_REQUEST_WINDOW } from "../data/v2";
 import { prepareMarketsWorkspace } from "../logic/capacity";
 import { prepareRecruitingWorkspace } from "../logic/recruiting";
-import { prepareWeeklyReviewFoundation, prepareWeeklyTeamReview } from "./v2WeeklyReview";
+import { prepareWeeklyOperatingReview, prepareWeeklyReviewFoundation, prepareWeeklyTeamReview } from "./v2WeeklyReview";
 
 const contexts = (snapshot: DemoSnapshotV2) => {
   const capacity: WorkspaceQueryContext<"markets"> = {
@@ -108,5 +108,37 @@ describe("weekly Team composition", () => {
       expect(action.owner?.id).toBe(source.teamMemberId);
       expect(action.navigationTarget.filters.recordRefs).toContainEqual(action.source);
     }
+  });
+});
+
+describe("complete operating review", () => {
+  const window = { startAt: "2026-02-09T08:00:00Z" as UtcTimestamp, endAt: "2026-02-16T08:00:00Z" as UtcTimestamp, boundary: "[start,end)" as const };
+  const entryWindow = contexts(DEMO_SNAPSHOT_V2).recruiting.filters.window!;
+  it("retains separate cohort metrics, compatible goals and the actual next review date", () => {
+    const review = prepareWeeklyOperatingReview(DEMO_SNAPSHOT_V2, "ALL", window, entryWindow);
+    const checklist = review.measures.filter((item) => item.metric.id === "M12");
+    expect(checklist.map((item) => item.actual)).toEqual([6 / 20, 11 / 20]);
+    expect(checklist.map((item) => item.target?.value ?? null)).toEqual([null, 0.5]);
+    expect(checklist.every((item) => item.comparison.status === "unavailable")).toBe(true);
+    const dfw = review.measures.find((item) => item.id.includes("program-dfw-broad-outreach"))!;
+    expect(dfw).toMatchObject({ metric: { id: "M07" }, actual: 1 / 6, target: { value: 0.4 }, unit: "ratio" });
+    const referral = review.measures.find((item) => item.id.includes("program-lax-realtime-referrals"))!;
+    expect(referral).toMatchObject({ metric: { id: "M09" }, actual: null, unit: "currency-minor", currency: "USD", target: null });
+    expect(referral.observationLabel).toContain("2 still observing");
+    expect(referral.actualUnavailableReason).toBeTruthy();
+    const action = review.actions.find((item) => item.source.id === "decision-checklist-expand")!;
+    expect(action).toMatchObject({ reviewAt: "2026-03-16T17:00:00Z", reviewDateLabel: "Decision next review date", dueAt: null });
+    expect(review.actions.some((item) => item.source.id === "decision-dfw-stop")).toBe(false);
+    expect(review.partialPeriod).toBe(false);
+  });
+
+  it("preserves selected-market evidence and withholds nationwide/member targets from a subset", () => {
+    const review = prepareWeeklyOperatingReview(DEMO_SNAPSHOT_V2, "LAX", window, entryWindow);
+    expect(review.measures.filter((item) => item.metric.id === "M12").map((item) => item.actual)).toEqual([3 / 10, 6 / 10]);
+    expect(review.measures.filter((item) => item.metric.id === "M12").every((item) => item.target === null && item.targetUnavailableReason)).toBe(true);
+    expect(review.measures.some((item) => item.id.includes("dfw"))).toBe(false);
+    for (const measure of review.measures) for (const evidence of measure.evidence) expect(evidence.filters.selectedMarket).toBe("LAX");
+    for (const action of review.actions) expect(action.navigationTarget.filters.selectedMarket).toBe("LAX");
+    expect(review.limitations[0]).toContain("Workspace-local");
   });
 });

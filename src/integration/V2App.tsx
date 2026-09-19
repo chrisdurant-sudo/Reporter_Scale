@@ -4,11 +4,17 @@ import type {
   AttendanceMode,
   CapabilityCode,
   DateWindow,
+  DemoActionContext,
+  DemoRecordKind,
   DemoSnapshotV2,
   EvidenceBundle,
   MarketId,
   MetricDefinitionRef,
-  ProgramNote,
+  NetworkAvailabilityRecordPayload,
+  NetworkCommandEnvelope,
+  ProgramDecisionSavePayload,
+  ProcessDraftSavePayload,
+  ProgramsCommandEnvelope,
   ProcessVersion,
   ProgramDecision,
   ReporterId,
@@ -20,6 +26,9 @@ import type {
   WorkspaceNavigationTarget,
   WorkspaceQueryContext,
   WorkItem,
+  WorkCreatePayload,
+  WorkEditPayload,
+  WorkTransitionPayload,
 } from "../contracts/v2";
 import { REPORTING_TIME_ZONE, V2_MARKET_IDS } from "../contracts/v2";
 import {
@@ -33,8 +42,8 @@ import { ProgramsScreen } from "../features/programs";
 import { RecruitingScreen } from "../features/recruiting";
 import { ReportersNetworkScreen } from "../features/reporters/network";
 import { TeamScreen } from "../features/team";
-import { prepareNetworkView } from "../logic/network";
-import { prepareProgramsView } from "../logic/programs";
+import { prepareNetworkCommand, prepareNetworkView } from "../logic/network";
+import { prepareProgramsCommand, prepareProgramsView } from "../logic/programs";
 import {
   applyRecruitingLocalNoteCommand,
   prepareRecruitingWorkspace,
@@ -52,6 +61,9 @@ import { ErrorState, LoadingState } from "../ui/v2";
 import { v2BrowserStorage } from "./v2BrowserStorage";
 import { prepareInterviewOverview } from "./v2Overview";
 import { commitV2Command } from "./v2CommandTransaction";
+import { commitNetworkFollowUp, type NetworkFollowUpPayload } from "./v2NetworkComposition";
+import { prepareWeeklyOperatingReview } from "./v2WeeklyReview";
+import { composeProgramsCommand } from "./v2ProgramComposition";
 
 const RECRUITING_ENTRY_COHORTS: readonly { readonly id: string; readonly label: string; readonly window: DateWindow }[] = [
   { id: "january-2026", label: "January 2026", window: {
@@ -78,6 +90,7 @@ const ATTENDANCE_OPTIONS = [
 
 type CommandInput<T> = T extends { readonly context: unknown } ? Omit<T, "context"> : never;
 type TeamCommandInput = CommandInput<TeamCommandEnvelope>;
+type ProgramsCommandInput = CommandInput<ProgramsCommandEnvelope>;
 
 interface ActionFeedback {
   readonly changed: string;
@@ -157,6 +170,18 @@ function queryContext<TWorkspace extends WorkspaceId>(
     },
     filters: exact?.filters ?? filtersFor(workspace, filters),
   };
+}
+
+function actionContext(snapshot: DemoSnapshotV2, memberId: string, busy: boolean): DemoActionContext {
+  const member = snapshot.teamMembers.find((item) => item.id === memberId
+    && Date.parse(item.activeFrom) <= Date.parse(snapshot.currentAsOfAt)
+    && (item.activeTo === null || Date.parse(item.activeTo) > Date.parse(snapshot.currentAsOfAt)));
+  return { snapshotRevision: snapshot.revision, occurredAt: snapshot.currentAsOfAt, busy,
+    actor: member ? { memberId: member.id, actorId: member.actorId, name: member.fictionalName } : null };
+}
+
+function createDemoRecordId(kind: DemoRecordKind): string {
+  return `${kind}-${crypto.getRandomValues(new Uint32Array(4)).join("-")}`;
 }
 
 function currentCheckpointIndex(snapshot: DemoSnapshotV2): number {
@@ -293,6 +318,30 @@ export function V2App() {
     }
   }), [acceptSnapshot, enqueue, repository]);
 
+  const submitProgramsCommand = useCallback((input: ProgramsCommandInput): Promise<void> => enqueue(async () => {
+    const current = snapshotRef.current;
+    if (!current) throw new Error("Wait for the demo snapshot to load.");
+    setBusy(true);
+    try {
+      const command: ProgramsCommandEnvelope = {
+        ...input, context: { commandId: `programs-${crypto.getRandomValues(new Uint32Array(4)).join("-")}` as ProgramsCommandEnvelope["context"]["commandId"],
+          expectedRevision: current.revision, actorId: "actor-team-2" as ActorId, occurredAt: current.currentAsOfAt },
+      };
+      const result = await commitV2Command(repository, command,
+        (value, action) => composeProgramsCommand(value, action, prepareProgramsCommand, prepareTeamCommand));
+      if (!result.ok) throw new Error(result.message);
+      acceptSnapshot(result.value);
+      setSelectedEvidence(null); setDrillDown(null);
+      setFeedback(command.type === "programs.note.save" ? {
+        changed: `Saved the program ${command.payload.field === "note" ? "note" : "next step"}.`,
+        notChanged: "Program results, stage, enrollment, rollout, readiness, acceptance, and jobs did not change.",
+      } : { changed: result.message, notChanged: "Frozen enrollment, readiness, availability, assignments and job outcomes did not change. Saving a proposal or draft is not rollout." });
+    } catch (error) {
+      setFeedback({ changed: "Nothing was saved.", notChanged: error instanceof Error ? error.message : "The Programs action failed." });
+      throw error;
+    } finally { setBusy(false); }
+  }), [acceptSnapshot, enqueue, repository]);
+
   const resetDemo = useCallback(() => enqueue(async () => {
     setBusy(true);
     try {
@@ -359,6 +408,10 @@ export function V2App() {
   const programsView = useMemo(() => snapshot
     ? prepareProgramsView(snapshot, queryContext("programs", snapshot, globalFilters, drillDown))
     : null, [drillDown, globalFilters, snapshot]);
+  const weeklyReview = useMemo(() => snapshot && activeWorkspace === "markets"
+    ? prepareWeeklyOperatingReview(snapshot, globalFilters.selectedMarket, TEAM_REPORTING_WINDOW,
+      RECRUITING_ENTRY_COHORTS.find((cohort) => cohort.id === recruitingCohortId)!.window)
+    : null, [activeWorkspace, globalFilters.selectedMarket, recruitingCohortId, snapshot]);
 
   const workspaceEvidence = useMemo(() => {
     if (activeWorkspace === "markets") return marketsView?.evidence ?? [];
@@ -443,6 +496,49 @@ export function V2App() {
       (value) => applyScenarioCheckpoint(value, String(plan.id)),
     );
   }, [saveMutation]);
+
+  const recordAvailability = useCallback((payload: NetworkAvailabilityRecordPayload): Promise<void> => enqueue(async () => {
+    const current = snapshotRef.current;
+    if (!current) throw new Error("Wait for the demo snapshot to load.");
+    setBusy(true);
+    try {
+      const command: NetworkCommandEnvelope = {
+        type: "network.record-availability", payload,
+        context: { commandId: `network-${crypto.getRandomValues(new Uint32Array(4)).join("-")}` as NetworkCommandEnvelope["context"]["commandId"],
+          expectedRevision: current.revision, actorId: "actor-team-3" as ActorId, occurredAt: current.currentAsOfAt },
+      };
+      const result = await commitV2Command(repository, command, prepareNetworkCommand);
+      if (!result.ok) throw new Error(result.message);
+      acceptSnapshot(result.value);
+      setSelectedEvidence(null); setDrillDown(null);
+      setFeedback({ changed: result.message, notChanged: "No readiness, accepted assignment, job outcome or credential record changed." });
+    } catch (error) {
+      setFeedback({ changed: "Nothing was saved.", notChanged: error instanceof Error ? error.message : "Availability could not be saved." });
+      throw error;
+    } finally { setBusy(false); }
+  }), [acceptSnapshot, enqueue, repository]);
+
+  const requestFollowUp = useCallback((payload: NetworkFollowUpPayload): Promise<void> => enqueue(async () => {
+    const current = snapshotRef.current;
+    if (!current) throw new Error("Wait for the demo snapshot to load.");
+    setBusy(true);
+    try {
+      const result = await commitNetworkFollowUp(repository, {
+        commandId: `follow-up-${crypto.getRandomValues(new Uint32Array(4)).join("-")}` as TeamCommandEnvelope["context"]["commandId"],
+        expectedRevision: current.revision, actorId: "actor-team-3" as ActorId, occurredAt: current.currentAsOfAt,
+      }, payload);
+      if (!result.ok) throw new Error(result.message);
+      acceptSnapshot(result.value);
+      setSelectedEvidence(null); setDrillDown(null);
+      if (result.navigationTarget) openWork(result.navigationTarget);
+      setFeedback({ changed: result.message, notChanged: result.navigationTarget
+        ? "Availability, readiness, acceptance and completed-work outcomes did not change."
+        : "Work is saved, but its exact detail target is unavailable. Operational outcomes did not change." });
+    } catch (error) {
+      setFeedback({ changed: "Nothing was saved.", notChanged: error instanceof Error ? error.message : "Follow-up could not be saved." });
+      throw error;
+    } finally { setBusy(false); }
+  }), [acceptSnapshot, enqueue, openWork, repository]);
 
   const appendAvailability = useCallback((reporterId: ReporterId, confirmedAt: UtcTimestamp) => saveMutation(
     `Recorded a bounded availability confirmation for ${snapshotRef.current?.reporters.find((item) => item.id === reporterId)?.fictionalName ?? "the reporter"}.`,
@@ -575,6 +671,7 @@ export function V2App() {
     if (loadError) return <ErrorState detail={loadError} />;
     if (!snapshot || !marketsView || !recruitingView || !reportersView || !teamView || !programsView) return <LoadingState />;
     if (activeWorkspace === "markets") return <MarketsV2Screen
+      {...{ weeklyReview, onInspectEvidence: openEvidence, onNavigateTarget: openWork }}
       view={marketsView}
       onSelectMarket={(value) => { if (isMarket(value)) { setGlobalFilters((current) => ({ ...current, selectedMarket: value })); setDrillDown(null); } }}
       onOpenEvidence={openEvidenceTarget}
@@ -614,7 +711,10 @@ export function V2App() {
       onWhyThis={(id) => openEvidence(findEvidence(id))}
       onOpenWork={(id) => { const evidence = findEvidence(id); if (evidence) openWork(evidence.navigationTarget); }}
     />;
-    if (activeWorkspace === "reporters") return <ReportersNetworkScreen view={reportersView} actions={{
+    if (activeWorkspace === "reporters") return <ReportersNetworkScreen
+      {...{ commandContext: actionContext(snapshot, "team-3", busy), onNavigateTarget: openWork,
+        onRecordAvailability: recordAvailability, onRequestFollowUp: requestFollowUp }}
+      view={reportersView} actions={{
       onConfirmAvailability: (input) => appendAvailability(input.reporterId, input.confirmedAt),
       onCreateReengagementTask: appendReengagementTask,
       onOpenEvidence: openEvidence,
@@ -625,7 +725,10 @@ export function V2App() {
       },
     }} />;
     if (activeWorkspace === "team") return <TeamScreen
-      {...{ onChangeFilters: (next: TeamViewFilters) => { setTeamFilters(next); setDrillDown(null); }, onNavigateTarget: openWork, preservedEvidenceContext: drillDown?.workspace === "team" }}
+      {...{ onChangeFilters: (next: TeamViewFilters) => { setTeamFilters(next); setDrillDown(null); }, onNavigateTarget: openWork,
+        preservedEvidenceContext: drillDown?.workspace === "team", commandContext: actionContext(snapshot, "team-1", busy), onCreateRecordId: createDemoRecordId,
+        onEditWork: (payload: WorkEditPayload) => submitTeamCommand({ type: "work.edit", payload }, "Saved the work changes and history.", "Readiness, acceptance, jobs and program outcomes did not change."),
+        onTransitionWork: (payload: WorkTransitionPayload) => submitTeamCommand({ type: "work.transition", payload }, "Saved the work status and evidence.", "No operational outcome was manufactured by the status change.") }}
       view={teamView} actions={{
       onOpenEvidence: (id) => openEvidence(findEvidence(String(id))),
       onCreateWork: (payload) => submitTeamCommand(
@@ -659,28 +762,18 @@ export function V2App() {
         "No automatic score or operational outcome changed.", payload.coachingAction.authorId,
       ),
     }} />;
-    return <ProgramsScreen view={programsView} actions={{
+    return <ProgramsScreen
+      {...{ commandContext: actionContext(snapshot, "team-2", busy), onNavigateTarget: openWork,
+        onSaveDecision: (payload: ProgramDecisionSavePayload) => submitProgramsCommand({ type: "programs.record-decision", payload }),
+        onSaveDraft: (payload: ProcessDraftSavePayload) => submitProgramsCommand({ type: "programs.save-process-version", payload }),
+        onCreateLinkedWork: (payload: WorkCreatePayload) => submitTeamCommand({ type: "work.create", payload }, "Saved the linked canonical Team work.", "No program outcome or rollout changed.", "actor-team-2" as ActorId) }}
+      view={programsView} actions={{
       onEditProgram: (programId, field, value) => saveMutation(`Updated the program ${field}.`, "Program results, enrollments, readiness, acceptance, and jobs did not change.", (current) => ({ ...current, programs: current.programs.map((program) => program.id === programId ? { ...program, [field]: value } as typeof program : program) })),
       onSaveProgramText: (payload) => {
         const row = programsView.rows.find((item) => item.id === payload.programId);
         const savedText = payload.field === "note" ? row?.latestNote ?? "" : row?.latestNextStep ?? row?.nextStep ?? "";
         if (payload.text === savedText) return Promise.resolve();
-        return saveMutation(
-          `Saved the program ${payload.field === "note" ? "note" : "next step"}.`,
-          "Program results, stage, enrollment, rollout, readiness, acceptance, and jobs did not change.",
-          (current) => {
-            const note: ProgramNote = {
-              id: `program-${payload.field}-${payload.programId}-${current.revision + 1}` as never,
-              programId: payload.programId,
-              authorId: "actor-team-2" as never,
-              kind: payload.field,
-              text: payload.text,
-              createdAt: current.currentAsOfAt,
-              provenance: "demo-simulation",
-            };
-            return { ...current, programNotes: [...current.programNotes, note] };
-          },
-        );
+        return submitProgramsCommand({ type: "programs.note.save", payload });
       },
       onRecordDecision: recordProgramDecision,
       onSaveProcessDraft: saveProcessDraft,

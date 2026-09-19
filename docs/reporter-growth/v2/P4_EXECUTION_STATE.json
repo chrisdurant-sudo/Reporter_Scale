@@ -654,7 +654,7 @@
       "lane": "programs",
       "base_commit": "40c3cfe2c8ac87806c333348e981a6ddd4b2f0a4",
       "candidate_commit": "fe25433912f5b380eacf958c776e1f2095dafcc6",
-      "status": "boundary_passed_pending_integration",
+      "status": "integrated_pending_full_verification",
       "changed_paths": [
         "src/logic/programs/commands.ts",
         "src/logic/programs/index.test.ts",
@@ -667,7 +667,8 @@
       "worker_governance_exit_code": 1,
       "worker_governance_limitation": "Static 203 checks pass; phase check requires recorded coordinator checkout. Coordinator governance passes before integration.",
       "acceptance_scope": "IC05/IC06 prepared logic; typed command wiring, IP10/IP11 presentation and independent Quality remain pending",
-      "handoff": "docs/reporter-growth/v2/IP1_PROGRAMS_HANDOFF.md"
+      "handoff": "docs/reporter-growth/v2/IP1_PROGRAMS_HANDOFF.md",
+      "integrated_commit": "5484a9a53c274ffe57041d54c73eade8b39c2b25"
     }
   },
   "known_ownership_exceptions": [],
@@ -920,7 +921,7 @@
       "IC05",
       "IC06"
     ],
-    "status": "review_ready",
+    "status": "integrated_pending_full_verification",
     "runtime_evidence": {
       "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-programs-worker-runtime.json",
       "sha256": "f778fbe7e3fb3cd23436c845f5989db31a236cb435d979c853c07174ba5d0e93"

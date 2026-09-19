@@ -1,7 +1,12 @@
-import type { DemoSnapshotV2, MetricDefinitionRef, TeamMemberId, WeeklyOperatingReview, WeeklyReviewMeasure, WorkspaceQueryContext } from "../contracts/v2";
+import type { DateWindow, DemoSnapshotV2, MetricDefinitionRef, SelectedMarket, TeamMemberId, WeeklyOperatingReview, WeeklyReviewMeasure, WorkspaceId, WorkspaceQueryContext } from "../contracts/v2";
+import { REPORTING_TIME_ZONE } from "../contracts/v2";
+import { V2_MAIN_REQUEST_WINDOW } from "../data/v2";
 import type { PreparedMarketsView } from "../logic/capacity";
 import type { PreparedRecruitingView } from "../logic/recruiting";
 import { prepareTeamCompletionComparison, prepareTeamView } from "../logic/team";
+import { prepareRecruitingWorkspace } from "../logic/recruiting";
+import { prepareWeeklyProgramsReview, type WeeklyProgramsReview } from "../logic/programs";
+import { prepareInterviewOverview } from "./v2Overview";
 
 /** Compose existing domain facts; neither weekly labels nor UI selections redefine their populations. */
 export function prepareWeeklyReviewFoundation(
@@ -102,5 +107,61 @@ export function prepareWeeklyTeamReview(
     }))),
     partialPeriod: team.completionComparison?.partialPeriod ?? true,
     limitations: team.limitations,
+  };
+}
+
+/** Frozen cohort results retain their own horizon; a reporting week never becomes their denominator. */
+export function prepareWeeklyProgramMeasures(review: WeeklyProgramsReview): readonly WeeklyReviewMeasure[] {
+  return review.programs.flatMap((program) => program.groups.map((group): WeeklyReviewMeasure => {
+    const target = program.targetDetails;
+    const targetGroupMatches = !target.targetGroupIds.length || target.targetGroupIds.includes(group.groupId);
+    return {
+      id: `program-${program.id}-${group.groupId}`, label: `${program.title} · ${group.label}`,
+      metric: group.evidence.metric, unit: group.unit, currency: group.currency, actual: group.result,
+      actualUnavailableReason: group.evidence.computation.status === "unavailable" ? group.evidence.computation.reason : null,
+      scopeLabel: group.evidence.scope.populationDescription,
+      observationLabel: `${group.outcomeLabel}; ${group.followUpDays} elapsed days from enrollment. ${group.matureEntrants} mature; ${group.stillObservingEntrants} still observing.`,
+      target: targetGroupMatches && target.value !== null && target.revision ? {
+        value: target.value, label: target.label, records: [{ kind: "goal-revision", id: target.revision.id }],
+      } : null,
+      targetUnavailableReason: !targetGroupMatches ? "The declared target belongs to a different cohort." : target.reason,
+      comparison: { status: "unavailable", reason: "These are frozen cohort outcomes, not a matched current/prior-week flow. Inspect Programs for the categorical comparison." },
+      evidence: [group.evidence], limitations: [...group.evidence.limitations, ...program.historyLimitations],
+    };
+  }));
+}
+
+/** Market-wide operating review is intentionally independent of workspace-local record filters. */
+export function prepareWeeklyOperatingReview(
+  snapshot: DemoSnapshotV2,
+  selectedMarket: SelectedMarket,
+  reportingWindow: DateWindow,
+  recruitingEntryWindow: DateWindow,
+): WeeklyOperatingReview {
+  const evaluation = { asOfAt: snapshot.currentAsOfAt, snapshotRevision: snapshot.revision, reportingTimeZone: REPORTING_TIME_ZONE };
+  const context = <T extends WorkspaceId>(workspace: T, window: DateWindow | null): WorkspaceQueryContext<T> => ({
+    workspace, evaluation,
+    filters: { selectedMarket, marketBasis: workspace === "markets" ? "demand-market" : workspace === "recruiting" ? "recruiting-market-at-entry" : workspace === "programs" ? "program-market-at-entry" : "all-markets",
+      marketIds: selectedMarket === "ALL" ? [] : [selectedMarket], reporterIds: [], acquisitionCaseIds: [], requestIds: [], workItemIds: [],
+      programIds: [], programEnrollmentIds: [], sourceIds: [], jobOutcomeIds: [], capabilityCodes: [], attendanceModes: [], recordRefs: [], window },
+  });
+  const definition = snapshot.metricDefinitions.find((item) => item.id === "M11");
+  if (!definition) throw new Error("Weekly review requires the frozen Team completion metric.");
+  const foundation = prepareWeeklyReviewFoundation(
+    prepareInterviewOverview(snapshot, context("markets", V2_MAIN_REQUEST_WINDOW)),
+    prepareRecruitingWorkspace(snapshot, context("recruiting", recruitingEntryWindow)),
+  );
+  const team = prepareWeeklyTeamReview(snapshot, context("team", reportingWindow), { id: definition.id, version: definition.version });
+  const programs = prepareWeeklyProgramsReview(snapshot, context("programs", reportingWindow));
+  return {
+    evaluation, selectedMarket, reportingWindow, partialPeriod: team.partialPeriod || programs.isPartial,
+    measures: [...foundation.measures, ...team.measures, ...prepareWeeklyProgramMeasures(programs)],
+    constraints: foundation.constraints, actions: [...team.actions, ...programs.actions],
+    limitations: [
+      "Market-wide review at the current demo time. Workspace-local search, owner, status, source, capability and attendance filters do not redefine this review.",
+      "Scheduling, saved goals, acquisition cohorts, Team completions and program cohorts retain their stated observation windows and units.",
+      "Review dates are recorded accountability dates. Task due dates and goal deadlines are shown separately.",
+      ...team.limitations,
+    ],
   };
 }
