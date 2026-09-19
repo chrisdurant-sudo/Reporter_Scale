@@ -359,8 +359,8 @@
   "fanout_authorized": false,
   "current_phase": "IP1_serial_data_logic",
   "current_candidate": {
-    "commit": "f1d053a1026158e0eb12dc38925c1cdef8e699f8",
-    "status": "data_capacity_integrated_full_suite_passed_remaining_logic_pending",
+    "commit": "662e7de0e3b87305a22f8a56ac67c2b2a48004cf",
+    "status": "shared_contract_baseline_passed_recruiting_finalization_pending",
     "defect_register": "docs/reporter-growth/v2/INTERVIEW_PRODUCT_REVIEW_2026-09-18.md"
   },
   "gates": {
@@ -665,9 +665,9 @@
     "task_name": "/root/ip1_recruiting",
     "worktree": "/private/tmp/steno-interview-ip1-recruiting",
     "branch": "codex/interview-ip1-recruiting",
-    "base_commit": "04f98454ad1e61c2a15f2041d848b0f6caf2a0f7",
+    "base_commit": "4e54406da9674cdb62cfa270d53bc135d75c2a0b",
     "source_contract_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
-    "prerequisite_contract_commit": "637535208f12e702f117b1f16e3f172b580c2e49",
+    "prerequisite_contract_commit": "662e7de0e3b87305a22f8a56ac67c2b2a48004cf",
     "requests": [
       "IC02"
     ],
@@ -675,6 +675,9 @@
     "runtime_evidence": {
       "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-recruiting-worker-runtime.json",
       "sha256": "58a72246293d5deb5ed14058e6b0a9601b7e44c172edac4117cf1f21a0aaaebb"
-    }
+    },
+    "original_base_commit": "04f98454ad1e61c2a15f2041d848b0f6caf2a0f7",
+    "checkpoint_before_rebase": "9b6364f40e58a9530be008f61c9a26b3eea6fea1",
+    "rebased_checkpoint": "bc4dd160364fabdf22afdf08f5a4ca8737f27b25"
   }
 }
