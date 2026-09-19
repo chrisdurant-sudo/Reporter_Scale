@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { INTERVIEW_V2_STORAGE_KEY, type DemoSnapshotStorage, type DemoSnapshotV2, type RepositoryResult, type WorkItem } from "../contracts/v2";
+import { INTERVIEW_V2_STORAGE_KEY, type DemoSnapshotStorage, type DemoSnapshotV2, type RepositoryResult, type WorkItem, type WorkItemChanges } from "../contracts/v2";
 import { assessCommandGate } from "../logic/shared/revision";
+import { projectWorkItemAt } from "../logic/shared/work";
 import { applyScenarioCheckpoint, createDemoRepositoryV2, DEMO_SNAPSHOT_V2, validateDemoSnapshot } from "./v2";
 
 function memoryStorage() {
@@ -140,6 +141,105 @@ describe("IC07 durable injected repository", () => {
       { ...saved, workItems: saved.workItems.map((item, index) => index === 0 ? { ...item, dueAt: null } : item) },
     ]) expect(await repository.save(next, 1)).toMatchObject({ ok: false });
     expect(unwrap(await repository.load())).toEqual(saved);
+  });
+});
+
+describe("IC07 required work history values", () => {
+  function withEdit(snapshot: DemoSnapshotV2, changes: WorkItemChanges, previous: WorkItemChanges) {
+    return {
+      ...snapshot,
+      workItems: snapshot.workItems.map((work, index) => index !== 0 ? work : {
+        ...work, ...changes,
+        editHistory: [...(work.editHistory ?? []), {
+          commandId: "history-validation-edit" as never, actorId: "actor-team-1" as never,
+          occurredAt: snapshot.currentAsOfAt, reason: "Inspect the recorded work history.", previous, changes,
+        }],
+      }),
+    };
+  }
+  const envelope = (snapshot: DemoSnapshotV2) => JSON.stringify({ format: "reporter-growth-v2", storageVersion: 1, seedVersion: snapshot.seedVersion, snapshot });
+  const beforeEdit = new Date(Date.parse(DEMO_SNAPSHOT_V2.currentAsOfAt) - 1).toISOString() as DemoSnapshotV2["currentAsOfAt"];
+
+  it.each(["dueAt", "blockerCode"] as const)("rejects a missing previous %s on load and preserves bytes until explicit reset", async (field) => {
+    const fake = memoryStorage();
+    const repository = createDemoRepositoryV2(undefined, { storage: fake.storage });
+    const saved = unwrap(await repository.save(DEMO_SNAPSHOT_V2, 0));
+    const bytes = envelope(withEdit(saved, { [field]: null }, {}));
+    fake.values.set(INTERVIEW_V2_STORAGE_KEY, bytes);
+    fake.values.set("reporter-growth.v1", "preserve legacy bytes");
+    fake.operations.length = 0;
+
+    expect(await repository.load()).toMatchObject({ ok: false, revision: saved.revision, errors: [{ code: "validation-failed" }] });
+    expect(await createDemoRepositoryV2(undefined, { storage: fake.storage }).load()).toMatchObject({ ok: false, errors: [{ code: "validation-failed" }] });
+    expect(await repository.save(saved, saved.revision)).toMatchObject({ ok: false, revision: saved.revision, errors: [{ code: "validation-failed" }] });
+    expect(fake.values.get(INTERVIEW_V2_STORAGE_KEY)).toBe(bytes);
+    expect(fake.operations.every((operation) => operation === `read:${INTERVIEW_V2_STORAGE_KEY}`)).toBe(true);
+
+    expect(unwrap(await repository.reset())).toEqual(DEMO_SNAPSHOT_V2);
+    const resetBytes = fake.values.get(INTERVIEW_V2_STORAGE_KEY);
+    expect(unwrap(await repository.reset())).toEqual(DEMO_SNAPSHOT_V2);
+    expect(fake.values.get(INTERVIEW_V2_STORAGE_KEY)).toBe(resetBytes);
+    expect(fake.values.get("reporter-growth.v1")).toBe("preserve legacy bytes");
+    expect(unwrap(await createDemoRepositoryV2(undefined, { storage: fake.storage }).load())).toEqual(DEMO_SNAPSHOT_V2);
+  });
+
+  it.each(["dueAt", "blockerCode"] as const)("rejects a proposed missing previous %s without changing acknowledged memory or storage", async (field) => {
+    const fake = memoryStorage();
+    for (const storage of [null, fake.storage]) {
+      const repository = createDemoRepositoryV2(undefined, { storage });
+      const saved = unwrap(await repository.save(DEMO_SNAPSHOT_V2, 0));
+      const bytes = fake.values.get(INTERVIEW_V2_STORAGE_KEY);
+      fake.operations.length = 0;
+      expect(await repository.save(withEdit(saved, { [field]: null }, {}), saved.revision)).toMatchObject({ ok: false, revision: saved.revision, errors: [{ code: "validation-failed" }] });
+      expect(fake.values.get(INTERVIEW_V2_STORAGE_KEY)).toBe(bytes);
+      expect(fake.operations.some((operation) => operation.startsWith("write:"))).toBe(false);
+      expect(unwrap(await repository.load())).toEqual(saved);
+    }
+  });
+
+  it.each([
+    ["dueAt", undefined], ["dueAt", "invalid date"], ["dueAt", 12],
+    ["blockerCode", undefined], ["blockerCode", "  "], ["blockerCode", 12],
+  ] as const)("rejects invalid current, changed and previous %s values (%#)", (field, value) => {
+    const invalid = { [field]: value } as WorkItemChanges;
+    const validPrevious = { [field]: DEMO_SNAPSHOT_V2.workItems[0]![field] };
+    const current = { ...DEMO_SNAPSHOT_V2, workItems: DEMO_SNAPSHOT_V2.workItems.map((work, index) => index === 0 ? { ...work, ...invalid } : work) };
+    for (const snapshot of [current, JSON.parse(JSON.stringify(current)), withEdit(DEMO_SNAPSHOT_V2, invalid, validPrevious), withEdit(DEMO_SNAPSHOT_V2, { [field]: null }, invalid)]) {
+      expect(validateDemoSnapshot(snapshot)).toMatchObject({ ok: false, errors: [{ code: "validation-failed" }] });
+    }
+  });
+
+  it("accepts an empty previous object when introducing only optional title and priority", async () => {
+    const fake = memoryStorage();
+    const repository = createDemoRepositoryV2(undefined, { storage: fake.storage });
+    const saved = unwrap(await repository.save(withEdit(DEMO_SNAPSHOT_V2, { title: "Review supplied verification", priority: "normal" }, {}), 0));
+    const recovered = unwrap(await createDemoRepositoryV2(undefined, { storage: fake.storage }).load());
+    expect(recovered).toEqual(saved);
+    expect(projectWorkItemAt(recovered.workItems[0]!, beforeEdit)).toEqual({ ...DEMO_SNAPSHOT_V2.workItems[0], editHistory: recovered.workItems[0]!.editHistory });
+  });
+
+  it("round-trips explicit null clearing and preserves absent optional fields before their first edit", async () => {
+    const fake = memoryStorage();
+    const repository = createDemoRepositoryV2(undefined, { storage: fake.storage });
+    const work = DEMO_SNAPSHOT_V2.workItems[0]!;
+    expect(work).not.toHaveProperty("title");
+    expect(work).not.toHaveProperty("priority");
+    const first = withEdit(DEMO_SNAPSHOT_V2, { title: "Review supplied verification", priority: "high", dueAt: null, blockerCode: null }, { dueAt: work.dueAt, blockerCode: work.blockerCode });
+    const saved = unwrap(await repository.save(first, 0));
+    const recovered = unwrap(await createDemoRepositoryV2(undefined, { storage: fake.storage }).load());
+    expect(recovered).toEqual(saved);
+    expect(recovered.workItems[0]).toMatchObject({ dueAt: null, blockerCode: null });
+    const original = projectWorkItemAt(recovered.workItems[0]!, beforeEdit);
+    expect(original).toMatchObject({ dueAt: work.dueAt, blockerCode: work.blockerCode });
+    expect(original).not.toHaveProperty("title");
+    expect(original).not.toHaveProperty("priority");
+
+    // The next edit must retain explicit null previous values, including at the same timestamp.
+    const second = withEdit(saved, { dueAt: work.dueAt, blockerCode: work.blockerCode }, { dueAt: null, blockerCode: null });
+    const next = { ...second, workItems: second.workItems.map((item, index) => index !== 0 ? item : { ...item, editHistory: item.editHistory!.map((entry, editIndex) => editIndex === 1 ? { ...entry, commandId: "history-validation-second-edit" as never } : entry) }) };
+    const resaved = unwrap(await repository.save(next, saved.revision));
+    expect(unwrap(await createDemoRepositoryV2(undefined, { storage: fake.storage }).load())).toEqual(resaved);
+    expect(projectWorkItemAt(resaved.workItems[0]!, beforeEdit)).toEqual({ ...original, editHistory: resaved.workItems[0]!.editHistory });
   });
 });
 

@@ -38,7 +38,7 @@ export function validateInterviewRecords(snapshot: DemoSnapshotV2): string | nul
   const teamIds = new Set<string>(snapshot.teamMembers.map((member) => member.id));
   // Actor IDs also include the demo operator/scenario actors; they are not Team member IDs.
   const historyValid = (items: readonly { occurredAt: string; actorId: string; reason: string }[], createdAt: string) => Array.isArray(items) && items.length > 0 && items.every((item, index) => text(item.actorId) && text(item.reason) && date(item.occurredAt) && time(item.occurredAt) >= time(createdAt) && time(item.occurredAt) <= time(snapshot.currentAsOfAt) && (index === 0 || time(item.occurredAt) >= time(items[index - 1]!.occurredAt)));
-  const changesValid = (changes: WorkItemChanges) => changes && typeof changes === "object" && Object.keys(changes).every((key) => ["title", "dueAt", "priority", "blockerCode"].includes(key)) && (changes.title === undefined || text(changes.title)) && (changes.dueAt === undefined || changes.dueAt === null || date(changes.dueAt)) && (changes.priority === undefined || ["low", "normal", "high", "urgent"].includes(changes.priority)) && (changes.blockerCode === undefined || changes.blockerCode === null || text(changes.blockerCode));
+  const changesValid = (changes: WorkItemChanges) => changes && typeof changes === "object" && Object.keys(changes).every((key) => ["title", "dueAt", "priority", "blockerCode"].includes(key)) && (changes.title === undefined || text(changes.title)) && (!("dueAt" in changes) || changes.dueAt === null || date(changes.dueAt)) && (changes.priority === undefined || ["low", "normal", "high", "urgent"].includes(changes.priority)) && (!("blockerCode" in changes) || changes.blockerCode === null || text(changes.blockerCode));
   const editIds: string[] = [];
   const noteIds: string[] = [];
   const relatedEvidence = (work: WorkItem, ref: RecordPointer): boolean => {
@@ -70,6 +70,8 @@ export function validateInterviewRecords(snapshot: DemoSnapshotV2): string | nul
     for (const edit of [...(work.editHistory ?? [])].reverse()) {
       if (!text(edit.commandId) || !text(edit.actorId) || !text(edit.reason) || !changesValid(edit.previous) || !changesValid(edit.changes) || Object.keys(edit.changes).length === 0 || Object.keys(edit.previous).some((key) => !(key in edit.changes))) return `Invalid work edit (${work.id}).`;
       for (const field of Object.keys(edit.changes) as (keyof WorkItemChanges)[]) {
+        // Required fields must reconstruct an explicit value; only title/priority may predate their introduction.
+        if ((field === "dueAt" || field === "blockerCode") && !Object.prototype.hasOwnProperty.call(edit.previous, field)) return `Work edit is missing its previous ${field} (${work.id}).`;
         if (rolledBack[field] !== edit.changes[field] && !(field === "blockerCode" && work.statusHistory.some((status) => time(status.occurredAt) >= time(edit.occurredAt)))) return `Work edit history does not reconstruct current fields (${work.id}).`;
         Object.assign(rolledBack, { [field]: edit.previous[field] });
       }
