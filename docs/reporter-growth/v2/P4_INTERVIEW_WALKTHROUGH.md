@@ -4,7 +4,7 @@ Status: preparation during IP2; serial logic and coordinator composition passed 
 
 ## Start clean
 
-Use a desktop window, Reset demo, confirm All is selected, and identify the displayed scenario time. Keep the five workspaces and all five markets available. Explain that the application connects capacity diagnosis, recruiting, accountable team work, reporter readiness and measured program decisions. Phone optimization is outside the September 19 interview scope.
+Use a desktop window, Reset demo, confirm All is selected, and identify the displayed scenario time. Keep the five workspaces and all five markets available. Explain that the application connects capacity diagnosis, recruiting, accountable team work, reporter readiness and measured program decisions. Tablet and phone optimization are outside the September 19 desktop-only interview scope.
 
 ## 0:00–0:50 — Diagnose capacity, then focus on LAX
 

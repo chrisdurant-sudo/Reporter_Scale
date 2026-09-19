@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-19T07:57:04.925716+00:00",
+  "updated_at": "2026-09-19T08:00:09.203681+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -419,15 +419,15 @@
     "availability_command_contract_commit": "dbae7f46bec7dbfad049d82df9332099fd46dad0",
     "historical_work_contract_commit": "662e7de0e3b87305a22f8a56ac67c2b2a48004cf",
     "presentation_scope": {
-      "id": "desktop_interview_2026_09_19",
+      "id": "desktop_only_interview_2026_09_19",
       "authorization": {
-        "source": "User: just to be aware, we don't need to optimize for phone",
+        "source": "User: just to be clear i only really need desktop, not tablet..",
         "thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
         "authorized_at": "2026-09-19"
       },
       "evidence": {
-        "file": "docs/reporter-growth/v2/P4_INTERVIEW_VIEWPORT_SCOPE.md",
-        "sha256": "b4f6e94131bda26ee01eec7d9f51113f1023ebe03881c583ecbbd2fcf3d5f590"
+        "file": "docs/reporter-growth/v2/P4_INTERVIEW_DESKTOP_SCOPE.md",
+        "sha256": "eb5bd922ae6d94517115810126e1d381d92345c11f23d7cdb840e82d5968ed8f"
       }
     },
     "revised_reference": {
@@ -441,7 +441,21 @@
         "sha256": "780e5767f9b0ad157fcefc73ef32eaca53e8970af739d276cdf3675d7d33a0e9"
       },
       "frozen_at_commit": "d4b4ff98a3ee9e9fd1bffe829a6b747ab34670d1"
-    }
+    },
+    "presentation_scope_history": [
+      {
+        "id": "desktop_interview_2026_09_19",
+        "authorization": {
+          "source": "User: just to be aware, we don't need to optimize for phone",
+          "thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+          "authorized_at": "2026-09-19"
+        },
+        "evidence": {
+          "file": "docs/reporter-growth/v2/P4_INTERVIEW_VIEWPORT_SCOPE.md",
+          "sha256": "b4f6e94131bda26ee01eec7d9f51113f1023ebe03881c583ecbbd2fcf3d5f590"
+        }
+      }
+    ]
   },
   "implementation_base_commit": "6e7ea99e2358e497b8a6d4331a6cc8513e668501",
   "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",
@@ -512,7 +526,7 @@
     "visual_proof": {
       "status": "pending",
       "scope": "IP01-IP12_amendment",
-      "reason": "Amended desktop/tablet design reference frozen; actual Overview/Funnel source implementation and exact-commit proof pending.",
+      "reason": "Desktop reference frozen; required actual source proof is1440\u00d7900 Overview/Funnel People/Bottlenecks/SLA with pointer and keyboard. Tablet/phone proof not required by latest user scope.",
       "reference_manifest": "docs/reporter-growth/v2/design-lock/interview-2026-09-19/reference-manifest.json"
     },
     "workspace_wave": {

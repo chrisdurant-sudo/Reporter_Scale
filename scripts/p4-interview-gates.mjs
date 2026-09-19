@@ -7,7 +7,10 @@ export const IP_IDS = Array.from({ length: 12 }, (_, i) => `IP${String(i + 1).pa
 const specialists = ['experience_reporters', 'experience_team', 'experience_programs'];
 const support = ['data', 'capacity', 'recruiting', 'network', 'team', 'programs'];
 export const DESKTOP_INTERVIEW_SCOPE = 'desktop_interview_2026_09_19';
+export const DESKTOP_ONLY_INTERVIEW_SCOPE = 'desktop_only_interview_2026_09_19';
+export const interviewTouchRequired = (state) => state.interview_improvement_amendment?.presentation_scope?.id !== DESKTOP_ONLY_INTERVIEW_SCOPE;
 export function interviewViewports(state) {
+  if (!interviewTouchRequired(state)) return [[1440, 900]];
   const viewports = [[1440, 900], [1024, 768], [768, 1024]];
   return state.interview_improvement_amendment?.presentation_scope?.id === DESKTOP_INTERVIEW_SCOPE
     ? viewports : [...viewports, [390, 844]];
@@ -33,7 +36,7 @@ export function inspectInterviewGates(state, registry, verifyEvidence = () => fa
   check(Boolean(amendment?.contract_packet), 'The bounded contract packet must be named before workers start.');
   const presentationScope = amendment?.presentation_scope;
   if (presentationScope) {
-    check(presentationScope.id === DESKTOP_INTERVIEW_SCOPE && registry.interview_improvement_amendment?.presentation_scope === presentationScope.id,
+    check([DESKTOP_INTERVIEW_SCOPE, DESKTOP_ONLY_INTERVIEW_SCOPE].includes(presentationScope.id) && registry.interview_improvement_amendment?.presentation_scope === presentationScope.id,
       'The desktop interview scope must match the approved registry scope.');
     check(Boolean(presentationScope.authorization?.source && presentationScope.authorization?.thread_id && presentationScope.authorization?.authorized_at)
       && verifyEvidence(presentationScope.evidence), 'Changing phone requirements needs recorded user authorization and checksum-valid scope evidence.');
@@ -53,7 +56,9 @@ export function inspectInterviewGates(state, registry, verifyEvidence = () => fa
     check(proof?.status === 'accepted' && proof.scope === 'IP01-IP12_amendment', 'The workspace wave requires amendment-specific visual acceptance.');
     check(Boolean(proof?.accepted_commit && proof?.reference_manifest) && verifyEvidence(proof?.evidence), 'Revised proof needs an exact commit, versioned reference and verified evidence.');
     check(proof?.reference_manifest !== 'docs/reporter-growth/v2/design-lock/reference-manifest.md', 'Retain the historical reference; version the changed states separately.');
-    check(proof?.pointer_keyboard_touch_passed === true && proof?.waivers?.length === 0, 'Visual acceptance requires pointer, keyboard and touch proof without waivers.');
+    if (interviewTouchRequired(state)) check(proof?.pointer_keyboard_touch_passed === true, 'Visual acceptance requires pointer, keyboard and touch proof.');
+    else check(proof?.pointer_keyboard_passed === true, 'Desktop visual acceptance requires pointer and keyboard proof.');
+    check(proof?.waivers?.length === 0, 'Visual acceptance must pass without waivers.');
     if (interviewViewports(state).some(([width]) => width === 390)) check(proof?.mobile_390_passed === true, 'The original scope still requires 390px proof.');
     for (const role of ['experience', ...specialists]) check(validProbe(amendment, registry, role, verifyEvidence), `The workspace wave needs a fresh ${role} runtime probe.`);
   }

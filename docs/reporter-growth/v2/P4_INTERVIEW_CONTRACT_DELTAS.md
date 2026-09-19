@@ -1,5 +1,7 @@
 # Interview amendment: coordinator contract preparation
 
+> Latest September 19 scope: **desktop only**. The user clarified tablets are not needed. `P4_INTERVIEW_DESKTOP_SCOPE.md` supersedes the earlier tablet interpretation. Required proof is1440×900 desktop with pointer/keyboard; no tablet or phone optimization/capture pass.
+
 > September 19 viewport amendment: the user does not need phone optimization. `P4_INTERVIEW_VIEWPORT_SCOPE.md` governs the current interview proof: desktop/tablet (1440×900, 1024×768, 768×1024), basic narrow-screen usability retained, no required 390px visual proof. Historical requirements below remain evidence of their original scope.
 
 > September 19 current state: all serial repairs and coordinator composition are integrated at `dfa4b9b921991abd6a40127146520c421204c8cb`. The complete gate passes 307 unit/integration, nine acceptance and eight browser tests. Phase is `IP2_visual_proof`; reference revision and Overview/Funnel proof are next after verifying the Experience Lead runtime. All specialist presentation and independent Quality/Reviewer remain pending. Read `IP2_LEAD_INTEGRATION_REQUIREMENTS.md` and the live ledger. Earlier progress entries below are historical.

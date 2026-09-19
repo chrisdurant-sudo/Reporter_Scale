@@ -1,5 +1,7 @@
 # Interview improvement implementation plan
 
+> Latest September 19 scope: **desktop only**. The user clarified tablets are not needed. `P4_INTERVIEW_DESKTOP_SCOPE.md` supersedes the earlier tablet interpretation. Required proof is1440×900 desktop with pointer/keyboard; no tablet or phone optimization/capture pass.
+
 > September 19 viewport amendment: the user does not need phone optimization. `P4_INTERVIEW_VIEWPORT_SCOPE.md` governs the current interview proof: desktop/tablet (1440×900, 1024×768, 768×1024), basic narrow-screen usability retained, no required 390px visual proof. Historical requirements below remain evidence of their original scope.
 
 Date: September 18, 2026

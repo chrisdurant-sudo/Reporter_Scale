@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { inspectInterviewGates, inspectInterviewDispatch, interviewViewports } from './p4-interview-gates.mjs';
+import { inspectInterviewGates, inspectInterviewDispatch, interviewViewports, interviewTouchRequired } from './p4-interview-gates.mjs';
 
 export function verifyInterview(root, state, registry, dispatch = null) {
   const git = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
@@ -75,7 +75,8 @@ export function verifyInterview(root, state, registry, dispatch = null) {
       if (evidence(manifest.interaction_evidence)) {
         const interactions = json(manifest.interaction_evidence.file);
         check(interactions.captured_from_commit === proof.accepted_commit && interactions.worktree_clean_before_capture === true, 'Interaction proof must match the clean visual candidate.');
-        const requiredInteractions = ['market_selection', 'workspace_navigation', 'chart_pointer', 'chart_keyboard', 'chart_touch', 'status_filters', 'owner_waiting_filters', 'capacity_reconciliation', 'attention_destinations', 'sla_recomputation'];
+        const requiredInteractions = ['market_selection', 'workspace_navigation', 'chart_pointer', 'chart_keyboard', 'status_filters', 'owner_waiting_filters', 'capacity_reconciliation', 'attention_destinations', 'sla_recomputation'];
+        if (interviewTouchRequired(state)) requiredInteractions.push('chart_touch');
         if (interviewViewports(state).some(([width]) => width === 390)) requiredInteractions.push('mobile_390');
         for (const id of requiredInteractions) check(interactions.interactions?.some((item) => item.id === id && item.status === 'passed'), `Missing revised behavior proof: ${id}`);
         check(interactions.console_errors?.length === 0 && interactions.page_errors?.length === 0 && interactions.waivers?.length === 0, 'Interaction proof cannot contain errors or waivers.');

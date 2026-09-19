@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { inspectInterviewGates, inspectInterviewDispatch, interviewViewports, DESKTOP_INTERVIEW_SCOPE, IP_IDS } from './p4-interview-gates.mjs';
+import { inspectInterviewGates, inspectInterviewDispatch, interviewViewports, interviewTouchRequired, DESKTOP_INTERVIEW_SCOPE, DESKTOP_ONLY_INTERVIEW_SCOPE, IP_IDS } from './p4-interview-gates.mjs';
 const proof = { file: 'proof.json', sha256: 'verified' };
 const verify = (item) => item?.file === proof.file && item.sha256 === proof.sha256;
 const roles = ['data', 'capacity', 'recruiting', 'network', 'team', 'programs', 'experience', 'experience_reporters', 'experience_team', 'experience_programs', 'quality', 'reviewer'];
@@ -82,6 +82,18 @@ test('phone requirements cannot be silently removed or replaced with an unknown 
   assert.ok(audit(f).some((e) => e.includes('registry scope')));
   f.state.interview_improvement_amendment.presentation_scope.id = 'anything';
   assert.ok(interviewViewports(f.state).some(([width]) => width === 390));
+});
+test('latest authorized desktop-only scope needs desktop pointer and keyboard proof', () => {
+  const f = ready();
+  f.state.interview_improvement_amendment.presentation_scope = { id: DESKTOP_ONLY_INTERVIEW_SCOPE, authorization: { source: 'Only desktop needed, not tablet', thread_id: 'task', authorized_at: '2026-09-19' }, evidence: proof };
+  f.registry.interview_improvement_amendment.presentation_scope = DESKTOP_ONLY_INTERVIEW_SCOPE;
+  delete f.state.gates.visual_proof.mobile_390_passed;
+  delete f.state.gates.visual_proof.pointer_keyboard_touch_passed;
+  assert.deepEqual(interviewViewports(f.state), [[1440, 900]]);
+  assert.equal(interviewTouchRequired(f.state), false);
+  assert.ok(audit(f).some((e) => e.includes('pointer and keyboard proof')));
+  f.state.gates.visual_proof.pointer_keyboard_passed = true;
+  assert.deepEqual(audit(f), []);
 });
 test('inherited or stale probes cannot authorize the specialist wave', () => {
   const f = ready(); const p = f.state.interview_improvement_amendment.runtime_probes.find((p) => p.role === 'experience_team');

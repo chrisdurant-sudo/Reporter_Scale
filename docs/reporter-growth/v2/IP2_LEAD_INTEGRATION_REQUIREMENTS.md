@@ -1,5 +1,7 @@
 # Coordinator integration requirements for the revised Experience proof
 
+> Latest September 19 scope: **desktop only**. The user clarified tablets are not needed. `P4_INTERVIEW_DESKTOP_SCOPE.md` supersedes the earlier tablet interpretation. Required proof is1440×900 desktop with pointer/keyboard; no tablet or phone optimization/capture pass.
+
 > September 19 viewport amendment: the user does not need phone optimization. `P4_INTERVIEW_VIEWPORT_SCOPE.md` governs the current interview proof: desktop/tablet (1440×900, 1024×768, 768×1024), basic narrow-screen usability retained, no required 390px visual proof. Historical requirements below remain evidence of their original scope.
 
 This supplements `tasks/experience-redesign.md` for the authorized interview amendment. It does not open IP2 until the serial data/logic and full baseline gates pass. The Lead owns the shared UI/shell/styles and Overview/Funnel only. Coordinator owns contracts, integration, reference versioning and governance; specialists remain blocked until the new exact-commit proof is accepted.
@@ -39,8 +41,8 @@ Root renders a compact `.v2-linked-selection` section only in the target workspa
 
 ## Shared presentation and proof
 
-Charts use coherent coordinates, the available container width, readable axes and useful desktop height. Pointer, keyboard and touch expose date/category, exact value, unit and historical/forecast status. Forecast assumptions and boundaries remain distinct. Cohort comparisons use categorical labels. Shared controls and drawers must remain operable at narrower widths; prioritize the required desktop/tablet proof and avoid hover-only interaction. Phone-specific optimization is outside the current acceptance scope.
+Charts use coherent coordinates, the available container width, readable axes and useful desktop height. Pointer, keyboard and touch expose date/category, exact value, unit and historical/forecast status. Forecast assumptions and boundaries remain distinct. Cohort comparisons use categorical labels. Shared controls and drawers must remain operable at narrower widths; prioritize the required desktop proof and avoid hover-only interaction. Tablet/phone-specific optimization is outside the current acceptance scope.
 
-Return the exact clean source commit, ownership audit, actual checks and all Overview/Funnel states at 1440×900, 1024×768 and 768×1024 plus the SLA editor. Capture route/state/commit/checksum for each artifact and actual pointer/keyboard/touch, market, navigation, filter, capacity reconciliation and attention-target interactions. Historical screenshots and DOM existence checks do not satisfy this proof. Coordinator integrates sequentially and records independent comparison; only then can the three specialists begin.
+Return the exact clean source commit, ownership audit, actual checks and all Overview/Funnel states at 1440×900 desktop plus the SLA editor. Capture route/state/commit/checksum for each artifact and actual pointer/keyboard, market, navigation, filter, capacity reconciliation and attention-target interactions. Historical screenshots and DOM existence checks do not satisfy this proof. Coordinator integrates sequentially and records independent comparison; only then can the three specialists begin.
 
 The existing independent acceptance/browser suites contain historical presentation assertions. Report concrete conflicts after the candidate exists; do not edit Quality-owned tests or preserve incorrect product behavior merely to satisfy an obsolete assertion. The later independent Quality gate remains mandatory.
