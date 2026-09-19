@@ -394,6 +394,7 @@ textarea {
 .ip2-chart__readout strong { width: 100%; color: #17345f; }
 .ip2-chart figcaption { font-size: 10px; color: #748079; line-height: 1.5; margin-top: 9px; }
 .ip2-drawer { position: fixed; inset: 0 0 0 auto; margin: 0; width: min(660px,95vw); height: 100dvh; max-height: 100dvh; max-width: 95vw; border: 0; border-left: 1px solid #d9e1db; border-radius: 0; padding: 0; background: #fff; color: #293e34; box-shadow: -10px 0 50px #17345f22; }
+@media (max-width: 520px) { .ip2-drawer { width: 100vw; max-width: 100vw; } }
 .ip2-drawer::backdrop { background: #10281f44; }
 .ip2-drawer > header { position: sticky; top: 0; background: white; padding: 23px 26px 18px; border-bottom: 1px solid #dce3de; z-index: 2; }
 .ip2-drawer > header small { color: #758278; text-transform: uppercase; letter-spacing: .08em; font-size: 10px; }
