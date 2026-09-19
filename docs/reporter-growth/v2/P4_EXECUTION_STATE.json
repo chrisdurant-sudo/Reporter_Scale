@@ -154,6 +154,19 @@
           "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-quality-probe.json",
           "sha256": "bdfba907a30bfc4d546319c4aa053dadbab873eef56b877713b9c59f773c6eaa"
         }
+      },
+      {
+        "role": "capacity",
+        "session_id": "01a0b7fe-43e0-75a3-b910-4b13bc99703f",
+        "model": "gpt-6-astra",
+        "reasoning_effort": "high",
+        "fork_turns": "none",
+        "inherited_turns": 0,
+        "verified_at": "2026-09-19T04:49:53.180348+00:00",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-capacity-probe.json",
+          "sha256": "36e774d1134ec7c8acb154314a02f4c963ccdc2022ad79abd0a407fee24fa0a7"
+        }
       }
     ],
     "new_visual_proof_required": true,
@@ -285,7 +298,7 @@
       "thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
       "recorded_at": "2026-09-19T04:18:35.256236+00:00"
     },
-    "runtime_verification_note": "Data and Quality probes verified; other roles require a fresh probe before implementation.",
+    "runtime_verification_note": "Verified probes: data, quality, capacity. Other roles require their own probe before implementation.",
     "browser_prerequisite_repair": {
       "status": "completed",
       "request": "docs/reporter-growth/v2/IP0_BROWSER_REPAIR_REQUEST.md",

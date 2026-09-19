@@ -1,0 +1,61 @@
+{
+  "kind": "read_only_routing_probe",
+  "role": "capacity",
+  "session_id": "01a0b7fe-43e0-75a3-b910-4b13bc99703f",
+  "task_name": "/root/ip_capacity_routing_probe",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "inherited_turns": 0,
+  "inheritance_evidence": "Coordinator verified explicit fork_turns=none spawn and probe confirmation; user-message inventory attached.",
+  "configured_service_tier": "default",
+  "resolved_service_tier": null,
+  "session_source": "/Users/pc/.codex/sessions/2026/09/18/rollout-2026-09-18T21-48-09-01a0b7fe-43e0-75a3-b910-4b13bc99703f.jsonl",
+  "session_source_sha256": "576567f2b61f7a647a2ea3f3d6d581014c09f61551809e47837f4b33f37efe7a",
+  "session_metadata": [
+    {
+      "line": 1,
+      "payload": {
+        "id": "01a0b7fe-43e0-75a3-b910-4b13bc99703f",
+        "parent_thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+        "cwd": "/private/tmp/steno-p4-coordinator",
+        "source": {
+          "subagent": {
+            "thread_spawn": {
+              "parent_thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+              "depth": 1,
+              "agent_path": "/root/ip_capacity_routing_probe",
+              "agent_nickname": "Aristotle",
+              "agent_role": "capacity"
+            }
+          }
+        },
+        "agent_role": "capacity",
+        "agent_path": "/root/ip_capacity_routing_probe"
+      }
+    }
+  ],
+  "turn_contexts": [
+    {
+      "line": 8,
+      "payload": {
+        "model": "gpt-6-astra",
+        "effort": "high",
+        "cwd": "/private/tmp/steno-p4-coordinator",
+        "service_tier": null
+      }
+    }
+  ],
+  "user_message_inventory": [
+    {
+      "line": 6,
+      "sha256": "a554edb63b15dc22cb823185b234a33fb303ead117e82317d0c687e6a9af9caf",
+      "prefix": "[{\"type\": \"input_text\", \"text\": \"<recommended_plugins>\\nHere is a list of plugins that are available but not installed.\\n\\n- Airtable (airta"
+    }
+  ],
+  "verified_at": "2026-09-19T04:49:53.180348+00:00",
+  "result": "PROBE_READY",
+  "writes": [],
+  "tests_run": [],
+  "children_spawned": 0
+}
