@@ -5,7 +5,7 @@
 > September 19 viewport amendment: the user does not need phone optimization. `P4_INTERVIEW_VIEWPORT_SCOPE.md` governs the current interview proof: desktop/tablet (1440×900, 1024×768, 768×1024), basic narrow-screen usability retained, no required 390px visual proof. Historical requirements below remain evidence of their original scope.
 
 Date: September 18, 2026
-Status: **IMPLEMENTATION AUTHORIZED — IP2 REVISED VISUAL PROOF**
+Status: **IMPLEMENTATION AUTHORIZED — IP3 WORKSPACE WAVE**
 
 September 18 start: the user explicitly said “please start” after the readiness review. The new phase and prerequisites are recorded in `P4_EXECUTION_STATE.json` and `P4_INTERVIEW_CONTRACT_DELTAS.md`. Earlier planning-only statements below describe the prior handoff; no second start approval is required.
 

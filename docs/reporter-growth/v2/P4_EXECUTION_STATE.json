@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-19T09:26:34.611810+00:00",
+  "updated_at": "2026-09-19T09:30:30.100330+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -1292,7 +1292,7 @@
     "actual_approval_policy": "on-request",
     "actual_sandbox_mode": "workspace-write",
     "user_reported_full_access_selected": true,
-    "next_action": "Independent desktop comparison, exact Lead integration, serial Quality test alignment, full gate and gated workspace wave. Automatic-review rejections remain enforceable.",
+    "next_action": "Complete bounded workspace wave, integrate exact candidates sequentially, run full suite, then independent Quality and Reviewer. No manual UI action currently required.",
     "actual_approvals_reviewer": "auto_review",
     "full_access_loaded": false
   },
@@ -1407,5 +1407,51 @@
       "scratch_source_proof": "/private/tmp/steno-ip2-drawer-proof",
       "candidate_commit": "055fcd18a39a6238d6beb7fc52bdd03a315ea1c3"
     }
-  ]
+  ],
+  "active_workspace_wave": {
+    "base_commit": "3a7842908ebf84fb53147d56bb270b0c44423847",
+    "source_contract_commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
+    "common_packet": "docs/reporter-growth/v2/IP3_WORKSPACE_DISPATCH.md",
+    "lead": {
+      "task_name": "/root/experience_probe_takeover",
+      "worktree": "/private/tmp/steno-ip2-proof-repair",
+      "branch": "codex/interview-ip2-proof-repair",
+      "mode": "shared_design_steward_and_exact_candidate_reviewer"
+    },
+    "specialists": [
+      {
+        "role": "experience_reporters",
+        "task_name": "/root/reporters_probe_takeover",
+        "worktree": "/private/tmp/steno-interview-ip3-reporters",
+        "branch": "codex/interview-ip3-reporters",
+        "allowed_paths": [
+          "src/features/reporters/"
+        ],
+        "status": "implementing",
+        "base_commit": "3a7842908ebf84fb53147d56bb270b0c44423847"
+      },
+      {
+        "role": "experience_team",
+        "task_name": "/root/team_probe_takeover",
+        "worktree": "/private/tmp/steno-interview-ip3-team",
+        "branch": "codex/interview-ip3-team",
+        "allowed_paths": [
+          "src/features/team/"
+        ],
+        "status": "implementing",
+        "base_commit": "3a7842908ebf84fb53147d56bb270b0c44423847"
+      },
+      {
+        "role": "experience_programs",
+        "task_name": "/root/programs_probe_takeover",
+        "worktree": "/private/tmp/steno-interview-ip3-programs",
+        "branch": "codex/interview-ip3-programs",
+        "allowed_paths": [
+          "src/features/programs/"
+        ],
+        "status": "implementing",
+        "base_commit": "3a7842908ebf84fb53147d56bb270b0c44423847"
+      }
+    ]
+  }
 }
