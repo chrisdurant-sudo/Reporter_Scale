@@ -553,6 +553,24 @@
         "originalBytesPreserved": true
       },
       "acceptance_scope": "IC07 malformed history rejection; no seed changed, SD01\u2013SD07 retained"
+    },
+    "ip1_network": {
+      "lane": "network",
+      "base_commit": "027f754db5e338da631aadc945a4607136f035e5",
+      "candidate_commit": "67fbed109a7306204c692dcb1b509f6560591621",
+      "status": "boundary_passed_integration_pending",
+      "changed_paths": [
+        "src/logic/network/commands.ts",
+        "src/logic/network/credentials.ts",
+        "src/logic/network/index.test.ts",
+        "src/logic/network/index.ts",
+        "src/logic/network/scope.ts",
+        "src/logic/network/support.ts"
+      ],
+      "boundary_exit_code": 0,
+      "focused_tests": 41,
+      "worker_full_unit_tests": 238,
+      "acceptance_scope": "IC04 prepared logic; coordinator composition and IP07/IP09 presentation/independent acceptance remain pending"
     }
   },
   "known_ownership_exceptions": [],
@@ -759,10 +777,11 @@
     "requests": [
       "IC04"
     ],
-    "status": "running",
+    "status": "review_ready",
     "runtime_evidence": {
       "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-network-worker-runtime.json",
       "sha256": "edcf58a23ca9ee6771ed4d85b14e51bc5162c96747d1524e325a9ab29fd8b1d1"
-    }
+    },
+    "candidate_commit": "67fbed109a7306204c692dcb1b509f6560591621"
   }
 }
