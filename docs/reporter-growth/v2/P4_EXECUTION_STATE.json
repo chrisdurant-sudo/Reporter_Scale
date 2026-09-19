@@ -287,10 +287,10 @@
       }
     ],
     "latest_coordinator_verification": {
-      "candidate_commit": "637535208f12e702f117b1f16e3f172b580c2e49",
+      "candidate_commit": "2abb25ed7246bb806dd992319e71c9b0ceb344fa",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/637535208f12e702f117b1f16e3f172b580c2e49-ip1-empty-contract-initial.json",
-        "sha256": "f06c0c19bb3b4513d82d266ad8be7d4ca45064e9208859d3f1c7c24e7be6e576"
+        "file": "docs/reporter-growth/v2/evidence/2abb25ed7246bb806dd992319e71c9b0ceb344fa-ip1-empty-contract-verification.json",
+        "sha256": "63175b8aa292a6452c1ea6addc871b75143c24c43fa3cfbb0091ba6355a4a890"
       }
     },
     "continuation_authorization": {
@@ -334,7 +334,9 @@
     "browser_persistence_diagnostic": {
       "file": "docs/reporter-growth/v2/evidence/7dbdd8a41d89fa419178ccc3602fa0deec5f2d4c-browser-persistence.json",
       "sha256": "8846c7166af1719441f0a98ebd7347aa3226f01a0e491f9382ef2cd450220115"
-    }
+    },
+    "empty_selection_contract_commit": "637535208f12e702f117b1f16e3f172b580c2e49",
+    "composition_contract_commit": "348a8f4"
   },
   "implementation_base_commit": "6e7ea99e2358e497b8a6d4331a6cc8513e668501",
   "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",
@@ -342,8 +344,8 @@
   "fanout_authorized": false,
   "current_phase": "IP1_serial_data_logic",
   "current_candidate": {
-    "commit": "b83552439621d107dc81836acb355d05f79555c4",
-    "status": "market_scope_corrected_full_suite_passed_capacity_running",
+    "commit": "2abb25ed7246bb806dd992319e71c9b0ceb344fa",
+    "status": "empty_selection_contract_full_suite_passed_capacity_repair_pending",
     "defect_register": "docs/reporter-growth/v2/INTERVIEW_PRODUCT_REVIEW_2026-09-18.md"
   },
   "gates": {
@@ -384,11 +386,11 @@
       ]
     },
     "baseline": {
-      "status": "failed",
-      "candidate_commit": "637535208f12e702f117b1f16e3f172b580c2e49",
+      "status": "passed",
+      "candidate_commit": "2abb25ed7246bb806dd992319e71c9b0ceb344fa",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/637535208f12e702f117b1f16e3f172b580c2e49-ip1-empty-contract-initial.json",
-        "sha256": "f06c0c19bb3b4513d82d266ad8be7d4ca45064e9208859d3f1c7c24e7be6e576"
+        "file": "docs/reporter-growth/v2/evidence/2abb25ed7246bb806dd992319e71c9b0ceb344fa-ip1-empty-contract-verification.json",
+        "sha256": "63175b8aa292a6452c1ea6addc871b75143c24c43fa3cfbb0091ba6355a4a890"
       }
     },
     "visual_proof": {
@@ -581,6 +583,17 @@
         "evidence": {
           "file": "docs/reporter-growth/v2/evidence/b83552439621d107dc81836acb355d05f79555c4-ip1-market-scope-verification.json",
           "sha256": "2eb3f3e3a6af281d8421547ab5ff3b76c74015a10e44e2cf199e0b89f5d2afbb"
+        }
+      }
+    },
+    {
+      "gate": "baseline",
+      "record": {
+        "status": "failed",
+        "candidate_commit": "637535208f12e702f117b1f16e3f172b580c2e49",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/637535208f12e702f117b1f16e3f172b580c2e49-ip1-empty-contract-initial.json",
+          "sha256": "f06c0c19bb3b4513d82d266ad8be7d4ca45064e9208859d3f1c7c24e7be6e576"
         }
       }
     }
