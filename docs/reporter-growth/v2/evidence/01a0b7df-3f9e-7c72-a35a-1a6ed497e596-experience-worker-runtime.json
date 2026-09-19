@@ -1,0 +1,45 @@
+{
+  "kind": "implementation_runtime_observation",
+  "role": "experience",
+  "session_id": "01a0b890-5311-79d1-a1ef-097d09b877b5",
+  "task_name": "/root/ip2_experience",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "inherited_turns": 0,
+  "inheritance_evidence": "Explicit coordinator spawn fork_turns=none; no overrides",
+  "configured_service_tier": "default",
+  "resolved_service_tier": null,
+  "session_source": "/Users/pc/.codex/sessions/2026/09/19/rollout-2026-09-19T00-27-41-01a0b890-5311-79d1-a1ef-097d09b877b5.jsonl",
+  "session_source_sha256_at_observation": "e3b17ac62556b802fb6b19bf7654df10684c5b0f87b3218f9d82d75251bb9355",
+  "session_metadata": {
+    "id": "01a0b890-5311-79d1-a1ef-097d09b877b5",
+    "parent_thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+    "cwd": "/private/tmp/steno-p4-coordinator",
+    "source": {
+      "subagent": {
+        "thread_spawn": {
+          "parent_thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+          "depth": 1,
+          "agent_path": "/root/ip2_experience",
+          "agent_nickname": "Gibbs",
+          "agent_role": "experience"
+        }
+      }
+    },
+    "agent_role": "experience",
+    "agent_path": "/root/ip2_experience"
+  },
+  "turn_contexts": [
+    {
+      "line": 8,
+      "payload": {
+        "model": "gpt-6-astra",
+        "effort": "high",
+        "cwd": "/private/tmp/steno-p4-coordinator",
+        "service_tier": null
+      }
+    }
+  ],
+  "verified_at": "2026-09-19T07:28:00.285877+00:00"
+}

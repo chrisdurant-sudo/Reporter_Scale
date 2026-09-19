@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-19T07:25:01.324407+00:00",
+  "updated_at": "2026-09-19T07:28:00.139789+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -946,5 +946,26 @@
       }
     }
   ],
-  "active_lane": null
+  "active_lane": {
+    "role": "experience",
+    "task_name": "/root/ip2_experience",
+    "worktree": "/private/tmp/steno-interview-ip2-experience",
+    "branch": "codex/interview-ip2-experience",
+    "base_commit": "8265d59853567b9816c0bc3b7e1625576cb87978",
+    "source_contract_commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
+    "status": "reference_proposal_only",
+    "allowed_paths": [
+      "src/ui/",
+      "src/shell/",
+      "src/styles/",
+      "src/features/markets/",
+      "src/features/recruiting/"
+    ],
+    "scratch_reference_output": "/private/tmp/steno-ip2-reference-proposal",
+    "production_edits_open": false,
+    "runtime_evidence": {
+      "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-experience-worker-runtime.json",
+      "sha256": "062ddeccf1b537fdfa2dbae573e3c2cd5c1b8be26102be338751fda2202dfefd"
+    }
+  }
 }
