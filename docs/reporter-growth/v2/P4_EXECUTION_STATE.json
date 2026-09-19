@@ -307,10 +307,10 @@
       }
     ],
     "latest_coordinator_verification": {
-      "candidate_commit": "91cd6663fd56c1fa90b430772cdcfaf351978752",
+      "candidate_commit": "702e95a8364232d03c913460d606970aaed1e7e0",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/91cd6663fd56c1fa90b430772cdcfaf351978752-ip1-recruiting-verification.json",
-        "sha256": "3322d8e07c439354678ffcf5cc4b8521336c34a19b067cbd4575c3e46de4ad63"
+        "file": "docs/reporter-growth/v2/evidence/702e95a8364232d03c913460d606970aaed1e7e0-ip1-data-history-verification.json",
+        "sha256": "ae083a49fe14dc9c841d2af24f8d036620e77d29488e09b27ec30b456988cd7e"
       }
     },
     "continuation_authorization": {
@@ -366,8 +366,8 @@
   "fanout_authorized": false,
   "current_phase": "IP1_serial_data_logic",
   "current_candidate": {
-    "commit": "91cd6663fd56c1fa90b430772cdcfaf351978752",
-    "status": "data_capacity_recruiting_integrated_full_suite_passed_remaining_logic_pending",
+    "commit": "702e95a8364232d03c913460d606970aaed1e7e0",
+    "status": "data_capacity_recruiting_integrated_history_validation_repaired_full_suite_passed",
     "defect_register": "docs/reporter-growth/v2/INTERVIEW_PRODUCT_REVIEW_2026-09-18.md"
   },
   "gates": {
@@ -411,10 +411,10 @@
     },
     "baseline": {
       "status": "passed",
-      "candidate_commit": "91cd6663fd56c1fa90b430772cdcfaf351978752",
+      "candidate_commit": "702e95a8364232d03c913460d606970aaed1e7e0",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/91cd6663fd56c1fa90b430772cdcfaf351978752-ip1-recruiting-verification.json",
-        "sha256": "3322d8e07c439354678ffcf5cc4b8521336c34a19b067cbd4575c3e46de4ad63"
+        "file": "docs/reporter-growth/v2/evidence/702e95a8364232d03c913460d606970aaed1e7e0-ip1-data-history-verification.json",
+        "sha256": "ae083a49fe14dc9c841d2af24f8d036620e77d29488e09b27ec30b456988cd7e"
       }
     },
     "visual_proof": {
@@ -515,6 +515,31 @@
       },
       "acceptance_scope": "IC02 prepared logic; Lead presentation and IP03/IP05/IP06 independent acceptance remain pending",
       "handoff": "docs/reporter-growth/v2/IP1_RECRUITING_HANDOFF.md"
+    },
+    "ip1_data_history": {
+      "lane": "data",
+      "base_commit": "0a52597dcc042d521d092547f0eb6b9ba7f00036",
+      "candidate_commit": "56feb58cb37f2ec19da664fa111aa497255339e7",
+      "integrated_commit": "702e95a8364232d03c913460d606970aaed1e7e0",
+      "status": "passed",
+      "changed_paths": [
+        "src/data/v2Validation.ts",
+        "src/data/v2Interview.test.ts"
+      ],
+      "boundary_exit_code": 0,
+      "focused_tests": 48,
+      "full_verification": {
+        "file": "docs/reporter-growth/v2/evidence/702e95a8364232d03c913460d606970aaed1e7e0-ip1-data-history-verification.json",
+        "sha256": "ae083a49fe14dc9c841d2af24f8d036620e77d29488e09b27ec30b456988cd7e"
+      },
+      "worker_governance_exit_code": 1,
+      "worker_governance_limitation": "Phase audit requires active coordinator checkout. Coordinator governance and full suite passed in the required checkout.",
+      "reproduced_diagnostic_after_repair": {
+        "loadedInvalidHistory": false,
+        "projectionError": null,
+        "originalBytesPreserved": true
+      },
+      "acceptance_scope": "IC07 malformed history rejection; no seed changed, SD01\u2013SD07 retained"
     }
   },
   "known_ownership_exceptions": [],
@@ -697,23 +722,18 @@
           "sha256": "c64adac4be8ba400047a53898052e462e33fce73505d2b0d44d57d7193bf2d85"
         }
       }
+    },
+    {
+      "gate": "baseline",
+      "record": {
+        "status": "passed",
+        "candidate_commit": "91cd6663fd56c1fa90b430772cdcfaf351978752",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/91cd6663fd56c1fa90b430772cdcfaf351978752-ip1-recruiting-verification.json",
+          "sha256": "3322d8e07c439354678ffcf5cc4b8521336c34a19b067cbd4575c3e46de4ad63"
+        }
+      }
     }
   ],
-  "active_lane": {
-    "role": "data",
-    "task_name": "/root/ip1_data_history",
-    "worktree": "/private/tmp/steno-interview-ip1-data-history",
-    "branch": "codex/interview-ip1-data-history",
-    "base_commit": "0a52597dcc042d521d092547f0eb6b9ba7f00036",
-    "source_contract_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
-    "prerequisite_contract_commit": "662e7de0e3b87305a22f8a56ac67c2b2a48004cf",
-    "requests": [
-      "IC07_history_validation"
-    ],
-    "status": "running",
-    "runtime_evidence": {
-      "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-data-history-worker-runtime.json",
-      "sha256": "6ea6879034fa1ea08c69316e0fab6e404df621807065c0f3267abd123c51b8fe"
-    }
-  }
+  "active_lane": null
 }

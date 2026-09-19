@@ -1,5 +1,7 @@
 # IP1 work-history validation repair
 
+Status: resolved. Data candidate `56feb58cb37f2ec19da664fa111aa497255339e7`, integrated `702e95a8364232d03c913460d606970aaed1e7e0`. The original malformed envelope now fails load, preserves its exact bytes and never reaches projection. Full verification passes 207 unit/integration, nine acceptance and eight browser tests; evidence is recorded in the execution ledger.
+
 Authorized scope: bounded IC07 repository validation during the existing interview implementation. No new seed expansion or data enrichment. Coordinator review found a reproducible incompatibility between accepted stored history and the shared historical work projection.
 
 At source commit `662e7de0e3b87305a22f8a56ac67c2b2a48004cf`, a valid seed work item was given `dueAt: null` and one edit at the current clock with `changes: { dueAt: null }` and `previous: {}`. A version-1 interview envelope containing that snapshot loaded successfully. Projecting the item one millisecond earlier then failed with `Work work-avery-verification is missing its previous due date.` The malformed original storage bytes remained untouched, but the load should have rejected them before the view received them.
