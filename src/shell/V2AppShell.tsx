@@ -1,3 +1,5 @@
+import { Drawer } from "../ui/interview";
+import { displayDate } from "../ui/presentationFormat";
 import type { ReactNode } from "react";
 import type { AttendanceMode, CapabilityCode, EvidenceBundle, SelectedMarket, WorkspaceId, WorkspaceNavigationTarget } from "../contracts/v2";
 
@@ -122,9 +124,9 @@ export function V2AppShell({
           </fieldset>
         ) : null}
       </section>
-      <main className="v2-shell__content">{children}</main>
+      <div className="v2-shell__content">{children}</div>
       {actionFeedback ? <details className="v2-shell__scenario-controls"><summary>Scenario controls</summary><div aria-live="polite">{actionFeedback}</div></details> : null}
-      {selectedEvidence && onCloseEvidence && onOpenEvidenceWork ? <aside aria-label="Why this?" className="v2-evidence-drawer" role="dialog"><header><div><span>Why this?</span><h2>{selectedEvidence.explanation}</h2></div><button aria-label="Close evidence" onClick={onCloseEvidence} type="button">Close</button></header><p>{selectedEvidence.computation.status === "available" ? `${selectedEvidence.computation.value} ${selectedEvidence.unit}` : selectedEvidence.computation.reason}</p><p>{selectedEvidence.reportingWindow ? `Window: ${selectedEvidence.reportingWindow.startAt} to ${selectedEvidence.reportingWindow.endAt}` : "Current record scope"}</p><ul>{selectedEvidence.contributingRecords.map((record) => <li key={`${record.kind}-${record.id}`}>{record.label}</li>)}</ul>{selectedEvidence.unknownCount ? <p>{selectedEvidence.unknownCount} records have unknown information.</p> : null}{selectedEvidence.limitations.map((item) => <p key={item}>{item}</p>)}<button className="ui-button ui-button--primary" onClick={() => onOpenEvidenceWork(selectedEvidence.navigationTarget)} type="button">Open the work</button></aside> : null}
+      {selectedEvidence && onCloseEvidence && onOpenEvidenceWork ? <Drawer title="Why this?" eyebrow={selectedEvidence.scope.populationDescription} closeLabel="Close evidence" onClose={onCloseEvidence}><p>{selectedEvidence.explanation}</p><p><strong>{selectedEvidence.computation.status === "available" ? `${selectedEvidence.computation.value} ${selectedEvidence.unit}` : selectedEvidence.computation.reason}</strong></p><p className="ip2-scope">{selectedEvidence.reportingWindow ? `Window: ${displayDate(selectedEvidence.reportingWindow.startAt)} – ${displayDate(selectedEvidence.reportingWindow.endAt)} (end exclusive)` : "Current record scope"} · As of {displayDate(selectedEvidence.asOfAt)}</p><h3>Contributing records</h3><ul>{selectedEvidence.contributingRecords.map((record) => <li key={`${record.kind}-${record.id}`}>{record.label}</li>)}</ul><details><summary>Calculation and limitations</summary><p>{selectedEvidence.metric.id} · {selectedEvidence.metric.version}</p><p>{selectedEvidence.computation.numerator ?? "—"} / {selectedEvidence.computation.denominator ?? "—"} · {selectedEvidence.unknownCount} unknown</p>{selectedEvidence.exclusions.map((item) => <p key={`${item.record.kind}:${item.record.id}`}>{item.reason}</p>)}{selectedEvidence.limitations.map((item) => <p key={item}>{item}</p>)}</details><button className="ui-button ui-button--primary" onClick={() => onOpenEvidenceWork(selectedEvidence.navigationTarget)} type="button">Open the work</button></Drawer> : null}
       <footer className="v2-shell__footer">
         Independent synthetic demo. Fixed dates and simulated events are labeled. No real message is sent and no Steno system is connected.
       </footer>
