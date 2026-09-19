@@ -1,30 +1,190 @@
-import type { AssignmentEvent, AvailabilityStatus, CapabilityVerification, CredentialRecord, DemoSnapshotV2, EvidenceBundle, MarketId, ReadinessEvent, ReporterId, ResolvedRecordReference, UtcTimestamp, WorkspaceLogicPort, WorkspaceQueryContext } from "../../contracts/v2";
+import type { AssignmentEvent, AttendanceMode, AvailabilityStatus, AvailabilityWindow, CapabilityVerification, CredentialRecord, DateWindow, DemoSnapshotV2, EvidenceBundle, JobOutcome, MarketId, RecordPointer, Reporter, ReporterId, ReporterPreferences, UtcTimestamp, WorkItemId, WorkspaceLogicPort, WorkspaceNavigationTarget, WorkspaceQueryContext } from "../../contracts/v2";
+import { isValidHalfOpenWindow } from "../shared/time";
+import { credentialProjection, latestCredentials } from "./credentials";
+import { openReengagementWork } from "./commands";
+import { reporterMatches } from "./scope";
+import { before, exactFilters, includes, inWindow, known, latest, marketMatches, ms, ref, target } from "./support";
+export { prepareNetworkCommand, prepareReengagementFollowUp } from "./commands";
+export type { PreparedReengagementFollowUp, ReengagementFollowUpInput } from "./commands";
 
 export const NETWORK_WORKSPACE = "reporters" as const;
 export type NetworkLogicPort = WorkspaceLogicPort<typeof NETWORK_WORKSPACE>;
-type AvailabilityState = AvailabilityStatus | "expired";
+export type AvailabilityState = AvailabilityStatus | "expired";
+type Context = WorkspaceQueryContext<typeof NETWORK_WORKSPACE>;
 export interface NetworkCompliance { readonly state: "clear" | "expiring" | "needs-check"; readonly evidenceLabel: string; }
-export interface NetworkReporterRow { readonly reporterId: ReporterId; readonly name: string; readonly serviceMarkets: readonly MarketId[]; readonly readinessAt: UtcTimestamp; readonly availability: AvailabilityState; readonly capabilitySummary: string; readonly certificationSummary: string; readonly compliance: NetworkCompliance; readonly lastCompletedJobAt: UtcTimestamp | null; readonly recentJobCount: number; readonly followUp: "create-reengagement-task" | "open-task" | null; }
-export interface NetworkTrendPoint { readonly windowStartAt: UtcTimestamp; readonly windowEndAt: UtcTimestamp; readonly activeReporterIds: readonly ReporterId[]; readonly firstTimeEnteringReporterIds: readonly ReporterId[]; readonly returningReporterIds: readonly ReporterId[]; readonly noRecentWorkReporterIds: readonly ReporterId[]; }
-export interface PreparedNetworkView { readonly workspace: typeof NETWORK_WORKSPACE; readonly evaluation: WorkspaceQueryContext<typeof NETWORK_WORKSPACE>["evaluation"]; readonly appliedFilters: WorkspaceQueryContext<typeof NETWORK_WORKSPACE>["filters"]; readonly evidence: readonly EvidenceBundle[]; readonly reporters: readonly NetworkReporterRow[]; readonly trend: readonly NetworkTrendPoint[]; readonly reengagementCandidates: readonly NetworkReporterRow[]; }
+export interface NetworkSkill { readonly code: CapabilityVerification["capabilityCode"]; readonly label: string; readonly record: CapabilityVerification; readonly sourceRef: RecordPointer; readonly evidenceRef: RecordPointer; }
+export interface NetworkAvailabilityCell { readonly marketId: MarketId; readonly attendanceMode: AttendanceMode; readonly state: AvailabilityState; readonly window: AvailabilityWindow | null; readonly sourceRef: RecordPointer | null; }
+export interface NetworkReporterRow {
+  readonly reporterId: ReporterId; readonly name: string; readonly serviceMarkets: readonly MarketId[];
+  readonly readinessAt: UtcTimestamp; readonly availability: AvailabilityState; readonly capabilitySummary: string;
+  readonly certificationSummary: string; readonly compliance: NetworkCompliance;
+  readonly lastCompletedJobAt: UtcTimestamp | null; readonly recentJobCount: number;
+  readonly followUp: "create-reengagement-task" | "open-task" | null;
+  readonly readinessRef: RecordPointer; readonly verifiedSkills: readonly NetworkSkill[];
+  readonly capabilityRecords: readonly CapabilityVerification[];
+  readonly preferences: ReporterPreferences; readonly preferencesRef: RecordPointer;
+  readonly credentialRecords: readonly CredentialRecord[];
+  readonly availabilityWindows: readonly AvailabilityWindow[]; readonly availabilityCells: readonly NetworkAvailabilityCell[];
+  readonly availabilityIsMixed: boolean; readonly availabilityLimitations: readonly string[];
+  readonly firstCompletedJob: JobOutcome | null; readonly recentJobRefs: readonly RecordPointer[];
+  readonly openReengagementWorkItemId: WorkItemId | null; readonly followUpTarget: WorkspaceNavigationTarget | null;
+  readonly detailTarget: WorkspaceNavigationTarget; readonly checklistTarget: WorkspaceNavigationTarget | null;
+}
+export interface NetworkTrendPoint {
+  readonly windowStartAt: UtcTimestamp; readonly windowEndAt: UtcTimestamp;
+  readonly activeReporterIds: readonly ReporterId[]; readonly firstTimeEnteringReporterIds: readonly ReporterId[];
+  readonly returningReporterIds: readonly ReporterId[]; readonly noRecentWorkReporterIds: readonly ReporterId[];
+  readonly priorWindow: DateWindow; readonly currentWindow: DateWindow; readonly priorActiveReporterIds: readonly ReporterId[];
+  readonly boundary: "[start,end)"; readonly marketBasis: "job-market"; readonly limitations: readonly string[];
+}
+export interface PreparedNetworkView {
+  readonly workspace: typeof NETWORK_WORKSPACE; readonly evaluation: Context["evaluation"]; readonly appliedFilters: Context["filters"];
+  readonly evidence: readonly EvidenceBundle[]; readonly reporters: readonly NetworkReporterRow[];
+  readonly trend: readonly NetworkTrendPoint[]; readonly reengagementCandidates: readonly NetworkReporterRow[];
+  readonly needsConfirmationReporterIds: readonly ReporterId[];
+  readonly attention: readonly { reporterId: ReporterId; reason: "needs-availability-confirmation" | "no-recent-completed-work"; target: WorkspaceNavigationTarget }[];
+  readonly followUpInputs: { readonly ownerOptions: readonly { id: DemoSnapshotV2["teamMembers"][number]["id"]; label: string }[]; readonly marketOptions: DemoSnapshotV2["markets"]; readonly ownerRequired: true; readonly dueAtRequired: true; readonly allowsUnassigned: true; readonly allowsNoDueDate: true; readonly asOfAt: UtcTimestamp };
+  readonly filterScope: { readonly records: string; readonly recentWork: string; readonly trend: string; readonly firstJob: string; readonly availability: string };
+}
+const daysBefore = (at: UtcTimestamp, days: number) => new Date(ms(at) - days * 86_400_000).toISOString() as UtcTimestamp;
 
-const asMillis = (value: UtcTimestamp) => Date.parse(value);
-const atOrBefore = (value: UtcTimestamp, asOfAt: UtcTimestamp) => asMillis(value) <= asMillis(asOfAt);
-const isKnown = (occurredAt: UtcTimestamp, recordedAt: UtcTimestamp, asOfAt: UtcTimestamp) => atOrBefore(occurredAt, asOfAt) && atOrBefore(recordedAt, asOfAt);
-const pointer = (kind: ResolvedRecordReference["kind"], id: string) => ({ kind, id });
-const dateWindow = (endAt: UtcTimestamp, days: number) => new Date(asMillis(endAt) - days * 86_400_000).toISOString() as UtcTimestamp;
-function latestAssignments(snapshot: DemoSnapshotV2, asOfAt: UtcTimestamp) { const latest = new Map<string, AssignmentEvent>(); for (const event of snapshot.assignmentEvents.filter((item) => isKnown(item.occurredAt, item.recordedAt, asOfAt)).sort((left, right) => asMillis(left.occurredAt) - asMillis(right.occurredAt))) latest.set(`${event.requestId}:${event.reporterId}`, event); return latest; }
-function completedJobs(snapshot: DemoSnapshotV2, asOfAt: UtcTimestamp) { const latest = latestAssignments(snapshot, asOfAt); return snapshot.jobOutcomes.filter((job) => { if (job.outcome !== "completed" || job.completedAt === null || !isKnown(job.completedAt, job.recordedAt, asOfAt)) return false; const assignment = latest.get(`${job.requestId}:${job.reporterId}`); return assignment?.state === "accepted" && assignment.id === job.acceptedAssignmentEventId; }); }
-/** Earliest valid completion is global to the reporter, never duplicated by service market. */
-export function firstCompletedJobs(snapshot: DemoSnapshotV2, asOfAt: UtcTimestamp) { const firstByReporter = new Map<ReporterId, ReturnType<typeof completedJobs>[number]>(); for (const job of completedJobs(snapshot, asOfAt).sort((left, right) => asMillis(left.completedAt!) - asMillis(right.completedAt!))) if (!firstByReporter.has(job.reporterId)) firstByReporter.set(job.reporterId, job); return [...firstByReporter.values()]; }
-function latestReadiness(snapshot: DemoSnapshotV2, reporterId: ReporterId, asOfAt: UtcTimestamp): ReadinessEvent | null { return snapshot.readinessEvents.filter((event) => event.reporterId === reporterId && isKnown(event.occurredAt, event.recordedAt, asOfAt)).sort((left, right) => asMillis(right.occurredAt) - asMillis(left.occurredAt))[0] ?? null; }
-function availabilityAt(snapshot: DemoSnapshotV2, reporterId: ReporterId, asOfAt: UtcTimestamp): AvailabilityState { const current = snapshot.availabilityWindows.filter((window) => window.reporterId === reporterId && atOrBefore(window.recordedAt, asOfAt) && asMillis(window.startAt) <= asMillis(asOfAt) && asMillis(asOfAt) < asMillis(window.endAt)).sort((left, right) => asMillis(right.recordedAt) - asMillis(left.recordedAt))[0]; if (!current) return "unknown"; if (current.confirmationExpiresAt !== null && asMillis(current.confirmationExpiresAt) <= asMillis(asOfAt)) return "expired"; return current.status; }
-function capabilitySummary(capabilities: readonly CapabilityVerification[], reporterId: ReporterId, asOfAt: UtcTimestamp) { const latestByCapability = new Map<string, CapabilityVerification>(); for (const item of capabilities.filter((entry) => entry.reporterId === reporterId && atOrBefore(entry.recordedAt, asOfAt))) { const prior = latestByCapability.get(String(item.capabilityCode)); if (!prior || asMillis(item.recordedAt) > asMillis(prior.recordedAt) || (item.recordedAt === prior.recordedAt && String(item.id) > String(prior.id))) latestByCapability.set(String(item.capabilityCode), item); } const current = [...latestByCapability.values()]; const verified = current.filter((item) => item.status === "verified").length; const unknown = current.filter((item) => item.status === "unreviewed" || item.status === "needs-information").length; const notDemonstrated = current.filter((item) => item.status === "not-demonstrated").length; return current.length ? `${verified} verified; ${unknown} unknown; ${notDemonstrated} not demonstrated` : "No capability verification recorded"; }
-function latestCredentials(records: readonly CredentialRecord[], reporterId: ReporterId, asOfAt: UtcTimestamp) { const latest = new Map<string, CredentialRecord>(); for (const record of records.filter((item) => item.reporterId === reporterId && atOrBefore(item.recordedAt, asOfAt))) { const key = `${record.jurisdictionScope ?? "national"}:${record.label}`; const prior = latest.get(key); if (!prior || asMillis(record.recordedAt) > asMillis(prior.recordedAt) || (record.recordedAt === prior.recordedAt && String(record.id) > String(prior.id))) latest.set(key, record); } return [...latest.values()]; }
-function credentialProjection(records: readonly CredentialRecord[], reporterId: ReporterId, asOfAt: UtcTimestamp): Pick<NetworkReporterRow, "certificationSummary" | "compliance"> { const current = latestCredentials(records, reporterId, asOfAt); if (!current.length) return { certificationSummary: "No credential evidence recorded", compliance: { state: "needs-check", evidenceLabel: "No credential evidence recorded" } }; const jurisdictions = [...new Set(current.map((record) => record.jurisdictionScope).filter((scope): scope is string => scope !== null))]; const labels = [...new Set(current.map((record) => record.label).filter((label) => !jurisdictions.includes(label)))]; const certificationSummary = [...jurisdictions, ...labels].join(" · "); const reviewAt = asMillis(asOfAt) + 28 * 86_400_000; if (current.some((record) => record.verificationStatus !== "verified" || (record.validFrom !== null && asMillis(record.validFrom) > asMillis(asOfAt)) || (record.validUntil !== null && asMillis(record.validUntil) <= asMillis(asOfAt)))) return { certificationSummary, compliance: { state: "needs-check", evidenceLabel: "Credential evidence needs review" } }; if (current.some((record) => record.validUntil !== null && asMillis(record.validUntil) <= reviewAt)) return { certificationSummary, compliance: { state: "expiring", evidenceLabel: "Verified credential expires within 28 days" } }; return { certificationSummary, compliance: { state: "clear", evidenceLabel: "Verified credential evidence current" } }; }
-function currentWorkStatus(snapshot: DemoSnapshotV2, reporterId: ReporterId, asOfAt: UtcTimestamp) { return snapshot.workItems.filter((item) => { if (item.primaryEntityRef.kind !== "reporter" || item.primaryEntityRef.id !== reporterId) return false; const latest = item.statusHistory.filter((change) => atOrBefore(change.occurredAt, asOfAt)).sort((left, right) => asMillis(right.occurredAt) - asMillis(left.occurredAt))[0]; return latest !== undefined && ["open", "in-progress", "blocked"].includes(latest.status); }); }
-function isClosed(snapshot: DemoSnapshotV2, reporterId: ReporterId, asOfAt: UtcTimestamp) { const latest = snapshot.lifecycleEvents.filter((event) => event.reporterId === reporterId && isKnown(event.occurredAt, event.recordedAt, asOfAt)).sort((left, right) => asMillis(right.occurredAt) - asMillis(left.occurredAt))[0]; return latest?.eventType === "closed"; }
-function networkEvidence(snapshot: DemoSnapshotV2, context: WorkspaceQueryContext<typeof NETWORK_WORKSPACE>, rows: readonly NetworkReporterRow[], recentJobs: readonly ReturnType<typeof completedJobs>[number][]): EvidenceBundle { const metric = snapshot.metricDefinitions.find((definition) => String(definition.id) === "M10"); if (!metric) throw new Error("Network view requires the frozen M10 metric definition."); const recent = rows.filter((row) => row.recentJobCount > 0); const supportingJobs = recent.map((row) => recentJobs.filter((job) => job.reporterId === row.reporterId).sort((left, right) => asMillis(right.completedAt!) - asMillis(left.completedAt!))[0]!).filter(Boolean); const references = supportingJobs.map((job) => { const reporter = snapshot.reporters.find((item) => item.id === job.reporterId); const request = snapshot.demandRequests.find((item) => item.id === job.requestId); return { ...pointer("job-outcome", job.id), label: `${reporter?.fictionalName ?? String(job.reporterId)} completed ${request ? `work in ${request.marketId}` : "work"}`, occurredAt: job.completedAt, joinPath: [pointer("demand-request", job.requestId), pointer("reporter", job.reporterId)] }; }); const filters = { ...context.filters, marketBasis: "job-market" as const, reporterIds: recent.map((row) => row.reporterId), jobOutcomeIds: supportingJobs.map((job) => job.id), recordRefs: references.map((reference) => pointer(reference.kind, reference.id)) }; return { id: `evidence-network-recent-${context.evaluation.snapshotRevision}` as EvidenceBundle["id"], metric: { id: metric.id, version: metric.version }, asOfAt: context.evaluation.asOfAt, snapshotRevision: context.evaluation.snapshotRevision, unit: "people", scope: { workspace: NETWORK_WORKSPACE, marketBasis: "job-market", selectedMarket: context.filters.selectedMarket, populationDescription: "Distinct ready reporters with a completed job in the trailing 28 elapsed days, based on actual work market." }, filters, reportingWindow: { startAt: dateWindow(context.evaluation.asOfAt, 28), endAt: context.evaluation.asOfAt, boundary: "[start,end)" }, computation: { status: "available", value: recent.length, numerator: null, denominator: null }, contributingRecords: references, numeratorMembers: [], denominatorMembers: [], exclusions: [], unknownCount: rows.filter((row) => row.availability === "unknown" || row.availability === "expired").length, limitations: ["Recently working is not an availability claim.", "No recent work is not attrition or unwillingness.", "Service-market browsing is separate from actual job-market activity."], explanation: `${recent.length} distinct ready reporters completed work in the trailing 28 elapsed days, using actual work market; availability and service-market browsing are separate.`, navigationTarget: { workspace: NETWORK_WORKSPACE, intent: "evidence-list", filters, evidenceContext: { asOfAt: context.evaluation.asOfAt, snapshotRevision: context.evaluation.snapshotRevision, metric: { id: metric.id, version: metric.version } } } }; }
-export function prepareNetworkView(snapshot: DemoSnapshotV2, context: WorkspaceQueryContext<typeof NETWORK_WORKSPACE>): PreparedNetworkView { const asOfAt = context.evaluation.asOfAt; const recentStart = dateWindow(asOfAt, 28); const jobs = completedJobs(snapshot, asOfAt); const jobInSelectedMarket = (job: ReturnType<typeof completedJobs>[number]) => context.filters.selectedMarket === "ALL" || snapshot.demandRequests.find((request) => request.id === job.requestId)?.marketId === context.filters.selectedMarket; const scopedJobs = jobs.filter(jobInSelectedMarket); const rows: NetworkReporterRow[] = snapshot.reporters.flatMap((reporter): NetworkReporterRow[] => { const readiness = latestReadiness(snapshot, reporter.id, asOfAt); if (!atOrBefore(reporter.createdAt, asOfAt) || !atOrBefore(reporter.recordedAt, asOfAt) || !readiness || isClosed(snapshot, reporter.id, asOfAt) || (context.filters.selectedMarket !== "ALL" && !reporter.serviceMarketIds.includes(context.filters.selectedMarket))) return []; const reporterJobs = scopedJobs.filter((job) => job.reporterId === reporter.id); const lastCompletedJobAt = reporterJobs.map((job) => job.completedAt!).sort((a, b) => asMillis(b) - asMillis(a))[0] ?? null; const recentJobCount = reporterJobs.filter((job) => asMillis(job.completedAt!) >= asMillis(recentStart)).length; const openWork = currentWorkStatus(snapshot, reporter.id, asOfAt); const reengagement = recentJobCount === 0 && lastCompletedJobAt !== null; const followUp: NetworkReporterRow["followUp"] = reengagement ? (openWork.length ? "open-task" : "create-reengagement-task") : null; return [{ reporterId: reporter.id, name: reporter.fictionalName, serviceMarkets: reporter.serviceMarketIds, readinessAt: readiness.occurredAt, availability: availabilityAt(snapshot, reporter.id, asOfAt), capabilitySummary: capabilitySummary(snapshot.capabilityVerifications, reporter.id, asOfAt), ...credentialProjection(snapshot.credentialRecords ?? [], reporter.id, asOfAt), lastCompletedJobAt, recentJobCount, followUp }]; }); const recentJobs = scopedJobs.filter((job) => asMillis(job.completedAt!) >= asMillis(recentStart) && rows.some((row) => row.reporterId === job.reporterId)); const priorStart = dateWindow(asOfAt, 35); const active = new Set(rows.filter((row) => row.recentJobCount > 0).map((row) => row.reporterId)); const priorActive = new Set(scopedJobs.filter((job) => asMillis(job.completedAt!) >= asMillis(priorStart) && asMillis(job.completedAt!) < asMillis(dateWindow(asOfAt, 7))).map((job) => job.reporterId)); const entering = [...active].filter((id) => !priorActive.has(id)); const firstTime = entering.filter((id) => !jobs.some((job) => job.reporterId === id && asMillis(job.completedAt!) < asMillis(priorStart))); const trend: NetworkTrendPoint = { windowStartAt: recentStart, windowEndAt: asOfAt, activeReporterIds: [...active], firstTimeEnteringReporterIds: firstTime, returningReporterIds: entering.filter((id) => !firstTime.includes(id)), noRecentWorkReporterIds: [...priorActive].filter((id) => !active.has(id)) }; return { workspace: NETWORK_WORKSPACE, evaluation: context.evaluation, appliedFilters: context.filters, evidence: [networkEvidence(snapshot, context, rows, recentJobs)], reporters: rows, trend: [trend], reengagementCandidates: rows.filter((row) => row.followUp !== null) }; }
-export function acceptedCommitmentIssues(snapshot: DemoSnapshotV2, asOfAt: UtcTimestamp): readonly string[] { const commitments = [...latestAssignments(snapshot, asOfAt).values()].filter((event) => event.state === "accepted"); const issues: string[] = []; for (let i = 0; i < commitments.length; i += 1) for (let j = i + 1; j < commitments.length; j += 1) { const left = commitments[i]!; const right = commitments[j]!; const leftRequest = snapshot.demandRequests.find((item) => item.id === left.requestId); const rightRequest = snapshot.demandRequests.find((item) => item.id === right.requestId); if (!leftRequest || !rightRequest) continue; if (left.requestId === right.requestId && left.reporterId !== right.reporterId) issues.push(`Request ${left.requestId} has two accepted reporters.`); if (left.reporterId === right.reporterId && asMillis(leftRequest.startAt) < asMillis(rightRequest.endAt) && asMillis(rightRequest.startAt) < asMillis(leftRequest.endAt)) issues.push(`Reporter ${left.reporterId} has overlapping accepted work.`); } return issues; }
+function latestAssignments(snapshot: DemoSnapshotV2, asOf: UtcTimestamp, occurredThrough: UtcTimestamp = asOf) {
+  const result = new Map<string, AssignmentEvent>();
+  for (const event of snapshot.assignmentEvents.filter((item) => known(item, asOf) && before(item.occurredAt, occurredThrough))) {
+    const key = `${event.requestId}:${event.reporterId}`;
+    const prior = result.get(key);
+    if (!prior || ms(event.occurredAt) >= ms(prior.occurredAt)) result.set(key, event);
+  }
+  return result;
+}
+/** Completion is a separate fact, with a valid accepted-assignment join and actual work interval. */
+function completedJobs(snapshot: DemoSnapshotV2, asOf: UtcTimestamp): JobOutcome[] {
+  const result = new Map<string, JobOutcome>();
+  for (const job of snapshot.jobOutcomes) {
+    if (job.outcome !== "completed" || job.completedAt === null || !before(job.completedAt, asOf) || !before(job.recordedAt, asOf)) continue;
+    const request = snapshot.demandRequests.find((item) => item.id === job.requestId);
+    const reporter = snapshot.reporters.find((item) => item.id === job.reporterId);
+    const acceptance = latestAssignments(snapshot, asOf, job.completedAt).get(`${job.requestId}:${job.reporterId}`);
+    if (!request || !reporter || !before(request.createdAt, job.completedAt) || !before(request.recordedAt, asOf) || !before(reporter.createdAt, job.completedAt) || !before(reporter.recordedAt, asOf)) continue;
+    if (!acceptance || acceptance.id !== job.acceptedAssignmentEventId || acceptance.state !== "accepted" || !before(request.endAt, job.completedAt) || (job.startedAt !== null && (!before(request.startAt, job.startedAt) || !before(job.startedAt, job.completedAt)))) continue;
+    if (snapshot.assignmentEvents.some((event) => event.requestId === job.requestId && event.reporterId !== job.reporterId && latestAssignments(snapshot, asOf, job.completedAt!).get(`${event.requestId}:${event.reporterId}`)?.state === "accepted")) continue;
+    const prior = result.get(job.requestId);
+    if (!prior || ms(job.completedAt) < ms(prior.completedAt!)) result.set(job.requestId, job);
+  }
+  return [...result.values()];
+}
+/** Earliest valid completion is global to the person, before any workspace filter. */
+export function firstCompletedJobs(snapshot: DemoSnapshotV2, asOfAt: UtcTimestamp) {
+  const first = new Map<ReporterId, JobOutcome>();
+  for (const job of completedJobs(snapshot, asOfAt).sort((a, b) => ms(a.completedAt!) - ms(b.completedAt!))) if (!first.has(job.reporterId)) first.set(job.reporterId, job);
+  return [...first.values()];
+}
+function capabilitiesAt(snapshot: DemoSnapshotV2, reporterId: ReporterId, asOf: UtcTimestamp) {
+  const result = new Map<string, CapabilityVerification>();
+  for (const item of snapshot.capabilityVerifications.filter((item) => item.reporterId === reporterId && before(item.recordedAt, asOf))) {
+    const prior = result.get(item.capabilityCode);
+    if (!prior || ms(item.recordedAt) >= ms(prior.recordedAt)) result.set(item.capabilityCode, item);
+  }
+  return [...result.values()];
+}
+function readyAt(snapshot: DemoSnapshotV2, reporter: Reporter, asOf: UtcTimestamp) {
+  if (!before(reporter.createdAt, asOf) || !before(reporter.recordedAt, asOf)) return undefined;
+  const lifecycle = latest(snapshot.lifecycleEvents.filter((item) => item.reporterId === reporter.id && known(item, asOf)), (item) => item.occurredAt);
+  if (lifecycle?.eventType === "closed") return undefined;
+  return latest(snapshot.readinessEvents.filter((item) => item.reporterId === reporter.id && known(item, asOf)), (item) => item.occurredAt);
+}
+function availabilityProjection(snapshot: DemoSnapshotV2, reporter: Reporter, context: Context) {
+  const asOf = context.evaluation.asOfAt;
+  // Cover both supported attendance modes when no explicit attendance filter is selected.
+  // Preferences are not confirmation; a missing cell stays unknown.
+  const modes: readonly AttendanceMode[] = context.filters.attendanceModes.length ? context.filters.attendanceModes : ["remote", "in-person"];
+  const windows = snapshot.availabilityWindows.filter((window) => window.reporterId === reporter.id && before(window.recordedAt, asOf) && window.serviceMarketIds.some((market) => marketMatches(market, context.filters)) && window.attendanceModes.some((mode) => modes.includes(mode)));
+  const markets = [...new Set([...reporter.serviceMarketIds, ...windows.flatMap((window) => window.serviceMarketIds), ...(context.filters.selectedMarket === "ALL" ? context.filters.marketIds : [context.filters.selectedMarket])])].filter((market) => marketMatches(market, context.filters));
+  const cells: NetworkAvailabilityCell[] = markets.flatMap((marketId) => modes.map((attendanceMode) => {
+    const window = latest(windows.filter((item) => item.serviceMarketIds.includes(marketId) && item.attendanceModes.includes(attendanceMode) && inWindow(asOf, { startAt: item.startAt, endAt: item.endAt, boundary: "[start,end)" })), (item) => item.recordedAt) ?? null;
+    const state: AvailabilityState = !window ? "unknown" : window.confirmationExpiresAt !== null && before(window.confirmationExpiresAt, asOf) ? "expired" : window.status;
+    return { marketId, attendanceMode, state, window, sourceRef: window ? ref("availability-window", window.id) : null };
+  }));
+  const states = new Set(cells.map((cell) => cell.state));
+  const summary: AvailabilityState = states.size === 1 ? cells[0]!.state : states.has("expired") && [...states].every((state) => state === "expired" || state === "unknown") ? "expired" : "unknown";
+  return { availability: summary, availabilityWindows: windows, availabilityCells: cells, availabilityIsMixed: states.size > 1,
+    availabilityLimitations: ["Availability is scoped to each dated market and attendance-mode record; missing scope is unknown.", "Mixed cells remain unknown, except an expired/missing-only mix retains expired: some scope has expired evidence and other scope may be missing. Inspect each bounded record.", "Preferences, credentials and recent work do not confirm availability."] };
+}
+function scopeJobs(snapshot: DemoSnapshotV2, jobs: readonly JobOutcome[], filters: Context["filters"]) {
+  return jobs.filter((job) => {
+    const request = snapshot.demandRequests.find((item) => item.id === job.requestId);
+    if (!request || !marketMatches(request.marketId, filters) || !includes(filters.requestIds, job.requestId) || !includes(filters.jobOutcomeIds, job.id) || !includes(filters.attendanceModes, request.attendanceMode)) return false;
+    const workReferences = filters.recordRefs.filter((item) => item.kind === "job-outcome" || item.kind === "demand-request" || item.kind === "assignment-event");
+    if (!workReferences.length) return true;
+    return filters.recordRefs.some((item) => item.kind === "job-outcome" ? item.id === job.id : item.kind === "demand-request" ? item.id === job.requestId : item.kind === "assignment-event" ? item.id === job.acceptedAssignmentEventId : item.kind === "reporter" ? item.id === job.reporterId : !workReferences.includes(item));
+  });
+}
+function activityPopulation(snapshot: DemoSnapshotV2, context: Context, jobs: readonly JobOutcome[], window: DateWindow, asOf: UtcTimestamp) {
+  const scoped = scopeJobs(snapshot, jobs, context.filters).filter((job) => inWindow(job.completedAt!, window));
+  return snapshot.reporters.filter((reporter) => readyAt(snapshot, reporter, asOf) && reporterMatches(snapshot, reporter, context.filters, asOf, jobs, capabilitiesAt(snapshot, reporter.id, asOf)) && scoped.some((job) => job.reporterId === reporter.id)).map((reporter) => reporter.id);
+}
+function networkEvidence(snapshot: DemoSnapshotV2, context: Context, rows: readonly NetworkReporterRow[], jobs: readonly JobOutcome[], window: DateWindow): EvidenceBundle {
+  const recent = rows.filter((row) => row.recentJobCount > 0);
+  const support = recent.map((row) => latest(jobs.filter((job) => job.reporterId === row.reporterId && inWindow(job.completedAt!, window)), (job) => job.completedAt!)!);
+  const references = support.map((job) => ({ ...ref("job-outcome", job.id), label: `${rows.find((row) => row.reporterId === job.reporterId)!.name} completed work in ${snapshot.demandRequests.find((request) => request.id === job.requestId)!.marketId}`, occurredAt: job.completedAt, joinPath: [ref("demand-request", job.requestId), ref("reporter", job.reporterId)] }));
+  const filters = { ...exactFilters(context.filters.selectedMarket, "job-market"), matchNone: !support.length, reporterIds: recent.map((row) => row.reporterId), jobOutcomeIds: support.map((job) => job.id), recordRefs: references.map((item) => ref(item.kind, item.id)), window };
+  const navigationTarget = target(snapshot, context.evaluation.asOfAt, filters, "reporters", "evidence-list");
+  return { id: `evidence-network-recent-${snapshot.revision}` as EvidenceBundle["id"], metric: navigationTarget.evidenceContext.metric, asOfAt: context.evaluation.asOfAt, snapshotRevision: context.evaluation.snapshotRevision, unit: "people", scope: { workspace: NETWORK_WORKSPACE, marketBasis: "job-market", selectedMarket: context.filters.selectedMarket, populationDescription: "Distinct ready reporters with completed jobs in the stated half-open window, based on actual job market." }, filters, reportingWindow: window, computation: { status: "available", value: recent.length, numerator: null, denominator: null }, contributingRecords: references, numeratorMembers: [], denominatorMembers: [], exclusions: [], unknownCount: rows.filter((row) => row.availability === "unknown" || row.availability === "expired").length, limitations: ["Recently working is not an availability claim.", "No recent work is not attrition or unwillingness.", "Service-market browsing is separate from actual job-market activity."], explanation: `${recent.length} distinct ready reporters completed work in ${context.filters.window ? "the selected half-open window" : "the trailing 28 elapsed days"}, using actual job market.`, navigationTarget };
+}
+export function prepareNetworkView(snapshot: DemoSnapshotV2, context: Context): PreparedNetworkView {
+  const asOf = context.evaluation.asOfAt;
+  if (context.evaluation.snapshotRevision !== snapshot.revision) throw new Error("Network evidence requires the queried snapshot revision.");
+  const window: DateWindow = context.filters.window ?? { startAt: daysBefore(asOf, 28), endAt: asOf, boundary: "[start,end)" };
+  if (!isValidHalfOpenWindow(window) || ms(window.endAt) > ms(asOf)) throw new Error("Network activity requires a valid observed half-open window.");
+  const jobs = completedJobs(snapshot, asOf);
+  const scopedJobs = scopeJobs(snapshot, jobs, context.filters);
+  const globalFirst = firstCompletedJobs(snapshot, asOf);
+  const rows: NetworkReporterRow[] = snapshot.reporters.flatMap((reporter) => {
+    const readiness = readyAt(snapshot, reporter, asOf);
+    const capabilities = capabilitiesAt(snapshot, reporter.id, asOf);
+    if (!readiness || !reporterMatches(snapshot, reporter, context.filters, asOf, jobs, capabilities)) return [];
+    const reporterJobs = scopedJobs.filter((job) => job.reporterId === reporter.id);
+    const recentJobs = reporterJobs.filter((job) => inWindow(job.completedAt!, window));
+    const lastCompletedJobAt = latest(reporterJobs, (job) => job.completedAt!)?.completedAt ?? null;
+    const openWork = openReengagementWork(snapshot, reporter.id, asOf);
+    const reengagement = recentJobs.length === 0 && lastCompletedJobAt !== null;
+    const market = context.filters.selectedMarket !== "ALL" ? context.filters.selectedMarket : context.filters.marketIds.length === 1 ? context.filters.marketIds[0]! : "ALL";
+    const detailTarget = target(snapshot, asOf, { ...exactFilters(market, context.filters.marketBasis), marketIds: context.filters.marketIds, reporterIds: [reporter.id], recordRefs: [ref("reporter", reporter.id)] });
+    const cases = (snapshot.acquisitionCases ?? []).filter((item) => item.reporterId === reporter.id && before(item.openedAt, asOf) && before(item.recordedAt, asOf) && includes(context.filters.acquisitionCaseIds, item.id));
+    const caseMarkets = [...new Set(cases.map((item) => item.ownerMarketId))];
+    const checklistTarget = cases.length ? target(snapshot, asOf, { ...exactFilters(caseMarkets.length === 1 ? caseMarkets[0]! : "ALL", "recruiting-market-at-entry"), marketIds: caseMarkets, reporterIds: [reporter.id], acquisitionCaseIds: cases.map((item) => item.id), recordRefs: cases.map((item) => ref("acquisition-case", item.id)) }, "recruiting") : null;
+    const verified = capabilities.filter((item) => item.status === "verified");
+    return [{ reporterId: reporter.id, name: reporter.fictionalName, serviceMarkets: reporter.serviceMarketIds, readinessAt: readiness.occurredAt, readinessRef: ref("readiness-event", readiness.id), ...availabilityProjection(snapshot, reporter, context),
+      capabilitySummary: capabilities.length ? `${verified.length} verified; ${capabilities.filter((item) => item.status === "unreviewed" || item.status === "needs-information").length} unknown; ${capabilities.filter((item) => item.status === "not-demonstrated").length} not demonstrated` : "No capability verification recorded",
+      verifiedSkills: verified.map((record) => ({ code: record.capabilityCode, label: record.capabilityCode.replaceAll("-", " ").replaceAll("_", " "), record, sourceRef: ref("capability-verification", record.id), evidenceRef: record.evidenceRef })), capabilityRecords: capabilities,
+      preferences: reporter.preferences, preferencesRef: ref("reporter", reporter.id), credentialRecords: latestCredentials(snapshot.credentialRecords ?? [], reporter.id, asOf), ...credentialProjection(snapshot.credentialRecords ?? [], reporter.id, asOf),
+      lastCompletedJobAt, recentJobCount: recentJobs.length, recentJobRefs: recentJobs.map((job) => ref("job-outcome", job.id)), firstCompletedJob: globalFirst.find((job) => job.reporterId === reporter.id) ?? null,
+      followUp: reengagement ? openWork ? "open-task" : "create-reengagement-task" : null,
+      openReengagementWorkItemId: openWork?.id ?? null, followUpTarget: openWork ? target(snapshot, asOf, { ...exactFilters(market), reporterIds: [reporter.id], workItemIds: [openWork.id], recordRefs: [ref("work-item", openWork.id)] }, "team") : null, detailTarget, checklistTarget }];
+  });
+  const priorWindow: DateWindow = { startAt: daysBefore(window.startAt, 7), endAt: daysBefore(window.endAt, 7), boundary: "[start,end)" };
+  const active = activityPopulation(snapshot, context, completedJobs(snapshot, window.endAt), window, window.endAt);
+  const priorJobs = completedJobs(snapshot, priorWindow.endAt);
+  const priorActive = activityPopulation(snapshot, context, priorJobs, priorWindow, priorWindow.endAt);
+  const entering = active.filter((id) => !priorActive.includes(id));
+  const firstTime = entering.filter((id) => { const first = globalFirst.find((job) => job.reporterId === id); return first !== undefined && ms(first.completedAt!) >= ms(priorWindow.endAt); });
+  const needsConfirmationReporterIds = rows.filter((row) => row.availability === "unknown" || row.availability === "expired").map((row) => row.reporterId);
+  return { workspace: NETWORK_WORKSPACE, evaluation: context.evaluation, appliedFilters: context.filters, reporters: rows, evidence: [networkEvidence(snapshot, context, rows, scopedJobs, window)], reengagementCandidates: rows.filter((row) => row.followUp !== null), needsConfirmationReporterIds,
+    attention: rows.flatMap<PreparedNetworkView["attention"][number]>((row) => needsConfirmationReporterIds.includes(row.reporterId) ? [{ reporterId: row.reporterId, reason: "needs-availability-confirmation" as const, target: row.detailTarget }] : row.followUp ? [{ reporterId: row.reporterId, reason: "no-recent-completed-work" as const, target: row.followUpTarget ?? row.detailTarget }] : []),
+    followUpInputs: { ownerOptions: (snapshot.teamMembers ?? []).filter((member) => before(member.activeFrom, asOf) && (member.activeTo === null || ms(member.activeTo) > ms(asOf))).map((member) => ({ id: member.id, label: member.fictionalName })), marketOptions: snapshot.markets ?? [], ownerRequired: true, dueAtRequired: true, allowsUnassigned: true, allowsNoDueDate: true, asOfAt: asOf },
+    filterScope: { records: "Conjunctive exact IDs/record references and declared market basis; capability filters require verified evidence, mode filters use preferences.", recentWork: "Same record population; actual job market and attendance; selected window or trailing 28 elapsed days.", trend: "Same filters at each boundary; same-length half-open windows shifted seven days; readiness and records known at each boundary.", firstJob: "Globally earliest valid completion before any market or record filtering.", availability: "Current as-of time, per-market/mode bounded records; no preference or recent-work inference." },
+    trend: [{ windowStartAt: window.startAt, windowEndAt: window.endAt, currentWindow: window, priorWindow, boundary: "[start,end)", marketBasis: "job-market", activeReporterIds: active, priorActiveReporterIds: priorActive, firstTimeEnteringReporterIds: firstTime, returningReporterIds: entering.filter((id) => !firstTime.includes(id)), noRecentWorkReporterIds: priorActive.filter((id) => !active.includes(id)), limitations: ["Set departure is not churn or unwillingness.", "First-time uses global first work; returning includes prior work outside this market.", "Boundary populations include only records known and ready at each evaluation time."] }] };
+}
+export function acceptedCommitmentIssues(snapshot: DemoSnapshotV2, asOfAt: UtcTimestamp): readonly string[] {
+  const commitments = [...latestAssignments(snapshot, asOfAt).values()].filter((event) => event.state === "accepted");
+  const issues: string[] = [];
+  for (let i = 0; i < commitments.length; i += 1) for (let j = i + 1; j < commitments.length; j += 1) {
+    const left = commitments[i]!, right = commitments[j]!;
+    const leftRequest = snapshot.demandRequests.find((item) => item.id === left.requestId), rightRequest = snapshot.demandRequests.find((item) => item.id === right.requestId);
+    if (!leftRequest || !rightRequest) continue;
+    if (left.requestId === right.requestId && left.reporterId !== right.reporterId) issues.push(`Request ${left.requestId} has two accepted reporters.`);
+    if (left.reporterId === right.reporterId && ms(leftRequest.startAt) < ms(rightRequest.endAt) && ms(rightRequest.startAt) < ms(leftRequest.endAt)) issues.push(`Reporter ${left.reporterId} has overlapping accepted work.`);
+  }
+  return issues;
+}
 export const networkLogic: NetworkLogicPort = { workspace: NETWORK_WORKSPACE, prepare: prepareNetworkView };
