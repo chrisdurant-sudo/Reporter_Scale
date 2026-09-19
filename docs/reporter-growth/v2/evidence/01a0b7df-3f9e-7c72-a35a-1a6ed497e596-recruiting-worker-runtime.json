@@ -1,0 +1,45 @@
+{
+  "kind": "implementation_runtime_observation",
+  "role": "recruiting",
+  "session_id": "01a0b819-4f29-77c1-95b7-aa34f25a75d9",
+  "task_name": "/root/ip1_recruiting",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "inherited_turns": 0,
+  "inheritance_evidence": "Explicit coordinator spawn fork_turns=none; no overrides",
+  "configured_service_tier": "default",
+  "resolved_service_tier": null,
+  "session_source": "/Users/pc/.codex/sessions/2026/09/18/rollout-2026-09-18T22-17-41-01a0b819-4f29-77c1-95b7-aa34f25a75d9.jsonl",
+  "session_source_sha256_at_observation": "2a7f36ff2cedbf4987a8dd86565b6c65ad104b6648e85f3b06fdbadfbfe917d7",
+  "session_metadata": {
+    "id": "01a0b819-4f29-77c1-95b7-aa34f25a75d9",
+    "parent_thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+    "cwd": "/private/tmp/steno-p4-coordinator",
+    "source": {
+      "subagent": {
+        "thread_spawn": {
+          "parent_thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+          "depth": 1,
+          "agent_path": "/root/ip1_recruiting",
+          "agent_nickname": "Darwin",
+          "agent_role": "recruiting"
+        }
+      }
+    },
+    "agent_role": "recruiting",
+    "agent_path": "/root/ip1_recruiting"
+  },
+  "turn_contexts": [
+    {
+      "line": 8,
+      "payload": {
+        "model": "gpt-6-astra",
+        "effort": "high",
+        "cwd": "/private/tmp/steno-p4-coordinator",
+        "service_tier": null
+      }
+    }
+  ],
+  "verified_at": "2026-09-19T05:18:07.939206+00:00"
+}
