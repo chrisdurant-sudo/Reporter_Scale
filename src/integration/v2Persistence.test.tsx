@@ -13,6 +13,18 @@ afterEach(() => {
 });
 
 describe("V2 browser storage integration", () => {
+  it("keeps a market selection open to all canonical requests in its scheduling window", async () => {
+    const request = DEMO_SNAPSHOT_V2.demandRequests.find((item) => item.id === "req-lax-101")!;
+    const snapshot = { ...DEMO_SNAPSHOT_V2, demandRequests: [...DEMO_SNAPSHOT_V2.demandRequests, { ...request, id: "req-lax-additional-proof" as never }] };
+    localStorage.setItem(INTERVIEW_V2_STORAGE_KEY, JSON.stringify({ format: "reporter-growth-v2", storageVersion: 1, seedVersion: snapshot.seedVersion, snapshot }));
+    const user = userEvent.setup();
+    render(<App />);
+    await screen.findByRole("region", { name: "Overview metrics" });
+    await user.click(screen.getByRole("button", { name: "LAX", exact: true }));
+    const metrics = screen.getByRole("region", { name: "Overview metrics" });
+    expect(within(metrics).getByText("Open jobs").parentElement).toHaveTextContent("11");
+  });
+
   it("reloads saved work and the scenario clock on remount, then explicitly restores the seed", async () => {
     const user = userEvent.setup();
     const mounted = render(<App />);

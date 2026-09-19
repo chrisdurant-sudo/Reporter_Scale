@@ -47,7 +47,6 @@ import type { V2GlobalFilters } from "../shell/V2AppShell";
 import { ErrorState, LoadingState } from "../ui/v2";
 import { v2BrowserStorage } from "./v2BrowserStorage";
 
-const MAIN_REQUEST_IDS = Array.from({ length: 10 }, (_, index) => `req-lax-${101 + index}` as never);
 const RECRUITING_ENTRY_WINDOW = {
   startAt: "2026-02-01T00:00:00Z" as UtcTimestamp,
   endAt: "2026-03-01T00:00:00Z" as UtcTimestamp,
@@ -112,7 +111,7 @@ function filtersFor(workspace: WorkspaceId, filters: V2GlobalFilters): Workspace
     marketIds: filters.selectedMarket === "ALL" ? [] : [filters.selectedMarket],
     reporterIds: [],
     acquisitionCaseIds: [],
-    requestIds: filters.selectedMarket === "LAX" ? MAIN_REQUEST_IDS : [],
+    requestIds: [],
     workItemIds: [],
     programIds: [],
     programEnrollmentIds: [],
