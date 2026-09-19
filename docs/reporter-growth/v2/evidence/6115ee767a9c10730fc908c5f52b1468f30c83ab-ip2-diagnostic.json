@@ -1,0 +1,94 @@
+{
+  "candidate_commit": "6115ee767a9c10730fc908c5f52b1468f30c83ab",
+  "worktree": "/private/tmp/steno-p4-coordinator",
+  "clean_before_run": true,
+  "governance": "passed",
+  "lint": "passed",
+  "typecheck": "passed",
+  "unit_integration": {
+    "passed": 314,
+    "failed": 0
+  },
+  "build": "passed",
+  "acceptance": {
+    "passed": 7,
+    "failed": 2
+  },
+  "browser": {
+    "passed": 4,
+    "failed": 4
+  },
+  "full_gate": "failed",
+  "waivers": [],
+  "logs": [
+    {
+      "kind": "full",
+      "file": "/private/tmp/steno-ip2-6115ee-full.log",
+      "sha256": "f9e63710b0062bbcbc291d3bac59a20273d636089785021e0d49b41ecf7d6247",
+      "exit_code": 1,
+      "summary_lines": [
+        "P4 readiness verification passed (203 checks).",
+        "P4 interview phase verification passed for IP2_visual_proof; worker dispatch is checked separately.",
+        " Test Files  38 passed (38)",
+        "      Tests  314 passed (314)",
+        " \u276f tests/acceptance/reporter-growth.integration.test.tsx (5 tests | 2 failed) 10061ms",
+        "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 2 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        " FAIL  tests/acceptance/reporter-growth.integration.test.tsx > P4 cross-workspace acceptance > XR01-XR08/XR31-XR36 keeps the locked shell, concise hierarchy, and source-backed Overview controls",
+        "TestingLibraryElementError: Unable to find an element with the text: /Markets|Available reporters|Open jobs|More needed/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.",
+        " FAIL  tests/acceptance/reporter-growth.integration.test.tsx > P4 cross-workspace acceptance > XR09-XR10/XR15-XR18/XR37 exercises Funnel controls, notes, SLA isolation, evidence, and focus return",
+        "TestingLibraryElementError: Unable to find an accessible element with the role \"img\" and name `/R28 wait time for Applicant/i`",
+        " Test Files  1 failed | 1 passed (2)",
+        "      Tests  2 failed | 7 passed (9)"
+      ]
+    },
+    {
+      "kind": "browser",
+      "file": "/private/tmp/steno-ip2-6115ee-browser.log",
+      "sha256": "8094a5c96ef7d1e685f04c47ac26d2daf2c5f4413e963dffc0d5186f9cd64a93",
+      "exit_code": 1,
+      "summary_lines": [
+        "    Error: expect(locator).toBeVisible() failed",
+        "    Error: element(s) not found",
+        "    Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'Why this?' }) resolved to 3 elements:",
+        "    Error: expect(locator).toBeVisible() failed",
+        "    Error: element(s) not found",
+        "    Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'Why this?' }) resolved to 3 elements:",
+        "  4 failed",
+        "  4 passed (12.2s)"
+      ]
+    }
+  ],
+  "conflicts": [
+    {
+      "file": "tests/acceptance/reporter-growth.integration.test.tsx",
+      "lines": [
+        25,
+        44,
+        48,
+        62
+      ],
+      "obsolete_assertions": [
+        "Old Overview KPI labels and chart img role/title",
+        "Global row count now includes new scope tables",
+        "Funnel chart old img role and R28 label",
+        "Applicant first click excludes instead of focuses",
+        "Global Why this? selector assumes one attention item"
+      ],
+      "replacement_basis": "IP02-IP06: accessible keyboard chart groups, explicit schedule capacity cells, scoped market grid, Applicant focus/clear, exact attention evidence trigger."
+    },
+    {
+      "file": "tests/e2e/reporter-growth.browser.spec.ts",
+      "lines": [
+        45,
+        48,
+        66
+      ],
+      "obsolete_assertions": [
+        "Old chart img role/title",
+        "Applicant focus behavior",
+        "Global evidence selector matches three distinct attention rows"
+      ],
+      "replacement_basis": "Retain range selection, exact observation, status rows/count, notes, SLA noninterference, evidence drawer/focus/overflow checks in both existing projects."
+    }
+  ]
+}

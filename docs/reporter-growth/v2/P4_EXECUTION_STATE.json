@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-19T08:47:36.459963+00:00",
+  "updated_at": "2026-09-19T08:49:50.767891+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -1110,44 +1110,22 @@
   ],
   "active_lane": {
     "role": "experience",
-    "task_name": "/root/ip2_experience",
-    "worktree": "/private/tmp/steno-interview-ip2-experience",
-    "branch": "codex/interview-ip2-experience",
-    "base_commit": "f7a6fc734513ba8621a7dbf3b1845f818d420658",
+    "task_name": "/root/experience_probe_takeover",
+    "worktree": "/private/tmp/steno-ip2-proof-repair",
+    "branch": "codex/interview-ip2-proof-repair",
+    "base_commit": "23cfc831b40baa8f49decca87c844b647553f28c",
     "source_contract_commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
-    "status": "P4_VISUAL_PROOF_READY_stopped",
+    "status": "bounded_visual_repair",
     "allowed_paths": [
-      "src/ui/",
-      "src/shell/",
       "src/styles/",
-      "src/features/markets/",
-      "src/features/recruiting/"
+      "src/features/markets/"
     ],
-    "scratch_reference_output": "/private/tmp/steno-ip2-reference-proposal",
-    "production_edits_open": false,
+    "production_edits_open": true,
     "runtime_evidence": {
-      "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-experience-worker-runtime.json",
-      "sha256": "062ddeccf1b537fdfa2dbae573e3c2cd5c1b8be26102be338751fda2202dfefd"
+      "file": "docs/reporter-growth/v2/evidence/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046-experience-probe.json",
+      "sha256": "317662fa968e47463998d1d9b1aea674dd07c18f717865f9ca540d44860430d6"
     },
-    "reference_manifest": "docs/reporter-growth/v2/design-lock/interview-2026-09-19/reference-manifest.json",
-    "coordinator_pending_assertions": {
-      "commits": [
-        "6052e47",
-        "d43b4d1"
-      ],
-      "paths": [
-        "src/integration/App.test.tsx",
-        "src/integration/v2Persistence.test.tsx"
-      ],
-      "typecheck": "passed",
-      "lint": "passed",
-      "runtime": "pending_Lead_source_integration"
-    },
-    "prior_base_commit": "d4b4ff98a3ee9e9fd1bffe829a6b747ab34670d1",
-    "baseline_advance_reason": "Coordinator Focus copy now consumes existing prepared counts. Worker confirmed owned-only local edits; fast-forward preserves those edits and brings desktop-only scope and prepared integration assertions into its source baseline.",
-    "candidate_commit": "be5d7a1d3a634f4a29243e09993661cef7264c1c",
-    "handoff": "docs/reporter-growth/v2/IP2_EXPERIENCE_SOURCE_HANDOFF.md",
-    "scratch_source_proof": "/private/tmp/steno-ip2-source-proof"
+    "scratch_source_proof": "/private/tmp/steno-ip2-repaired-proof"
   },
   "unattended_handoff": {
     "status": "continuing_with_verified_auto_review",
@@ -1170,5 +1148,48 @@
     "next_action": "Independent desktop comparison, exact Lead integration, serial Quality test alignment, full gate and gated workspace wave. Automatic-review rejections remain enforceable.",
     "actual_approvals_reviewer": "auto_review",
     "full_access_loaded": false
-  }
+  },
+  "active_lane_history": [
+    {
+      "role": "experience",
+      "task_name": "/root/ip2_experience",
+      "worktree": "/private/tmp/steno-interview-ip2-experience",
+      "branch": "codex/interview-ip2-experience",
+      "base_commit": "f7a6fc734513ba8621a7dbf3b1845f818d420658",
+      "source_contract_commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
+      "status": "P4_VISUAL_PROOF_READY_stopped",
+      "allowed_paths": [
+        "src/ui/",
+        "src/shell/",
+        "src/styles/",
+        "src/features/markets/",
+        "src/features/recruiting/"
+      ],
+      "scratch_reference_output": "/private/tmp/steno-ip2-reference-proposal",
+      "production_edits_open": false,
+      "runtime_evidence": {
+        "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-experience-worker-runtime.json",
+        "sha256": "062ddeccf1b537fdfa2dbae573e3c2cd5c1b8be26102be338751fda2202dfefd"
+      },
+      "reference_manifest": "docs/reporter-growth/v2/design-lock/interview-2026-09-19/reference-manifest.json",
+      "coordinator_pending_assertions": {
+        "commits": [
+          "6052e47",
+          "d43b4d1"
+        ],
+        "paths": [
+          "src/integration/App.test.tsx",
+          "src/integration/v2Persistence.test.tsx"
+        ],
+        "typecheck": "passed",
+        "lint": "passed",
+        "runtime": "pending_Lead_source_integration"
+      },
+      "prior_base_commit": "d4b4ff98a3ee9e9fd1bffe829a6b747ab34670d1",
+      "baseline_advance_reason": "Coordinator Focus copy now consumes existing prepared counts. Worker confirmed owned-only local edits; fast-forward preserves those edits and brings desktop-only scope and prepared integration assertions into its source baseline.",
+      "candidate_commit": "be5d7a1d3a634f4a29243e09993661cef7264c1c",
+      "handoff": "docs/reporter-growth/v2/IP2_EXPERIENCE_SOURCE_HANDOFF.md",
+      "scratch_source_proof": "/private/tmp/steno-ip2-source-proof"
+    }
+  ]
 }
