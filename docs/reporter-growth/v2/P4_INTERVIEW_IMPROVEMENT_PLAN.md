@@ -1,7 +1,7 @@
 # Interview improvement implementation plan
 
 Date: September 18, 2026
-Status: **IMPLEMENTATION AUTHORIZED — IP1 SERIAL DATA/LOGIC**
+Status: **IMPLEMENTATION AUTHORIZED — IP2 REVISED VISUAL PROOF**
 
 September 18 start: the user explicitly said “please start” after the readiness review. The new phase and prerequisites are recorded in `P4_EXECUTION_STATE.json` and `P4_INTERVIEW_CONTRACT_DELTAS.md`. Earlier planning-only statements below describe the prior handoff; no second start approval is required.
 

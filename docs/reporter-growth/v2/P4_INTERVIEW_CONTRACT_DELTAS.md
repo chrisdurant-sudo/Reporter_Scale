@@ -1,5 +1,7 @@
 # Interview amendment: coordinator contract preparation
 
+> September 19 current state: all serial repairs and coordinator composition are integrated at `dfa4b9b921991abd6a40127146520c421204c8cb`. The complete gate passes 307 unit/integration, nine acceptance and eight browser tests. Phase is `IP2_visual_proof`; reference revision and Overview/Funnel proof are next after verifying the Experience Lead runtime. All specialist presentation and independent Quality/Reviewer remain pending. Read `IP2_LEAD_INTEGRATION_REQUIREMENTS.md` and the live ledger. Earlier progress entries below are historical.
+
 > IP1 Network update: Network candidate `67fbed109a7306204c692dcb1b509f6560591621` is integrated. Exact coordinator candidate `4e2a715041643c2c9ccc428086258e8f77fb894b` passes 241 unit/integration, nine acceptance and eight browser tests. Team and Programs remain next, serially; command composition and presentation remain pending. Read `IP1_NETWORK_HANDOFF.md` and the active ledger.
 
 Status: AUTHORIZED — IP1 SERIAL DATA/LOGIC IMPLEMENTATION; CONTRACT BOUNDARY PREPARED AT `dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333`

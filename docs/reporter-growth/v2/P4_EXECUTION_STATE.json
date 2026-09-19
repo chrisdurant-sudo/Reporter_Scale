@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-19T06:48:28.687139+00:00",
+  "updated_at": "2026-09-19T07:25:01.324407+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -353,10 +353,10 @@
       }
     ],
     "latest_coordinator_verification": {
-      "candidate_commit": "740a1cbfadf8f8f1959e6fbaa85d252654594d45",
+      "candidate_commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/740a1cbfadf8f8f1959e6fbaa85d252654594d45-ip1-team-verification.json",
-        "sha256": "04167b52103b1b958a423844a06d0de0a1d92b9ca65393d6bf7a041cd13243ec"
+        "file": "docs/reporter-growth/v2/evidence/dfa4b9b921991abd6a40127146520c421204c8cb-ip1-programs-combined-verification.json",
+        "sha256": "ec4e54c9a9d8c1fc1008832979f3ef868f6468d7252d868bcff88488ff305b95"
       }
     },
     "continuation_authorization": {
@@ -410,10 +410,10 @@
   "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",
   "implementation_active": true,
   "fanout_authorized": false,
-  "current_phase": "IP1_serial_data_logic",
+  "current_phase": "IP2_visual_proof",
   "current_candidate": {
-    "commit": "740a1cbfadf8f8f1959e6fbaa85d252654594d45",
-    "status": "data_capacity_recruiting_network_team_integrated_full_suite_passed",
+    "commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
+    "status": "serial_interview_preparation_passed_presentation_pending",
     "defect_register": "docs/reporter-growth/v2/INTERVIEW_PRODUCT_REVIEW_2026-09-18.md"
   },
   "gates": {
@@ -432,15 +432,15 @@
     },
     "contracts": {
       "status": "passed",
-      "candidate_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
+      "candidate_commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333-ip0-verification.json",
-        "sha256": "41b69e53b7646bc790d2bff50dde7da7eb44c32d58722b70ad5da84295e36621"
+        "file": "docs/reporter-growth/v2/evidence/dfa4b9b921991abd6a40127146520c421204c8cb-ip1-programs-combined-verification.json",
+        "sha256": "ec4e54c9a9d8c1fc1008832979f3ef868f6468d7252d868bcff88488ff305b95"
       },
-      "scope": "Coordinator-owned additive types and bounded requests only; domain/storage implementations and presentation remain pending."
+      "scope": "Frozen additive interview contract and all serial domain repairs, typed command ports and weekly composition. Specialist legacy write callbacks remain pending removal when explicit forms integrate."
     },
     "data_logic": {
-      "status": "pending",
+      "status": "passed",
       "required_roles": [
         "data",
         "capacity",
@@ -454,19 +454,27 @@
         "capacity",
         "recruiting",
         "network",
-        "team"
-      ]
+        "team",
+        "programs"
+      ],
+      "candidate_commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
+      "evidence": {
+        "file": "docs/reporter-growth/v2/evidence/dfa4b9b921991abd6a40127146520c421204c8cb-ip1-programs-combined-verification.json",
+        "sha256": "ec4e54c9a9d8c1fc1008832979f3ef868f6468d7252d868bcff88488ff305b95"
+      }
     },
     "baseline": {
       "status": "passed",
-      "candidate_commit": "740a1cbfadf8f8f1959e6fbaa85d252654594d45",
+      "candidate_commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/740a1cbfadf8f8f1959e6fbaa85d252654594d45-ip1-team-verification.json",
-        "sha256": "04167b52103b1b958a423844a06d0de0a1d92b9ca65393d6bf7a041cd13243ec"
+        "file": "docs/reporter-growth/v2/evidence/dfa4b9b921991abd6a40127146520c421204c8cb-ip1-programs-combined-verification.json",
+        "sha256": "ec4e54c9a9d8c1fc1008832979f3ef868f6468d7252d868bcff88488ff305b95"
       }
     },
     "visual_proof": {
-      "status": "blocked"
+      "status": "pending",
+      "scope": "IP01-IP12_amendment",
+      "reason": "Lead runtime probe, separately versioned reference and exact-commit visual/interaction proof required."
     },
     "workspace_wave": {
       "status": "blocked"
@@ -654,7 +662,7 @@
       "lane": "programs",
       "base_commit": "40c3cfe2c8ac87806c333348e981a6ddd4b2f0a4",
       "candidate_commit": "fe25433912f5b380eacf958c776e1f2095dafcc6",
-      "status": "integrated_pending_full_verification",
+      "status": "passed",
       "changed_paths": [
         "src/logic/programs/commands.ts",
         "src/logic/programs/index.test.ts",
@@ -668,7 +676,11 @@
       "worker_governance_limitation": "Static 203 checks pass; phase check requires recorded coordinator checkout. Coordinator governance passes before integration.",
       "acceptance_scope": "IC05/IC06 prepared logic; typed command wiring, IP10/IP11 presentation and independent Quality remain pending",
       "handoff": "docs/reporter-growth/v2/IP1_PROGRAMS_HANDOFF.md",
-      "integrated_commit": "5484a9a53c274ffe57041d54c73eade8b39c2b25"
+      "integrated_commit": "5484a9a53c274ffe57041d54c73eade8b39c2b25",
+      "full_verification": {
+        "file": "docs/reporter-growth/v2/evidence/dfa4b9b921991abd6a40127146520c421204c8cb-ip1-programs-combined-verification.json",
+        "sha256": "ec4e54c9a9d8c1fc1008832979f3ef868f6468d7252d868bcff88488ff305b95"
+      }
     }
   },
   "known_ownership_exceptions": [],
@@ -908,24 +920,18 @@
         },
         "reason": "The multi-checkpoint app test exceeded its default 5-second limit under full-suite load and continued into the next DOM test. Prior focused and full runs passed. Coordinator sets this seven-checkpoint integration case to 15 seconds without changing assertions; full rerun required."
       }
+    },
+    {
+      "gate": "baseline",
+      "record": {
+        "status": "passed",
+        "candidate_commit": "740a1cbfadf8f8f1959e6fbaa85d252654594d45",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/740a1cbfadf8f8f1959e6fbaa85d252654594d45-ip1-team-verification.json",
+          "sha256": "04167b52103b1b958a423844a06d0de0a1d92b9ca65393d6bf7a041cd13243ec"
+        }
+      }
     }
   ],
-  "active_lane": {
-    "role": "programs",
-    "task_name": "/root/ip1_programs",
-    "worktree": "/private/tmp/steno-interview-ip1-programs",
-    "branch": "codex/interview-ip1-programs",
-    "base_commit": "40c3cfe2c8ac87806c333348e981a6ddd4b2f0a4",
-    "source_contract_commit": "dfb01b48e7ea406c8cd1ac31b2569f6bfcd4d333",
-    "requests": [
-      "IC05",
-      "IC06"
-    ],
-    "status": "integrated_pending_full_verification",
-    "runtime_evidence": {
-      "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-programs-worker-runtime.json",
-      "sha256": "f778fbe7e3fb3cd23436c845f5989db31a236cb435d979c853c07174ba5d0e93"
-    },
-    "candidate_commit": "fe25433912f5b380eacf958c776e1f2095dafcc6"
-  }
+  "active_lane": null
 }
