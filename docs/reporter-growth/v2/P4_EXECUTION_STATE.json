@@ -287,10 +287,10 @@
       }
     ],
     "latest_coordinator_verification": {
-      "candidate_commit": "7dbdd8a41d89fa419178ccc3602fa0deec5f2d4c",
+      "candidate_commit": "b83552439621d107dc81836acb355d05f79555c4",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/7dbdd8a41d89fa419178ccc3602fa0deec5f2d4c-ip1-persistence-verification.json",
-        "sha256": "3468c1daee90a2ea12ad957547ba4d765d73f444f13415cc2b66c240c38d72d7"
+        "file": "docs/reporter-growth/v2/evidence/b83552439621d107dc81836acb355d05f79555c4-ip1-market-scope-verification.json",
+        "sha256": "2eb3f3e3a6af281d8421547ab5ff3b76c74015a10e44e2cf199e0b89f5d2afbb"
       }
     },
     "continuation_authorization": {
@@ -342,8 +342,8 @@
   "fanout_authorized": false,
   "current_phase": "IP1_serial_data_logic",
   "current_candidate": {
-    "commit": "7dbdd8a41d89fa419178ccc3602fa0deec5f2d4c",
-    "status": "data_and_browser_persistence_integrated_full_suite_passed_capacity_running",
+    "commit": "b83552439621d107dc81836acb355d05f79555c4",
+    "status": "market_scope_corrected_full_suite_passed_capacity_running",
     "defect_register": "docs/reporter-growth/v2/INTERVIEW_PRODUCT_REVIEW_2026-09-18.md"
   },
   "gates": {
@@ -385,10 +385,10 @@
     },
     "baseline": {
       "status": "passed",
-      "candidate_commit": "7dbdd8a41d89fa419178ccc3602fa0deec5f2d4c",
+      "candidate_commit": "b83552439621d107dc81836acb355d05f79555c4",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/7dbdd8a41d89fa419178ccc3602fa0deec5f2d4c-ip1-persistence-verification.json",
-        "sha256": "3468c1daee90a2ea12ad957547ba4d765d73f444f13415cc2b66c240c38d72d7"
+        "file": "docs/reporter-growth/v2/evidence/b83552439621d107dc81836acb355d05f79555c4-ip1-market-scope-verification.json",
+        "sha256": "2eb3f3e3a6af281d8421547ab5ff3b76c74015a10e44e2cf199e0b89f5d2afbb"
       }
     },
     "visual_proof": {
@@ -425,7 +425,7 @@
       "lane": "data",
       "base_commit": "a772282a7d7acb74d8a09ab1786ca6b3de9c51ae",
       "candidate_commit": "9fe8764d42f5159b8ade12df0ee196425ff222c7",
-      "integrated_commit": "a2ba37a",
+      "integrated_commit": "a2ba37ab6fc7f6ca5e8e7073273662f908dbd5fd",
       "status": "passed",
       "changed_paths": [
         "src/data/v2.ts",
@@ -547,6 +547,29 @@
           "file": "docs/reporter-growth/v2/evidence/1f5250251eabb33c438c793cbf5f6296bbe017da-ip1-data-verification.json",
           "sha256": "feb50b82f509d7acd9c846654e068f4aa5fe7a08ad14cc13c9acb1c25850b48f"
         }
+      }
+    },
+    {
+      "gate": "baseline",
+      "record": {
+        "status": "passed",
+        "candidate_commit": "7dbdd8a41d89fa419178ccc3602fa0deec5f2d4c",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/7dbdd8a41d89fa419178ccc3602fa0deec5f2d4c-ip1-persistence-verification.json",
+          "sha256": "3468c1daee90a2ea12ad957547ba4d765d73f444f13415cc2b66c240c38d72d7"
+        }
+      }
+    },
+    {
+      "gate": "baseline",
+      "record": {
+        "status": "failed",
+        "candidate_commit": "0d99322f4276c85cc1d53d732ebc58e9173cf607",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/0d99322f4276c85cc1d53d732ebc58e9173cf607-ip1-market-scope-initial.json",
+          "sha256": "82619b820e0f34720906e85682803cc3983a6b9463a7d495d4cea304c76dc84f"
+        },
+        "reason": "Test-only Testing Library exact option was rejected by TypeScript; corrected at b835524, full rerun in progress."
       }
     }
   ],

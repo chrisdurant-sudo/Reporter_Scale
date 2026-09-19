@@ -13,7 +13,7 @@ import type {
 import type { RecordPointer } from "./references";
 import type { ProgramDecisionKind } from "./programs";
 import type { DemoSnapshotV2 } from "./snapshot";
-import type { CoachingAction, TeamTarget, WorkItemChanges, WorkItemStatus, WorkOwnershipDomain, WorkPriority, WorkQualityCheck } from "./work";
+import type { CoachingAction, TeamTarget, WorkItemChanges, WorkItemKind, WorkItemStatus, WorkOwnershipDomain, WorkPriority, WorkQualityCheck } from "./work";
 
 export type V2CommandType =
   | "goal.save-revision"
@@ -70,6 +70,8 @@ export interface WorkCreatePayload {
   readonly ownerId: TeamMemberId | null;
   readonly status: Exclude<WorkItemStatus, "canceled">;
   readonly domain: WorkOwnershipDomain;
+  /** Optional canonical purpose; Team validates it against domain (market includes re-engage and first-opportunity). */
+  readonly kind?: WorkItemKind;
   readonly programId: ProgramId | null;
   /** Existing callers remain compatible; the interview workflow supplies explicit links and dates. */
   readonly primaryEntityRef?: RecordPointer;

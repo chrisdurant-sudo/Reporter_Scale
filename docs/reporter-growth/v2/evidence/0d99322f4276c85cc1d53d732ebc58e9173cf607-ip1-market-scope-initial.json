@@ -1,0 +1,19 @@
+{
+  "kind": "coordinator_full_verification",
+  "candidate_commit": "0d99322f4276c85cc1d53d732ebc58e9173cf607",
+  "verified_at": "2026-09-19T04:56:39.503818+00:00",
+  "command": "env PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/private/tmp/steno-playwright-headless-shell/chrome-headless-shell-mac-arm64/chrome-headless-shell npm run verify:p4",
+  "exit_code": 2,
+  "full_suite_passed": false,
+  "summary_lines": [
+    "P4 readiness verification passed (203 checks).",
+    "P4 interview phase verification passed for IP1_serial_data_logic; worker dispatch is checked separately."
+  ],
+  "waivers": [],
+  "log": {
+    "file": "docs/reporter-growth/v2/evidence/0d99322f4276c85cc1d53d732ebc58e9173cf607-ip1-market-scope-initial.log",
+    "sha256": "d93f3300afe2c79cc1b05681812726da0bf5325a8ee4c670448ba4a63969ef6b"
+  },
+  "log_normalization": "Trailing whitespace stripped",
+  "raw_log_sha256": "d93f3300afe2c79cc1b05681812726da0bf5325a8ee4c670448ba4a63969ef6b"
+}
