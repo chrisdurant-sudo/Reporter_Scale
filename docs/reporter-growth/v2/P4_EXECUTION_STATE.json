@@ -455,7 +455,29 @@
           "sha256": "b4f6e94131bda26ee01eec7d9f51113f1023ebe03881c583ecbbd2fcf3d5f590"
         }
       }
-    ]
+    ],
+    "test_alignment": {
+      "status": "authorized",
+      "role": "quality",
+      "authorization": {
+        "source": "Approve these bounded test-alignment passes",
+        "thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+        "authorized_at": "2026-09-19T08:22:40.583211+00:00"
+      },
+      "allowed_paths": [
+        "tests/acceptance/reporter-growth.integration.test.tsx",
+        "tests/e2e/reporter-growth.browser.spec.ts"
+      ],
+      "independent_quality_gate_retained": true,
+      "reviewer_gate_retained": true,
+      "waivers": [],
+      "proposal": {
+        "file": "docs/reporter-growth/v2/IP2_TEST_ALIGNMENT_REQUEST.md",
+        "sha256": "629a9f4334b5fb53336a2b209ba2faa0824af11b4185292a66d1178ab89c9caa"
+      },
+      "current_pass": null,
+      "completed_passes": []
+    }
   },
   "implementation_base_commit": "6e7ea99e2358e497b8a6d4331a6cc8513e668501",
   "active_coordinator_worktree": "/private/tmp/steno-p4-coordinator",

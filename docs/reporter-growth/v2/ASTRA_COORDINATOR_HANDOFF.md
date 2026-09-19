@@ -1,5 +1,8 @@
 # Astra coordinator handoff — September 18, 2026
 
+> September 19 standing test-owner sequencing amendment: the user approved “Approve these bounded test-alignment passes.” `docs/reporter-growth/v2/IP2_TEST_ALIGNMENT_REQUEST.md` permits serial Quality-owned alignment of obsolete assertions in the two named acceptance/browser files during IP2–IP4, after exact-candidate diagnostics and with runtime verification, scope and boundary audits. All substantive checks and the independent IP5 Quality/IP6 Reviewer gates remain required. No further start approval is needed.
+
+
 > Latest September 19 scope: **desktop only**. The user clarified tablets are not needed. `P4_INTERVIEW_DESKTOP_SCOPE.md` supersedes the earlier tablet interpretation. Required proof is1440×900 desktop with pointer/keyboard; no tablet or phone optimization/capture pass.
 
 > September 19 viewport amendment: the user does not need phone optimization. `P4_INTERVIEW_VIEWPORT_SCOPE.md` governs the current interview proof: desktop/tablet (1440×900, 1024×768, 768×1024), basic narrow-screen usability retained, no required 390px visual proof. Historical requirements below remain evidence of their original scope.

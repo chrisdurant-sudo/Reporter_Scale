@@ -102,7 +102,19 @@ export function inspectInterviewDispatch(state, registry, role, kind, verifyEvid
     && JSON.stringify(repair.allowed_paths) === JSON.stringify(['tests/e2e/reporter-growth.browser.spec.ts'])
     && repair.independent_quality_gate_retained === true && repair.waivers?.length === 0
     && verifyEvidence(repair.proposal) && verifyEvidence(repair.diagnostic);
-  const permitted = prerequisiteRepair || (phase === 'IP1_serial_data_logic' && support.includes(role))
+  const alignment = amendment?.test_alignment;
+  const alignmentPass = alignment?.current_pass;
+  const testAlignment = ['IP2_visual_proof', 'IP3_workspace_wave', 'IP4_integration'].includes(phase) && role === 'quality'
+    && alignment?.status === 'authorized' && alignment.role === 'quality'
+    && alignment.authorization?.source && alignment.authorization?.thread_id && alignment.authorization?.authorized_at
+    && JSON.stringify(alignment.allowed_paths) === JSON.stringify(['tests/acceptance/reporter-growth.integration.test.tsx', 'tests/e2e/reporter-growth.browser.spec.ts'])
+    && alignment.independent_quality_gate_retained === true && alignment.reviewer_gate_retained === true
+    && alignment.waivers?.length === 0 && verifyEvidence(alignment.proposal)
+    && alignmentPass?.status === 'prepared' && alignmentPass.serial_workers_stopped === true
+    && alignmentPass.candidate_commit === state.current_candidate?.commit
+    && /^[a-f0-9]{40}$/.test(alignmentPass.candidate_commit ?? '')
+    && verifyEvidence(alignmentPass.diagnostic) && verifyEvidence(alignmentPass.scope);
+  const permitted = prerequisiteRepair || testAlignment || (phase === 'IP1_serial_data_logic' && support.includes(role))
     || (phase === 'IP2_visual_proof' && role === 'experience')
     || (phase === 'IP3_workspace_wave' && ['experience', ...specialists].includes(role))
     || (phase === 'IP5_quality' && role === 'quality')

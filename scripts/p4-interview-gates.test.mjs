@@ -128,3 +128,21 @@ test('IP0 exception cannot waive independent acceptance or reuse an inherited pr
   assert.ok(errors.some((e) => e.includes('fresh zero-inheritance')));
   assert.ok(errors.some((e) => e.includes('cannot run during')));
 });
+test('interview test alignment needs standing authorization, a fixed diagnostic and stopped workers', () => {
+  const f = fixture('IP2_visual_proof'); const a = f.state.interview_improvement_amendment;
+  f.state.current_candidate.commit = 'a'.repeat(40);
+  a.runtime_catalog = { status: 'verified', evidence: proof, roles: { quality: role('quality') } };
+  a.runtime_probes = [{ role: 'quality', ...role('quality'), fork_turns: 'none', inherited_turns: 0, session_id: 'quality-probe', verified_at: '2026-09-19', evidence: proof }];
+  a.test_alignment = { status: 'authorized', role: 'quality', authorization: { source: 'Approve these bounded test-alignment passes', thread_id: 'task', authorized_at: '2026-09-19' }, allowed_paths: ['tests/acceptance/reporter-growth.integration.test.tsx', 'tests/e2e/reporter-growth.browser.spec.ts'], independent_quality_gate_retained: true, reviewer_gate_retained: true, waivers: [], proposal: proof, current_pass: { status: 'prepared', serial_workers_stopped: true, candidate_commit: f.state.current_candidate.commit, diagnostic: proof, scope: proof } };
+  const check = () => inspectInterviewDispatch(f.state, f.registry, 'quality', 'implementation', verify);
+  assert.deepEqual(check(), []);
+  for (const [field, value] of [['authorization', null], ['reviewer_gate_retained', false], ['independent_quality_gate_retained', false], ['waivers', ['browser']], ['allowed_paths', ['src/']]]) {
+    const prior = a.test_alignment[field]; a.test_alignment[field] = value; assert.ok(check().length, field); a.test_alignment[field] = prior;
+  }
+  for (const [field, value] of [['serial_workers_stopped', false], ['candidate_commit', 'b'.repeat(40)], ['diagnostic', null], ['scope', null]]) {
+    const prior = a.test_alignment.current_pass[field]; a.test_alignment.current_pass[field] = value; assert.ok(check().length, field); a.test_alignment.current_pass[field] = prior;
+  }
+  f.state.current_phase = f.registry.current_phase = 'IP1_serial_data_logic';
+  assert.ok(check().some((e) => e.includes('cannot run during')));
+  assert.ok(inspectInterviewDispatch(f.state, f.registry, 'experience_reporters', 'implementation', verify).some((e) => e.includes('cannot run during')));
+});
