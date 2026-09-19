@@ -1,0 +1,53 @@
+{
+  "observed_at": "2026-09-19T08:31:22.285313+00:00",
+  "task_id": "01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046",
+  "starting_commit": "e6ac1188dbb653743c6a8385dec39b4e78e0ed61",
+  "session_file": "/Users/pc/.codex/sessions/2026/09/19/rollout-2026-09-19T01-28-54-01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046.jsonl",
+  "turn_context_timestamp": "2026-09-19T08:28:57.969Z",
+  "actual": {
+    "cwd": "/private/tmp/steno-p4-coordinator",
+    "approval_policy": "on-request",
+    "sandbox_policy": {
+      "type": "workspace-write",
+      "writable_roots": [
+        "/Users/pc/.codex/visualizations/2026/09/19/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046"
+      ],
+      "network_access": false,
+      "exclude_tmpdir_env_var": false,
+      "exclude_slash_tmp": false
+    },
+    "model": "gpt-6-astra",
+    "effort": "xhigh"
+  },
+  "expected": {
+    "approval_policy": "never",
+    "sandbox_mode": "danger-full-access"
+  },
+  "configured_service_tier": "default",
+  "resolved_service_tier": "not_exposed",
+  "user_ui_selection_reported": true,
+  "status": "pending_fresh_turn_runtime_verification",
+  "note": "User reported Full access selected. This active turn still has only its initial on-request/workspace-write context. Do not infer that the next turn will retain or change it; verify the next actual context before dispatch.",
+  "lead_candidate": "be5d7a1d3a634f4a29243e09993661cef7264c1c",
+  "lead_worktree_clean": true,
+  "proof_manifest": "/private/tmp/steno-ip2-source-proof/proof-manifest.json",
+  "proof_manifest_sha256": "621f4d5e50bf1ac78b508a3be360f23359fff783ba61dab8400881d5d0b76333",
+  "screenshot_checksums": {
+    "checked": 16,
+    "mismatches": 0
+  },
+  "recorded_interaction_checks": {
+    "passed": 19,
+    "total": 19,
+    "browser_errors": [],
+    "independently_rerun": false
+  },
+  "lane_audit": {
+    "command": "npm run verify:p4:lane -- --lane experience --base f7a6fc734513ba8621a7dbf3b1845f818d420658 --candidate be5d7a1d3a634f4a29243e09993661cef7264c1c",
+    "exit_code": 0,
+    "changed_paths": 10
+  },
+  "visual_acceptance": "pending_independent_comparison",
+  "source_integrated": false,
+  "workers_dispatched": false
+}

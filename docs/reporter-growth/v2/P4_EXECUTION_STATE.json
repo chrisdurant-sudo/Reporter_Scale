@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-19T08:10:58.180315+00:00",
+  "updated_at": "2026-09-19T08:31:22.285313+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -1025,7 +1025,7 @@
       "src/features/recruiting/"
     ],
     "scratch_reference_output": "/private/tmp/steno-ip2-reference-proposal",
-    "production_edits_open": true,
+    "production_edits_open": false,
     "runtime_evidence": {
       "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-experience-worker-runtime.json",
       "sha256": "062ddeccf1b537fdfa2dbae573e3c2cd5c1b8be26102be338751fda2202dfefd"
@@ -1051,7 +1051,7 @@
     "scratch_source_proof": "/private/tmp/steno-ip2-source-proof"
   },
   "unattended_handoff": {
-    "status": "prepared_pending_replacement_runtime",
+    "status": "pending_fresh_turn_runtime_verification",
     "requested_by_user": true,
     "authorized_at": "2026-09-19T08:28:15.395428+00:00",
     "authorization": "Approve Full Access for this project task",
@@ -1060,6 +1060,14 @@
     "sandbox_mode": "danger-full-access",
     "configured_service_tier": "default",
     "handoff": "docs/reporter-growth/v2/UNATTENDED_HANDOFF_2026-09-19.md",
-    "new_task_id": null
+    "new_task_id": "01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046",
+    "runtime_verification": {
+      "file": "docs/reporter-growth/v2/evidence/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046-takeover-runtime.json",
+      "sha256": "d5cf5c4b9c893707db4317931e60104ccaf332b1280a9e49c78de15a3685c4cf"
+    },
+    "actual_approval_policy": "on-request",
+    "actual_sandbox_mode": "workspace-write",
+    "user_reported_full_access_selected": true,
+    "next_action": "Verify actual loaded context in fresh turn after user UI selection; then independent desktop comparison and exact-candidate integration. Existing source/proof remains intact and unaccepted."
   }
 }
