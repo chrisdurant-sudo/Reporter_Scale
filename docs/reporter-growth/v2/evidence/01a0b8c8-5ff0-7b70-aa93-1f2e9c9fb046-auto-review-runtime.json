@@ -1,0 +1,67 @@
+{
+  "task_id": "01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046",
+  "observed_at": "2026-09-19T08:37:13.219016+00:00",
+  "kind": "loaded_catalog_and_permission_observation",
+  "roles": {
+    "capacity": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high"
+    },
+    "data": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high"
+    },
+    "experience": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high"
+    },
+    "experience_reporters": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high"
+    },
+    "experience_team": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high"
+    },
+    "experience_programs": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high"
+    },
+    "network": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high"
+    },
+    "programs": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high"
+    },
+    "recruiting": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high"
+    },
+    "team": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high"
+    },
+    "quality": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh"
+    },
+    "reviewer": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh"
+    }
+  },
+  "catalog_source": "Current callable collaboration.spawn_agent named-role catalog",
+  "coordinator": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "xhigh",
+    "approval_policy": "on-request",
+    "approvals_reviewer": "auto_review",
+    "sandbox_mode": "workspace-write",
+    "network_access": false
+  },
+  "configured_service_tier": "default",
+  "resolved_service_tier": null,
+  "note": "User wants overnight execution without repeated approval clicks and asked for the safer restricted mode. Continue under the actually loaded automatic reviewer. Full Access was not loaded and is not claimed. Rejections remain enforceable; do unaffected work and record genuine blockers. Runtime probes and all product gates remain mandatory."
+}

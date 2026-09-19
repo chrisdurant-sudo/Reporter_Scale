@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-19T08:31:22.285313+00:00",
+  "updated_at": "2026-09-19T08:37:13.219016+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -68,11 +68,11 @@
     "runtime_models_verified": false,
     "runtime_catalog": {
       "status": "verified",
-      "observed_task": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
-      "observed_at": "2026-09-19T04:18:35.256236+00:00",
+      "observed_task": "01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046",
+      "observed_at": "2026-09-19T08:37:13.219016+00:00",
       "session_cwd": "/private/tmp/steno-p4-coordinator",
       "active_command_checkout": "/private/tmp/steno-p4-coordinator",
-      "reason": "All 12 callable named-role assignments now agree with approved Astra/high or Astra/xhigh. Runtime probes remain mandatory.",
+      "reason": "Current named-role tool catalog matches Astra/high and Astra/xhigh; fresh probes precede dispatch.",
       "roles": {
         "capacity": {
           "model": "gpt-6-astra",
@@ -124,8 +124,8 @@
         }
       },
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-astra-catalog.json",
-        "sha256": "ad8f6551289160502b288cd3a686b4a984808094c14ed89c20d003ac10aa4b76"
+        "file": "docs/reporter-growth/v2/evidence/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046-auto-review-runtime.json",
+        "sha256": "fce666898c02a918cf12c1ad09832912141d31efc439b39a8aa98899d52d5f61"
       }
     },
     "runtime_probes": [
@@ -362,6 +362,68 @@
         "evidence": {
           "file": "docs/reporter-growth/v2/evidence/d29b91c5903adb9a43a135d8d3453072c73476e2-takeover-01a0b7b2-a7eb-7102-b4ee-eef2ff07d262-runtime.json",
           "sha256": "66ada05e0cfabba1c8a2a145f097dc0a83135ac2ab662a67c354be67f3bbd02d"
+        }
+      },
+      {
+        "status": "verified",
+        "observed_task": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+        "observed_at": "2026-09-19T04:18:35.256236+00:00",
+        "session_cwd": "/private/tmp/steno-p4-coordinator",
+        "active_command_checkout": "/private/tmp/steno-p4-coordinator",
+        "reason": "All 12 callable named-role assignments now agree with approved Astra/high or Astra/xhigh. Runtime probes remain mandatory.",
+        "roles": {
+          "capacity": {
+            "model": "gpt-6-astra",
+            "reasoning_effort": "high"
+          },
+          "data": {
+            "model": "gpt-6-astra",
+            "reasoning_effort": "high"
+          },
+          "experience": {
+            "model": "gpt-6-astra",
+            "reasoning_effort": "high"
+          },
+          "experience_reporters": {
+            "model": "gpt-6-astra",
+            "reasoning_effort": "high"
+          },
+          "experience_team": {
+            "model": "gpt-6-astra",
+            "reasoning_effort": "high"
+          },
+          "experience_programs": {
+            "model": "gpt-6-astra",
+            "reasoning_effort": "high"
+          },
+          "network": {
+            "model": "gpt-6-astra",
+            "reasoning_effort": "high"
+          },
+          "programs": {
+            "model": "gpt-6-astra",
+            "reasoning_effort": "high"
+          },
+          "recruiting": {
+            "model": "gpt-6-astra",
+            "reasoning_effort": "high"
+          },
+          "team": {
+            "model": "gpt-6-astra",
+            "reasoning_effort": "high"
+          },
+          "quality": {
+            "model": "gpt-6-astra",
+            "reasoning_effort": "xhigh"
+          },
+          "reviewer": {
+            "model": "gpt-6-astra",
+            "reasoning_effort": "xhigh"
+          }
+        },
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-astra-catalog.json",
+          "sha256": "ad8f6551289160502b288cd3a686b4a984808094c14ed89c20d003ac10aa4b76"
         }
       }
     ],
@@ -1051,7 +1113,7 @@
     "scratch_source_proof": "/private/tmp/steno-ip2-source-proof"
   },
   "unattended_handoff": {
-    "status": "pending_fresh_turn_runtime_verification",
+    "status": "continuing_with_verified_auto_review",
     "requested_by_user": true,
     "authorized_at": "2026-09-19T08:28:15.395428+00:00",
     "authorization": "Approve Full Access for this project task",
@@ -1062,12 +1124,14 @@
     "handoff": "docs/reporter-growth/v2/UNATTENDED_HANDOFF_2026-09-19.md",
     "new_task_id": "01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046",
     "runtime_verification": {
-      "file": "docs/reporter-growth/v2/evidence/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046-takeover-runtime.json",
-      "sha256": "d5cf5c4b9c893707db4317931e60104ccaf332b1280a9e49c78de15a3685c4cf"
+      "file": "docs/reporter-growth/v2/evidence/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046-auto-review-runtime.json",
+      "sha256": "fce666898c02a918cf12c1ad09832912141d31efc439b39a8aa98899d52d5f61"
     },
     "actual_approval_policy": "on-request",
     "actual_sandbox_mode": "workspace-write",
     "user_reported_full_access_selected": true,
-    "next_action": "Verify actual loaded context in fresh turn after user UI selection; then independent desktop comparison and exact-candidate integration. Existing source/proof remains intact and unaccepted."
+    "next_action": "Independent desktop comparison, exact Lead integration, serial Quality test alignment, full gate and gated workspace wave. Automatic-review rejections remain enforceable.",
+    "actual_approvals_reviewer": "auto_review",
+    "full_access_loaded": false
   }
 }
