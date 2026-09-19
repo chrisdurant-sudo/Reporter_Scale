@@ -262,7 +262,7 @@ export function V2App() {
       const command: TeamCommandEnvelope = {
         ...input,
         context: {
-          commandId: `team-${crypto.randomUUID()}` as TeamCommandEnvelope["context"]["commandId"],
+          commandId: `team-${crypto.getRandomValues(new Uint32Array(4)).join("-")}` as TeamCommandEnvelope["context"]["commandId"],
           expectedRevision: current.revision,
           actorId,
           occurredAt: current.currentAsOfAt,

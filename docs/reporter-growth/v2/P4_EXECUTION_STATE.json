@@ -340,10 +340,10 @@
       }
     ],
     "latest_coordinator_verification": {
-      "candidate_commit": "4e2a715041643c2c9ccc428086258e8f77fb894b",
+      "candidate_commit": "8959780d38eefa9d0917e0bf181d3842c94835b6",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/4e2a715041643c2c9ccc428086258e8f77fb894b-ip1-network-verification.json",
-        "sha256": "bf0f59f52370c25d2af875ba50b9ac218ccb1a309def07461a1c41c9befe1e74"
+        "file": "docs/reporter-growth/v2/evidence/8959780d38eefa9d0917e0bf181d3842c94835b6-ip1-team-initial.json",
+        "sha256": "68f6a3ce1204002888b9a44df3675c65031e97a8e559f993defdd7c22778383c"
       }
     },
     "continuation_authorization": {
@@ -444,12 +444,13 @@
       ]
     },
     "baseline": {
-      "status": "passed",
-      "candidate_commit": "4e2a715041643c2c9ccc428086258e8f77fb894b",
+      "status": "failed",
+      "candidate_commit": "8959780d38eefa9d0917e0bf181d3842c94835b6",
       "evidence": {
-        "file": "docs/reporter-growth/v2/evidence/4e2a715041643c2c9ccc428086258e8f77fb894b-ip1-network-verification.json",
-        "sha256": "bf0f59f52370c25d2af875ba50b9ac218ccb1a309def07461a1c41c9befe1e74"
-      }
+        "file": "docs/reporter-growth/v2/evidence/8959780d38eefa9d0917e0bf181d3842c94835b6-ip1-team-initial.json",
+        "sha256": "68f6a3ce1204002888b9a44df3675c65031e97a8e559f993defdd7c22778383c"
+      },
+      "reason": "All 271 unit/integration and nine acceptance tests pass; six browser tests pass, two expose crypto.randomUUID being unavailable on the HTTP test origin. Coordinator command identity repair and full rerun required."
     },
     "visual_proof": {
       "status": "blocked"
@@ -833,6 +834,17 @@
         "evidence": {
           "file": "docs/reporter-growth/v2/evidence/702e95a8364232d03c913460d606970aaed1e7e0-ip1-data-history-verification.json",
           "sha256": "ae083a49fe14dc9c841d2af24f8d036620e77d29488e09b27ec30b456988cd7e"
+        }
+      }
+    },
+    {
+      "gate": "baseline",
+      "record": {
+        "status": "passed",
+        "candidate_commit": "4e2a715041643c2c9ccc428086258e8f77fb894b",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/4e2a715041643c2c9ccc428086258e8f77fb894b-ip1-network-verification.json",
+          "sha256": "bf0f59f52370c25d2af875ba50b9ac218ccb1a309def07461a1c41c9befe1e74"
         }
       }
     }
