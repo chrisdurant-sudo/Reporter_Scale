@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-19T08:00:09.203681+00:00",
+  "updated_at": "2026-09-19T08:06:06.009594+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -463,10 +463,11 @@
   "fanout_authorized": false,
   "current_phase": "IP2_visual_proof",
   "current_candidate": {
-    "commit": "91a3a53210913af51432f207551e84337a401546",
-    "status": "IP2_linked_selection_prepared_visual_proof_pending",
+    "commit": "d43b4d10f53816ae82814493829f2a94f2bea209",
+    "status": "IP2_source_implementation_pending",
     "defect_register": "docs/reporter-growth/v2/INTERVIEW_PRODUCT_REVIEW_2026-09-18.md",
-    "focused_verification": "Typecheck, lint and 15 app/persistence/Funnel-control tests passed. Full preparation baseline remains dfa4b9b921991abd6a40127146520c421204c8cb; revised visual acceptance pending."
+    "focused_verification": "Typecheck, lint and 15 app/persistence/Funnel-control tests passed. Full preparation baseline remains dfa4b9b921991abd6a40127146520c421204c8cb; revised visual acceptance pending.",
+    "reason": "Frozen reference and desktop-only scope are integrated. Coordinator-owned capacity assertions are prepared for the pending Lead UI. Typecheck/lint pass; their runtime/full-suite verification is deferred until source integration. No visual acceptance."
   },
   "gates": {
     "data": {
@@ -1007,6 +1008,19 @@
       "file": "docs/reporter-growth/v2/evidence/01a0b7df-3f9e-7c72-a35a-1a6ed497e596-experience-worker-runtime.json",
       "sha256": "062ddeccf1b537fdfa2dbae573e3c2cd5c1b8be26102be338751fda2202dfefd"
     },
-    "reference_manifest": "docs/reporter-growth/v2/design-lock/interview-2026-09-19/reference-manifest.json"
+    "reference_manifest": "docs/reporter-growth/v2/design-lock/interview-2026-09-19/reference-manifest.json",
+    "coordinator_pending_assertions": {
+      "commits": [
+        "6052e47",
+        "d43b4d1"
+      ],
+      "paths": [
+        "src/integration/App.test.tsx",
+        "src/integration/v2Persistence.test.tsx"
+      ],
+      "typecheck": "passed",
+      "lint": "passed",
+      "runtime": "pending_Lead_source_integration"
+    }
   }
 }
