@@ -1,0 +1,45 @@
+{
+  "kind": "implementation_runtime_observation",
+  "role": "programs",
+  "session_id": "01a0b86e-3714-78c2-add5-c14c19b5ee2d",
+  "task_name": "/root/ip1_programs",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "inherited_turns": 0,
+  "inheritance_evidence": "Explicit coordinator spawn fork_turns=none; no overrides",
+  "configured_service_tier": "default",
+  "resolved_service_tier": null,
+  "session_source": "/Users/pc/.codex/sessions/2026/09/18/rollout-2026-09-18T23-50-25-01a0b86e-3714-78c2-add5-c14c19b5ee2d.jsonl",
+  "session_source_sha256_at_observation": "ba757cca7b3434a4672fb9b87f8c78261923c1b10483aa690719c05a54b20d0a",
+  "session_metadata": {
+    "id": "01a0b86e-3714-78c2-add5-c14c19b5ee2d",
+    "parent_thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+    "cwd": "/private/tmp/steno-p4-coordinator",
+    "source": {
+      "subagent": {
+        "thread_spawn": {
+          "parent_thread_id": "01a0b7df-3f9e-7c72-a35a-1a6ed497e596",
+          "depth": 1,
+          "agent_path": "/root/ip1_programs",
+          "agent_nickname": "Noether",
+          "agent_role": "programs"
+        }
+      }
+    },
+    "agent_role": "programs",
+    "agent_path": "/root/ip1_programs"
+  },
+  "turn_contexts": [
+    {
+      "line": 8,
+      "payload": {
+        "model": "gpt-6-astra",
+        "effort": "high",
+        "cwd": "/private/tmp/steno-p4-coordinator",
+        "service_tier": null
+      }
+    }
+  ],
+  "verified_at": "2026-09-19T06:50:36.963631+00:00"
+}
