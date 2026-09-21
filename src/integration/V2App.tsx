@@ -15,9 +15,6 @@ import type {
   ProgramDecisionSavePayload,
   ProcessDraftSavePayload,
   ProgramsCommandEnvelope,
-  ProcessVersion,
-  ProgramDecision,
-  ReporterId,
   SourceId,
   TeamCommandEnvelope,
   UtcTimestamp,
@@ -25,7 +22,6 @@ import type {
   WorkspaceId,
   WorkspaceNavigationTarget,
   WorkspaceQueryContext,
-  WorkItem,
   WorkCreatePayload,
   WorkEditPayload,
   WorkTransitionPayload,
@@ -558,129 +554,6 @@ export function V2App() {
     } finally { setBusy(false); }
   }), [acceptSnapshot, enqueue, openWork, repository]);
 
-  const appendAvailability = useCallback((reporterId: ReporterId, confirmedAt: UtcTimestamp) => saveMutation(
-    `Recorded a bounded availability confirmation for ${snapshotRef.current?.reporters.find((item) => item.id === reporterId)?.fictionalName ?? "the reporter"}.`,
-    "No readiness, accepted assignment, or job outcome was created.",
-    (current) => {
-      const market = globalFilters.selectedMarket === "ALL" ? current.reporters.find((item) => item.id === reporterId)?.serviceMarketIds[0] : globalFilters.selectedMarket;
-      if (!market) return current;
-      return {
-        ...current,
-        availabilityWindows: [...current.availabilityWindows, {
-          id: `availability-confirmed-${reporterId}-${current.revision + 1}` as never,
-          reporterId,
-          startAt: confirmedAt,
-          endAt: new Date(Date.parse(confirmedAt) + 7 * 86_400_000).toISOString() as UtcTimestamp,
-          status: "available",
-          serviceMarketIds: [market],
-          attendanceModes: globalFilters.attendanceModes.length ? globalFilters.attendanceModes : ["remote", "in-person"],
-          recordedAt: confirmedAt,
-          confirmationExpiresAt: new Date(Date.parse(confirmedAt) + 7 * 86_400_000).toISOString() as UtcTimestamp,
-          source: "demo-simulation",
-          actorId: "actor-team-3" as never,
-          provenance: "demo-simulation",
-        }],
-      };
-    },
-  ), [globalFilters.attendanceModes, globalFilters.selectedMarket, saveMutation]);
-
-  const appendReengagementTask = useCallback((reporterId: ReporterId) => saveMutation(
-    `Created one canonical re-engagement work item for ${snapshotRef.current?.reporters.find((item) => item.id === reporterId)?.fictionalName ?? "the reporter"}.`,
-    "Availability, readiness, acceptance, and completed-work outcomes did not change.",
-    (current) => {
-      if (current.workItems.some((item) => item.kind === "re-engage" && item.primaryEntityRef.kind === "reporter" && item.primaryEntityRef.id === reporterId)) return current;
-      const item: WorkItem = {
-        id: `work-reengage-${reporterId}-${current.revision + 1}` as never,
-        kind: "re-engage",
-        primaryEntityRef: { kind: "reporter", id: reporterId },
-        relatedRequestIds: [],
-        programId: null,
-        createdAt: current.currentAsOfAt,
-        ownerHistory: [{ ownerId: "team-3" as never, occurredAt: current.currentAsOfAt, actorId: "actor-team-3" as never, reason: "Confirm current availability without inferring willingness." }],
-        dueAt: new Date(Date.parse(current.currentAsOfAt) + 3 * 86_400_000).toISOString() as UtcTimestamp,
-        statusHistory: [{ status: "open", occurredAt: current.currentAsOfAt, actorId: "actor-team-3" as never, reason: "Re-engagement work created." }],
-        blockerCode: "availability-needs-confirmation",
-        completionEvidenceRefs: [],
-        provenance: "demo-simulation",
-      };
-      return { ...current, workItems: [...current.workItems, item] };
-    },
-  ), [saveMutation]);
-
-  const recordProgramDecision = useCallback((programId: string, decision: ProgramDecision["decision"], rationale: string) => saveMutation(
-    `Saved the ${decision} decision with its current evidence for ${snapshotRef.current?.programs.find((item) => item.id === programId)?.title ?? "the program"}.`,
-    "No participant, readiness, acceptance, job outcome, frozen cohort, or other market changed.",
-    (current) => {
-      const source = programsView?.evidence.find((item) => item.filters.programIds.some((id) => String(id) === programId));
-      if (!source) return current;
-      const evidence = { ...source, id: `evidence-decision-${programId}-${current.revision + 1}` as never, snapshotRevision: current.revision };
-      const record: ProgramDecision = {
-        id: `decision-${programId}-${current.revision + 1}` as never,
-        programId: programId as never,
-        decision,
-        rationale,
-        decidedBy: "actor-team-2" as never,
-        decidedAt: current.currentAsOfAt,
-        evidenceSnapshotId: evidence.id,
-        nextReviewAt: new Date(Date.parse(current.currentAsOfAt) + 28 * 86_400_000).toISOString() as UtcTimestamp,
-        provenance: "demo-simulation",
-      };
-      return { ...current, evidenceSnapshots: [...current.evidenceSnapshots, evidence], programDecisions: [...current.programDecisions, record] };
-    },
-  ), [programsView, saveMutation]);
-
-  const saveProcessDraft = useCallback((programId: string) => saveMutation(
-    `Saved a new versioned process draft for ${snapshotRef.current?.programs.find((item) => item.id === programId)?.title ?? "the program"}.`,
-    "No rollout, enrollment, readiness, acceptance, outcome, or other market changed.",
-    (current) => {
-      const program = current.programs.find((item) => item.id === programId);
-      const source = programsView?.evidence.find((item) => item.filters.programIds.some((id) => String(id) === programId));
-      if (!program || !source) return current;
-      const evidence = { ...source, id: `evidence-process-${programId}-${current.revision + 1}` as never, snapshotRevision: current.revision };
-      const version = Math.max(0, ...current.processVersions.filter((item) => item.programId === program.id).map((item) => item.version)) + 1;
-      const process: ProcessVersion = {
-        id: `process-${programId}-${version}` as never,
-        programId: program.id,
-        version,
-        status: "draft",
-        trigger: "A defined program case reaches its documented review point.",
-        ownerId: program.ownerId,
-        requiredSteps: [{ id: "evidence-review", order: 1, instruction: "Review the exact linked records before taking the next action.", evidenceRequirement: "EvidenceBundle record references" }],
-        exceptions: ["Unknown evidence remains unknown; no outcome is inferred."],
-        approvalHistory: [{ status: "draft", actorId: "actor-team-2" as never, occurredAt: current.currentAsOfAt, rationale: "Draft saved from the inspected synthetic program evidence." }],
-        evidenceSnapshotId: evidence.id,
-        nextReviewAt: new Date(Date.parse(current.currentAsOfAt) + 28 * 86_400_000).toISOString() as UtcTimestamp,
-        definitionVersion: `draft-${version}` as never,
-        provenance: "demo-simulation",
-      };
-      return { ...current, evidenceSnapshots: [...current.evidenceSnapshots, evidence], processVersions: [...current.processVersions, process] };
-    },
-  ), [programsView, saveMutation]);
-
-  const createPartnerTask = useCallback((programId: string) => saveMutation(
-    `Created one canonical Team partner task for ${snapshotRef.current?.programs.find((item) => item.id === programId)?.title ?? "the program"}.`,
-    "No program result, rollout, readiness, acceptance, or job outcome changed.",
-    (current) => {
-      const program = current.programs.find((item) => item.id === programId);
-      if (!program) return current;
-      const item: WorkItem = {
-        id: `work-partner-${programId}-${current.revision + 1}` as never,
-        kind: "partner-task",
-        primaryEntityRef: { kind: "program", id: programId },
-        relatedRequestIds: [],
-        programId: program.id,
-        createdAt: current.currentAsOfAt,
-        ownerHistory: [{ ownerId: program.ownerId, occurredAt: current.currentAsOfAt, actorId: "actor-team-2" as never, reason: "Own the documented partner deliverable." }],
-        dueAt: new Date(Date.parse(current.currentAsOfAt) + 7 * 86_400_000).toISOString() as UtcTimestamp,
-        statusHistory: [{ status: "open", occurredAt: current.currentAsOfAt, actorId: "actor-team-2" as never, reason: "Partner deliverable created locally." }],
-        blockerCode: null,
-        completionEvidenceRefs: [],
-        provenance: "demo-simulation",
-      };
-      return { ...current, workItems: [...current.workItems, item] };
-    },
-  ), [saveMutation]);
-
   const checkpointIndex = snapshot ? currentCheckpointIndex(snapshot) : 0;
   const checkpoint = SCENARIO_CONTRACT.checkpoints[checkpointIndex];
   const nextCheckpoint = SCENARIO_CONTRACT.checkpoints[checkpointIndex + 1] ?? null;
@@ -733,8 +606,6 @@ export function V2App() {
       {...{ commandContext: actionContext(snapshot, "team-3", busy), onNavigateTarget: openWork,
         onRecordAvailability: recordAvailability, onRequestFollowUp: requestFollowUp }}
       view={reportersView} actions={{
-      onConfirmAvailability: (input) => appendAvailability(input.reporterId, input.confirmedAt),
-      onCreateReengagementTask: appendReengagementTask,
       onOpenEvidence: openEvidence,
       onOpenRecruitingChecklist: (reporterId) => {
         const target = reportersView.reporters.find((row) => row.reporterId === reporterId)?.checklistTarget;
@@ -786,16 +657,12 @@ export function V2App() {
         onSaveDraft: (payload: ProcessDraftSavePayload) => submitProgramsCommand({ type: "programs.save-process-version", payload }),
         onCreateLinkedWork: (payload: WorkCreatePayload) => submitTeamCommand({ type: "work.create", payload }, "Saved the linked canonical Team work.", "No program outcome or rollout changed.", "actor-team-2" as ActorId) }}
       view={programsView} actions={{
-      onEditProgram: (programId, field, value) => saveMutation(`Updated the program ${field}.`, "Program results, enrollments, readiness, acceptance, and jobs did not change.", (current) => ({ ...current, programs: current.programs.map((program) => program.id === programId ? { ...program, [field]: value } as typeof program : program) })),
       onSaveProgramText: (payload) => {
         const row = programsView.rows.find((item) => item.id === payload.programId);
         const savedText = payload.field === "note" ? row?.latestNote ?? "" : row?.latestNextStep ?? row?.nextStep ?? "";
         if (payload.text === savedText) return Promise.resolve();
         return submitProgramsCommand({ type: "programs.note.save", payload });
       },
-      onRecordDecision: recordProgramDecision,
-      onSaveProcessDraft: saveProcessDraft,
-      onCreatePartnerTask: createPartnerTask,
       onOpenEvidence: (id) => openEvidence(findEvidence(id)),
     }} />;
   }

@@ -1,8 +1,9 @@
-import { cleanup, render, screen, waitFor, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it } from "vitest";
 import { App } from "./App";
-import { INTERVIEW_V2_STORAGE_KEY } from "../contracts/v2";
+import { INTERVIEW_V2_STORAGE_KEY, type PersistedDemoSnapshotV2 } from "../contracts/v2";
+import { DEMO_SNAPSHOT_V2 } from "../data/v2";
 
 afterEach(() => { cleanup(); localStorage.removeItem(INTERVIEW_V2_STORAGE_KEY); });
 
@@ -47,7 +48,7 @@ describe("P4 integrated V2 experience", () => {
 
     await user.click(screen.getByRole("button", { name: "Reporters" }));
     expect(await screen.findByRole("main", { name: "Reporters" })).toBeInTheDocument();
-    expect(screen.getByText(/\d+ need availability confirmation/)).toBeInTheDocument();
+    expect(within(screen.getByRole("region", { name: "Reporter network summary" })).getByText("Needs confirmation").parentElement).toHaveTextContent(/Needs confirmation\d+/);
     expect(marketButton("SFO")).toHaveAttribute("aria-pressed", "true");
 
     await user.click(screen.getByRole("button", { name: "Why this?" }));
@@ -58,11 +59,11 @@ describe("P4 integrated V2 experience", () => {
 
     await user.click(screen.getByRole("button", { name: "Team" }));
     expect(await screen.findByRole("main", { name: "Team" })).toBeInTheDocument();
-    expect(screen.getByText("1 task needs an owner")).toBeInTheDocument();
+    expect(within(screen.getByRole("region", { name: "Team metrics" })).getByText("No owner").parentElement).toHaveTextContent("No owner1");
 
     await user.click(screen.getByRole("button", { name: "Programs" }));
     expect(await screen.findByRole("main", { name: "Programs" })).toBeInTheDocument();
-    expect(screen.getByText("1 review is due")).toBeInTheDocument();
+    expect(within(screen.getByRole("region", { name: "Program metrics" })).getByText("Review now").parentElement).toHaveTextContent("Review now1");
 
     await user.click(screen.getByRole("button", { name: "Overview" }));
     expect(await screen.findByRole("main", { name: "Overview" })).toBeInTheDocument();
@@ -157,41 +158,55 @@ describe("P4 integrated V2 experience", () => {
     const user = await renderApp();
     await user.click(screen.getByRole("button", { name: "Programs" }));
 
-    expect(await screen.findByRole("img", { name: /6 of 20 timely first jobs.*11 of 20 timely first jobs/i })).toBeInTheDocument();
+    expect(await screen.findByText(/20 mature · 0 observing · 6 \/ 20/)).toBeInTheDocument();
+    expect(screen.getByText(/20 mature · 0 observing · 11 \/ 20/)).toBeInTheDocument();
 
     await user.click(marketButton("LAX"));
     await waitFor(() => {
-      expect(screen.getByRole("img", { name: /3 of 10 timely first jobs.*6 of 10 timely first jobs/i })).toBeInTheDocument();
+      expect(screen.getByText(/10 mature · 0 observing · 3 \/ 10/)).toBeInTheDocument();
+      expect(screen.getByText(/10 mature · 0 observing · 6 \/ 10/)).toBeInTheDocument();
     });
 
     await user.click(marketButton("SFO"));
     await waitFor(() => {
-      expect(screen.getByRole("img", { name: /3 of 10 timely first jobs.*5 of 10 timely first jobs/i })).toBeInTheDocument();
+      expect(screen.getByText(/10 mature · 0 observing · 3 \/ 10/)).toBeInTheDocument();
+      expect(screen.getByText(/10 mature · 0 observing · 5 \/ 10/)).toBeInTheDocument();
     });
   });
 
-  it("persists program commands without manufacturing operational outcomes", async () => {
+  it("persists bounded expansion and explicit linked work without manufacturing operational outcomes", async () => {
     const user = await renderApp();
     await user.click(screen.getByRole("button", { name: "Programs" }));
-    const feedback = await openDemoControls(user);
-    await user.click(screen.getByRole("button", { name: "Results" }));
-
-    await user.click(screen.getByRole("button", { name: "Expand" }));
-    await waitFor(() => expect(feedback).toHaveTextContent(/Saved the expand decision with its current evidence/i));
-    expect(feedback).toHaveTextContent(/No participant, readiness, acceptance, job outcome, frozen cohort, or other market changed/i);
-
-    await user.click(screen.getByRole("button", { name: "Save process draft" }));
-    await waitFor(() => expect(feedback).toHaveTextContent(/Saved a new versioned process draft/i));
-    expect(feedback).toHaveTextContent(/No rollout, enrollment, readiness, acceptance, outcome, or other market changed/i);
-
-    await user.click(screen.getByRole("button", { name: "Create partner task" }));
-    await waitFor(() => expect(feedback).toHaveTextContent(/Created one canonical Team partner task/i));
-    expect(feedback).toHaveTextContent(/No program result, rollout, readiness, acceptance, or job outcome changed/i);
+    await user.click(within(screen.getByRole("table")).getByRole("button", { name: "Readiness checklist pilot" }));
+    await user.click(screen.getByRole("button", { name: "Record decision" }));
+    let dialog = screen.getByRole("dialog", { name: "Record program decision" });
+    await user.selectOptions(within(dialog).getByRole("combobox", { name: "Decision" }), "expand");
+    fireEvent.change(within(dialog).getByLabelText("Next review date"), { target: { value: "2026-03-20" } });
+    await user.type(within(dialog).getByLabelText("Decision rationale"), "Review a bounded proposal with the recorded sample limitations.");
+    await user.click(within(dialog).getByRole("button", { name: "Save decision" }));
+    expect(await within(dialog).findByRole("status")).toHaveTextContent("Decision saved");
+    let saved = (JSON.parse(localStorage.getItem(INTERVIEW_V2_STORAGE_KEY)!) as PersistedDemoSnapshotV2).snapshot;
+    expect(saved.workItems).toHaveLength(DEMO_SNAPSHOT_V2.workItems.length + 1);
+    expect(saved.programDecisions.at(-1)).toMatchObject({ decision: "expand", nextReviewAt: "2026-03-20T17:00:00.000Z" });
+    await user.click(within(dialog).getByRole("button", { name: "Back to program" }));
+    await user.click(screen.getByRole("button", { name: "Create linked work" }));
+    dialog = screen.getByRole("dialog", { name: "Create linked work" });
+    await user.type(within(dialog).getByLabelText("Work title"), "Inspect partner handoff evidence");
+    await user.click(within(dialog).getByRole("button", { name: "Save linked work" }));
+    expect(await within(dialog).findByRole("status")).toHaveTextContent("Linked Team work saved");
+    saved = (JSON.parse(localStorage.getItem(INTERVIEW_V2_STORAGE_KEY)!) as PersistedDemoSnapshotV2).snapshot;
+    expect(saved.workItems).toHaveLength(DEMO_SNAPSHOT_V2.workItems.length + 2);
+    expect(saved.workItems.some((work) => work.title === "Inspect partner handoff evidence" && work.programId === "program-readiness-checklist")).toBe(true);
+    expect(saved.programEnrollments).toEqual(DEMO_SNAPSHOT_V2.programEnrollments);
+    expect(saved.readinessEvents).toEqual(DEMO_SNAPSHOT_V2.readinessEvents);
+    expect(saved.assignmentEvents).toEqual(DEMO_SNAPSHOT_V2.assignmentEvents);
+    expect(saved.jobOutcomes).toEqual(DEMO_SNAPSHOT_V2.jobOutcomes);
+    await user.keyboard("{Escape}");
 
     await user.click(screen.getByRole("button", { name: "Overview" }));
     expect(await screen.findByRole("main", { name: "Overview" })).toBeInTheDocument();
     expect(within(metric("Overview metrics", "Confirmed slots")).getByText("6", { exact: true })).toBeInTheDocument();
-  });
+  }, 15_000);
 
   it("creates canonical Team work from the locked Add work form", async () => {
     const user = await renderApp();
@@ -206,7 +221,7 @@ describe("P4 integrated V2 experience", () => {
     await user.click(within(form).getByRole("button", { name: "Add" }));
 
     expect(await screen.findByText("Review partner handoff")).toBeInTheDocument();
-    expect(screen.getByText("Work added.")).toBeInTheDocument();
+    expect(screen.queryByRole("form", { name: "Add work" })).not.toBeInTheDocument();
     const feedback = await openDemoControls(user);
     expect(feedback).toHaveTextContent("Created canonical Team work: Review partner handoff.");
     expect(feedback).toHaveTextContent("Readiness, acceptance, jobs, and program outcomes did not change.");
@@ -216,19 +231,19 @@ describe("P4 integrated V2 experience", () => {
     const user = await renderApp();
     await user.click(screen.getByRole("button", { name: "Programs" }));
     await screen.findByRole("main", { name: "Programs" });
-    const notes = screen.getAllByRole("textbox", { name: /Notes for/ });
-    const nextSteps = screen.getAllByRole("textbox", { name: /Next step for/ });
-
-    await user.clear(notes[0]!);
-    await user.type(notes[0]!, "Check the synthetic cohort evidence.");
-    await user.tab();
+    await user.click(screen.getAllByRole("button", { name: "Edit notes & next step" })[0]!);
+    const dialog = screen.getByRole("dialog", { name: "Edit notes and next step" });
+    const note = within(dialog).getByRole("textbox", { name: /Notes for/ });
+    const nextStep = within(dialog).getByRole("textbox", { name: /Next step for/ });
+    await user.clear(note);
+    await user.type(note, "Check the synthetic cohort evidence.");
+    await user.clear(nextStep);
+    await user.type(nextStep, "Review again next week.");
+    await user.click(within(dialog).getByRole("button", { name: "Save notes and next step" }));
+    expect(await within(dialog).findByRole("status")).toHaveTextContent("Notes and next step saved");
+    await user.keyboard("{Escape}");
     const feedback = await openDemoControls(user);
-    await waitFor(() => expect(feedback).toHaveTextContent("Saved the program note."));
+    expect(feedback).toHaveTextContent("Saved the program next step.");
     expect(feedback).toHaveTextContent("Program results, stage, enrollment, rollout, readiness, acceptance, and jobs did not change.");
-
-    await user.clear(nextSteps[0]!);
-    await user.type(nextSteps[0]!, "Review again next week.");
-    await user.tab();
-    await waitFor(() => expect(feedback).toHaveTextContent("Saved the program next step."));
   });
 });
