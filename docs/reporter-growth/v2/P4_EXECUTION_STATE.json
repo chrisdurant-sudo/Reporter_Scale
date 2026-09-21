@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-21T18:51:17.687703+00:00",
+  "updated_at": "2026-09-21T18:53:10.484576+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -681,10 +681,9 @@
   "fanout_authorized": true,
   "current_phase": "IP3_workspace_wave",
   "current_candidate": {
-    "commit": "b5cbe33e66a52f466456467a240d2f704208fb10",
-    "status": "IP2_accepted_shared_baseline",
-    "defect_register": "docs/reporter-growth/v2/IP2_COORDINATOR_REVIEW_2026-09-19.md",
-    "reason": "Accepted shared baseline. Three specialist source commits and a partial shared repair are preserved; assembled visual review and independent final gates remain pending."
+    "commit": "4afff14c14f7da58ceaebf7ad57932a996d9a6c2",
+    "status": "MVP_complete",
+    "reason": "User explicitly replaced exhaustive completion gates with practical visual/filter review and successful build. Source equals tested clean candidate 26d8e4ac29e3ac321f448fe635014b20a1a3381c."
   },
   "gates": {
     "data": {
@@ -1036,7 +1035,8 @@
         "src/ui/interview.tsx"
       ],
       "boundary_exit_code": 0,
-      "disposition": "provisional_assembly_only_pending_consolidated_lead_review"
+      "disposition": "integrated_MVP_accepted",
+      "integrated_commit": "4afff14c14f7da58ceaebf7ad57932a996d9a6c2"
     },
     "completion_experience_reporters": {
       "lane": "experience_reporters",
@@ -1050,7 +1050,8 @@
         "src/features/reporters/networkForms.tsx"
       ],
       "boundary_exit_code": 0,
-      "disposition": "provisional_assembly_only_pending_consolidated_lead_review"
+      "disposition": "integrated_MVP_accepted",
+      "integrated_commit": "4afff14c14f7da58ceaebf7ad57932a996d9a6c2"
     },
     "completion_experience_team": {
       "lane": "experience_team",
@@ -1065,7 +1066,8 @@
         "src/features/team/team.css"
       ],
       "boundary_exit_code": 0,
-      "disposition": "provisional_assembly_only_pending_consolidated_lead_review"
+      "disposition": "integrated_MVP_accepted",
+      "integrated_commit": "4afff14c14f7da58ceaebf7ad57932a996d9a6c2"
     },
     "completion_experience_programs": {
       "lane": "experience_programs",
@@ -1078,7 +1080,8 @@
         "src/features/programs/programs.css"
       ],
       "boundary_exit_code": 0,
-      "disposition": "provisional_assembly_only_pending_consolidated_lead_review"
+      "disposition": "integrated_MVP_accepted",
+      "integrated_commit": "4afff14c14f7da58ceaebf7ad57932a996d9a6c2"
     }
   },
   "known_ownership_exceptions": [],
@@ -1485,7 +1488,7 @@
       "worktree": "/private/tmp/steno-ip2-proof-repair",
       "branch": "codex/interview-ip2-proof-repair",
       "mode": "shared_design_steward_and_exact_candidate_reviewer",
-      "status": "repair_committed_waiting_consolidated_review",
+      "status": "completed_MVP_visual_review",
       "candidate_commit": "03bb66c24eef048093d8587e378f9f6aaf552d86"
     },
     "specialists": [
@@ -1497,7 +1500,7 @@
         "allowed_paths": [
           "src/features/reporters/"
         ],
-        "status": "source_committed_waiting_consolidated_review",
+        "status": "integrated_MVP_accepted",
         "base_commit": "3a7842908ebf84fb53147d56bb270b0c44423847",
         "candidate_commit": "cca641d2ef1d15c92bc345e7e32737d16ec0405a"
       },
@@ -1509,7 +1512,7 @@
         "allowed_paths": [
           "src/features/team/"
         ],
-        "status": "source_committed_waiting_consolidated_review",
+        "status": "integrated_MVP_accepted",
         "base_commit": "3a7842908ebf84fb53147d56bb270b0c44423847",
         "candidate_commit": "e6ebc6d6085ca2e3de4029c2e64f424b29526c5d"
       },
@@ -1521,15 +1524,15 @@
         "allowed_paths": [
           "src/features/programs/"
         ],
-        "status": "source_committed_waiting_consolidated_review",
+        "status": "integrated_MVP_accepted",
         "base_commit": "3a7842908ebf84fb53147d56bb270b0c44423847",
         "candidate_commit": "46d0b90a0eb7ba56b5339635d3b7668a00fc9673"
       }
     ],
-    "status": "resumed_bounded_completion"
+    "status": "integrated_MVP_accepted"
   },
   "completion_execution_policy": {
-    "status": "finishing_reduced_mvp_scope",
+    "status": "MVP_delivered_no_further_dispatch",
     "authorization": "User September21 requested brief usage analysis and authorized adjusting agent orders to finish with less usage.",
     "evidence": {
       "file": "docs/reporter-growth/v2/USAGE_BOUNDED_COMPLETION_2026-09-21.md",
@@ -1567,7 +1570,7 @@
     "provisional_review": {
       "worktree": "/private/tmp/steno-completion-review",
       "branch": "codex/interview-completion-review",
-      "status": "clean_proof_ready",
+      "status": "integrated_MVP_accepted",
       "preserved_original_tests": true,
       "candidate_commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
       "evidence": {
@@ -1588,7 +1591,9 @@
         "additional_percentage_points": 2,
         "observed_at": "2026-09-21T18:49:37.129644+00:00"
       }
-    ]
+    ],
+    "final_used_percent": 5,
+    "additional_percentage_points": 2
   },
   "mvp_completion_amendment": {
     "authorized_at": "2026-09-21T18:51:17.687703+00:00",
@@ -1605,8 +1610,29 @@
       "Obsolete acceptance/browser assertion alignment",
       "Exhaustive reference fidelity and formal walkthrough validation"
     ],
-    "status": "finishing",
+    "status": "complete",
     "candidate_commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
-    "usage_stop_unchanged": true
+    "usage_stop_unchanged": true,
+    "integrated_commit": "4afff14c14f7da58ceaebf7ad57932a996d9a6c2",
+    "source_equivalence_exit_code": 0,
+    "visual_review": {
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/mvp-visual-review.json",
+      "sha256": "a6da60f3f1d3deb60fa7163dfa929f9c9e0b74b2cc9a269536833e48e1eca20e"
+    },
+    "build": {
+      "status": "passed",
+      "exit_code": 0,
+      "evidence": {
+        "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/build.log",
+        "sha256": "fde4fa8ab1310366e59d70a9c2a5da8fb6c3b8c93ef347cdb87a6af763d02528"
+      }
+    },
+    "remaining_required_work": [],
+    "formal_phase_note": "current_phase retains the last original IP stage; it is not an instruction to restart formal acceptance omitted by the MVP amendment.",
+    "saved_original_test_drafts": {
+      "stash_commit": "97ed07736a19b739825934c0342fd7c1674c009a",
+      "recovery_manifest": "docs/reporter-growth/v2/handoff-2026-09-21/recovery-manifest.json",
+      "note": "Original drafts retained in stash and committed recovery package; integrated tests extend them with verified selectors."
+    }
   }
 }

@@ -1,0 +1,140 @@
+{
+  "status": "MVP_VISUAL_READY",
+  "candidate": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+  "scope": "Practical desktop MVP review per latest user direction relayed by coordinator: good-looking, readable workspaces and functioning filters; no exhaustive reference-fidelity audit.",
+  "lanes": {
+    "reporters": "PASS",
+    "team": "PASS",
+    "programs": "PASS"
+  },
+  "blocking_findings": [],
+  "observations": [
+    "The three defaults retain a coherent shared shell, compact KPI cells, readable controls, and appropriate chart/table/board hierarchy.",
+    "Filtered captures visibly reconcile: Marcus search plus skill/confirmation produces one reporter; Maya plus Blocked produces four To do items; checklist plus Process produces one program with matching attention/chart.",
+    "Representative availability, Team editor, and decision forms have readable labels and accessible-looking spacing without obvious clipping. Existing browser checks are reused for save/filter behavior; this review did not rerun them.",
+    "Programs categorical bars show 30% and 55% against the 50% marker on a common percentage scale, with distinct navy/green cohorts."
+  ],
+  "inspected_screenshots": [
+    {
+      "lane": "reporters",
+      "id": "reporters-default-1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/reporters/reporters-default-1440x900.png",
+      "sha256": "1bc634adb0845d12a8b8b55b71d478706253d04aa79e57b0e92b4967e37f7324",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "checksum_verified": true
+    },
+    {
+      "lane": "reporters",
+      "id": "reporters-filtered-1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/reporters/reporters-filtered-1440x900.png",
+      "sha256": "7ea6f53e9937792741935d1a60892b2cc6f1f59e17c42079ed65ba7195e7238d",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "checksum_verified": true
+    },
+    {
+      "lane": "reporters",
+      "id": "reporters-availability-form-1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/reporters/reporters-availability-form-1440x900.png",
+      "sha256": "def27849cfeb915c8d41b26fe4b8ec831b12f5fe762567fa5366108ba97a824a",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "checksum_verified": true
+    },
+    {
+      "lane": "team",
+      "id": "team-default",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/team/team-default.png",
+      "sha256": "89bd4ffd8424ebcd34243f37367b42fed0143556920ec5bce8174848fe97a690",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "checksum_verified": true
+    },
+    {
+      "lane": "team",
+      "id": "team-member-blocked",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/team/team-member-blocked.png",
+      "sha256": "15e85456a7f6ab790f1ae880b09e86a1feafa300a240cd1d496f706e172bb250",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "checksum_verified": true
+    },
+    {
+      "lane": "team",
+      "id": "team-work-editor",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/team/team-work-editor.png",
+      "sha256": "f2b8043f01fad6075f80a4724e539e42c3cee99dcb5087ebb1e260c6ba5497cc",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "checksum_verified": true
+    },
+    {
+      "lane": "programs",
+      "id": "programs-default",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/programs/programs-default.png",
+      "sha256": "bc319cea7af9c2fcc9808bb9d434b501222ce8de817f60643d5de57c240c1fb0",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "checksum_verified": true
+    },
+    {
+      "lane": "programs",
+      "id": "programs-combined-filters",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/programs/programs-combined-filters.png",
+      "sha256": "839ae65e0eb5317eed3a20fe86530c5f05a0115712791e68f5a48c2cb4f0a9cd",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "checksum_verified": true
+    },
+    {
+      "lane": "programs",
+      "id": "programs-decision",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/programs/programs-decision.png",
+      "sha256": "7628efddba2f9147a930f9e9d98dab201446ddcb881f9098490a8e590d8912b7",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "checksum_verified": true
+    }
+  ],
+  "reference_screenshots_inspected": [
+    "docs/reporter-growth/v2/design-lock/screenshots/reporters-desktop-1440x900.png",
+    "docs/reporter-growth/v2/design-lock/interview-2026-09-19/screenshots/reporters-default-1440x900.png",
+    "docs/reporter-growth/v2/design-lock/screenshots/team-desktop-1440x900.png",
+    "docs/reporter-growth/v2/design-lock/interview-2026-09-19/screenshots/team-default-1440x900.png",
+    "docs/reporter-growth/v2/design-lock/screenshots/programs-desktop-1440x900.png",
+    "docs/reporter-growth/v2/design-lock/interview-2026-09-19/screenshots/programs-default-1440x900.png"
+  ],
+  "reference_interactive_opened": "http://127.0.0.1:5195/docs/reporter-growth/v2/design-lock/interview-2026-09-19/reporter-growth-interview-reference.html",
+  "limitations": [
+    "Nine representative candidate captures inspected, not all 40; no new captures or source/test edits.",
+    "This is MVP visual readiness, not completion of the superseded exhaustive fidelity/independent acceptance process."
+  ]
+}

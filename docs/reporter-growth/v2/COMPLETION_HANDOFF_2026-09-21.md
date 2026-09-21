@@ -1,5 +1,15 @@
 # Reporter Growth — bounded completion handoff
 
+## Latest state — MVP delivered September 21
+
+The user replaced the exhaustive finish with a practical MVP: good-looking screens and working filters. **MVP is complete** at integrated source `4afff14c14f7da58ceaebf7ad57932a996d9a6c2`, equivalent to tested candidate `26d8e4ac29e3ac321f448fe635014b20a1a3381c`. The current coordinator contains the accepted work. No implementation or audit dispatch remains required. The older six-step completion sequence below is retained as history and must not restart omitted Quality/Reviewer audits, full-suite reruns, assertion alignment or formal walkthrough validation.
+
+- Preview: `http://127.0.0.1:5195/` from `/private/tmp/steno-completion-review`, identical application source to the coordinator.
+- Practical Lead review passed Reporters, Team and Programs; existing desktop scripts passed all three workspaces, with 40 captures, working filters, saves, reload and reset. The 11 focused integration tests, lint, typecheck and build passed.
+- Evidence: `design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/mvp-visual-review.json` and `proof-manifest.json`; no exhaustive formal pass is claimed. The original formal `current_phase` is retained only as history; `mvp_completion_amendment.status=complete` is the active disposition.
+- Usage:3% at start,5% at finish (+2 points), below the8% stop threshold. No reset or settings change.
+- Original test drafts are preserved in the named Git stash and the existing recovery package. Final versions are integrated. Coordinator working tree is intended to be clean after this handoff commit.
+
 Read this first, then `USAGE_BOUNDED_COMPLETION_2026-09-21.md`. The user paused implementation because
 of usage and approved tighter orders. This task prepared the handoff without restarting workers.
 Resume implementation only when the new task's user prompt requests it. Do not restart planning or
