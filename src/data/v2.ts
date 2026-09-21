@@ -568,7 +568,20 @@ for (const group of ["earlier", "pilot"] as const) {
   }
 }
 
-const supportingPrograms: Program[] = [];
+const activationIdea = (idValue: string, title: string, type: Program["type"], hypothesis: string, changeSummary: string): Program => ({
+  id: asId(idValue), title, marketIds: ["LAX", "SFO", "DFW", "ORD", "ATL"], linkedNeedRefs: [], type, stage: "idea", ownerId: asId("team-2"),
+  hypothesis, changeSummary, primaryMetric: { id: asId("M12"), version: asId("v2-frozen-1") }, targetRef: null,
+  startAt: utc("2026-02-15T17:00:00Z"), reviewAt: utc("2026-03-15T17:00:00Z"),
+  measurementPlan: { metric: { id: asId("M12"), version: asId("v2-frozen-1") }, entryWindow: { startAt: utc("2026-02-15T00:00:00Z"), endAt: utc("2026-03-01T00:00:00Z"), boundary: "[start,end)" }, followUpDays: 14, eligibilityRule: "Future explicit enrollment only; no current participants are implied.", attributionRule: "First globally valid completed job within 14 elapsed days of enrollment." },
+  originWorkaroundRef: null, limitations: ["Research-inspired idea only; no participants, messages or outcomes are recorded."], provenance,
+});
+
+const supportingPrograms: Program[] = [
+  activationIdea("program-welcome-sequence", "Welcome sequence to first value", "workflow", "A short welcome sequence with one clear next action may help new applicants reach their first meaningful milestone.", "Test a concise welcome message followed by a single profile-completion action."),
+  activationIdea("program-progress-checklist", "Progress checklist for onboarding", "tool", "Visible progress and a small set of ordered steps may make onboarding easier to finish.", "Show completed steps, the next required step and an explicit finish state."),
+  activationIdea("program-stalled-reminder", "Triggered reminder for stalled applicants", "tool", "A behavior-triggered reminder may recover applicants who stop before completing a required onboarding step.", "Trigger one relevant reminder after a defined period without progress."),
+  activationIdea("program-reengagement", "Personalized applicant re-engagement", "re-engagement", "A message tied to prior progress may reactivate applicants more effectively than a generic reminder.", "Invite inactive applicants back at the exact step where they stopped."),
+];
 
 for (let member = 1; member <= 2; member += 1) {
   const reporterId = `person-lax-referral-${String(member).padStart(2, "0")}`;
@@ -660,7 +673,7 @@ const programs: Program[] = [
   },
   {
     id: asId("program-lax-realtime-referrals"), title: "LAX targeted realtime referrals", marketIds: ["LAX"], linkedNeedRefs: [{ kind: "demand-request", id: "req-lax-110" }], type: "source", stage: "trying", ownerId: asId("team-1"),
-    hypothesis: "A narrow fictional referral effort may surface qualified realtime candidates.", changeSummary: "Track a declared source cohort without treating immature entrants as final outcomes.",
+    hypothesis: "A narrow fictional referral effort may surface qualified realtime candidates.", changeSummary: "Track a declared source cohort without treating people still in follow-up as final outcomes.",
     primaryMetric: { id: asId("M09"), version: asId("v2-frozen-1") }, targetRef: null, startAt: utc("2026-02-10T17:00:00Z"), reviewAt: utc("2026-03-15T17:00:00Z"),
     measurementPlan: { metric: { id: asId("M09"), version: asId("v2-frozen-1") }, entryWindow: { startAt: utc("2026-02-10T00:00:00Z"), endAt: utc("2026-03-01T00:00:00Z"), boundary: "[start,end)" }, followUpDays: 30, eligibilityRule: "Explicit targeted-referral acquisition case.", attributionRule: "Primary source and market are frozen at acquisition entry." },
     originWorkaroundRef: null, limitations: ["Recent entrants remain under observation."], provenance,
@@ -682,25 +695,25 @@ const sourceSpend: SourceSpend[] = [
 
 const workItems: WorkItem[] = [
   {
-    id: asId("work-avery-verification"), kind: "onboard", primaryEntityRef: { kind: "reporter", id: "person-lax-009" }, relatedRequestIds: [asId("req-lax-109")], programId: null,
+    id: asId("work-avery-verification"), title: "Complete Avery Cole's onboarding evidence", kind: "onboard", primaryEntityRef: { kind: "reporter", id: "person-lax-009" }, relatedRequestIds: [asId("req-lax-109")], programId: null,
     createdAt: utc("2026-02-10T18:00:00Z"), ownerHistory: [{ ownerId: asId("team-1"), occurredAt: utc("2026-02-10T18:00:00Z"), actorId: asId("actor-team-1"), reason: "Own the missing fictional verification step." }],
     dueAt: utc("2026-02-19T17:00:00Z"), statusHistory: [{ status: "blocked", occurredAt: utc("2026-02-10T18:00:00Z"), actorId: asId("actor-team-1"), reason: "Waiting for defined capability evidence." }],
     blockerCode: "missing-capability-evidence", completionEvidenceRefs: [], provenance,
   },
   ...[1, 2, 3].map((member): WorkItem => ({
-    id: asId(`work-ord-required-step-${member}`), kind: "onboard", primaryEntityRef: { kind: "reporter", id: `person-ord-blocked-${member}` }, relatedRequestIds: [], programId: null,
+    id: asId(`work-ord-required-step-${member}`), title: member === 1 ? "Complete Mira Chen's onboarding evidence" : member === 2 ? "Complete Tobin Shaw's onboarding evidence" : "Assign Anya Wells's onboarding evidence", kind: "onboard", primaryEntityRef: { kind: "reporter", id: `person-ord-blocked-${member}` }, relatedRequestIds: [], programId: null,
     createdAt: utc(`2026-02-0${member}T18:00:00Z`), ownerHistory: [{ ownerId: member === 3 ? null : asId("team-1"), occurredAt: utc(`2026-02-0${member}T18:00:00Z`), actorId: asId("actor-team-1"), reason: "Track the repeated required step." }],
     dueAt: member === 3 ? null : utc(`2026-02-1${member}T18:00:00Z`), statusHistory: [{ status: "blocked", occurredAt: utc(`2026-02-0${member}T18:00:00Z`), actorId: asId("actor-team-1"), reason: "The same required fictional evidence is missing." }],
     blockerCode: "same-required-step-missing", completionEvidenceRefs: [], provenance,
   })),
   {
-    id: asId("work-dfw-review"), kind: "partner-task", primaryEntityRef: { kind: "program", id: "program-dfw-broad-outreach" }, relatedRequestIds: [], programId: asId("program-dfw-broad-outreach"),
+    id: asId("work-dfw-review"), title: "Review DFW outreach results and stop decision", kind: "partner-task", primaryEntityRef: { kind: "program", id: "program-dfw-broad-outreach" }, relatedRequestIds: [], programId: asId("program-dfw-broad-outreach"),
     createdAt: utc("2026-01-10T18:00:00Z"), ownerHistory: [{ ownerId: asId("team-2"), occurredAt: utc("2026-01-10T18:00:00Z"), actorId: asId("actor-team-2"), reason: "Review the completed fictional source cohort." }],
     dueAt: utc("2026-01-15T18:00:00Z"), statusHistory: [{ status: "open", occurredAt: utc("2026-01-10T18:00:00Z"), actorId: asId("actor-team-2"), reason: "Review opened." }, { status: "completed", occurredAt: utc("2026-01-15T18:00:00Z"), actorId: asId("actor-team-2"), reason: "Evidence reviewed and stop decision recorded." }],
     blockerCode: null, completionEvidenceRefs: [{ kind: "program", id: "program-dfw-broad-outreach" }], provenance,
   },
   ...[1, 2].map((member): WorkItem => ({
-    id: asId(`work-atl-reengage-${member}`), kind: "re-engage", primaryEntityRef: { kind: "reporter", id: `person-atl-returning-${member}` }, relatedRequestIds: [], programId: null,
+    id: asId(`work-atl-reengage-${member}`), title: member === 1 ? "Confirm Nell Harper's current availability" : "Confirm Soren Pike's current availability", kind: "re-engage", primaryEntityRef: { kind: "reporter", id: `person-atl-returning-${member}` }, relatedRequestIds: [], programId: null,
     createdAt: utc("2026-02-12T17:00:00Z"), ownerHistory: [{ ownerId: asId("team-3"), occurredAt: utc("2026-02-12T17:00:00Z"), actorId: asId("actor-team-3"), reason: "Confirm current availability without inferring willingness." }],
     dueAt: member === 1 ? utc("2026-02-18T17:00:00Z") : null, statusHistory: [{ status: "open", occurredAt: utc("2026-02-12T17:00:00Z"), actorId: asId("actor-team-3"), reason: "Availability confirmation remains open." }],
     blockerCode: "availability-not-current", completionEvidenceRefs: [], provenance,
@@ -720,7 +733,15 @@ const coachingActions: CoachingAction[] = [
   { id: asId("coaching-positive-program-review"), teamMemberId: asId("team-2"), linkedWorkItemIds: [asId("work-dfw-review")], observedIssueOrStrength: "Clear separation of descriptive evidence from causal claims.", expectedPractice: "Share the evidence-review pattern with the team.", nextAction: "Review one new program decision using the same pattern.", dueAt: utc("2026-02-20T17:00:00Z"), reviewAt: utc("2026-02-23T17:00:00Z"), outcomeNote: null, authorId: asId("actor-team-1"), createdAt: utc("2026-02-15T17:00:00Z"), updatedAt: utc("2026-02-15T17:00:00Z"), provenance },
 ];
 
+const marketGrowthGoals: GoalRevision[] = [
+  { id: asId("goal-revision-lax-ready-1"), goalId: asId("goal-lax-ready"), version: 1, metric: { id: asId("M04"), version: asId("v2-frozen-1") }, scope: { marketIds: ["LAX"], programIds: [], acquisitionCasePurpose: "first-time", requiredCapabilityCodes: [] }, baselineAsOfAt: utc("2026-02-16T17:00:00Z"), baselineEvidenceSnapshotId: asId("evidence-lax-ready-baseline"), target: 2, deadline: utc("2026-03-15T17:00:00Z"), ownerId: asId("team-1"), savedAt: utc("2026-02-16T17:00:00Z"), changeReason: "Synthetic market planning target for the portfolio demo; not a forecast.", supersedesRevisionId: null, provenance },
+  { id: asId("goal-revision-sfo-ready-1"), goalId: asId("goal-sfo-ready"), version: 1, metric: { id: asId("M04"), version: asId("v2-frozen-1") }, scope: { marketIds: ["SFO"], programIds: [], acquisitionCasePurpose: "first-time", requiredCapabilityCodes: [] }, baselineAsOfAt: utc("2026-02-16T17:00:00Z"), baselineEvidenceSnapshotId: asId("evidence-sfo-ready-baseline"), target: 1, deadline: utc("2026-03-15T17:00:00Z"), ownerId: asId("team-1"), savedAt: utc("2026-02-16T16:59:00Z"), changeReason: "Synthetic market planning target for the portfolio demo; not a forecast.", supersedesRevisionId: null, provenance },
+  { id: asId("goal-revision-dfw-ready-1"), goalId: asId("goal-dfw-ready"), version: 1, metric: { id: asId("M04"), version: asId("v2-frozen-1") }, scope: { marketIds: ["DFW"], programIds: [], acquisitionCasePurpose: "first-time", requiredCapabilityCodes: [] }, baselineAsOfAt: utc("2026-02-16T17:00:00Z"), baselineEvidenceSnapshotId: asId("evidence-dfw-ready-baseline"), target: 1, deadline: utc("2026-03-15T17:00:00Z"), ownerId: asId("team-1"), savedAt: utc("2026-02-16T16:58:00Z"), changeReason: "Synthetic market planning target for the portfolio demo; not a forecast.", supersedesRevisionId: null, provenance },
+  { id: asId("goal-revision-ord-ready-1"), goalId: asId("goal-ord-ready"), version: 1, metric: { id: asId("M04"), version: asId("v2-frozen-1") }, scope: { marketIds: ["ORD"], programIds: [], acquisitionCasePurpose: "first-time", requiredCapabilityCodes: [] }, baselineAsOfAt: utc("2026-02-16T17:00:00Z"), baselineEvidenceSnapshotId: asId("evidence-ord-ready-baseline"), target: 1, deadline: utc("2026-03-15T17:00:00Z"), ownerId: asId("team-1"), savedAt: utc("2026-02-16T16:57:00Z"), changeReason: "Synthetic market planning target for the portfolio demo; not a forecast.", supersedesRevisionId: null, provenance },
+  { id: asId("goal-revision-atl-ready-1"), goalId: asId("goal-atl-ready"), version: 1, metric: { id: asId("M04"), version: asId("v2-frozen-1") }, scope: { marketIds: ["ATL"], programIds: [], acquisitionCasePurpose: "first-time", requiredCapabilityCodes: [] }, baselineAsOfAt: utc("2026-02-16T17:00:00Z"), baselineEvidenceSnapshotId: asId("evidence-atl-ready-baseline"), target: 1, deadline: utc("2026-03-15T17:00:00Z"), ownerId: asId("team-1"), savedAt: utc("2026-02-16T16:56:00Z"), changeReason: "Synthetic market planning target for the portfolio demo; not a forecast.", supersedesRevisionId: null, provenance },
+];
 const goalRevisions: GoalRevision[] = [
+  ...marketGrowthGoals,
   { id: asId("goal-revision-checklist-1"), goalId: asId("goal-checklist-pilot"), version: 1, metric: { id: asId("M12"), version: asId("v2-frozen-1") }, scope: { marketIds: ["LAX", "SFO"], programIds: [checklistProgramId], acquisitionCasePurpose: "first-time", requiredCapabilityCodes: [] }, baselineAsOfAt: utc("2026-01-01T17:00:00Z"), baselineEvidenceSnapshotId: asId("evidence-checklist-pilot"), target: 0.5, deadline: utc("2026-02-16T17:00:00Z"), ownerId: asId("team-2"), savedAt: utc("2026-01-01T17:00:00Z"), changeReason: "Predeclare the fictional pilot threshold.", supersedesRevisionId: null, provenance },
   { id: asId("goal-revision-dfw-1"), goalId: asId("goal-dfw-qualified"), version: 1, metric: { id: asId("M07"), version: asId("v2-frozen-1") }, scope: { marketIds: ["DFW"], programIds: [asId("program-dfw-broad-outreach")], acquisitionCasePurpose: "first-time", requiredCapabilityCodes: [] }, baselineAsOfAt: utc("2025-12-01T18:00:00Z"), baselineEvidenceSnapshotId: asId("evidence-dfw-outreach"), target: 0.4, deadline: utc("2026-01-15T18:00:00Z"), ownerId: asId("team-2"), savedAt: utc("2025-12-01T18:00:00Z"), changeReason: "Predeclare the fictional relevant-qualification threshold.", supersedesRevisionId: null, provenance },
 ];
@@ -838,7 +859,7 @@ export const SCENARIO_CONTRACT: ScenarioContractV2 = {
     checkpoint("two-new-ready", "Two new reporters ready", "2026-02-23T17:00:00Z", cumulative(planEventIds, existingAcceptanceIds, readyEventIds), facts(10, 8, 2, 0, 2)),
     checkpoint("new-acceptances", "New reporters accepted", "2026-02-23T17:45:00Z", cumulative(planEventIds, existingAcceptanceIds, readyEventIds, newAcceptanceIds), facts(10, 10, 0, 0, 2)),
     checkpoint("original-plan-delivered", "Original plan delivered", "2026-02-28T02:00:00Z", cumulative(planEventIds, existingAcceptanceIds, readyEventIds, newAcceptanceIds, deliveryEventIds), facts(0, 0, 0, 0, 2, 2)),
-    checkpoint("pair-cohort-mature", "Pair onboarding cohort mature", "2026-03-09T17:00:00Z", cumulative(planEventIds, existingAcceptanceIds, readyEventIds, newAcceptanceIds, deliveryEventIds), [{ metricKey: "mainPairMatureOnboardingEntrants", value: 2, unit: "people" }, { metricKey: "mainPairTimelyFirstJobs", value: 1, unit: "people" }, { metricKey: "mainPairCompletedToDate", value: 2, unit: "people" }]),
+    checkpoint("pair-cohort-mature", "Pair onboarding cohort fully observed", "2026-03-09T17:00:00Z", cumulative(planEventIds, existingAcceptanceIds, readyEventIds, newAcceptanceIds, deliveryEventIds), [{ metricKey: "mainPairMatureOnboardingEntrants", value: 2, unit: "people" }, { metricKey: "mainPairTimelyFirstJobs", value: 1, unit: "people" }, { metricKey: "mainPairCompletedToDate", value: 2, unit: "people" }]),
   ],
 };
 
@@ -877,7 +898,7 @@ export const DEMO_SNAPSHOT_V2: DemoSnapshotV2 = {
   programEnrollments,
   programNotes: [
     { id: asId("note-dfw-stop"), programId: asId("program-dfw-broad-outreach"), authorId: asId("actor-team-2"), text: "Fictional completed cohort retained with the explicit stop rationale.", createdAt: utc("2026-01-15T18:00:00Z"), provenance },
-    { id: asId("note-lax-observing"), programId: asId("program-lax-realtime-referrals"), authorId: asId("actor-team-1"), text: "Recent fictional entrants remain under observation; no final conversion claim.", createdAt: utc("2026-02-15T17:00:00Z"), provenance },
+    { id: asId("note-lax-observing"), programId: asId("program-lax-realtime-referrals"), authorId: asId("actor-team-1"), text: "Recent fictional entrants are still within the follow-up window; no final conversion claim.", createdAt: utc("2026-02-15T17:00:00Z"), provenance },
   ],
   programDecisions,
   goalRevisions,
@@ -1049,7 +1070,11 @@ export function createDemoRepositoryV2(seed: DemoSnapshotV2 = DEMO_SNAPSHOT_V2, 
       }
       const checked = validateDemoSnapshot(envelope.snapshot);
       if (!checked.ok) return failure(current, "validation-failed", "Saved demo is invalid. Existing bytes were preserved; Explicit Reset can recover this namespace.");
-      return { snapshot: checked.value, bytes };
+      const savedProgramIds = new Set(checked.value.programs.map((program) => program.id));
+      const newActivationIdeas = supportingPrograms.filter((program) => !savedProgramIds.has(program.id));
+      const savedGoalIds = new Set(checked.value.goalRevisions.map((goal) => goal.id));
+      const newMarketGoals = marketGrowthGoals.filter((goal) => !savedGoalIds.has(goal.id));
+      return { snapshot: newActivationIdeas.length || newMarketGoals.length ? { ...checked.value, programs: [...checked.value.programs, ...newActivationIdeas], goalRevisions: [...checked.value.goalRevisions, ...newMarketGoals] } : checked.value, bytes };
     } catch { return failure(current, "validation-failed", "Saved demo is not valid JSON. Existing bytes were preserved; Explicit Reset can recover this namespace."); }
   };
   const write = (snapshot: DemoSnapshotV2): RepositoryResult<DemoSnapshotV2> | null => {

@@ -1,7 +1,12 @@
 .network-reporters__result { padding: .65rem .85rem; border: 1px solid var(--color-border); border-radius: .4rem; background: var(--color-accent-soft); font-size: .82rem; }
 .network-reporters__evidence { display: block; margin-top: .35rem; color: var(--color-muted); font-size: .65rem; line-height: 1.35; }
-.network-reporters__actions { display: grid; min-width: 9rem; gap: .35rem; }
+.network-reporters__actions { display: grid; min-width: 8.5rem; gap: .35rem; }
 .network-reporters__actions button { text-align: left; }
+.network-reporters__more-actions summary { box-sizing: border-box; width: 100%; cursor: pointer; list-style: none; border: 1px solid var(--color-border); border-radius: .3rem; background: var(--color-surface); padding: .38rem .55rem; color: var(--color-ink); font-size: .7rem; font-weight: 650; }
+.network-reporters__more-actions summary::-webkit-details-marker { display: none; }
+.network-reporters__more-actions summary::after { content: "▾"; float: right; color: var(--color-muted); }
+.network-reporters__more-actions[open] summary::after { content: "▴"; }
+.network-reporters__more-actions > div { display: grid; gap: .35rem; margin-top: .35rem; }
 .network-reporters .ip2-filters input { flex: 1; min-width: 150px; }
 .network-reporters .ip2-filters label { font-size: 11px; }
 .network-reporters-form fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }

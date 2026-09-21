@@ -120,7 +120,7 @@ export function prepareWeeklyProgramMeasures(review: WeeklyProgramsReview): read
       metric: group.evidence.metric, unit: group.unit, currency: group.currency, actual: group.result,
       actualUnavailableReason: group.evidence.computation.status === "unavailable" ? group.evidence.computation.reason : null,
       scopeLabel: group.evidence.scope.populationDescription,
-      observationLabel: `${group.outcomeLabel}; ${group.followUpDays} elapsed days from enrollment. ${group.matureEntrants} mature; ${group.stillObservingEntrants} still observing.`,
+      observationLabel: `${group.outcomeLabel}; ${group.followUpDays} elapsed days from enrollment. ${group.matureEntrants} fully observed; ${group.stillObservingEntrants} still in follow-up.`,
       target: targetGroupMatches && target.value !== null && target.revision ? {
         value: target.value, label: target.label, records: [{ kind: "goal-revision", id: target.revision.id }],
       } : null,

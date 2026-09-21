@@ -8,8 +8,16 @@
 .programs__wide textarea { min-height: 86px; width: 100%; resize: vertical; }
 .programs__result { padding: 14px; }
 .programs__result h3 { margin: 0; }
-.programs table { min-width: 1220px; }
-.programs th:nth-child(2) { min-width: 170px; }
-.programs td:nth-child(4) { min-width: 180px; }
-.programs td:nth-child(8), .programs td:nth-child(9) { min-width: 160px; }
+.programs__table-intro { margin: 0; padding: 12px 14px; color: var(--color-muted); font-size: 12px; line-height: 1.5; }
+.programs .programs__scan-table { min-width: 920px; table-layout: fixed; }
+.programs__scan-table th:nth-child(1) { width: 19%; }
+.programs__scan-table th:nth-child(2) { width: 11%; }
+.programs__scan-table th:nth-child(3) { width: 9%; }
+.programs__scan-table th:nth-child(4) { width: 25%; }
+.programs__scan-table th:nth-child(5) { width: 18%; }
+.programs__scan-table th:nth-child(6) { width: 18%; }
+.programs__scan-table td, .programs__scan-table th { line-height: 1.45; }
+.programs__scan-table th small { display: block; margin-top: 5px; color: var(--color-muted); font-size: 10px; font-weight: 400; }
+.programs .programs__name-button { color: var(--color-accent); cursor: pointer; text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--color-accent) 30%, transparent); text-underline-offset: 3px; }
+.programs .programs__name-button:hover { text-decoration-color: currentColor; }
 @media (max-width: 650px) { .programs .ip2-panel > header select { max-width: 155px; } }

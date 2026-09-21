@@ -117,7 +117,7 @@ export function createRulesEngine(): RulesEngine {
       }
       const scope = selected === "ALL" ? "all recruiting markets" : selected;
       const rate = matureEntrants ? successfulEntrants / matureEntrants : null;
-      return { marketId: selected, windowDays: WINDOW, matureEntrants, successfulEntrants, observingEntrants, rate, explanation: rate === null ? `No mature 14-day onboarding entrants in ${scope}; ${observingEntrants} entrant(s) are still observing.` : `${successfulEntrants} of ${matureEntrants} mature onboarding entrants in ${scope} completed a first job within 14 days; ${observingEntrants} entrant(s) are still observing. Historical classification is anchored to ${labelDate(snapshot.fixedAsOfAt)}.` };
+      return { marketId: selected, windowDays: WINDOW, matureEntrants, successfulEntrants, observingEntrants, rate, explanation: rate === null ? `No fully observed 14-day onboarding entrants in ${scope}; ${observingEntrants} entrant(s) are still in follow-up.` : `${successfulEntrants} of ${matureEntrants} fully observed onboarding entrants in ${scope} completed a first job within 14 days; ${observingEntrants} entrant(s) are still in follow-up. Historical classification is anchored to ${labelDate(snapshot.fixedAsOfAt)}.` };
     },
     previewMarketPlan: preview,
     buildMarketsView(snapshot, selected): MarketsViewModel {

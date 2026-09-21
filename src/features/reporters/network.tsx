@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { DemoActionContext, EvidenceBundle, NetworkAvailabilityRecordPayload, ReporterId, WorkspaceNavigationTarget } from "../../contracts/v2";
 import type { NetworkReporterRow, PreparedNetworkView, ReengagementFollowUpInput } from "../../logic/network";
 import { CategoryComparison, Drawer, Panel } from "../../ui/interview";
-import { displayDate } from "../../ui/presentationFormat";
+import { displayDate, displayDateRange } from "../../ui/presentationFormat";
 import { AvailabilityForm, FollowUpForm } from "./networkForms";
 import "./network.css";
 
@@ -48,7 +48,7 @@ export function ReportersNetworkScreen({ view, actions, commandContext, onRecord
   const reviewCount = view.reporters.filter((row) => row.compliance.state !== "clear").length;
   const period = recentEvidence?.reportingWindow;
   const activityLabel = view.appliedFilters.window ? "Worked in selected window" : "Worked in 28 days";
-  const periodLabel = period ? `${displayDate(period.startAt)} – ${displayDate(period.endAt)} (end exclusive)` : "Trailing 28 elapsed days";
+  const periodLabel = period ? displayDateRange(period.startAt, period.endAt) : "Trailing 28 elapsed days";
   const attention = view.attention.slice(0, 3);
   const clear = () => { setSearch(""); setAvailability(""); setSkill(""); setSort(""); setConfirmationOnly(false); };
   const open = (reporterId: ReporterId, mode: NonNullable<Selection>["mode"]) => { setMessage(null); setSelection({ reporterId, mode }); };
@@ -60,7 +60,7 @@ export function ReportersNetworkScreen({ view, actions, commandContext, onRecord
   };
   return <main aria-label="Reporters" className="workspace network-reporters ip2-workspace">
     <section aria-label="Reporter network summary" className="kpi-strip">
-      <div><span>Ready</span><strong>{view.reporters.length}</strong><small>Recorded readiness</small></div>
+      <div><span>Ready</span><strong>{view.reporters.length}</strong></div>
       <div><span>{activityLabel}</span><strong>{recent}</strong><small>{periodLabel}</small></div>
       <div><span>Needs confirmation</span><strong>{confirmationIds.length}</strong><small>Current availability</small></div>
       <div><span>Credentials to check</span><strong>{reviewCount}</strong><small>Evidence review</small></div>
@@ -72,17 +72,15 @@ export function ReportersNetworkScreen({ view, actions, commandContext, onRecord
         return <li key={`${item.reporterId}:${item.reason}`}><b>{index + 1}</b><div><small>{row?.serviceMarkets.join(" · ")}</small><strong><button type="button" onClick={() => open(item.reporterId, "detail")}>{row?.name ?? "Reporter"}</button></strong><span>{item.reason === "needs-availability-confirmation" ? "Needs availability confirmation" : "No recent completed work · review follow-up"}</span></div></li>;
       })}</ol>{!attention.length ? <p className="ip2-scope">No actions in this selection.</p> : null}</Panel>
       <Panel title="Readiness and recent work" tools={recentEvidence ? <button type="button" onClick={() => actions.onOpenEvidence(recentEvidence)}>Why this?</button> : null} className="chart-card">
-        <p className="ip2-scope">Separate measures · current service-market population. Readiness and recent work do not confirm current availability.</p>
         <CategoryComparison label="Current network" unit="people" observations={[
-          { id: "ready", label: "Ready", value: view.reporters.length, valueLabel: `${view.reporters.length} people`, detail: "Recorded readiness" },
-          { id: "recent", label: activityLabel, value: recent, valueLabel: `${recent} people`, detail: "Actual job-market evidence" },
-          { id: "confirmation", label: "Needs confirmation", value: confirmationIds.length, valueLabel: `${confirmationIds.length} people`, detail: "Unknown or expired availability" },
+          { id: "ready", label: "Ready", value: view.reporters.length, valueLabel: `${view.reporters.length} people`, detail: "" },
+          { id: "recent", label: activityLabel, value: recent, valueLabel: `${recent} people`, detail: "" },
+          { id: "confirmation", label: "Needs confirmation", value: confirmationIds.length, valueLabel: `${confirmationIds.length} people`, detail: "" },
         ]} />
-        <p className="ip2-scope">No completed work in 28 days means review, not churn. The summaries and attention follow the selected market; record filters below affect only the grid.</p>
       </Panel>
     </section>
     {message ? <p role="status" className="network-reporters__result">{message}</p> : null}
-    <Panel title={localView === "ready" ? "Reporters" : "Reporter activity"} tools={<span>{rows.length} shown</span>} className="table-panel">
+    <Panel title={localView === "ready" ? "Reporters" : "Reporter activity"} tools={<span>{rows.length} shown</span>} className="table-panel reporters-table-panel">
       <div className="ip2-filters">
         <button type="button" aria-pressed={!confirmationOnly} className={!confirmationOnly ? "is-active" : ""} onClick={() => setConfirmationOnly(false)}>All {filtered.length}</button>
         <button type="button" aria-pressed={confirmationOnly} className={confirmationOnly ? "is-active" : ""} onClick={() => setConfirmationOnly(!confirmationOnly)}>Needs confirmation {confirmationCount}</button>
@@ -92,10 +90,9 @@ export function ReportersNetworkScreen({ view, actions, commandContext, onRecord
         <label>Sort <select aria-label="Sort" value={sort} onChange={(e) => setSort(e.target.value)}><option value="">Source order</option><option value="name">Name A–Z</option></select></label>
         <button type="button" onClick={clear}>Clear all</button>
       </div>
-      <p className="ip2-scope">{rows.length} results · Record filters affect this grid. {localView === "activity" ? "Activity shows recent work or follow-up candidates. " : ""}Last-active counters use a 28-day review threshold; they do not infer churn.</p>
       <div className="table-scroll"><table><thead><tr><th>Reporter</th><th>Service market</th><th>Verified skills</th><th>Certifications</th><th>Preferences</th><th>Availability</th><th>Last active</th><th>Compliance</th><th>Follow-up</th></tr></thead><tbody>{rows.map((row) => {
         const days = activityDays(row.lastCompletedJobAt, view.evaluation.asOfAt);
-        return <tr key={row.reporterId}><th scope="row"><button type="button" onClick={() => open(row.reporterId, "detail")}>{row.name}</button><small className="network-reporters__evidence">Ready</small></th><td>{row.serviceMarkets.join(", ")}</td><td>{row.verifiedSkills.map((s) => s.label).join(", ") || "None recorded"}</td><td>{row.certificationSummary}</td><td>{row.preferences.attendanceModes.join(", ") || "Not recorded"}<small>{row.preferences.supportedProceedingTypes.join(", ") || "No proceeding preference recorded"}</small></td><td>{availabilityLabel(row.availability)}<small>{row.availabilityIsMixed ? "Mixed scope · inspect details" : "Dated market / mode scope"}</small></td><td><span className={`status-tag status-tag--${days === null || days >= 28 ? "over" : "under"}`}>{days === null ? "No completed work" : `${days} days ago`}</span><small>{row.recentJobCount} jobs / {view.appliedFilters.window ? "selected window" : "28 days"}</small></td><td><span className={`status-tag status-tag--${complianceTone(row.compliance.state)}`}>{complianceLabel(row.compliance.state)}</span><small>{row.compliance.evidenceLabel}</small></td><td><div className="network-reporters__actions"><button type="button" onClick={() => open(row.reporterId, "availability")}>Confirm availability</button><button type="button" onClick={() => openFollowUp(row)}>{row.openReengagementWorkItemId ? "Open linked work" : "Create re-engagement task"}</button><button type="button" onClick={() => checklist(row)}>Inspect checklist</button></div></td></tr>;
+        return <tr key={row.reporterId}><th scope="row"><button type="button" onClick={() => open(row.reporterId, "detail")}>{row.name}</button><small className="network-reporters__evidence">Ready</small></th><td>{row.serviceMarkets.join(", ")}</td><td>{row.verifiedSkills.map((s) => s.label).join(", ") || "None recorded"}</td><td>{row.certificationSummary}</td><td>{row.preferences.attendanceModes.join(", ") || "Not recorded"}<small>{row.preferences.supportedProceedingTypes.join(", ") || "No proceeding preference recorded"}</small></td><td>{availabilityLabel(row.availability)}<small>{row.availabilityIsMixed ? "Mixed scope · inspect details" : "Dated market / mode scope"}</small></td><td><span className={`status-tag status-tag--${days === null || days >= 28 ? "over" : "under"}`}>{days === null ? "No completed work" : `${days} days ago`}</span><small>{row.recentJobCount} jobs / {view.appliedFilters.window ? "selected window" : "28 days"}</small></td><td><span className={`status-tag status-tag--${complianceTone(row.compliance.state)}`}>{complianceLabel(row.compliance.state)}</span><small>{row.compliance.evidenceLabel}</small></td><td><div className="network-reporters__actions"><button type="button" onClick={() => open(row.reporterId, "availability")}>Confirm availability</button><details className="network-reporters__more-actions"><summary>More actions</summary><div><button type="button" onClick={() => openFollowUp(row)}>{row.openReengagementWorkItemId ? "Open linked work" : "Create re-engagement task"}</button><button type="button" onClick={() => checklist(row)}>Inspect checklist</button></div></details></div></td></tr>;
       })}</tbody></table></div>
       {!rows.length ? <p className="ip2-scope">No reporters match these filters. Clear all to restore the records.</p> : null}
     </Panel>
