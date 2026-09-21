@@ -1,0 +1,54 @@
+{
+  "kind": "read_only_routing_probe",
+  "role": "experience",
+  "session_id": "01a0c546-6194-7441-9cb2-1e01ab5c97ea",
+  "task_name": "/root/completion_lead",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "inherited_turns": 0,
+  "inheritance_evidence": "Coordinator explicit spawn_agent call used fork_turns=none; only the explicit probe packet and repository environment were supplied.",
+  "configured_service_tier": "default",
+  "resolved_service_tier": null,
+  "session_source": "/Users/pc/.codex/sessions/2026/09/21/rollout-2026-09-21T11-41-59-01a0c546-6194-7441-9cb2-1e01ab5c97ea.jsonl",
+  "session_source_sha256": "2be43dcdf90b31056001410f964a4eca4045564843bbdc9c2a6cd1941acad726",
+  "session_metadata": {
+    "id": "01a0c546-6194-7441-9cb2-1e01ab5c97ea",
+    "parent_thread_id": "01a0c545-1105-7401-84d3-65ea8a8a7301",
+    "agent_role": "experience",
+    "agent_path": "/root/completion_lead",
+    "cwd": "/private/tmp/steno-p4-coordinator",
+    "source": {
+      "subagent": {
+        "thread_spawn": {
+          "parent_thread_id": "01a0c545-1105-7401-84d3-65ea8a8a7301",
+          "depth": 1,
+          "agent_path": "/root/completion_lead",
+          "agent_nickname": "Mill",
+          "agent_role": "experience"
+        }
+      }
+    }
+  },
+  "turn_contexts": [
+    {
+      "model": "gpt-6-astra",
+      "effort": "high",
+      "cwd": "/private/tmp/steno-p4-coordinator",
+      "approval_policy": "on-request",
+      "approvals_reviewer": "auto_review",
+      "sandbox_policy": {
+        "type": "workspace-write",
+        "writable_roots": [
+          "/Users/pc/.codex/visualizations/2026/09/21/01a0c545-1105-7401-84d3-65ea8a8a7301"
+        ],
+        "network_access": false,
+        "exclude_tmpdir_env_var": false,
+        "exclude_slash_tmp": false
+      },
+      "service_tier": null
+    }
+  ],
+  "verified_at": "2026-09-21T18:42:10.648780+00:00",
+  "result": "PROBE_READY"
+}

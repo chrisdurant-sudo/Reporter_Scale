@@ -1,0 +1,29 @@
+{
+  "kind": "completion_coordinator_runtime",
+  "session_id": "01a0c545-1105-7401-84d3-65ea8a8a7301",
+  "observed_at": "2026-09-21T18:42:28.358795+00:00",
+  "session_source": "/Users/pc/.codex/sessions/2026/09/21/rollout-2026-09-21T11-40-33-01a0c545-1105-7401-84d3-65ea8a8a7301.jsonl",
+  "session_metadata": {
+    "id": "01a0c545-1105-7401-84d3-65ea8a8a7301",
+    "cwd": "/private/tmp/steno-p4-coordinator"
+  },
+  "runtime": {
+    "model": "gpt-6-astra",
+    "effort": "xhigh",
+    "approval_policy": "on-request",
+    "approvals_reviewer": "auto_review",
+    "sandbox_policy": {
+      "type": "workspace-write",
+      "writable_roots": [
+        "/Users/pc/.codex/visualizations/2026/09/21/01a0c545-1105-7401-84d3-65ea8a8a7301"
+      ],
+      "network_access": false,
+      "exclude_tmpdir_env_var": false,
+      "exclude_slash_tmp": false
+    },
+    "service_tier": null
+  },
+  "configured_service_tier": "default",
+  "resolved_service_tier": null,
+  "note": "Actual tier not exposed. No tier or permission override requested. Loaded named roles advertise Astra/high, Quality/Reviewer Astra/xhigh; at most one child."
+}

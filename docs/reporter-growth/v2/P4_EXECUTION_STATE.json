@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-21T18:25:55.618369+00:00",
+  "updated_at": "2026-09-21T18:42:10.648780+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -261,15 +261,15 @@
       },
       {
         "role": "experience",
-        "session_id": "01a0b8d4-fd9c-7f03-9d83-4555190d1fe5",
+        "session_id": "01a0c546-6194-7441-9cb2-1e01ab5c97ea",
         "model": "gpt-6-astra",
         "reasoning_effort": "high",
         "fork_turns": "none",
         "inherited_turns": 0,
-        "verified_at": "2026-09-19T09:26:34.575251+00:00",
+        "verified_at": "2026-09-21T18:42:10.648780+00:00",
         "evidence": {
-          "file": "docs/reporter-growth/v2/evidence/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046-experience-wave-probe.json",
-          "sha256": "91080b6694f0c0d970f7707aaa45ebf7442e7a5d34804ad058ae950ef658a9fe"
+          "file": "docs/reporter-growth/v2/evidence/01a0c545-1105-7401-84d3-65ea8a8a7301-experience-probe.json",
+          "sha256": "f7c04764c836bd044453f6c32d92c54be382a735be06a547c17d1e85caafc1ff"
         }
       }
     ],
@@ -658,6 +658,19 @@
         "evidence": {
           "file": "docs/reporter-growth/v2/evidence/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046-experience-probe.json",
           "sha256": "317662fa968e47463998d1d9b1aea674dd07c18f717865f9ca540d44860430d6"
+        }
+      },
+      {
+        "role": "experience",
+        "session_id": "01a0b8d4-fd9c-7f03-9d83-4555190d1fe5",
+        "model": "gpt-6-astra",
+        "reasoning_effort": "high",
+        "fork_turns": "none",
+        "inherited_turns": 0,
+        "verified_at": "2026-09-19T09:26:34.575251+00:00",
+        "evidence": {
+          "file": "docs/reporter-growth/v2/evidence/01a0b8c8-5ff0-7b70-aa93-1f2e9c9fb046-experience-wave-probe.json",
+          "sha256": "91080b6694f0c0d970f7707aaa45ebf7442e7a5d34804ad058ae950ef658a9fe"
         }
       }
     ]
@@ -1413,11 +1426,11 @@
     "source_contract_commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
     "common_packet": "docs/reporter-growth/v2/IP3_WORKSPACE_DISPATCH.md",
     "lead": {
-      "task_name": "/root/experience_probe_takeover",
+      "task_name": "/root/completion_lead",
       "worktree": "/private/tmp/steno-ip2-proof-repair",
       "branch": "codex/interview-ip2-proof-repair",
       "mode": "shared_design_steward_and_exact_candidate_reviewer",
-      "status": "paused_with_owned_shared_repair_uncommitted"
+      "status": "fresh_runtime_verified_shared_repair_resuming"
     },
     "specialists": [
       {
@@ -1457,10 +1470,10 @@
         "candidate_commit": "46d0b90a0eb7ba56b5339635d3b7668a00fc9673"
       }
     ],
-    "status": "paused_for_usage_control"
+    "status": "resumed_bounded_completion"
   },
   "completion_execution_policy": {
-    "status": "handoff_ready_implementation_paused",
+    "status": "resumed_bounded_completion",
     "authorization": "User September21 requested brief usage analysis and authorized adjusting agent orders to finish with less usage.",
     "evidence": {
       "file": "docs/reporter-growth/v2/USAGE_BOUNDED_COMPLETION_2026-09-21.md",
@@ -1475,6 +1488,25 @@
       "sha256": "1ade65e622e506b830c90176be78f7bbe0d64c5a78771700cf3d413e68a0a95d"
     },
     "runtime_worker_cap_configured": 1,
-    "recovery_manifest": "docs/reporter-growth/v2/handoff-2026-09-21/recovery-manifest.json"
+    "recovery_manifest": "docs/reporter-growth/v2/handoff-2026-09-21/recovery-manifest.json",
+    "resume_authorization": "User September21: Resume Reporter Growth in /private/tmp/steno-p4-coordinator; follow usage-bounded completion orders.",
+    "usage_baseline": {
+      "used_percent": 3,
+      "window_duration_minutes": 10080,
+      "resets_at": 1790618519,
+      "observed_at": "2026-09-21T18:41:38.900578+00:00",
+      "stop_at_used_percent": 8
+    },
+    "folder_verification": {
+      "path": "/private/tmp/steno-p4-coordinator",
+      "branch": "codex/reporter-growth-p4-coordinator",
+      "required_ancestor": "8a04cb31ba27ae5a45907cd1ac3841dd9d30f312",
+      "passed": true,
+      "saved_hashes_match": true
+    },
+    "runtime_evidence": {
+      "file": "docs/reporter-growth/v2/evidence/01a0c545-1105-7401-84d3-65ea8a8a7301-coordinator-runtime.json",
+      "sha256": "e3258043e7645592d06c2c140584c86d15c623ab161c79eef17279143b81ce57"
+    }
   }
 }
