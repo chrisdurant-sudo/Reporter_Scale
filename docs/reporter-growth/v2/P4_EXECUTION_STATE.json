@@ -1472,7 +1472,7 @@
     "usage_checkpoint_additional_percentage_points": 5,
     "restart_packet": {
       "file": "docs/reporter-growth/v2/COMPLETION_HANDOFF_2026-09-21.md",
-      "sha256": "d9be2de75e26cebff82cbf6cb538bccb960899b3ac40124d882f0329815c553b"
+      "sha256": "1ade65e622e506b830c90176be78f7bbe0d64c5a78771700cf3d413e68a0a95d"
     },
     "runtime_worker_cap_configured": 1,
     "recovery_manifest": "docs/reporter-growth/v2/handoff-2026-09-21/recovery-manifest.json"

@@ -5,6 +5,51 @@ of usage and approved tighter orders. This task prepared the handoff without res
 Resume implementation only when the new task's user prompt requests it. Do not restart planning or
 the completed data/Overview/Funnel phases.
 
+## Mandatory startup folder check
+
+The new task must use the existing coordinator checkout at **`/private/tmp/steno-p4-coordinator`**.
+This handoff's absolute path is
+`/private/tmp/steno-p4-coordinator/docs/reporter-growth/v2/COMPLETION_HANDOFF_2026-09-21.md`.
+Do not infer the repository from the task title or its initial working directory.
+
+Before edits, tests, or dispatch, set the shell tool's `workdir` explicitly to
+`/private/tmp/steno-p4-coordinator` and run these read-only checks:
+
+```sh
+pwd -P
+git rev-parse --show-toplevel
+git branch --show-current
+git merge-base --is-ancestor 8a04cb31ba27ae5a45907cd1ac3841dd9d30f312 HEAD
+git status --short
+```
+
+Both paths must resolve to `/private/tmp/steno-p4-coordinator`, the branch must be
+`codex/reporter-growth-p4-coordinator`, and the ancestry check must exit successfully.
+The saved handoff state includes modified `src/integration/App.test.tsx` and untracked
+`src/integration/v2WorkspaceActions.test.tsx`; preserve both. Investigate any difference before
+writing rather than resetting the checkout. Preserve the Lead's saved changes listed below too.
+
+Set an explicit `workdir` on every subsequent shell call: the coordinator path for coordinator
+operations, or the verified assigned worktree for a lane operation. A `cd` in one shell invocation
+does not establish the next tool call's directory. Do not use `/Users/pc/Desktop/STENO`, a historical
+worktree under `node_modules`, or a fresh checkout as a replacement coordinator. If the task starts
+elsewhere, inspect this absolute path first. If it is missing or inaccessible, report that specific
+blocker without moving files, recreating the project, or silently falling back to another checkout.
+
+For the user choosing the folder in a macOS folder chooser: press **Command–Shift–G**, paste
+`/private/tmp/steno-p4-coordinator`, press Return, and select Open. Use the existing local checkout
+if the task offers a choice between local work and a new worktree.
+
+Paste this into the new task to resume:
+
+> Resume Reporter Growth in the existing checkout `/private/tmp/steno-p4-coordinator`.
+> First read `/private/tmp/steno-p4-coordinator/docs/reporter-growth/v2/COMPLETION_HANDOFF_2026-09-21.md`
+> and perform its mandatory startup folder check before editing or dispatching. Use explicit tool
+> working directories, preserve saved work, and follow the usage-bounded completion orders:
+> at most one active child, a usage checkpoint after each bounded job, and stop further dispatch
+> at five additional account usage percentage points. Continue the saved implementation;
+> do not restart planning or completed phases.
+
 ## Checkout and actual state
 
 - Coordinator: `/private/tmp/steno-p4-coordinator`, branch `codex/reporter-growth-p4-coordinator`.
