@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-21T18:42:10.648780+00:00",
+  "updated_at": "2026-09-21T18:51:17.687703+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -1529,7 +1529,7 @@
     "status": "resumed_bounded_completion"
   },
   "completion_execution_policy": {
-    "status": "resumed_bounded_completion",
+    "status": "finishing_reduced_mvp_scope",
     "authorization": "User September21 requested brief usage analysis and authorized adjusting agent orders to finish with less usage.",
     "evidence": {
       "file": "docs/reporter-growth/v2/USAGE_BOUNDED_COMPLETION_2026-09-21.md",
@@ -1589,5 +1589,24 @@
         "observed_at": "2026-09-21T18:49:37.129644+00:00"
       }
     ]
+  },
+  "mvp_completion_amendment": {
+    "authorized_at": "2026-09-21T18:51:17.687703+00:00",
+    "authorization": "User: I literally only just want the mvp ... trim any and all exacting overhead ... look good, have the filters work ... do not want a crazy high threshold for completion.",
+    "supersedes": "Earlier exacting completion gates for this MVP delivery only; historical passes remain unchanged.",
+    "required": [
+      "One practical visual and filter sanity check using existing proof",
+      "Integrate candidate and confirm production build"
+    ],
+    "omitted_by_user": [
+      "Separate independent Quality audit",
+      "Separate read-only Reviewer audit",
+      "Repeated full test suites",
+      "Obsolete acceptance/browser assertion alignment",
+      "Exhaustive reference fidelity and formal walkthrough validation"
+    ],
+    "status": "finishing",
+    "candidate_commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+    "usage_stop_unchanged": true
   }
 }
