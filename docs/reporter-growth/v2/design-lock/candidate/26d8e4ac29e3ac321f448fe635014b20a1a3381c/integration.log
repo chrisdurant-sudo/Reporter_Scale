@@ -1,0 +1,26 @@
+
+> reporter-growth@0.1.0 test
+> vitest run --maxWorkers=2 src/integration/App.test.tsx src/integration/v2WorkspaceActions.test.tsx
+
+
+ RUN  v3.2.7 /private/tmp/steno-completion-review
+
+ ✓ src/integration/v2WorkspaceActions.test.tsx (3 tests) 8229ms
+   ✓ Interview workspace command composition > retains an explicit availability draft after denied storage, then saves exactly its scope and reloads it  2747ms
+   ✓ Interview workspace command composition > creates one canonical follow-up with entered owner and due date, then reopens it without another save  1845ms
+   ✓ Interview workspace command composition > persists the entered program decision and copies the selected process without changing cohort outcomes  3637ms
+ ✓ src/integration/App.test.tsx (8 tests) 15156ms
+   ✓ P4 integrated V2 experience > renders all five workspaces, keeps the market across navigation, and retains the synthetic disclosure  1857ms
+   ✓ P4 integrated V2 experience > uses the locked Overview composition without restoring the superseded growth-goal panel  1097ms
+   ✓ P4 integrated V2 experience > keeps planning, readiness, acceptance, and delivery as separate replayable checkpoints  4423ms
+   ✓ P4 integrated V2 experience > opens contextual evidence, closes on Escape with focus return, and carries exact context into work  1313ms
+   ✓ P4 integrated V2 experience > reconciles program membership for LAX, All, and SFO without averaging percentages  1023ms
+   ✓ P4 integrated V2 experience > persists bounded expansion and explicit linked work without manufacturing operational outcomes  2546ms
+   ✓ P4 integrated V2 experience > creates canonical Team work from the locked Add work form  1393ms
+   ✓ P4 integrated V2 experience > persists Programs notes and next steps without changing outcomes  1503ms
+
+ Test Files  2 passed (2)
+      Tests  11 passed (11)
+   Start at  11:46:37
+   Duration  16.25s (transform 363ms, setup 129ms, collect 984ms, tests 23.39s, environment 785ms, prepare 79ms)
+

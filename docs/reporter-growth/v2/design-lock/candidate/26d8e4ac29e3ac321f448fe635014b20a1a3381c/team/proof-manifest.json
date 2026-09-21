@@ -1,0 +1,209 @@
+{
+  "candidate": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+  "base": "3a7842908ebf84fb53147d56bb270b0c44423847",
+  "url": "http://127.0.0.1:5195/",
+  "reference": "docs/reporter-growth/v2/design-lock/interview-2026-09-19/reference-manifest.json",
+  "captures": [
+    {
+      "id": "team-default",
+      "path": "/private/tmp/steno-completion-proof/team/team-default.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "89bd4ffd8424ebcd34243f37367b42fed0143556920ec5bce8174848fe97a690",
+      "pageOverflow": false
+    },
+    {
+      "id": "team-full",
+      "path": "/private/tmp/steno-completion-proof/team/team-full.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "af319ac7ef2bd53eae07fd8de2c23510db92bd98e5db70497828dd0c80206cdc",
+      "pageOverflow": false
+    },
+    {
+      "id": "team-unassigned",
+      "path": "/private/tmp/steno-completion-proof/team/team-unassigned.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "716a1b3297a53d464c5ab82df8b525365db367828df44545f1fff9322fe36605",
+      "pageOverflow": false
+    },
+    {
+      "id": "team-member-blocked",
+      "path": "/private/tmp/steno-completion-proof/team/team-member-blocked.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "15e85456a7f6ab790f1ae880b09e86a1feafa300a240cd1d496f706e172bb250",
+      "pageOverflow": false
+    },
+    {
+      "id": "team-blocked-editor",
+      "path": "/private/tmp/steno-completion-proof/team/team-blocked-editor.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "079a3c5fb9bbf893b4613b8d3c06a16c2b603ff58562c6a5897e281d30bc8e8f",
+      "pageOverflow": false
+    },
+    {
+      "id": "team-domain-program",
+      "path": "/private/tmp/steno-completion-proof/team/team-domain-program.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "2a547de838b3114e9b972d06df0365a47a728b46bddec6c3311b76303f5a3afc",
+      "pageOverflow": false
+    },
+    {
+      "id": "team-add-work",
+      "path": "/private/tmp/steno-completion-proof/team/team-add-work.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "62467743b616b0a3ee23830249476a8b090a0ec5456ad3dabb53276c71def52a",
+      "pageOverflow": false
+    },
+    {
+      "id": "team-work-editor",
+      "path": "/private/tmp/steno-completion-proof/team/team-work-editor.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "f2b8043f01fad6075f80a4724e539e42c3cee99dcb5087ebb1e260c6ba5497cc",
+      "pageOverflow": false
+    },
+    {
+      "id": "team-completion-form",
+      "path": "/private/tmp/steno-completion-proof/team/team-completion-form.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "130b6919a307df00bc0f728661fb5f2ba1deaf5079f49bd54c63f7ab5b294e44",
+      "pageOverflow": false
+    },
+    {
+      "id": "team-history",
+      "path": "/private/tmp/steno-completion-proof/team/team-history.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "46ed2341b0399e59ac6c53261f20ee4061e3172706822b88b811bb0db54f6073",
+      "pageOverflow": false
+    },
+    {
+      "id": "team-goals",
+      "path": "/private/tmp/steno-completion-proof/team/team-goals.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "4e8d68cb98ca5d06211e7163f276cb90287f0451b0c6d1587a0faa56b00de610",
+      "pageOverflow": false
+    },
+    {
+      "id": "team-goal-form",
+      "path": "/private/tmp/steno-completion-proof/team/team-goal-form.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "5a028e4573a4619c85a4f4333d1079787a35ef34d7356e918e8eafa2c5ead6f6",
+      "pageOverflow": false
+    },
+    {
+      "id": "team-quality",
+      "path": "/private/tmp/steno-completion-proof/team/team-quality.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "d9ec72b91236b70bbd13ce7405c1c9a3ca40294ebc3b5ebbc0549ee8806362e3",
+      "pageOverflow": false
+    },
+    {
+      "id": "team-coaching",
+      "path": "/private/tmp/steno-completion-proof/team/team-coaching.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "3fd8f99cfcd59251a275ff6d9a1ef6ea9e82166a56f7bfe14cf3dfe3e8aae8dc",
+      "pageOverflow": false
+    },
+    {
+      "id": "team-learning",
+      "path": "/private/tmp/steno-completion-proof/team/team-learning.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "f7a1f31eddb9a73c8d81369634534ca96463db37282796f8b356d80909413450",
+      "pageOverflow": false
+    }
+  ],
+  "checks": [
+    {
+      "id": "default-three-columns",
+      "result": [
+        "To do16",
+        "In progress5",
+        "Done4"
+      ]
+    },
+    {
+      "id": "keyboard-drawer-filter-return",
+      "result": "Enter opens; Escape closes and restores opener; member and blocked filters retained"
+    },
+    {
+      "id": "market-LAX",
+      "result": 9
+    },
+    {
+      "id": "market-SFO",
+      "result": 4
+    },
+    {
+      "id": "market-DFW",
+      "result": 4
+    },
+    {
+      "id": "market-ORD",
+      "result": 6
+    },
+    {
+      "id": "market-ATL",
+      "result": 5
+    },
+    {
+      "id": "market-All",
+      "result": 25
+    },
+    {
+      "id": "work-save-refresh",
+      "result": "Title/link/due/priority/owner/note/status/evidence/history persist; completion actor unchanged"
+    },
+    {
+      "id": "member-workflows-refresh",
+      "result": "Target/quality/coaching/review/learning saved through canonical commands and survived refresh"
+    },
+    {
+      "id": "reset",
+      "result": "25 original tasks and original target restored"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,265 @@
+{
+  "base": "3a7842908ebf84fb53147d56bb270b0c44423847",
+  "candidate": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+  "clean": true,
+  "preview": "http://127.0.0.1:5195/",
+  "checks": [
+    {
+      "name": "programs-default: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "programs-full: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "All earlier 6/20 and pilot 11/20",
+      "passed": true
+    },
+    {
+      "name": "Status focuses stopped program",
+      "passed": true
+    },
+    {
+      "name": "programs-stopped-filter: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "Second status click clears",
+      "passed": true
+    },
+    {
+      "name": "Drawer roundtrip retains filters",
+      "passed": true
+    },
+    {
+      "name": "programs-combined-filters: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "programs-results: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "Keyboard cohort inspection opens detail",
+      "passed": true
+    },
+    {
+      "name": "programs-pilot-detail: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "programs-pilot-checklist: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "programs-decision: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "Decision save acknowledged",
+      "passed": true
+    },
+    {
+      "name": "programs-process-draft: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "Draft save acknowledged",
+      "passed": true
+    },
+    {
+      "name": "programs-linked-work-form: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "Canonical linked work save acknowledged",
+      "passed": true
+    },
+    {
+      "name": "Text save acknowledged",
+      "passed": true
+    },
+    {
+      "name": "Decision rationale survives refresh",
+      "passed": true
+    },
+    {
+      "name": "Actual copied process v3 survives refresh",
+      "passed": true
+    },
+    {
+      "name": "Saved next step survives refresh",
+      "passed": true
+    },
+    {
+      "name": "programs-linked-work: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "Linked work routes to exact Team record",
+      "passed": true
+    },
+    {
+      "name": "programs-linked-team-destination: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "LAX 3/10 and 6/10",
+      "passed": true
+    },
+    {
+      "name": "Subset never claims target met",
+      "passed": true
+    },
+    {
+      "name": "programs-lax-benchmark: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "DFW recorded spend remains inspectable",
+      "passed": true
+    },
+    {
+      "name": "programs-dfw-stopped: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "Reset removes created process version",
+      "passed": true
+    },
+    {
+      "name": "No runtime errors",
+      "passed": true
+    }
+  ],
+  "shots": [
+    {
+      "name": "programs-default",
+      "path": "/private/tmp/steno-completion-proof/programs/programs-default.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "bc319cea7af9c2fcc9808bb9d434b501222ce8de817f60643d5de57c240c1fb0"
+    },
+    {
+      "name": "programs-full",
+      "path": "/private/tmp/steno-completion-proof/programs/programs-full.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "10bf6cb9dffc148f9a428e48c33f005ccbfe003bec6ee8727e83493ecdfefe74"
+    },
+    {
+      "name": "programs-stopped-filter",
+      "path": "/private/tmp/steno-completion-proof/programs/programs-stopped-filter.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "12cc35bf719fc1aed301d796dc05febf6a5138d94f5ac18db07e2ef2b57b74a7"
+    },
+    {
+      "name": "programs-combined-filters",
+      "path": "/private/tmp/steno-completion-proof/programs/programs-combined-filters.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "839ae65e0eb5317eed3a20fe86530c5f05a0115712791e68f5a48c2cb4f0a9cd"
+    },
+    {
+      "name": "programs-results",
+      "path": "/private/tmp/steno-completion-proof/programs/programs-results.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "78742e7d6484658c1399e4f5d9d6a81eeba134b82a37cc37d9898f5dbac6b62a"
+    },
+    {
+      "name": "programs-pilot-detail",
+      "path": "/private/tmp/steno-completion-proof/programs/programs-pilot-detail.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "40706ac0a69e3d578f25fb79a3857245b8ccf6c738b1e9b38fedb6e081d0c610"
+    },
+    {
+      "name": "programs-pilot-checklist",
+      "path": "/private/tmp/steno-completion-proof/programs/programs-pilot-checklist.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "29a42d246d34dd1a257a3056eaf86d003929558ba52b64304e54f30f1f4ecc55"
+    },
+    {
+      "name": "programs-decision",
+      "path": "/private/tmp/steno-completion-proof/programs/programs-decision.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "7628efddba2f9147a930f9e9d98dab201446ddcb881f9098490a8e590d8912b7"
+    },
+    {
+      "name": "programs-process-draft",
+      "path": "/private/tmp/steno-completion-proof/programs/programs-process-draft.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "816c932ce49262724652b9756ebab6d1c380df01dfd868bc8fac11bc2533e49c"
+    },
+    {
+      "name": "programs-linked-work-form",
+      "path": "/private/tmp/steno-completion-proof/programs/programs-linked-work-form.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "1cc9be14d51a3eeafd792ceb6495933fa397365f1ad9269b100c0eecbc213929"
+    },
+    {
+      "name": "programs-linked-work",
+      "path": "/private/tmp/steno-completion-proof/programs/programs-linked-work.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "b4b1a7b5cb641dfbea417c0330002eb5a9d0628d5f39516122b1fa2a6cdf5ed6"
+    },
+    {
+      "name": "programs-linked-team-destination",
+      "path": "/private/tmp/steno-completion-proof/programs/programs-linked-team-destination.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "3a0c5e74b787f4f6a943152b5c2f34fc46b16c91c628572350b6743006829f55"
+    },
+    {
+      "name": "programs-lax-benchmark",
+      "path": "/private/tmp/steno-completion-proof/programs/programs-lax-benchmark.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "722f57af616a5645e978b2838be3aa11dd38f00d40a5843f320df0a6e73aa668"
+    },
+    {
+      "name": "programs-dfw-stopped",
+      "path": "/private/tmp/steno-completion-proof/programs/programs-dfw-stopped.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "cca21463791b831e24312e33750dc04ead51e5bb9c716803844393eec0b8f228"
+    }
+  ],
+  "errors": []
+}

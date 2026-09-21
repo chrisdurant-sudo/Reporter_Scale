@@ -1024,6 +1024,61 @@
         "src/styles/tokens.css"
       ],
       "retained_browser_assertion": "full width at390px passes, all8 browser cases pass"
+    },
+    "completion_experience": {
+      "lane": "experience",
+      "base_commit": "3a7842908ebf84fb53147d56bb270b0c44423847",
+      "candidate_commit": "03bb66c24eef048093d8587e378f9f6aaf552d86",
+      "status": "passed",
+      "changed_paths": [
+        "src/styles/tokens.css",
+        "src/ui/interview.test.tsx",
+        "src/ui/interview.tsx"
+      ],
+      "boundary_exit_code": 0,
+      "disposition": "provisional_assembly_only_pending_consolidated_lead_review"
+    },
+    "completion_experience_reporters": {
+      "lane": "experience_reporters",
+      "base_commit": "3a7842908ebf84fb53147d56bb270b0c44423847",
+      "candidate_commit": "cca641d2ef1d15c92bc345e7e32737d16ec0405a",
+      "status": "passed",
+      "changed_paths": [
+        "src/features/reporters/network.css",
+        "src/features/reporters/network.test.tsx",
+        "src/features/reporters/network.tsx",
+        "src/features/reporters/networkForms.tsx"
+      ],
+      "boundary_exit_code": 0,
+      "disposition": "provisional_assembly_only_pending_consolidated_lead_review"
+    },
+    "completion_experience_team": {
+      "lane": "experience_team",
+      "base_commit": "3a7842908ebf84fb53147d56bb270b0c44423847",
+      "candidate_commit": "e6ebc6d6085ca2e3de4029c2e64f424b29526c5d",
+      "status": "passed",
+      "changed_paths": [
+        "src/features/team/MemberDrawer.tsx",
+        "src/features/team/WorkEditor.tsx",
+        "src/features/team/index.test.tsx",
+        "src/features/team/index.tsx",
+        "src/features/team/team.css"
+      ],
+      "boundary_exit_code": 0,
+      "disposition": "provisional_assembly_only_pending_consolidated_lead_review"
+    },
+    "completion_experience_programs": {
+      "lane": "experience_programs",
+      "base_commit": "3a7842908ebf84fb53147d56bb270b0c44423847",
+      "candidate_commit": "46d0b90a0eb7ba56b5339635d3b7668a00fc9673",
+      "status": "passed",
+      "changed_paths": [
+        "src/features/programs/index.test.tsx",
+        "src/features/programs/index.tsx",
+        "src/features/programs/programs.css"
+      ],
+      "boundary_exit_code": 0,
+      "disposition": "provisional_assembly_only_pending_consolidated_lead_review"
     }
   },
   "known_ownership_exceptions": [],
@@ -1430,7 +1485,8 @@
       "worktree": "/private/tmp/steno-ip2-proof-repair",
       "branch": "codex/interview-ip2-proof-repair",
       "mode": "shared_design_steward_and_exact_candidate_reviewer",
-      "status": "fresh_runtime_verified_shared_repair_resuming"
+      "status": "repair_committed_waiting_consolidated_review",
+      "candidate_commit": "03bb66c24eef048093d8587e378f9f6aaf552d86"
     },
     "specialists": [
       {
@@ -1507,6 +1563,31 @@
     "runtime_evidence": {
       "file": "docs/reporter-growth/v2/evidence/01a0c545-1105-7401-84d3-65ea8a8a7301-coordinator-runtime.json",
       "sha256": "e3258043e7645592d06c2c140584c86d15c623ab161c79eef17279143b81ce57"
-    }
+    },
+    "provisional_review": {
+      "worktree": "/private/tmp/steno-completion-review",
+      "branch": "codex/interview-completion-review",
+      "status": "clean_proof_ready",
+      "preserved_original_tests": true,
+      "candidate_commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "evidence": {
+        "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/proof-manifest.json",
+        "sha256": "598d1c1245d7b14d36882daa5b488f4f10b2d9e78cb1e78d7e480fe324a1e996"
+      }
+    },
+    "usage_checkpoints": [
+      {
+        "job": "shared_repair_and_lane_audits",
+        "used_percent": 4,
+        "additional_percentage_points": 1,
+        "observed_at": "2026-09-21T18:47:00.370188+00:00"
+      },
+      {
+        "job": "assembled_desktop_proof",
+        "used_percent": 5,
+        "additional_percentage_points": 2,
+        "observed_at": "2026-09-21T18:49:37.129644+00:00"
+      }
+    ]
   }
 }

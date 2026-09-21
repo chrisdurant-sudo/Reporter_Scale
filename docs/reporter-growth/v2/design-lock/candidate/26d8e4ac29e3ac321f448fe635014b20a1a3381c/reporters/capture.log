@@ -1,0 +1,13 @@
+{
+  "candidate": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+  "artifacts": 11,
+  "interactions": [
+    "Keyboard Enter opens exact Marcus Wren detail; Escape closes and restores opener focus.",
+    "Search, stable skill, sort and counted confirmation filters intersect; repeat status click restores All; drawer round trip preserves filters.",
+    "Availability command rejects reversed window, retains entered draft, then saves exact LAX/SFO remote scope at canonical actor/time without changing readiness, assignments or outcomes.",
+    "Follow-up saves entered owner/due date, navigates to exact canonical Team work, and repeated Open linked work performs no save or duplicate creation.",
+    "Reload preserves canonical availability and single follow-up.",
+    "Person evidence and recruiting checklist preserve exact person IDs and clear unrelated filters. Recent-work evidence opens and Escape closes.",
+    "All and five market scopes retain nonempty reporters and selected market across Funnel navigation."
+  ]
+}

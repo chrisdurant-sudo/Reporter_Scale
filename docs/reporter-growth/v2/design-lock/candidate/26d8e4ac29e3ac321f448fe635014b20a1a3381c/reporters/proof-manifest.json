@@ -1,0 +1,145 @@
+{
+  "base": "3a7842908ebf84fb53147d56bb270b0c44423847",
+  "candidate": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+  "clean": true,
+  "url": "http://127.0.0.1:5195/",
+  "reference": "docs/reporter-growth/v2/design-lock/interview-2026-09-19/reference-manifest.json",
+  "artifacts": [
+    {
+      "file": "/private/tmp/steno-completion-proof/reporters/reporters-default-1440x900.png",
+      "sha256": "1bc634adb0845d12a8b8b55b71d478706253d04aa79e57b0e92b4967e37f7324",
+      "state": "reporters-default-1440x900",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fullPage": false,
+      "pageOverflow": false
+    },
+    {
+      "file": "/private/tmp/steno-completion-proof/reporters/reporters-full-1440.png",
+      "sha256": "4a670c21c89a8e42d49e53780d080e391d67dab9eb3720d74fbf1b421440d507",
+      "state": "reporters-full-1440",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fullPage": true,
+      "pageOverflow": false
+    },
+    {
+      "file": "/private/tmp/steno-completion-proof/reporters/reporters-person-detail-1440x900.png",
+      "sha256": "d050d3b430f63f19365642e31181dd3978060ccc31c8c188d58f6bbce851df87",
+      "state": "reporters-person-detail-1440x900",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fullPage": false,
+      "pageOverflow": false
+    },
+    {
+      "file": "/private/tmp/steno-completion-proof/reporters/reporters-filtered-1440x900.png",
+      "sha256": "7ea6f53e9937792741935d1a60892b2cc6f1f59e17c42079ed65ba7195e7238d",
+      "state": "reporters-filtered-1440x900",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fullPage": false,
+      "pageOverflow": false
+    },
+    {
+      "file": "/private/tmp/steno-completion-proof/reporters/reporters-availability-form-1440x900.png",
+      "sha256": "def27849cfeb915c8d41b26fe4b8ec831b12f5fe762567fa5366108ba97a824a",
+      "state": "reporters-availability-form-1440x900",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fullPage": false,
+      "pageOverflow": false
+    },
+    {
+      "file": "/private/tmp/steno-completion-proof/reporters/reporters-availability-error-1440x900.png",
+      "sha256": "0374d316774a980aacc3d8b919c141a9b78692eacc3966a0245287d25e5725f1",
+      "state": "reporters-availability-error-1440x900",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fullPage": false,
+      "pageOverflow": false
+    },
+    {
+      "file": "/private/tmp/steno-completion-proof/reporters/reporters-availability-saved-1440x900.png",
+      "sha256": "c4204384a1f24c910dca0679091227ef6eec9990d6fcd673af2719673dda4628",
+      "state": "reporters-availability-saved-1440x900",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fullPage": false,
+      "pageOverflow": false
+    },
+    {
+      "file": "/private/tmp/steno-completion-proof/reporters/reporters-follow-up-form-1440x900.png",
+      "sha256": "50462fa9ae78b88fd864d32a88733fc89f4e0d1664337c3acef6e91f6ffaa02c",
+      "state": "reporters-follow-up-form-1440x900",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fullPage": false,
+      "pageOverflow": false
+    },
+    {
+      "file": "/private/tmp/steno-completion-proof/reporters/reporters-linked-team-work-1440x900.png",
+      "sha256": "48514cf88187ce035128befdf3a91985b7edf1e3c6e333852f74e1aecfa76e46",
+      "state": "reporters-linked-team-work-1440x900",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fullPage": false,
+      "pageOverflow": false
+    },
+    {
+      "file": "/private/tmp/steno-completion-proof/reporters/reporters-person-evidence-context-1440x900.png",
+      "sha256": "b5e0eadc2fe75df209910a865b1c1a4a447b92e75c84e8c332bd14acd3673cc7",
+      "state": "reporters-person-evidence-context-1440x900",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fullPage": false,
+      "pageOverflow": false
+    },
+    {
+      "file": "/private/tmp/steno-completion-proof/reporters/reporters-recent-work-evidence-1440x900.png",
+      "sha256": "32488a1c583bdd8e6a922f3fb106742578aa4fc6b663c2459d994d9413004443",
+      "state": "reporters-recent-work-evidence-1440x900",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fullPage": false,
+      "pageOverflow": false
+    }
+  ],
+  "interactions": [
+    "Keyboard Enter opens exact Marcus Wren detail; Escape closes and restores opener focus.",
+    "Search, stable skill, sort and counted confirmation filters intersect; repeat status click restores All; drawer round trip preserves filters.",
+    "Availability command rejects reversed window, retains entered draft, then saves exact LAX/SFO remote scope at canonical actor/time without changing readiness, assignments or outcomes.",
+    "Follow-up saves entered owner/due date, navigates to exact canonical Team work, and repeated Open linked work performs no save or duplicate creation.",
+    "Reload preserves canonical availability and single follow-up.",
+    "Person evidence and recruiting checklist preserve exact person IDs and clear unrelated filters. Recent-work evidence opens and Escape closes.",
+    "All and five market scopes retain nonempty reporters and selected market across Funnel navigation."
+  ],
+  "consoleErrors": [],
+  "limitations": [
+    "Shared CategoryComparison and Drawer preserve frozen component treatment.",
+    "Separate Certifications and Compliance columns preserve XR38 as accepted by Lead.",
+    "Independent IP5 Quality/IP6 Reviewer remain pending."
+  ]
+}

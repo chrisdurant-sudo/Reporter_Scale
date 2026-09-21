@@ -1,0 +1,55 @@
+{
+  "candidate": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+  "captures": 15,
+  "checks": [
+    {
+      "id": "default-three-columns",
+      "result": [
+        "To do16",
+        "In progress5",
+        "Done4"
+      ]
+    },
+    {
+      "id": "keyboard-drawer-filter-return",
+      "result": "Enter opens; Escape closes and restores opener; member and blocked filters retained"
+    },
+    {
+      "id": "market-LAX",
+      "result": 9
+    },
+    {
+      "id": "market-SFO",
+      "result": 4
+    },
+    {
+      "id": "market-DFW",
+      "result": 4
+    },
+    {
+      "id": "market-ORD",
+      "result": 6
+    },
+    {
+      "id": "market-ATL",
+      "result": 5
+    },
+    {
+      "id": "market-All",
+      "result": 25
+    },
+    {
+      "id": "work-save-refresh",
+      "result": "Title/link/due/priority/owner/note/status/evidence/history persist; completion actor unchanged"
+    },
+    {
+      "id": "member-workflows-refresh",
+      "result": "Target/quality/coaching/review/learning saved through canonical commands and survived refresh"
+    },
+    {
+      "id": "reset",
+      "result": "25 original tasks and original target restored"
+    }
+  ],
+  "errors": []
+}

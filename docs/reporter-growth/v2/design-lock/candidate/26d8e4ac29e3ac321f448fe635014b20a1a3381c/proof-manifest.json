@@ -1,0 +1,495 @@
+{
+  "kind": "assembled_interview_workspace_proof",
+  "captured_from_commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+  "worktree_clean_before_capture": true,
+  "worktree": "/private/tmp/steno-completion-review",
+  "url": "http://127.0.0.1:5195/",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "status": "awaiting_consolidated_lead_review",
+  "source_contract_commit": "dfa4b9b921991abd6a40127146520c421204c8cb",
+  "lane_candidates": {
+    "experience": "03bb66c24eef048093d8587e378f9f6aaf552d86",
+    "experience_reporters": "cca641d2ef1d15c92bc345e7e32737d16ec0405a",
+    "experience_team": "e6ebc6d6085ca2e3de4029c2e64f424b29526c5d",
+    "experience_programs": "46d0b90a0eb7ba56b5339635d3b7668a00fc9673"
+  },
+  "mechanical_cleanup_commit": "e9e1645",
+  "integration_tests_commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+  "artifacts": [
+    {
+      "lane": "reporters",
+      "id": "reporters-default-1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/reporters/reporters-default-1440x900.png",
+      "sha256": "1bc634adb0845d12a8b8b55b71d478706253d04aa79e57b0e92b4967e37f7324",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "reporters",
+      "id": "reporters-full-1440",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/reporters/reporters-full-1440.png",
+      "sha256": "4a670c21c89a8e42d49e53780d080e391d67dab9eb3720d74fbf1b421440d507",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "reporters",
+      "id": "reporters-person-detail-1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/reporters/reporters-person-detail-1440x900.png",
+      "sha256": "d050d3b430f63f19365642e31181dd3978060ccc31c8c188d58f6bbce851df87",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "reporters",
+      "id": "reporters-filtered-1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/reporters/reporters-filtered-1440x900.png",
+      "sha256": "7ea6f53e9937792741935d1a60892b2cc6f1f59e17c42079ed65ba7195e7238d",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "reporters",
+      "id": "reporters-availability-form-1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/reporters/reporters-availability-form-1440x900.png",
+      "sha256": "def27849cfeb915c8d41b26fe4b8ec831b12f5fe762567fa5366108ba97a824a",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "reporters",
+      "id": "reporters-availability-error-1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/reporters/reporters-availability-error-1440x900.png",
+      "sha256": "0374d316774a980aacc3d8b919c141a9b78692eacc3966a0245287d25e5725f1",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "reporters",
+      "id": "reporters-availability-saved-1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/reporters/reporters-availability-saved-1440x900.png",
+      "sha256": "c4204384a1f24c910dca0679091227ef6eec9990d6fcd673af2719673dda4628",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "reporters",
+      "id": "reporters-follow-up-form-1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/reporters/reporters-follow-up-form-1440x900.png",
+      "sha256": "50462fa9ae78b88fd864d32a88733fc89f4e0d1664337c3acef6e91f6ffaa02c",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "reporters",
+      "id": "reporters-linked-team-work-1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/reporters/reporters-linked-team-work-1440x900.png",
+      "sha256": "48514cf88187ce035128befdf3a91985b7edf1e3c6e333852f74e1aecfa76e46",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "reporters",
+      "id": "reporters-person-evidence-context-1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/reporters/reporters-person-evidence-context-1440x900.png",
+      "sha256": "b5e0eadc2fe75df209910a865b1c1a4a447b92e75c84e8c332bd14acd3673cc7",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "reporters",
+      "id": "reporters-recent-work-evidence-1440x900",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/reporters/reporters-recent-work-evidence-1440x900.png",
+      "sha256": "32488a1c583bdd8e6a922f3fb106742578aa4fc6b663c2459d994d9413004443",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "team",
+      "id": "team-default",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/team/team-default.png",
+      "sha256": "89bd4ffd8424ebcd34243f37367b42fed0143556920ec5bce8174848fe97a690",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "team",
+      "id": "team-full",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/team/team-full.png",
+      "sha256": "af319ac7ef2bd53eae07fd8de2c23510db92bd98e5db70497828dd0c80206cdc",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "team",
+      "id": "team-unassigned",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/team/team-unassigned.png",
+      "sha256": "716a1b3297a53d464c5ab82df8b525365db367828df44545f1fff9322fe36605",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "team",
+      "id": "team-member-blocked",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/team/team-member-blocked.png",
+      "sha256": "15e85456a7f6ab790f1ae880b09e86a1feafa300a240cd1d496f706e172bb250",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "team",
+      "id": "team-blocked-editor",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/team/team-blocked-editor.png",
+      "sha256": "079a3c5fb9bbf893b4613b8d3c06a16c2b603ff58562c6a5897e281d30bc8e8f",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "team",
+      "id": "team-domain-program",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/team/team-domain-program.png",
+      "sha256": "2a547de838b3114e9b972d06df0365a47a728b46bddec6c3311b76303f5a3afc",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "team",
+      "id": "team-add-work",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/team/team-add-work.png",
+      "sha256": "62467743b616b0a3ee23830249476a8b090a0ec5456ad3dabb53276c71def52a",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "team",
+      "id": "team-work-editor",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/team/team-work-editor.png",
+      "sha256": "f2b8043f01fad6075f80a4724e539e42c3cee99dcb5087ebb1e260c6ba5497cc",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "team",
+      "id": "team-completion-form",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/team/team-completion-form.png",
+      "sha256": "130b6919a307df00bc0f728661fb5f2ba1deaf5079f49bd54c63f7ab5b294e44",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "team",
+      "id": "team-history",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/team/team-history.png",
+      "sha256": "46ed2341b0399e59ac6c53261f20ee4061e3172706822b88b811bb0db54f6073",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "team",
+      "id": "team-goals",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/team/team-goals.png",
+      "sha256": "4e8d68cb98ca5d06211e7163f276cb90287f0451b0c6d1587a0faa56b00de610",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "team",
+      "id": "team-goal-form",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/team/team-goal-form.png",
+      "sha256": "5a028e4573a4619c85a4f4333d1079787a35ef34d7356e918e8eafa2c5ead6f6",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "team",
+      "id": "team-quality",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/team/team-quality.png",
+      "sha256": "d9ec72b91236b70bbd13ce7405c1c9a3ca40294ebc3b5ebbc0549ee8806362e3",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "team",
+      "id": "team-coaching",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/team/team-coaching.png",
+      "sha256": "3fd8f99cfcd59251a275ff6d9a1ef6ea9e82166a56f7bfe14cf3dfe3e8aae8dc",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "team",
+      "id": "team-learning",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/team/team-learning.png",
+      "sha256": "f7a1f31eddb9a73c8d81369634534ca96463db37282796f8b356d80909413450",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "programs",
+      "id": "programs-default",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/programs/programs-default.png",
+      "sha256": "bc319cea7af9c2fcc9808bb9d434b501222ce8de817f60643d5de57c240c1fb0",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "programs",
+      "id": "programs-full",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/programs/programs-full.png",
+      "sha256": "10bf6cb9dffc148f9a428e48c33f005ccbfe003bec6ee8727e83493ecdfefe74",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "programs",
+      "id": "programs-stopped-filter",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/programs/programs-stopped-filter.png",
+      "sha256": "12cc35bf719fc1aed301d796dc05febf6a5138d94f5ac18db07e2ef2b57b74a7",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "programs",
+      "id": "programs-combined-filters",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/programs/programs-combined-filters.png",
+      "sha256": "839ae65e0eb5317eed3a20fe86530c5f05a0115712791e68f5a48c2cb4f0a9cd",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "programs",
+      "id": "programs-results",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/programs/programs-results.png",
+      "sha256": "78742e7d6484658c1399e4f5d9d6a81eeba134b82a37cc37d9898f5dbac6b62a",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "programs",
+      "id": "programs-pilot-detail",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/programs/programs-pilot-detail.png",
+      "sha256": "40706ac0a69e3d578f25fb79a3857245b8ccf6c738b1e9b38fedb6e081d0c610",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "programs",
+      "id": "programs-pilot-checklist",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/programs/programs-pilot-checklist.png",
+      "sha256": "29a42d246d34dd1a257a3056eaf86d003929558ba52b64304e54f30f1f4ecc55",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "programs",
+      "id": "programs-decision",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/programs/programs-decision.png",
+      "sha256": "7628efddba2f9147a930f9e9d98dab201446ddcb881f9098490a8e590d8912b7",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "programs",
+      "id": "programs-process-draft",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/programs/programs-process-draft.png",
+      "sha256": "816c932ce49262724652b9756ebab6d1c380df01dfd868bc8fac11bc2533e49c",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "programs",
+      "id": "programs-linked-work-form",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/programs/programs-linked-work-form.png",
+      "sha256": "1cc9be14d51a3eeafd792ceb6495933fa397365f1ad9269b100c0eecbc213929",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "programs",
+      "id": "programs-linked-work",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/programs/programs-linked-work.png",
+      "sha256": "b4b1a7b5cb641dfbea417c0330002eb5a9d0628d5f39516122b1fa2a6cdf5ed6",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "programs",
+      "id": "programs-linked-team-destination",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/programs/programs-linked-team-destination.png",
+      "sha256": "3a0c5e74b787f4f6a943152b5c2f34fc46b16c91c628572350b6743006829f55",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "programs",
+      "id": "programs-lax-benchmark",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/programs/programs-lax-benchmark.png",
+      "sha256": "722f57af616a5645e978b2838be3aa11dd38f00d40a5843f320df0a6e73aa668",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "lane": "programs",
+      "id": "programs-dfw-stopped",
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/programs/programs-dfw-stopped.png",
+      "sha256": "cca21463791b831e24312e33750dc04ead51e5bb9c716803844393eec0b8f228",
+      "commit": "26d8e4ac29e3ac321f448fe635014b20a1a3381c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    }
+  ],
+  "lane_proofs": {
+    "reporters": {
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/reporters/proof-manifest.json",
+      "sha256": "60c66b6f83df85743a0c38cb43b98174c610bd2cc84a7d339b4d9c5e58d40980"
+    },
+    "team": {
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/team/proof-manifest.json",
+      "sha256": "f26a068a684492066fe81f6dec208d037a2a50d98af73569dd7c3f80fb8377fc"
+    },
+    "programs": {
+      "file": "docs/reporter-growth/v2/design-lock/candidate/26d8e4ac29e3ac321f448fe635014b20a1a3381c/programs/proof-manifest.json",
+      "sha256": "39a80f2d67635373b7a082a5ee35dc3a3dbfb6365ee9178bbc50d885f30cf9a4"
+    }
+  },
+  "waivers": [],
+  "harness_repairs": [
+    "Team reset navigates back to Team after Reset opens Overview.",
+    "Learning reused textarea selected by exact accessible textbox role; getByLabel includes retained text content."
+  ],
+  "checks": {
+    "integration_tests": {
+      "passed": 11,
+      "exit_code": 0
+    },
+    "typecheck_exit_code": 0,
+    "lint_exit_code": 0
+  },
+  "historical_reference": "docs/reporter-growth/v2/design-lock/reference-manifest.md",
+  "reference_evidence": {
+    "file": "docs/reporter-growth/v2/design-lock/interview-2026-09-19/reference-manifest.json",
+    "sha256": "f5a1443b3705b8bb5a5bdd50ef89d9e5e0ca44520172de17a01780ace79b268f"
+  }
+}
