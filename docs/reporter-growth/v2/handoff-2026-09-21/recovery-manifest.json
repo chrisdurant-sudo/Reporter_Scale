@@ -1,0 +1,79 @@
+{
+  "purpose": "Recovery copies only. Preserve existing worktrees; do not apply a patch twice. These are unaccepted/incomplete changes, not verified production candidates.",
+  "files": [
+    {
+      "file": "docs/reporter-growth/v2/handoff-2026-09-21/coordinator-tests.patch.gz",
+      "sha256": "4dc341a970b63fbf6b03f61027cb3b3b11628370ee801dce075d7bb9ac500c41",
+      "worktree": "/private/tmp/steno-p4-coordinator",
+      "base_commit": "5f6c28a2fab36444f451bd7aca09a1f8faa66929",
+      "working_paths": [
+        {
+          "path": "src/integration/App.test.tsx",
+          "sha256": "4f1e8c1c32a228b9be96dbbe567bf2e31d522c4db5d971e548867487a7921ef6"
+        }
+      ],
+      "encoding": "gzip; decompress before inspecting or applying"
+    },
+    {
+      "file": "docs/reporter-growth/v2/handoff-2026-09-21/lead-category.patch.gz",
+      "sha256": "4c9ba516b4c020a575ae1a9589007308189b17080b584c09906a4abce74ce78d",
+      "worktree": "/private/tmp/steno-ip2-proof-repair",
+      "base_commit": "3a7842908ebf84fb53147d56bb270b0c44423847",
+      "working_paths": [
+        {
+          "path": "src/ui/interview.tsx",
+          "sha256": "c0917c9b740f2fe07d565ca3577f713958aa056ab13849fc68e66d698703ca82"
+        },
+        {
+          "path": "src/ui/interview.test.tsx",
+          "sha256": "f0b7d079318f6b9f5a0af18ff2ced3e1fde39604e54031b4d2f280821f94a794"
+        },
+        {
+          "path": "src/styles/tokens.css",
+          "sha256": "a76d46bd3c0a0e1302c241e99a449eb37d67552b0c960dc19c25cd9045338e80"
+        }
+      ],
+      "encoding": "gzip; decompress before inspecting or applying"
+    },
+    {
+      "file": "docs/reporter-growth/v2/handoff-2026-09-21/coordinator-v2WorkspaceActions.test.tsx.txt",
+      "sha256": "4a1a576f6de2f379326f2c695669ee1783128f25a6aa78a2151ee314125c2dff",
+      "original_path": "/private/tmp/steno-p4-coordinator/src/integration/v2WorkspaceActions.test.tsx"
+    },
+    {
+      "file": "docs/reporter-growth/v2/handoff-2026-09-21/reporters-capture.mjs",
+      "sha256": "9364be373534cfd32143fd7cf9add66a50a3c357fd15f0783529dd4591da099e",
+      "original_path": "/private/tmp/steno-ip3-reporters-proof/capture.mjs"
+    },
+    {
+      "file": "docs/reporter-growth/v2/handoff-2026-09-21/programs-capture.mjs",
+      "sha256": "54fb794c477cc891bd65a973d2f35e4269e3f14066da2aed819156fac7ecc6eb",
+      "original_path": "/private/tmp/steno-ip3-programs-proof/capture.mjs"
+    },
+    {
+      "file": "docs/reporter-growth/v2/handoff-2026-09-21/team-capture.mjs",
+      "sha256": "1a004899c9265714b3d503386c0c16e5b35c622836daf5e44d6ea79f2bfc8c72",
+      "original_path": "/private/tmp/steno-ip3-team-proof/capture.mjs"
+    },
+    {
+      "file": "docs/reporter-growth/v2/handoff-2026-09-21/reporters-historical-proof.json",
+      "sha256": "d38e37eb7feef215f422d9e29bc071af9181e50aee161c539575adce6d73e2a0",
+      "original_path": "/private/tmp/steno-ip3-reporters-proof/proof-manifest.json"
+    },
+    {
+      "file": "docs/reporter-growth/v2/handoff-2026-09-21/programs-historical-proof.json",
+      "sha256": "38860858170f81b61327b76d1c18028a0943800e82ad952a73f2002f51cc281f",
+      "original_path": "/private/tmp/steno-ip3-programs-proof/proof-manifest.json"
+    },
+    {
+      "file": "docs/reporter-growth/v2/handoff-2026-09-21/programs-handoff.md",
+      "sha256": "12eb1aad218c24adf218d0555f3258c3f4ab142617fe3c80cd6751d63eab2c92",
+      "original_path": "/private/tmp/steno-ip3-programs-proof/HANDOFF.md"
+    },
+    {
+      "file": "docs/reporter-growth/v2/handoff-2026-09-21/lead-reference-inspection.json",
+      "sha256": "5d8fc7635a654784c2e57d492feab978ddcc1cfbbf09badbd6d03d5a0a7c84fd",
+      "original_path": "/private/tmp/steno-ip3-lead-reviews/reference-inspection.json"
+    }
+  ]
+}

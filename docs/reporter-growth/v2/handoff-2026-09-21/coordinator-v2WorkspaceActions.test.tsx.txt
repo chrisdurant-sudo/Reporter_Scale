@@ -1,0 +1,154 @@
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { INTERVIEW_V2_STORAGE_KEY, type DemoSnapshotV2, type PersistedDemoSnapshotV2 } from "../contracts/v2";
+import { DEMO_SNAPSHOT_V2 } from "../data/v2";
+import { App } from "./App";
+
+afterEach(() => {
+  cleanup();
+  vi.restoreAllMocks();
+  localStorage.removeItem(INTERVIEW_V2_STORAGE_KEY);
+});
+
+const savedSnapshot = () => (JSON.parse(localStorage.getItem(INTERVIEW_V2_STORAGE_KEY)!) as PersistedDemoSnapshotV2).snapshot;
+function expectOperationalFactsUnchanged(snapshot: DemoSnapshotV2) {
+  expect(snapshot.readinessEvents).toEqual(DEMO_SNAPSHOT_V2.readinessEvents);
+  expect(snapshot.assignmentEvents).toEqual(DEMO_SNAPSHOT_V2.assignmentEvents);
+  expect(snapshot.jobOutcomes).toEqual(DEMO_SNAPSHOT_V2.jobOutcomes);
+  expect(snapshot.programEnrollments).toEqual(DEMO_SNAPSHOT_V2.programEnrollments);
+}
+
+async function openReporters() {
+  const user = userEvent.setup();
+  const mounted = render(<App />);
+  await screen.findByRole("main", { name: "Overview" });
+  await user.click(screen.getByRole("button", { name: "LAX" }));
+  await user.click(screen.getByRole("button", { name: "Reporters" }));
+  await screen.findByRole("main", { name: "Reporters" });
+  return { user, mounted };
+}
+
+describe("Interview workspace command composition", () => {
+  it("retains an explicit availability draft after denied storage, then saves exactly its scope and reloads it", async () => {
+    const { user, mounted } = await openReporters();
+    const trigger = screen.getAllByRole("button", { name: "Confirm availability" })[0]!;
+    const row = trigger.closest("tr")!;
+    const name = within(row).getAllByRole("button")[0]!.textContent!;
+    const reporter = DEMO_SNAPSHOT_V2.reporters.find((person) => person.fictionalName === name)!;
+    expect(reporter).toBeDefined();
+    await user.click(trigger);
+    const dialog = screen.getByRole("dialog", { name: "Confirm availability" });
+    await user.selectOptions(within(dialog).getByRole("combobox", { name: "Status" }), "unavailable");
+    await user.click(within(dialog).getByRole("checkbox", { name: "LAX" }));
+    await user.click(within(dialog).getByRole("checkbox", { name: "Remote" }));
+    fireEvent.change(within(dialog).getByLabelText("Starts at (UTC)"), { target: { value: "2026-02-16T18:00" } });
+    fireEvent.change(within(dialog).getByLabelText("Ends at (UTC)"), { target: { value: "2026-02-23T18:00" } });
+    fireEvent.change(within(dialog).getByLabelText("Confirmation expires at (UTC)"), { target: { value: "2026-02-17T18:00" } });
+    const before = localStorage.getItem(INTERVIEW_V2_STORAGE_KEY);
+    const denied = vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => { throw new Error("storage denied"); });
+    await user.click(within(dialog).getByRole("button", { name: "Save availability" }));
+    expect(await within(dialog).findByRole("alert")).toHaveTextContent(/kept|retained/);
+    expect(localStorage.getItem(INTERVIEW_V2_STORAGE_KEY)).toBe(before);
+    expect(within(dialog).getByLabelText("Starts at (UTC)")).toHaveValue("2026-02-16T18:00");
+    expect(within(dialog).getByRole("combobox", { name: "Status" })).toHaveValue("unavailable");
+    denied.mockRestore();
+    await user.click(within(dialog).getByRole("button", { name: "Save availability" }));
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Confirm availability" })).not.toBeInTheDocument());
+    const saved = savedSnapshot();
+    expect(saved.availabilityWindows).toHaveLength(DEMO_SNAPSHOT_V2.availabilityWindows.length + 1);
+    expect(saved.availabilityWindows.at(-1)).toMatchObject({
+      reporterId: reporter.id, status: "unavailable", serviceMarketIds: ["LAX"], attendanceModes: ["remote"],
+      startAt: "2026-02-16T18:00:00.000Z", endAt: "2026-02-23T18:00:00.000Z",
+      confirmationExpiresAt: "2026-02-17T18:00:00.000Z", actorId: "actor-team-3",
+      recordedAt: DEMO_SNAPSHOT_V2.currentAsOfAt,
+    });
+    expectOperationalFactsUnchanged(saved);
+    mounted.unmount();
+    render(<App />);
+    await screen.findByRole("main", { name: "Overview" });
+    expect(savedSnapshot().availabilityWindows).toEqual(saved.availabilityWindows);
+  }, 15_000);
+
+  it("creates one canonical follow-up with entered owner and due date, then reopens it without another save", async () => {
+    const { user } = await openReporters();
+    const trigger = screen.getAllByRole("button", { name: "Create re-engagement task" })[0]!;
+    const name = within(trigger.closest("tr")!).getAllByRole("button")[0]!.textContent!;
+    const reporter = DEMO_SNAPSHOT_V2.reporters.find((person) => person.fictionalName === name)!;
+    await user.click(trigger);
+    const dialog = screen.getByRole("dialog", { name: "Create re-engagement task" });
+    await user.selectOptions(within(dialog).getByRole("combobox", { name: "Market" }), "LAX");
+    await user.selectOptions(within(dialog).getByRole("combobox", { name: "Owner" }), "unassigned");
+    fireEvent.change(within(dialog).getByLabelText("Due date (UTC)"), { target: { value: "2026-02-20" } });
+    await user.click(within(dialog).getByRole("button", { name: "Save and open linked work" }));
+    await screen.findByRole("main", { name: "Team" });
+    const saved = savedSnapshot();
+    expect(saved.workItems).toHaveLength(DEMO_SNAPSHOT_V2.workItems.length + 1);
+    const task = saved.workItems.find((work) => work.kind === "re-engage" && work.primaryEntityRef.kind === "reporter" && work.primaryEntityRef.id === reporter.id)!;
+    expect(task).toMatchObject({ dueAt: "2026-02-20T00:00:00.000Z", ownerHistory: [{ ownerId: null }] });
+    expectOperationalFactsUnchanged(saved);
+    const bytes = localStorage.getItem(INTERVIEW_V2_STORAGE_KEY);
+    await user.click(screen.getByRole("button", { name: "Reporters" }));
+    const row = screen.getByRole("rowheader", { name: new RegExp(name) }).closest("tr")!;
+    await user.click(within(row).getByRole("button", { name: "Open linked work" }));
+    await screen.findByRole("main", { name: "Team" });
+    expect(screen.getByRole("region", { name: "Preserved evidence context" })).toHaveTextContent("1 linked task");
+    expect(localStorage.getItem(INTERVIEW_V2_STORAGE_KEY)).toBe(bytes);
+    expect(savedSnapshot().workItems.find((work) => work.id === task.id)).toEqual(task);
+  }, 15_000);
+
+  it("persists the entered program decision and copies the selected process without changing cohort outcomes", async () => {
+    const user = userEvent.setup();
+    const mounted = render(<App />);
+    await screen.findByRole("main", { name: "Overview" });
+    await user.click(screen.getByRole("button", { name: "Programs" }));
+    await user.click(screen.getByRole("button", { name: "Readiness checklist pilot" }));
+    await user.click(screen.getByRole("button", { name: "Record decision" }));
+    let dialog = screen.getByRole("dialog", { name: "Record program decision" });
+    await user.selectOptions(within(dialog).getByRole("combobox", { name: "Decision" }), "change");
+    await user.selectOptions(within(dialog).getByRole("combobox", { name: "Accountable owner" }), "team-1");
+    fireEvent.change(within(dialog).getByLabelText("Next review date"), { target: { value: "2026-03-20" } });
+    await user.type(within(dialog).getByLabelText("Decision rationale"), "  Review the exception path before another bounded pilot.  ");
+    await user.click(within(dialog).getByRole("button", { name: "Save decision" }));
+    expect(await within(dialog).findByRole("status")).toHaveTextContent("Decision saved");
+    const decisionSaved = savedSnapshot();
+    expect(decisionSaved.programDecisions).toHaveLength(DEMO_SNAPSHOT_V2.programDecisions.length + 1);
+    expect(decisionSaved.programDecisions.at(-1)).toMatchObject({
+      programId: "program-readiness-checklist", decision: "change",
+      rationale: "  Review the exception path before another bounded pilot.  ",
+      decidedBy: "actor-team-2", decidedAt: DEMO_SNAPSHOT_V2.currentAsOfAt,
+      nextReviewAt: "2026-03-20T17:00:00.000Z",
+    });
+    expect(decisionSaved.programs.find((program) => program.id === "program-readiness-checklist"))
+      .toMatchObject({ ownerId: "team-1", reviewAt: "2026-03-20T17:00:00.000Z" });
+    expectOperationalFactsUnchanged(decisionSaved);
+
+    await user.click(within(dialog).getByRole("button", { name: "Back to program" }));
+    await user.click(screen.getByRole("button", { name: "Save process draft" }));
+    dialog = screen.getByRole("dialog", { name: "Save process draft" });
+    const source = DEMO_SNAPSHOT_V2.processVersions.find((process) => process.id === "process-checklist-v1")!;
+    await user.selectOptions(within(dialog).getByRole("combobox", { name: "Source process version" }), source.id);
+    fireEvent.change(within(dialog).getByLabelText("Next review date"), { target: { value: "2026-03-24" } });
+    await user.click(within(dialog).getByRole("button", { name: "Save draft" }));
+    expect(await within(dialog).findByRole("status")).toHaveTextContent("Process draft saved");
+    const saved = savedSnapshot();
+    expect(saved.processVersions).toHaveLength(DEMO_SNAPSHOT_V2.processVersions.length + 1);
+    expect(saved.processVersions.at(-1)).toMatchObject({
+      programId: source.programId, status: "draft", ownerId: "team-1",
+      trigger: source.trigger, requiredSteps: source.requiredSteps, exceptions: source.exceptions,
+      nextReviewAt: "2026-03-24T17:00:00.000Z",
+    });
+    expectOperationalFactsUnchanged(saved);
+    mounted.unmount();
+    render(<App />);
+    await screen.findByRole("main", { name: "Overview" });
+    await user.click(screen.getByRole("button", { name: "Programs" }));
+    await user.click(screen.getByRole("button", { name: "Readiness checklist pilot" }));
+    expect(screen.getByRole("dialog", { name: "Readiness checklist pilot" })).toHaveTextContent("Review the exception path before another bounded pilot.");
+    await user.keyboard("{Escape}");
+    await user.click(screen.getByText("Scenario controls"));
+    await user.click(screen.getByRole("button", { name: "Reset demo" }));
+    await screen.findByRole("main", { name: "Overview" });
+    expect(savedSnapshot()).toEqual(DEMO_SNAPSHOT_V2);
+  }, 15_000);
+});

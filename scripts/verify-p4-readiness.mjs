@@ -54,8 +54,11 @@ check(registry.spawn_context_policy?.name === "zero_inheritance", "P4 must decla
 check(registry.spawn_context_policy?.required_fork_turns === "none", "Every P4 spawn must require fork_turns=none.");
 check(JSON.stringify(registry.spawn_context_policy?.forbidden_fork_turns) === JSON.stringify(["all", "bounded_history"]), "Full and bounded-history forks must be forbidden.");
 check(registry.spawn_context_policy?.applies_to === "every_routed_probe_and_worker_spawn", "Zero inheritance must cover probes and workers.");
-check(registry.max_concurrent_lane_workers === 4, "P4 must cap the workspace wave at four lane workers.");
-check(registry.max_concurrent_spawned_agents_excluding_coordinator === 4, "P4 spawn limit must be four.");
+const completionLimit = registry.completion_execution_policy?.max_active_child_agents;
+check(completionLimit === undefined || completionLimit === 1, "The completion amendment permits only one active child agent.");
+const workerLimit = completionLimit ?? 4;
+check(registry.max_concurrent_lane_workers === workerLimit, `The active lane-worker limit must be ${workerLimit}.`);
+check(registry.max_concurrent_spawned_agents_excluding_coordinator === workerLimit, `The active spawn limit must be ${workerLimit}.`);
 check(registry.workers_may_spawn === false, "P4 workers must not spawn children.");
 check(registry.implementation_requires.includes("explicit_P4_implementation_authorization"), "Explicit P4 authorization must be a registry gate.");
 check(registry.implementation_requires.includes("ZERO_INHERITANCE_SPAWN_POLICY_VERIFIED"), "Zero inheritance must be an implementation gate.");
@@ -177,7 +180,7 @@ for (const [id, formerFeaturePath] of Object.entries(formerFeaturePaths)) {
 
 const config = read(".codex/config.toml");
 check(config.includes('service_tier = "default"'), "Coordinator configuration must remain Standard/default.");
-check(config.includes("max_concurrent_threads_per_session = 4"), "Project runtime must cap the P4.2 wave at four.");
+check(config.includes(`max_concurrent_threads_per_session = ${workerLimit}`), `Project runtime must match the active ${workerLimit}-worker limit.`);
 check(config.includes("P4 Experience Lead"), "Experience description must identify the Lead.");
 check(includesAll(config, ["[agents.experience_reporters]", "[agents.experience_team]", "[agents.experience_programs]"]), "Project config must register all three Experience specialists.");
 check(config.includes("P4 serial data-preparation lane"), "Data description must identify the serial preparation step.");

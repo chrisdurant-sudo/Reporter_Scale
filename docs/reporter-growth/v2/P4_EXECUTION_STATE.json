@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-21T18:12:51.583192+00:00",
+  "updated_at": "2026-09-21T18:25:55.618369+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -671,7 +671,7 @@
     "commit": "b5cbe33e66a52f466456467a240d2f704208fb10",
     "status": "IP2_accepted_shared_baseline",
     "defect_register": "docs/reporter-growth/v2/IP2_COORDINATOR_REVIEW_2026-09-19.md",
-    "reason": "All retained assertions pass; clean desktop proof reviewed; specialist runtime probes finishing."
+    "reason": "Accepted shared baseline. Three specialist source commits and a partial shared repair are preserved; assembled visual review and independent final gates remain pending."
   },
   "gates": {
     "data": {
@@ -1460,15 +1460,21 @@
     "status": "paused_for_usage_control"
   },
   "completion_execution_policy": {
-    "status": "recorded_implementation_paused",
+    "status": "handoff_ready_implementation_paused",
     "authorization": "User September21 requested brief usage analysis and authorized adjusting agent orders to finish with less usage.",
     "evidence": {
       "file": "docs/reporter-growth/v2/USAGE_BOUNDED_COMPLETION_2026-09-21.md",
-      "sha256": "fe46f50912fe3ae9ad6b34e47a480a2152ddcc259d92de9f3224eeb77614f1c9"
+      "sha256": "10a96366ea22edfc7ad7c02a0c0b14dee670ac100a44ad5653a1dba479c94988"
     },
     "max_active_child_agents": 1,
     "models_unchanged": true,
     "independent_quality_and_reviewer_retained": true,
-    "usage_checkpoint_additional_percentage_points": 5
+    "usage_checkpoint_additional_percentage_points": 5,
+    "restart_packet": {
+      "file": "docs/reporter-growth/v2/COMPLETION_HANDOFF_2026-09-21.md",
+      "sha256": "d9be2de75e26cebff82cbf6cb538bccb960899b3ac40124d882f0329815c553b"
+    },
+    "runtime_worker_cap_configured": 1,
+    "recovery_manifest": "docs/reporter-growth/v2/handoff-2026-09-21/recovery-manifest.json"
   }
 }

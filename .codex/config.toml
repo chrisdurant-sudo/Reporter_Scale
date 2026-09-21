@@ -9,7 +9,7 @@ service_tier = "default"
 
 [agents]
 enabled = true
-max_concurrent_threads_per_session = 4
+max_concurrent_threads_per_session = 1
 default_subagent_model = "gpt-6-astra"
 default_subagent_reasoning_effort = "high"
 

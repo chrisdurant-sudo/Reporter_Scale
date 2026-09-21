@@ -1,0 +1,15 @@
+{
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "checks": [
+    "Historical reporters interactive opened",
+    "Historical team interactive opened",
+    "Historical programs interactive opened",
+    "Amended Reporters person→availability and follow-up forms opened",
+    "Amended Team add/edit/completion evidence and goals/coaching forms opened",
+    "Amended Programs checklist/decision/source-version draft and DFW stopped state opened"
+  ],
+  "errors": []
+}

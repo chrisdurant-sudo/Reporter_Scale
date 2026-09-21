@@ -41,8 +41,8 @@
     "ZERO_INHERITANCE_SPAWN_POLICY_VERIFIED",
     "RUNTIME_ROUTING_PROBE_VERIFIED_BEFORE_FIRST_WORKER"
   ],
-  "max_concurrent_lane_workers": 4,
-  "max_concurrent_spawned_agents_excluding_coordinator": 4,
+  "max_concurrent_lane_workers": 1,
+  "max_concurrent_spawned_agents_excluding_coordinator": 1,
   "workers_may_spawn": false,
   "all_unassigned_paths_default_owner": "coordinator",
   "coordinator_owned": [

@@ -16,17 +16,21 @@ CategoryComparison repair has uncommitted changes in its own worktree. Preserve 
 ## Remaining order
 
 1. Resume the existing Lead only to finish the already identified shared chart repair, its focused
-   checks and exact commit. No new design exploration.
+   checks and exact commit. In a new coordinator task, if that child session is inaccessible, start
+   exactly one replacement Lead with zero inheritance, verify its runtime once, and give it the saved
+   patch and bounded repair. Do not recreate the specialist agents or repeat their historical probes.
+   No new design exploration.
 2. Coordinator audits the three existing lane commits and shared repair, and assembles one candidate
    in an isolated coordinator review worktree. This is provisional review assembly, not accepted
-   integration. Coordinator runs and adapts the existing scratch proof scripts, finishes Team proof,
-   and recaptures affected states against the assembled clean commit. Specialists remain idle.
+   integration. Finish canonical callback wiring, the permitted mechanical call-site/type cleanup,
+   and coordinator-owned integration assertions before freezing the review candidate. Coordinator
+   runs and adapts the existing scratch proof scripts, finishes Team proof, and recaptures affected
+   states against the assembled clean commit. Specialists remain idle.
 3. Lead performs one consolidated reference comparison and reports all blocking findings together.
    Retain the historical and amended reference packages. Record original lane SHAs, assembled SHA,
    screenshot checksums and attribution. A passing assembled review satisfies the remaining Lead
    review requirement for each included lane; official integration follows that review.
-4. Coordinator finishes canonical callback wiring and integration assertions. If obsolete assertions
-   remain in the two Quality-owned files, use the already authorized serial test-alignment exception
+4. If obsolete assertions remain in the two Quality-owned files, use the already authorized serial test-alignment exception
    after exact-candidate diagnostics. Preserve its separation from final independent Quality.
 5. Run the integrated full gate, then one fresh independent Quality audit and one read-only Reviewer
    audit of the exact Quality-passed candidate. Fix only concrete acceptance defects, through the
@@ -38,6 +42,9 @@ CategoryComparison repair has uncommitted changes in its own worktree. Preserve 
   delegated discovery, new domain lane, or child-of-child dispatch.
 - Reuse existing implementation sessions. Give one bounded task, exact paths/commit, changed context,
   required checks and a stop condition. Previously read unchanged contracts need not be reread.
+- Session reuse is conditional on tool access, not a requirement to troubleshoot across tasks.
+  Historical specialist probe evidence stays valid for their already committed work. A replacement
+  Lead, test-alignment worker, independent Quality or Reviewer needs only its own fresh startup probe.
 - New independent Quality/Reviewer agents still start with `fork_turns="none"` and receive one compact
   packet plus the required contract/reference paths. Verify actual runtime once; repeat only after a
   model, role, configuration or session change. Keep Astra and Standard/default as configured.
@@ -64,8 +71,13 @@ CategoryComparison repair has uncommitted changes in its own worktree. Preserve 
   Any relevant change, failure or unresolved concern requires the applicable rerun.
 - Read only required files and changed sections. Avoid dumping whole ledgers, minified references,
   session histories or successful logs into agent context. Return paths, counts, exit codes and failures.
+- A replacement coordinator starts with `COMPLETION_HANDOFF_2026-09-21.md`, these orders, and the
+  relevant live-ledger fields. Consult contract sections needed for its next bounded action instead
+  of reloading the entire historical packet. Required independent acceptance remains unchanged.
 - Coordinator maintains the ledger and one consolidated handoff. Workers do not create parallel
   process documents or duplicate coordinator verification narratives.
+- Do not make production changes after the consolidated visual review without invalidating the
+  affected review and rerunning the relevant proof. Finish known integration cleanup before capturing.
 
 ## Usage checkpoint
 
