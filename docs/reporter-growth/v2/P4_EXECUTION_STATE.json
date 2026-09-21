@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "p4_execution_state",
-  "updated_at": "2026-09-19T09:30:30.100330+00:00",
+  "updated_at": "2026-09-21T18:12:51.583192+00:00",
   "authorization": {
     "status": "active",
     "authorized_at": "2026-09-17",
@@ -1416,7 +1416,8 @@
       "task_name": "/root/experience_probe_takeover",
       "worktree": "/private/tmp/steno-ip2-proof-repair",
       "branch": "codex/interview-ip2-proof-repair",
-      "mode": "shared_design_steward_and_exact_candidate_reviewer"
+      "mode": "shared_design_steward_and_exact_candidate_reviewer",
+      "status": "paused_with_owned_shared_repair_uncommitted"
     },
     "specialists": [
       {
@@ -1427,8 +1428,9 @@
         "allowed_paths": [
           "src/features/reporters/"
         ],
-        "status": "implementing",
-        "base_commit": "3a7842908ebf84fb53147d56bb270b0c44423847"
+        "status": "source_committed_waiting_consolidated_review",
+        "base_commit": "3a7842908ebf84fb53147d56bb270b0c44423847",
+        "candidate_commit": "cca641d2ef1d15c92bc345e7e32737d16ec0405a"
       },
       {
         "role": "experience_team",
@@ -1438,8 +1440,9 @@
         "allowed_paths": [
           "src/features/team/"
         ],
-        "status": "implementing",
-        "base_commit": "3a7842908ebf84fb53147d56bb270b0c44423847"
+        "status": "source_committed_waiting_consolidated_review",
+        "base_commit": "3a7842908ebf84fb53147d56bb270b0c44423847",
+        "candidate_commit": "e6ebc6d6085ca2e3de4029c2e64f424b29526c5d"
       },
       {
         "role": "experience_programs",
@@ -1449,9 +1452,23 @@
         "allowed_paths": [
           "src/features/programs/"
         ],
-        "status": "implementing",
-        "base_commit": "3a7842908ebf84fb53147d56bb270b0c44423847"
+        "status": "source_committed_waiting_consolidated_review",
+        "base_commit": "3a7842908ebf84fb53147d56bb270b0c44423847",
+        "candidate_commit": "46d0b90a0eb7ba56b5339635d3b7668a00fc9673"
       }
-    ]
+    ],
+    "status": "paused_for_usage_control"
+  },
+  "completion_execution_policy": {
+    "status": "recorded_implementation_paused",
+    "authorization": "User September21 requested brief usage analysis and authorized adjusting agent orders to finish with less usage.",
+    "evidence": {
+      "file": "docs/reporter-growth/v2/USAGE_BOUNDED_COMPLETION_2026-09-21.md",
+      "sha256": "fe46f50912fe3ae9ad6b34e47a480a2152ddcc259d92de9f3224eeb77614f1c9"
+    },
+    "max_active_child_agents": 1,
+    "models_unchanged": true,
+    "independent_quality_and_reviewer_retained": true,
+    "usage_checkpoint_additional_percentage_points": 5
   }
 }

@@ -473,5 +473,15 @@
       ],
       "gate": "exact_quality_passed_commit"
     }
-  ]
+  ],
+  "completion_execution_policy": {
+    "amendment": "docs/reporter-growth/v2/USAGE_BOUNDED_COMPLETION_2026-09-21.md",
+    "authorized_by": "User September21: if we need to adjust the orders for agents, lets do that",
+    "max_active_child_agents": 1,
+    "mode": "coordinator_assembly_then_serial_independent_gates",
+    "reuse_existing_implementation_sessions": true,
+    "fresh_independent_quality_and_reviewer": true,
+    "usage_checkpoint_additional_percentage_points": 5,
+    "implementation_status": "paused_during_process_revision"
+  }
 }

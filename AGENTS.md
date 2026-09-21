@@ -1,5 +1,8 @@
 # Reporter Growth
 
+> September21 usage-control amendment: the user authorized tighter agent orders to finish with less usage. Read `docs/reporter-growth/v2/USAGE_BOUNDED_COMPLETION_2026-09-21.md`. It supersedes the remaining dispatch, repeated-reading, proof-assembly and redundant-check sequencing where stated. At most one child agent; existing specialists stay idle absent a concrete defect; coordinator assembles once and runs existing proof scripts; Lead performs one consolidated comparison; independent Quality/Reviewer and substantive acceptance remain mandatory. Model and Standard/default settings are unchanged. Implementation remains paused while the revised orders are recorded.
+
+
 > September19 IP3 transition: revised Overview/Funnel proof at clean `055fcd18a39a6238d6beb7fc52bdd03a315ea1c3` is accepted. Integrated `b5cbe33e66a52f466456467a240d2f704208fb10` passes315 unit/integration,9 acceptance,8 browser plus governance/lint/types/build. Lead and all three specialist actual Astra/high zero-inheritance runtimes are verified. Current phase `IP3_workspace_wave`; Lead plus Reporters/Team/Programs presentation specialists may run in their separate assigned worktrees using the frozen shared system. Independent Quality and Reviewer remain gated. Actual runtime is sandboxed automatic review; no user UI action is currently required.
 
 
