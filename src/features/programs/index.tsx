@@ -7,14 +7,6 @@ import { displayDate, displayNumber } from "../../ui/presentationFormat";
 import "./programs.css";
 
 export interface ProgramsScreenActions {
-  /** @deprecated Temporary integration compatibility; never invoked by this screen. */
-  readonly onEditProgram?: (programId: string, field: "title" | "stage", value: string) => void | Promise<void>;
-  /** @deprecated Use the explicit onSaveDecision port. */
-  readonly onRecordDecision?: (programId: string, decision: "continue" | "change" | "stop" | "expand", rationale: string) => void | Promise<void>;
-  /** @deprecated Use the explicit onSaveDraft port. */
-  readonly onSaveProcessDraft?: (programId: string) => void | Promise<void>;
-  /** @deprecated Use the explicit onCreateLinkedWork port. */
-  readonly onCreatePartnerTask?: (programId: string) => void | Promise<void>;
   readonly onOpenEvidence: (evidenceId: string) => void;
   readonly onSaveProgramText?: (payload: ProgramTextSavePayload) => void | Promise<void>;
 }
@@ -43,8 +35,8 @@ function Cohorts({ row, view, inspect }: { row: PreparedProgramRow; view: Prepar
   const points = view.cohortComparisons.filter((point) => point.programId === row.id);
   const target = row.targetDetails.value;
   const chartValue = (value: number) => first.unit === "ratio" ? value * 100 : first.unit === "currency-minor" ? value / 100 : value;
-  return <><CategoryComparison label={`${first.outcomeLabel} · ${first.followUpDays}-day horizon`} unit={first.unit === "ratio" ? "%" : first.currency ?? first.unit} observations={row.groups.map((group) => ({
-    id: String(group.evidence.id), label: group.label, value: group.result === null ? null : chartValue(group.result), valueLabel: resultLabel(group),
+  return <><CategoryComparison label={`${first.outcomeLabel} · ${first.followUpDays}-day horizon`} unit={first.unit === "ratio" ? "%" : first.currency ?? first.unit} scaleMaximum={first.unit === "ratio" ? 100 : undefined} observations={row.groups.map((group, index) => ({
+    id: String(group.evidence.id), label: group.label, tone: index === 0 ? "navy" : "green", value: group.result === null ? null : chartValue(group.result), valueLabel: resultLabel(group),
     detail: `${group.matureEntrants} mature · ${group.stillObservingEntrants} observing${group.unit === "ratio" && group.evidence.computation.status === "available" ? ` · ${group.evidence.computation.numerator} / ${group.evidence.computation.denominator}` : ""}`,
     unavailableReason: group.evidence.computation.status === "unavailable" ? group.evidence.computation.reason : undefined,
   }))} benchmark={target === null ? undefined : { value: chartValue(target), label: "Declared target (applicable cohort)" }} onInspect={inspect} />

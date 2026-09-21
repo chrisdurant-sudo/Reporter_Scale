@@ -1,16 +1,12 @@
 import { useState } from "react";
-import type { DemoActionContext, EvidenceBundle, NetworkAvailabilityRecordPayload, ReporterId, UtcTimestamp, WorkspaceNavigationTarget } from "../../contracts/v2";
+import type { DemoActionContext, EvidenceBundle, NetworkAvailabilityRecordPayload, ReporterId, WorkspaceNavigationTarget } from "../../contracts/v2";
 import type { NetworkReporterRow, PreparedNetworkView, ReengagementFollowUpInput } from "../../logic/network";
 import { CategoryComparison, Drawer, Panel } from "../../ui/interview";
 import { displayDate } from "../../ui/presentationFormat";
 import { AvailabilityForm, FollowUpForm } from "./networkForms";
 import "./network.css";
 
-export interface ConfirmAvailabilityInput { readonly reporterId: ReporterId; readonly confirmedAt: UtcTimestamp; }
 export interface ReportersNetworkActions {
-  /** Temporary root compatibility only; explicit forms never call these legacy ports. */
-  readonly onConfirmAvailability?: (input: ConfirmAvailabilityInput) => void | Promise<void>;
-  readonly onCreateReengagementTask?: (reporterId: ReporterId) => void | Promise<void>;
   readonly onOpenEvidence: (evidence: EvidenceBundle) => void;
   readonly onOpenRecruitingChecklist: (reporterId: ReporterId) => void;
 }
